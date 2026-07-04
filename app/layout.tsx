@@ -1,13 +1,12 @@
-// app/layout.tsx
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "中国到全球海运｜国际货代｜SINOLYG 物流 | Speed Logistics",
+  title: 'Bryce Logistics | 中国出口国际货运顾问',
   description:
-    "SINOLYG专注中国到全球的海运、空运、清关与供应链服务。优势航线覆盖印度、孟加拉、巴基斯坦、中东、非洲、南美。提供青岛、连云港、上海、宁波等主要港口一站式物流解决方案。",
+    'Bryce Logistics 提供中国出口整柜、拼箱、拖车、报关、海运和空运方案咨询，重点覆盖印巴、中东、南美等航线。',
   alternates: {
-    canonical: "https://www.sinolyg.com",
+    canonical: 'https://www.sinolyg.com',
   },
 };
 

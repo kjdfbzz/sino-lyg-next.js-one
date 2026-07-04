@@ -1,925 +1,933 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, type ComponentType, type CSSProperties } from 'react';
 import {
-  Ship,
-  Plane,
-  Truck,
-  Package,
-  Globe,
-  Anchor,
-  Menu,
-  X,
-  Clock,
-  CheckCircle,
   ArrowRight,
-  MapPin,
+  ArrowUpRight,
+  CheckCircle2,
+  Crown,
+  Globe2,
   Mail,
+  MapPin,
+  Menu,
+  Package,
   Phone,
+  Plane,
+  Ship,
+  ShieldCheck,
+  Truck,
+  X,
 } from 'lucide-react';
 
+const phone = '18360639913';
+const email = 'bryce.lee@gwl-lianyungang.com';
+const whatsapp = '8618360639913';
+
+type Lang = 'zh' | 'en';
+type Copy = Record<Lang, string>;
+type IconType = ComponentType<{ className?: string }>;
+
+const navItems = [
+  { label: 'SERVICES', href: '#services' },
+  { label: 'ROUTES', href: '#routes' },
+  { label: 'BRYCE', href: '#about' },
+  { label: 'INQUIRE', href: '#inquire' },
+];
+
+const stats = [
+  { value: '10+', zh: '行业相关经验', en: 'Years Experience' },
+  { value: '50+', zh: '熟悉港口 / 国家', en: 'Ports Covered' },
+  { value: '20+', zh: '合作船东 / 货代', en: 'Carrier Partners' },
+];
+
+const services: Array<{
+  icon: IconType;
+  title: Copy;
+  desc: Copy;
+}> = [
+  {
+    icon: Ship,
+    title: { zh: '海运整柜 / 拼箱', en: 'Ocean FCL / LCL' },
+    desc: {
+      zh: '中国出口主线服务，按货物、目的港、预算和时效匹配船司方案。',
+      en: 'China export ocean freight matched to cargo, destination, budget and lead time.',
+    },
+  },
+  {
+    icon: Plane,
+    title: { zh: '紧急空运 / 快件', en: 'Air & Express' },
+    desc: {
+      zh: '高货值、急交期货物，评估空运、快件、多式联运的性价比。',
+      en: 'For urgent or high-value cargo, compare air, express and multi-modal options.',
+    },
+  },
+  {
+    icon: Truck,
+    title: { zh: '拖车 / 内陆段', en: 'Trucking' },
+    desc: {
+      zh: '连云港自有车队，青岛协议车队合作十余年，控制进港节奏。',
+      en: 'Own Lianyungang trucks and long-term Qingdao fleet support stable gate-in timing.',
+    },
+  },
+  {
+    icon: Package,
+    title: { zh: '报关 / 单证 / 仓储', en: 'Docs & Customs' },
+    desc: {
+      zh: '报关、产地证、商检、危险品、仓储、装箱、贴标等协同处理。',
+      en: 'Customs, CO, inspection, DG documents, warehousing, stuffing and labeling.',
+    },
+  },
+];
+
+const routes = [
+  {
+    code: '01',
+    title: { zh: '印巴航线', en: 'India / Pakistan' },
+    meta: 'Kolkata / Nhava Sheva / Mundra',
+    carrier: 'MSC / SITC',
+    copy: {
+      zh: 'Kolkata 长期每月约 50 x 40HQ 稳定发货，旺季舱位和守价能力更强，并熟悉印度目的港杂费与清关习惯。',
+      en: 'Long-term Kolkata volume around 50 x 40HQ monthly, with stronger peak-season space and Indian destination cost awareness.',
+    },
+  },
+  {
+    code: '02',
+    title: { zh: '中东航线', en: 'Middle East' },
+    meta: 'Dubai / Saudi Arabia / Jebel Ali / Dammam',
+    carrier: 'COSCO / MSC',
+    copy: {
+      zh: '熟悉 Jebel Ali、Dammam 等港口收费结构和实际操作，对化工、危险品等品类可提前判断单证要求。',
+      en: 'Practical knowledge of Jebel Ali, Dammam and DG/chemical documentation requirements.',
+    },
+  },
+  {
+    code: '03',
+    title: { zh: '南美航线', en: 'South America' },
+    meta: 'Brazil / Chile / Peru / Mexico',
+    carrier: 'CMA / MSK',
+    copy: {
+      zh: '南美线运价高、航程长，合约资源能让舱位和价格更稳定，适合设备、工程物资、建材等客户。',
+      en: 'Contracted long-haul resources for equipment, project cargo and building material exporters.',
+    },
+  },
+];
+
+const advantages = [
+  {
+    title: { zh: '一线操作出身', en: 'Operator First' },
+    copy: {
+      zh: '不只是转报价，对订舱、截关、堆存费、滞期费、目的港杂费等风险更敏感。',
+      en: 'Not just forwarding quotes; booking, cut-off, storage, demurrage and local charges are considered early.',
+    },
+  },
+  {
+    title: { zh: '费用结构透明', en: 'Clear Cost Structure' },
+    copy: {
+      zh: '把海运费、附加费、拖车费、目的港费用拆开说明，尽量避免临时加价和隐形收费。',
+      en: 'Ocean freight, surcharges, trucking and destination costs are separated before you decide.',
+    },
+  },
+  {
+    title: { zh: '重点航线深耕', en: 'Focused Trade Lanes' },
+    copy: {
+      zh: '更关注哪条线稳定、哪家船公司靠谱、哪里容易出问题，而不是报价单上的几个数字。',
+      en: 'Advice is based on stability, carrier behavior and port habits, not only quote-sheet numbers.',
+    },
+  },
+  {
+    title: { zh: '长期合作心态', en: 'Long-Term Partner' },
+    copy: {
+      zh: '不靠一票式低价吸引客户，更适合长期出口客户反复咨询和复盘。',
+      en: 'Built for repeat export clients who need a consultant they can return to.',
+    },
+  },
+];
+
+const processSteps = [
+  {
+    zh: '货物信息',
+    en: 'Brief',
+    descZh: '起运港、目的港、品名、件重尺、出货时间。',
+    descEn: 'POL, POD, cargo name, weight, volume and ready date.',
+  },
+  {
+    zh: '方案比较',
+    en: 'Options',
+    descZh: '按船司、航程、价格、截关和目的港风险对比。',
+    descEn: 'Compare carriers, transit time, price, cut-off and destination risk.',
+  },
+  {
+    zh: '订舱执行',
+    en: 'Execution',
+    descZh: '协调拖车、报关、仓储、装箱和进港节点。',
+    descEn: 'Coordinate trucking, customs, warehouse, stuffing and gate-in.',
+  },
+  {
+    zh: '跟踪反馈',
+    en: 'Tracking',
+    descZh: '直到开船、到港、清关节点都持续同步。',
+    descEn: 'Updates through sailing, arrival and clearance milestones.',
+  },
+];
+
+const inquiryFields = [
+  { label: 'POL / 起运港', placeholder: 'Qingdao / Lianyungang / Shanghai' },
+  { label: 'POD / 目的港', placeholder: 'Kolkata / Jebel Ali / Santos' },
+  { label: 'Cargo / 货物', placeholder: '品名、件数、重量、体积' },
+  { label: 'Contact / 联系方式', placeholder: '微信 / 手机 / 邮箱' },
+];
+
+function pick(copy: Copy, lang: Lang) {
+  return copy[lang];
+}
+
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showQuoteModal, setShowQuoteModal] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [heroImageError, setHeroImageError] = useState(false);
-  const [showContactMenu, setShowContactMenu] = useState(false);
-  const [lang, setLang] = useState<'zh' | 'en'>('zh');
-
-  const phone = '18360639913';
-  const email = 'bryce.lee@gwl-lianyungang.com';
-  const whatsapp = '8618360639913'; // WhatsApp 带国家码
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [lang, setLang] = useState<Lang>('zh');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const isZh = lang === 'zh';
 
-  // 服务卡片文案
-  const services = [
-    {
-      id: 'sea',
-      title: isZh ? '国际海运整箱 / 拼箱' : 'Sea Freight (FCL / LCL)',
-      desc: isZh
-        ? '主做中国出口海运，熟悉印巴、中东、南美等航线资源，可根据你的成本和时效定制方案。'
-        : 'Experienced in China export sea freight with focus on India–Pakistan, Middle East and South America. Tailor-made solutions for both cost and transit time.',
-      gradient: 'from-blue-600 to-blue-900',
-      icon: <Ship size={48} className="text-white" />,
-      bgIcon: (
-        <Anchor
-          size={200}
-          className="absolute -right-10 -bottom-10 text-white/10 rotate-12 group-hover:rotate-0 transition-all duration-700"
-        />
-      ),
-    },
-    {
-      id: 'air',
-      title: isZh ? '紧急空运 & 快件方案' : 'Air Freight & Express',
-      desc: isZh
-        ? '适合高货值、紧急交期的货物，协助评估空运 / 快件 / 多式联运的最优组合。'
-        : 'For urgent and high-value shipments. Help you choose between air, express and multi-modal options.',
-      gradient: 'from-sky-400 to-blue-600',
-      icon: <Plane size={48} className="text-white" />,
-      bgIcon: (
-        <Globe
-          size={200}
-          className="absolute -right-10 -bottom-10 text-white/10 rotate-12 group-hover:rotate-0 transition-all duration-700"
-        />
-      ),
-    },
-    {
-      id: 'truck',
-      title: isZh ? '拖车 & 内陆段安排' : 'Trucking & Inland Haulage',
-      desc: isZh
-        ? '连云港自有车队，青岛协议车队合作十余年，可安排门到港 / 内陆中转，控制整体时效与成本。'
-        : 'Own trucking team in Lianyungang and long-term contracted fleet in Qingdao, enabling stable inland haulage and door-to-port service.',
-      gradient: 'from-orange-400 to-red-600',
-      icon: <Truck size={48} className="text-white" />,
-      bgIcon: (
-        <MapPin
-          size={200}
-          className="absolute -right-10 -bottom-10 text-white/10 rotate-12 group-hover:rotate-0 transition-all duration-700"
-        />
-      ),
-    },
-    {
-      id: 'warehouse',
-      title: isZh ? '报关单证 & 仓储协同' : 'Customs & Documentation',
-      desc: isZh
-        ? '熟悉报关、产地证、商检、危险品等单证配合，可衔接仓储、装箱、贴标等操作。'
-        : 'Experienced with customs, certificates of origin, inspection and DG documents, and can coordinate warehousing and stuffing.',
-      gradient: 'from-emerald-400 to-teal-700',
-      icon: <Package size={48} className="text-white" />,
-      bgIcon: (
-        <Package
-          size={200}
-          className="absolute -right-10 -bottom-10 text-white/10 rotate-12 group-hover:rotate-0 transition-all duration-700"
-        />
-      ),
-    },
-  ];
+  const openInquiry = () => {
+    setMenuOpen(false);
+    setQuoteOpen(true);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-slate-800 selection:bg-amber-500 selection:text-white">
-      {/* === 1. 导航栏 === */}
-      <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-slate-900 shadow-lg py-3'
-            : 'bg-slate-900/80 backdrop-blur-sm py-5'
-        }`}
-      >
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-2 text-white">
-            <div className="bg-amber-500 p-1.5 rounded-lg">
-              <Anchor size={24} className="text-slate-900" />
-            </div>
-            <span className="text-2xl font-bold tracking-tight">
-              Bryce<span className="text-amber-500">Logistics</span>
-            </span>
-          </div>
+    <main className="min-h-screen overflow-x-hidden bg-[#030508] font-inter text-white selection:bg-amber-300 selection:text-black">
+      <Hero
+        lang={lang}
+        menuOpen={menuOpen}
+        setLang={setLang}
+        setMenuOpen={setMenuOpen}
+        openInquiry={openInquiry}
+      />
 
-          <div className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-300">
-            <a href="#home" className="hover:text-white transition">
-              {isZh ? '首页' : 'Home'}
-            </a>
-            <a href="#services" className="hover:text-white transition">
-              {isZh ? '服务内容' : 'Services'}
-            </a>
-            <a href="#about" className="hover:text-white transition">
-              {isZh ? '关于我' : 'About'}
-            </a>
-            <a href="#routes" className="hover:text-white transition">
-              {isZh ? '航线优势' : 'Trade Lanes'}
-            </a>
+      <MobileMenu
+        lang={lang}
+        menuOpen={menuOpen}
+        setLang={setLang}
+        setMenuOpen={setMenuOpen}
+        openInquiry={openInquiry}
+      />
 
-            {/* 语言切换 */}
-            <button
-              onClick={() => setLang(isZh ? 'en' : 'zh')}
-              className="px-3 py-1 rounded-full border border-slate-500/60 text-xs flex items-center gap-1 hover:border-amber-400 hover:text-amber-300 transition"
-            >
-              <Globe size={14} />
-              {isZh ? 'EN' : '中'}
-            </button>
+      <section id="services" className="relative isolate min-h-screen overflow-hidden px-6 py-24 sm:px-10 lg:px-16">
+        <img
+          src="/bryce-services-port.png"
+          alt="Night cargo operations with truck, forklift and container ship"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,5,8,0.94)_0%,rgba(3,5,8,0.74)_42%,rgba(3,5,8,0.16)_78%,rgba(3,5,8,0.34)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-[#030508] to-transparent" />
 
-            <a
-              href={`tel:${phone}`}
-              className="text-amber-400 hover:text-amber-300 transition flex items-center gap-1"
-            >
-              <Phone size={16} />
-              {phone}
-            </a>
-            <button
-              onClick={() => setShowQuoteModal(true)}
-              className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-6 py-2.5 rounded font-bold transition transform hover:-translate-y-0.5 flex items-center gap-2"
-            >
-              {isZh ? '在线留下需求' : 'Send Your Inquiry'}
-              <ArrowRight size={16} />
-            </button>
-          </div>
+        <TemplateIntro
+          label="SERVICES"
+          title={isZh ? '从订舱到交付。' : 'From booking to delivery.'}
+          copy={
+            isZh
+              ? '围绕中国出口，把海运、空运、拖车、单证四个环节串起来，先判断风险，再给出可执行方案。'
+              : 'Ocean, air, trucking and documentation are connected into one practical China export plan.'
+          }
+        />
 
-          {/* 修复：外层改为 div，避免 button 嵌套报错 */}
-          <div className="md:hidden text-white flex items-center gap-3">
-            {/* 语言切换（移动端） */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setLang(isZh ? 'en' : 'zh');
-              }}
-              className="px-3 py-1 rounded-full border border-slate-500/60 text-xs flex items-center gap-1 hover:border-amber-400 hover:text-amber-300 transition"
-            >
-              <Globe size={14} />
-              {isZh ? 'EN' : '中'}
-            </button>
-            {/* 菜单切换按钮 */}
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* 移动端菜单 */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-slate-900 pt-24 px-6">
-          <div className="flex flex-col gap-6 text-xl text-white font-medium">
-            <a
-              href="#home"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-amber-300 transition"
-            >
-              {isZh ? '首页' : 'Home'}
-            </a>
-            <a
-              href="#services"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-amber-300 transition"
-            >
-              {isZh ? '服务内容' : 'Services'}
-            </a>
-            <a
-              href="#about"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-amber-300 transition"
-            >
-              {isZh ? '关于我' : 'About'}
-            </a>
-            <a
-              href="#routes"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-amber-300 transition"
-            >
-              {isZh ? '航线优势' : 'Trade Lanes'}
-            </a>
-            <a
-              href={`tel:${phone}`}
-              className="bg-slate-800/80 border border-slate-700 py-3 rounded font-bold flex items-center justify-center gap-2"
-            >
-              <Phone size={20} />
-              {isZh ? '一键拨打：' : 'Call: '}
-              {phone}
-            </a>
-            <a
-              href={`mailto:${email}`}
-              className="bg-slate-800/80 border border-slate-700 py-3 rounded font-bold flex items-center justify-center gap-2"
-            >
-              <Mail size={20} />
-              {isZh ? '发送邮件' : 'Send Email'}
-            </a>
-            <button
-              onClick={() => {
-                setIsMenuOpen(false);
-                setShowQuoteModal(true);
-              }}
-              className="bg-amber-500 text-slate-900 py-3 rounded font-bold mt-2"
-            >
-              {isZh ? '在线提交业务需求' : 'Leave Your Inquiry'}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* === 2. Hero 区域 === */}
-      <section
-        id="home"
-        className="relative min-h-[800px] flex flex-col justify-center pt-20 pb-32"
-      >
-        <div className="absolute inset-0 z-0 bg-slate-900">
-          {!heroImageError ? (
-            <img
-              src="https://images.unsplash.com/photo-1494412651409-8963ce7f3508?auto=format&fit=crop&w=2000&q=80"
-              alt="Global Logistics Hub"
-              className="w-full h-full object-cover opacity-60"
-              onError={() => setHeroImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 relative overflow-hidden">
-              <div
-                className="absolute top-0 left-0 w-full h-full opacity-10"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(#ffffff 1px, transparent 1px)',
-                  backgroundSize: '40px 40px',
-                }}
-              ></div>
-              <Globe
-                className="absolute -right-20 top-20 text-slate-700 opacity-20"
-                size={600}
-              />
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-slate-800/80 border border-slate-600 text-amber-400 text-sm font-semibold tracking-wider mb-4 backdrop-blur-sm shadow-lg">
-            {isZh
-              ? 'Bryce · 连云港 / 青岛 / 上海 / 天津 / 广州 · 国际货运顾问'
-              : 'Bryce · Lianyungang / Qingdao · Freight Forwarding Consultant'}
-          </span>
-          <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6 drop-shadow-2xl">
-            {isZh ? (
-              <>
-                让全球贸易
-                <br />
-                变得
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
-                  简单高效
-                </span>
-              </>
-            ) : (
-              <>
-                Make Global Trade
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
-                  Simple & Efficient
-                </span>
-              </>
-            )}
-          </h1>
-          <p className="text-lg md:text-xl text-slate-300 mb-6 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-            {isZh
-              ? '这个网站只为做一件事：让你在考虑出口方案时，能快速找到一个讲真话、懂细节、能落地的货代伙伴。无论是整柜、拼箱还是多口岸联动，我会根据你的货物、目的港和预算，给出清晰、可执行的运输方案。'
-              : 'This site has one goal: to help you quickly find a forwarder who tells the truth, understands the details and delivers workable solutions. From FCL/LCL to multi-port coordination, I design clear and practical shipping plans based on your cargo, destination and budget.'}
-          </p>
-
-          <div className="text-sm md:text-base text-slate-200 mb-8 flex flex-col items-center">
-            <div className="inline-flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className="w-20 text-right">
-                  {isZh ? '手机' : 'Mobile'}
-                </span>
-                <a
-                  href={`tel:${phone}`}
-                  className="text-amber-300 hover:text-amber-200 font-semibold"
-                >
-                  {phone}
-                </a>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="w-20 text-right">Email</span>
-                <a
-                  href={`mailto:${email}`}
-                  className="text-amber-300 hover:text-amber-200 font-semibold"
-                >
-                  {email}
-                </a>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="w-20 text-right">WhatsApp</span>
-                <a
-                  href={`https://wa.me/${whatsapp}`}
-                  target="_blank"
-                  className="text-amber-300 hover:text-amber-200 font-semibold"
-                >
-                  +86 {phone}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
-            <a
-              href={`tel:${phone}`}
-              className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-10 py-4 rounded-lg font-bold shadow-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg"
-            >
-              <Phone size={20} />
-              {isZh ? '立即电话联系' : 'Call Now'}
-            </a>
-            <button
-              onClick={() => setShowQuoteModal(true)}
-              className="bg-white/10 hover:bg-white/15 text-white px-10 py-4 rounded-lg font-bold shadow-xl border border-white/20 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg"
-            >
-              {isZh ? '在线提交运输需求' : 'Leave Your Inquiry'}
-              <ArrowRight size={20} />
-            </button>
-          </div>
-        </div>
-
-        {/* 底部统计卡片 */}
-        <div className="absolute bottom-0 left-0 w-full transform translate-y-1/2 z-20 hidden md:block">
-          <div className="container mx-auto px-6">
-            <div className="bg-white rounded-2xl shadow-xl grid grid-cols-4 divide-x divide-slate-100 p-8 border border-slate-100">
-              {[
-                {
-                  label: isZh ? '行业相关经验' : 'Industry Experience',
-                  value: '≈10 年',
-                  icon: <Clock className="text-amber-500 mb-2" size={28} />,
-                },
-                {
-                  label: isZh ? '熟悉港口 / 国家' : 'Ports / Countries Covered',
-                  value: '50+',
-                  icon: <Globe className="text-blue-600 mb-2" size={28} />,
-                },
-                {
-                  label: isZh ? '合作船东 / 货代' : 'Carriers & Partners',
-                  value: '20+',
-                  icon: <Ship className="text-slate-700 mb-2" size={28} />,
-                },
-                {
-                  label: isZh ? '方案反馈时效' : 'Response Time',
-                  value: '24h',
-                  icon: (
-                    <CheckCircle className="text-emerald-500 mb-2" size={28} />
-                  ),
-                },
-              ].map((stat, i) => (
-                <div
-                  key={i}
-                  className="flex flex-col items-center justify-center text-center hover:bg-slate-50 transition p-2 rounded-lg"
-                >
-                  {stat.icon}
-                  <div className="text-3xl font-black text-slate-800">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-slate-500 font-medium mt-1">
-                    {stat.label}
-                  </div>
+        <div className="mt-16 grid max-w-6xl border border-white/16 bg-black/30 backdrop-blur-sm md:grid-cols-2 xl:grid-cols-4">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            return (
+              <article
+                key={service.title.zh}
+                className={`group min-h-[330px] p-6 sm:p-7 ${
+                  index > 0 ? 'border-t border-white/16 md:border-l md:border-t-0' : ''
+                } ${index === 2 ? 'md:border-l-0 md:border-t xl:border-l xl:border-t-0' : ''}`}
+              >
+                <div className="mb-14 flex items-center justify-between">
+                  <span className="text-4xl font-black tabular-nums text-white/18">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <Icon className="h-8 w-8 text-amber-300" />
                 </div>
-              ))}
-            </div>
-          </div>
+                <h3 className="text-2xl font-black tracking-tight text-white">
+                  {pick(service.title, lang)}
+                </h3>
+                <p className="mt-5 text-sm leading-7 text-white/66">
+                  {pick(service.desc, lang)}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
-      {/* === 3. 服务板块 === */}
-      <section id="services" className="py-32 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div>
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                {isZh ? '我能帮你做什么' : 'What I Can Help You With'}
-              </h2>
-              <div className="h-1 w-20 bg-amber-500"></div>
-            </div>
-            <p className="text-slate-600 max-w-xl text-lg">
-              {isZh
-                ? '下面是我日常经常处理的几类工作内容。如果你的需求不在其中，也可以直接联系我，一起评估是否适合合作。'
-                : 'These are the type of work I handle on a daily basis. If your requirement is not listed, feel free to contact me and we can evaluate it together.'}
+      <section id="routes" className="relative isolate min-h-screen overflow-hidden px-6 py-24 sm:px-10 lg:px-16">
+        <img
+          src="/bryce-routes-command.png"
+          alt="Dark route planning command center with shipping map"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(3,5,8,0.58)_0%,rgba(3,5,8,0.86)_68%,rgba(3,5,8,0.98)_100%)]" />
+        <div className="grid min-h-[calc(100vh-12rem)] gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div className="self-start">
+            <p className="text-xs font-black uppercase tracking-[0.34em] text-amber-300">
+              ROUTES
             </p>
+            <h2 className="mt-6 font-podium text-[clamp(4rem,11vw,11rem)] font-black uppercase leading-[0.86] text-white">
+              Lanes.
+              <br />
+              Space.
+              <br />
+              Risk.
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className="group relative h-[450px] rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+          <div className="space-y-4">
+            {routes.map((route) => (
+              <article
+                key={route.code}
+                className="grid gap-5 border border-white/16 bg-black/38 p-5 backdrop-blur-md transition hover:border-amber-300/50 sm:grid-cols-[86px_1fr] sm:p-6"
               >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${service.gradient}`}
-                />
-                {service.bgIcon}
-                <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                  <div>
-                    <div className="bg-white/20 w-16 h-16 rounded-xl flex items-center justify-center mb-6 backdrop-blur-md border border-white/10 shadow-inner">
-                      {service.icon}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-white/80 leading-relaxed font-medium">
-                      {service.desc}
-                    </p>
-                  </div>
-                  <span className="text-white font-bold flex items-center gap-2 group-hover:gap-4 transition-all mt-4 border-t border-white/20 pt-6">
-                    {isZh ? '想了解这类服务' : 'Learn more about this'}
-                    <ArrowRight size={18} />
-                  </span>
+                <div className="text-5xl font-black leading-none tabular-nums text-amber-300">
+                  {route.code}
                 </div>
-              </div>
+                <div>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 className="text-2xl font-black tracking-tight">
+                      {pick(route.title, lang)}
+                    </h3>
+                    <span className="text-xs font-bold uppercase tracking-[0.22em] text-white/46">
+                      {route.carrier}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
+                    {route.meta}
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-white/68">
+                    {pick(route.copy, lang)}
+                  </p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* === 4. 关于我 & 差异化优势 === */}
-      <section id="about" className="py-24 bg-slate-900 text-white">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <h2 className="text-4xl font-bold mb-6">
-            {isZh ? '关于我 · Bryce' : 'About Me · Bryce'}
-          </h2>
-          <p className="text-slate-300 text-lg leading-relaxed mb-6">
-            {isZh
-              ? '我常年在中国连云港从事国际货运代理工作，从业接近十年。主要专注印巴、南美、中东等航线，对不同国家港口的操作习惯、清关要求和费用结构都有长期实操经验。这些年服务过的客户类型包括化工、电动车、电动三轮车、建材等中大型客户。'
-              : 'Based in Lianyungang, China, I have been working in international freight forwarding for nearly ten years. I focus on India–Pakistan, Middle East and South America trade lanes, with hands-on experience in port operations, customs requirements and local charges. I mainly serve mid- to large-sized clients in chemicals, e-bikes, electric tricycles and building materials.'}
-          </p>
-
-          <h3 className="text-2xl font-semibold mb-3">
-            {isZh
-              ? '我和普通货代的区别'
-              : 'How I Am Different from a Typical Forwarder'}
-          </h3>
-          <ul className="space-y-3 text-slate-300 text-sm leading-relaxed">
-            <li>
-              <span className="text-amber-400 font-semibold">
-                {isZh
-                  ? '一线操作出身，不只是“转报价”：'
-                  : 'Operational background, not just a quote broker: '}
-              </span>
+      <section id="about" className="bg-[#030508] px-6 py-24 sm:px-10 lg:px-16">
+        <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.34em] text-amber-300">
+              BRYCE
+            </p>
+            <h2 className="mt-6 max-w-3xl font-podium text-[clamp(3.5rem,8vw,8.4rem)] font-black uppercase leading-[0.88]">
+              Clear
+              <br />
+              Before
+              <br />
+              Cargo.
+            </h2>
+            <p className="mt-7 max-w-xl text-base leading-8 text-white/64">
               {isZh
-                ? '长期在一线做实际操作和客户跟进，而不是单纯转发报价。对订舱、截关、堆存费、滞期费、目的港杂费等细节非常敏感，很多潜在问题会在接单前就帮你想到。'
-                : 'I work from the operational side with direct customer follow-up instead of just forwarding quotes. I pay close attention to details like booking, cut-off, storage/demurrage and local charges, and highlight potential risks before you ship.'}
-            </li>
-            <li>
-              <span className="text-amber-400 font-semibold">
-                {isZh
-                  ? '费用结构透明，不玩“临时加价”：'
-                  : 'Transparent cost structure, no surprise charges: '}
-              </span>
-              {isZh
-                ? '不承诺“全网最低价”，但会把运费、附加费、拖车费、目的港费用拆开说明，能省的帮你省，不能省的提前告诉你，尽量避免临时加价和隐形收费。'
-                : 'I do not promise “cheapest rate on the market”, but I will clearly break down ocean freight, surcharges, trucking and local charges. I try to save where possible and always inform you in advance where costs are fixed.'}
-            </li>
-            <li>
-              <span className="text-amber-400 font-semibold">
-                {isZh
-                  ? '深耕印巴 / 南美 / 中东航线，懂纸面规则以外的东西：'
-                  : 'Deep focus on India–Pakistan, Middle East and South America: '}
-              </span>
-              {isZh
-                ? '同样一个港口，不同船公司、不同海外代理的习惯完全不一样。我更关注哪条线更稳定、哪家船公司在这个港口更靠谱、哪里容易出问题，而不仅仅是报价单上的那几个数字。'
-                : 'For the same port, every carrier and local agent behaves differently. I care about which service is more stable, which carrier is reliable at a given port and where problems usually occur, not just the numbers on a quote sheet.'}
-            </li>
-            <li>
-              <span className="text-amber-400 font-semibold">
-                {isZh
-                  ? '连云港自有车队 + 青岛协议车队合作十余年：'
-                  : 'Own trucking team in Lianyungang + long-term fleet in Qingdao: '}
-              </span>
-              {isZh
-                ? '在连云港有自有车队，在青岛有合作超过十年的协议车队。这意味着旺季、天气异常、甩柜频繁的时候，拖车与进港节奏更可控，整体时效和成本更稳定。'
-                : 'With my own trucks in Lianyungang and over ten years of cooperation with a contracted fleet in Qingdao, I can keep inland haulage and gate-in more stable during peak season and bad weather.'}
-            </li>
-            <li>
-              <span className="text-amber-400 font-semibold">
-                {isZh
-                  ? '长期合作心态，而不是“一票式中间商”：'
-                  : 'Long-term partnership mindset, not one-off deals: '}
-              </span>
-              {isZh
-                ? '不会为了拿一票货把价格压到不现实，也不会故意隐瞒目的港风险。更愿意作为你的长期国际物流顾问，让你在遇到任何运输相关问题时，第一时间想到可以来问我。'
-                : 'I don’t quote unrealistic low rates just to win one shipment, nor do I hide destination risks on purpose. I prefer to be your long-term logistics partner whom you can consult whenever you have questions.'}
-            </li>
-          </ul>
-        </div>
-      </section>
+                ? '我常年在中国连云港从事国际货运代理工作，从业接近十年。主要专注印巴、南美、中东等航线，对不同国家港口的操作习惯、清关要求和费用结构都有长期实操经验。'
+                : 'Based in Lianyungang, China, I have worked in freight forwarding for nearly ten years, focusing on India-Pakistan, Middle East and South America trade lanes.'}
+            </p>
+          </div>
 
-      {/* === 5. 航线优势 & 船公司资源 === */}
-      <section id="routes" className="py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">
-            {isZh
-              ? '我擅长的航线 & 船公司资源'
-              : 'Key Trade Lanes & Carrier Resources'}
-          </h2>
-          <p className="text-slate-600 mb-12 max-w-3xl">
-            {isZh
-              ? '近十年的一线操作经验，加上稳定、可观的发货量，让我在印巴、中东、南美等重点航线拥有更稳定的舱位、价格和服务资源。下面是我日常重点在做的几条航线与合作船公司。'
-              : 'With nearly ten years of hands-on operations and stable volume, I have reliable space and rate support on India–Pakistan, Middle East and South America trade lanes. Below are some of my key lanes and carrier partners.'}
-          </p>
-
-          <div className="space-y-12">
-            {/* 印巴 */}
-            <div className="p-8 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm">
-              <h3 className="text-2xl font-bold text-slate-800 mb-4">
-                {isZh
-                  ? '印巴航线（Kolkata 重点）'
-                  : 'India–Pakistan Trade Lane (Kolkata Focus)'}
-              </h3>
-              <p className="text-slate-600 mb-1">
-                📍 {isZh ? '核心港口：' : 'Key ports: '}
-                <span className="font-semibold">
-                  Kolkata / Nhava Sheva / Mundra
-                </span>
-              </p>
-              <p className="text-slate-600 mb-1">
-                📦 {isZh ? '货量情况：' : 'Volume: '}
-                <span className="font-semibold">
-                  Kolkata{' '}
-                  {isZh
-                    ? '长期每月约 50×40HQ 稳定发货'
-                    : 'around 50×40HQ per month on a long-term basis'}
-                </span>
-              </p>
-              <p className="text-slate-600">
-                🚢 {isZh ? '船司资源：' : 'Carriers: '}
-                <span className="font-semibold">MSC / SITC</span>
-              </p>
-              <ul className="list-disc pl-6 mt-4 space-y-1 text-slate-600 text-sm">
-                <li>
-                  {isZh
-                    ? '长期大批量直客资源 → 旺季舱位更稳定、守价能力更强。'
-                    : 'Long-term and sizable direct client volume → more stable space and better rate protection in peak season.'}
-                </li>
-                <li>
-                  {isZh
-                    ? '熟悉印度港口目的港杂费结构与清关习惯，能提前做费用与风险提示。'
-                    : 'Familiar with Indian local charges and customs practices; can highlight costs and risks in advance.'}
-                </li>
-                <li>
-                  {isZh
-                    ? '善于在 MSC 和 SITC 之间平衡时效与成本，给出适合你货物的组合方案。'
-                    : 'Able to balance MSC and SITC services to optimize transit time and cost for your cargo.'}
-                </li>
-              </ul>
-            </div>
-
-            {/* 中东 */}
-            <div className="p-8 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm">
-              <h3 className="text-2xl font-bold text-slate-800 mb-4">
-                {isZh ? '中东航线' : 'Middle East Trade Lane'}
-              </h3>
-              <p className="text-slate-600 mb-1">
-                📍 {isZh ? '覆盖区域：' : 'Coverage: '}
-                <span className="font-semibold">
-                  {isZh
-                    ? '迪拜、沙特等主流中东市场'
-                    : 'Dubai, Saudi Arabia and main ME markets'}
-                </span>
-              </p>
-              <p className="text-slate-600">
-                🚢 {isZh ? '船司资源：' : 'Carriers: '}
-                <span className="font-semibold">COSCO / MSC</span>
-              </p>
-              <ul className="list-disc pl-6 mt-4 space-y-1 text-slate-600 text-sm">
-                <li>
-                  {isZh
-                    ? '熟悉 Jebel Ali、Dammam 等港口的收费结构与实际操作习惯。'
-                    : 'Experienced with Jebel Ali, Dammam and other main ports in terms of local charges and operations.'}
-                </li>
-                <li>
-                  {isZh
-                    ? '旺季时舱位协调能力强，结合 COSCO / MSC 的不同优势做整体方案。'
-                    : 'Strong space coordination in peak season by leveraging different strengths of COSCO and MSC.'}
-                </li>
-                <li>
-                  {isZh
-                    ? '对化工、危险品等品类发往中东有经验，能提前判断单证和申报要求。'
-                    : 'Experienced in shipping chemicals and DG cargo to ME and can advise on documents and declarations.'}
-                </li>
-              </ul>
-            </div>
-
-            {/* 南美 */}
-            <div className="p-8 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm">
-              <h3 className="text-2xl font-bold text-slate-800 mb-4">
-                {isZh ? '南美航线' : 'South America Trade Lane'}
-              </h3>
-              <p className="text-slate-600 mb-1">
-                📍 {isZh ? '覆盖区域：' : 'Coverage: '}
-                <span className="font-semibold">
-                  {isZh
-                    ? '巴西、智利、秘鲁、墨西哥等南美主要市场'
-                    : 'Brazil, Chile, Peru, Mexico and other main LATAM markets'}
-                </span>
-              </p>
-              <p className="text-slate-600">
-                🚢 {isZh ? '船司合约：' : 'Contracted carriers: '}
-                <span className="font-semibold">CMA / MSK</span>
-              </p>
-              <ul className="list-disc pl-6 mt-4 space-y-1 text-slate-600 text-sm">
-                <li>
-                  {isZh
-                    ? '南美线运价高、航程长，有合约资源 → 舱位与价格更稳定。'
-                    : 'South America is high-cost and long-transit; with carrier contracts, both space and rates are more stable.'}
-                </li>
-                <li>
-                  {isZh
-                    ? '熟悉南美地区清关要求与港口特点，适合设备、工程物资、建材等中大型客户。'
-                    : 'Familiar with LATAM customs and port practices; suitable for equipment, project cargo and building materials.'}
-                </li>
-                <li>
-                  {isZh
-                    ? '可以根据成本和时效，在直达与中转之间设计合适的整体方案。'
-                    : 'Can design suitable solutions by choosing between direct and transhipment services based on cost and lead time.'}
-                </li>
-              </ul>
-            </div>
+          <div className="grid border border-white/16 md:grid-cols-2">
+            {advantages.map((item, index) => (
+              <article
+                key={item.title.zh}
+                className={`min-h-[260px] p-6 sm:p-7 ${
+                  index > 0 ? 'border-t border-white/16 md:border-l md:border-t-0' : ''
+                } ${index === 2 ? 'md:border-l-0 md:border-t' : ''}`}
+              >
+                <ShieldCheck className="h-7 w-7 text-amber-300" />
+                <h3 className="mt-10 text-xl font-black tracking-tight">
+                  {pick(item.title, lang)}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-white/62">
+                  {pick(item.copy, lang)}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* === 6. CTA & Footer === */}
-      <section className="bg-amber-500 py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
-            {isZh
-              ? '如果你现在就有一票货，'
-              : 'If you have a shipment to discuss,'}
-          </h2>
-          <h3 className="text-xl md:text-2xl text-slate-900/80 mb-8">
-            {isZh
-              ? '可以直接联系我获取一个清晰、透明的运输方案。'
-              : 'feel free to contact me for a clear and transparent shipping proposal.'}
-          </h3>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+      <section className="relative isolate overflow-hidden px-6 py-24 sm:px-10 lg:px-16">
+        <img
+          src="/bryce-process-desk.png"
+          alt="Freight consultant desk with shipping documents and port view"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,5,8,0.92)_0%,rgba(3,5,8,0.76)_42%,rgba(3,5,8,0.36)_100%)]" />
+
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.34em] text-amber-300">
+              PROCESS
+            </p>
+            <h2 className="mt-6 max-w-xl text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+              {isZh ? '运输方案从信息拆解开始。' : 'Every shipment starts with a sharper brief.'}
+            </h2>
+            <p className="mt-6 max-w-xl text-base leading-8 text-white/64">
+              {isZh
+                ? '真正影响运输体验的，不只是海运费，还有截关、拖车、目的港费用、单证要求、旺季舱位和异常处理。'
+                : 'Freight is not only the ocean rate. Cut-off, trucking, destination charges, documents, peak-season space and exceptions all matter.'}
+            </p>
+          </div>
+
+          <div className="grid border border-white/16 bg-black/34 backdrop-blur-sm md:grid-cols-4">
+            {processSteps.map((step, index) => (
+              <article
+                key={step.zh}
+                className={`min-h-[250px] p-6 ${
+                  index > 0 ? 'border-t border-white/16 md:border-l md:border-t-0' : ''
+                }`}
+              >
+                <div className="text-5xl font-black leading-none tabular-nums text-white/22">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+                <h3 className="mt-10 text-xl font-black">
+                  {isZh ? step.zh : step.en}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-white/62">
+                  {isZh ? step.descZh : step.descEn}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="inquire"
+        className="relative overflow-hidden bg-amber-300 px-6 py-20 text-black sm:px-10 lg:px-16"
+      >
+        <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.34em] text-black/54">
+              LET'S MOVE IT
+            </p>
+            <h2 className="mt-5 max-w-4xl font-podium text-[clamp(3.2rem,8vw,7rem)] font-black uppercase leading-[0.9]">
+              Send
+              <br />
+              The Brief.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base font-semibold leading-8 text-black/68">
+              {isZh
+                ? '如果你现在就有一票货，把起运港、目的港、货物信息和出货时间发给我，我来帮你先把方案梳理清楚。'
+                : 'Send POL, POD, cargo details and ready date. I will help turn it into a clear shipping plan.'}
+            </p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 lg:w-[440px]">
+            <button
+              type="button"
+              onClick={openInquiry}
+              className="group flex items-center justify-center gap-3 bg-black px-6 py-5 text-xs font-black uppercase tracking-[0.24em] text-white transition hover:bg-[#141414]"
+            >
+              {isZh ? '在线留下需求' : 'Send inquiry'}
+              <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+            </button>
             <a
               href={`tel:${phone}`}
-              className="bg-slate-900 text-white px-10 py-4 rounded-lg font-bold hover:bg-slate-800 shadow-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-3 border border-black px-6 py-5 text-xs font-black uppercase tracking-[0.24em] transition hover:bg-black hover:text-white"
             >
-              <Phone size={20} />
-              {isZh ? '电话：' : 'Call: '}
-              {phone}
-            </a>
-            <a
-              href={`mailto:${email}`}
-              className="bg-white text-slate-900 px-10 py-4 rounded-lg font-bold hover:bg-slate-100 shadow-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-2"
-            >
-              <Mail size={20} />
-              {isZh ? '邮箱联系我' : 'Email Me'}
+              <Phone className="h-4 w-4" />
+              Call
             </a>
           </div>
-          <p className="text-sm text-slate-900/80">
-            {isZh
-              ? '也可以点击页面任意按钮，在线提交你的需求，我会尽快回复你。'
-              : 'You can also use any button on this page to leave your inquiry and I will get back to you as soon as possible.'}
-          </p>
         </div>
       </section>
 
-      <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div>
-              <div className="text-2xl font-bold text-white mb-1">
-                Bryce<span className="text-amber-500">Logistics</span>
-              </div>
-              <div className="text-xs text-slate-500">
-                {isZh
-                  ? '个人国际货运顾问 · 专注中国出口整柜 / 拼箱及相关配套服务'
-                  : 'Independent freight forwarding consultant · Focus on China export FCL / LCL and related services.'}
-              </div>
+      <footer className="bg-[#030508] px-6 py-12 sm:px-10 lg:px-16">
+        <div className="flex flex-col gap-8 border-t border-white/14 pt-10 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="font-podium text-3xl font-black uppercase tracking-[0.18em]">
+              Bryce Logistics
             </div>
-            <div className="flex flex-col md:flex-row gap-4 text-sm font-medium items-center">
-              <a
-                href={`tel:${phone}`}
-                className="hover:text-white transition flex items-center gap-1"
-              >
-                <Phone size={16} />
-                {phone}
-              </a>
-              <a
-                href={`mailto:${email}`}
-                className="hover:text-white transition flex items-center gap-1"
-              >
-                <Mail size={16} />
-                {email}
-              </a>
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                className="hover:text-white transition text-xs md:text-sm"
-              >
-                WhatsApp: +86 {phone}
-              </a>
-            </div>
-            <p className="text-xs text-slate-600">
-              © {new Date().getFullYear()} Bryce Logistics. Personal site.
+            <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
+              {isZh
+                ? '个人国际货运顾问 · 中国出口整柜 / 拼箱 / 拖车 / 报关'
+                : 'Independent freight consultant · China export FCL / LCL / trucking / customs'}
             </p>
+          </div>
+
+          <div className="flex flex-col gap-3 text-sm font-bold text-white/66 md:items-end">
+            <a className="hover:text-white" href={`tel:${phone}`}>
+              {phone}
+            </a>
+            <a className="hover:text-white" href={`mailto:${email}`}>
+              {email}
+            </a>
+            <a
+              className="hover:text-white"
+              href={`https://wa.me/${whatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              WhatsApp +86 {phone}
+            </a>
           </div>
         </div>
       </footer>
 
-      {/* === 悬浮联系按钮（微信二维码 + 复制手机号 + WhatsApp） === */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {/* Toggle Button */}
-        <button
-          onClick={() => setShowContactMenu(!showContactMenu)}
-          className="w-14 h-14 bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-full shadow-xl flex items-center justify-center transition"
-        >
-          {showContactMenu ? (
-            <X size={26} className="text-slate-900" />
-          ) : (
-            <Phone size={24} />
-          )}
-        </button>
+      <FloatingContact
+        lang={lang}
+        contactOpen={contactOpen}
+        setContactOpen={setContactOpen}
+      />
 
-        {/* Menu Panel - Added max-h and scroll */}
-        {showContactMenu && (
-          <div className="absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-5 max-h-[80vh] overflow-y-auto">
-            <h3 className="text-lg font-bold text-slate-800 mb-1">
-              {isZh ? '联系 Bryce（李经理）' : 'Contact Bryce'}
-            </h3>
-            <p className="text-xs text-slate-500 mb-2">
+      {quoteOpen && <InquiryModal setQuoteOpen={setQuoteOpen} />}
+    </main>
+  );
+}
+
+function Hero({
+  lang,
+  menuOpen,
+  setLang,
+  setMenuOpen,
+  openInquiry,
+}: {
+  lang: Lang;
+  menuOpen: boolean;
+  setLang: (lang: Lang) => void;
+  setMenuOpen: (open: boolean) => void;
+  openInquiry: () => void;
+}) {
+  const isZh = lang === 'zh';
+
+  return (
+    <section id="home" className="relative isolate min-h-screen overflow-hidden">
+      <img
+        src="/bryce-hero-port.png"
+        alt="Night container port with cranes and cargo ship"
+        className="absolute inset-0 -z-20 h-full w-full object-cover object-[58%_center]"
+      />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,5,8,0.93)_0%,rgba(3,5,8,0.68)_42%,rgba(3,5,8,0.14)_74%,rgba(3,5,8,0.34)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-44 bg-gradient-to-t from-[#030508] to-transparent" />
+      <div className="pointer-events-none absolute bottom-24 left-6 right-6 top-24 z-0 border border-white/[0.07] sm:left-10 sm:right-10 lg:left-16 lg:right-16" />
+
+      <nav className="relative z-30 flex items-center justify-between px-6 py-5 sm:px-10 lg:px-16 lg:py-7">
+        <a
+          href="#home"
+          className="font-podium text-xl font-black uppercase tracking-[0.12em] text-white sm:text-3xl sm:tracking-[0.18em]"
+          aria-label="Bryce Logistics home"
+        >
+          Bryce Logistics
+        </a>
+
+        <div className="hidden items-center gap-9 md:flex">
+          {navItems.map((item) =>
+            item.label === 'INQUIRE' ? (
+              <button
+                key={item.label}
+                type="button"
+                onClick={openInquiry}
+                className="text-sm font-black uppercase tracking-[0.28em] text-white/78 transition hover:text-white"
+              >
+                {item.label}
+              </button>
+            ) : (
+              <a
+                key={item.label}
+                href={item.href}
+                className="text-sm font-black uppercase tracking-[0.28em] text-white/78 transition hover:text-white"
+              >
+                {item.label}
+              </a>
+            ),
+          )}
+        </div>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <button
+            type="button"
+            onClick={() => setLang(isZh ? 'en' : 'zh')}
+            className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.22em] text-white/84 transition hover:border-white/50 hover:text-white"
+          >
+            {isZh ? 'EN' : '中文'}
+          </button>
+          <button
+            type="button"
+            onClick={openInquiry}
+            className="group flex items-center gap-3 border border-white/30 px-6 py-3 text-xs font-black uppercase tracking-[0.28em] text-white transition hover:border-white/60 hover:bg-white/10"
+          >
+            Get in touch
+            <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </button>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={() => setLang(isZh ? 'en' : 'zh')}
+            className="border border-white/20 px-2.5 py-2 text-xs font-black uppercase tracking-[0.18em] text-white"
+          >
+            {isZh ? 'EN' : '中'}
+          </button>
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center border border-white/20 text-white"
+            aria-label="Open navigation menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(true)}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+      </nav>
+
+      <div className="relative z-10 flex min-h-[calc(100vh-96px)] flex-col justify-center px-6 pb-28 pt-10 sm:px-10 lg:px-16">
+        <div className="max-w-[980px]">
+          <div className="animate-fade-up mb-6 flex items-center gap-3 lg:mb-8">
+            <Crown className="h-4 w-4 text-white/78" />
+            <span className="text-xs font-black uppercase tracking-[0.3em] text-white/72 sm:text-sm">
+              China Export Freight Consultant
+            </span>
+          </div>
+
+          <h1 className="animate-fade-up-delay-1 font-podium text-[4.05rem] font-black uppercase leading-[0.82] text-white [text-shadow:0_18px_45px_rgba(0,0,0,0.72)] sm:text-[5.8rem] md:text-[7.6rem] lg:text-[9.5rem] xl:text-[11rem]">
+            Move.
+            <br />
+            Clear.
+            <br />
+            Deliver.
+          </h1>
+
+          <div className="animate-fade-up-delay-2 mt-8 grid gap-6 lg:grid-cols-[minmax(0,640px)_auto] lg:items-end">
+            <p className="max-w-2xl text-sm leading-7 text-white/74 sm:text-base">
               {isZh
-                ? '选择你方便的方式联系我（微信 / 电话 / WhatsApp / 邮件）。'
-                : 'Choose any way that is convenient for you: WeChat / phone / WhatsApp / email.'}
+                ? '我是 Bryce，在中国连云港从事国际货运代理。为出口客户把整柜、拼箱、拖车、报关、空运和重点航线方案讲清楚，让每一票货都有可执行路径。'
+                : 'I am Bryce, a freight forwarding consultant based in Lianyungang, China. I turn FCL, LCL, trucking, customs, air freight and trade-lane decisions into clear executable shipment plans.'}
             </p>
 
-            {/* 手机号 */}
-            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-              <div>
-                <p className="text-sm text-slate-600">
-                  {isZh ? '手机' : 'Mobile'}
-                </p>
-                <p className="font-semibold text-slate-900">{phone}</p>
-              </div>
-              <button
-                className="text-amber-500 font-semibold hover:text-amber-600 text-sm"
-                onClick={() => {
-                  navigator.clipboard.writeText(phone);
-                  alert(isZh ? '手机号已复制' : 'Mobile number copied');
-                }}
-              >
-                {isZh ? '复制' : 'Copy'}
-              </button>
-            </div>
-
-            {/* WhatsApp */}
-            <a
-              href={`https://wa.me/${whatsapp}`}
-              target="_blank"
-              className="block p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition"
+            <button
+              type="button"
+              onClick={openInquiry}
+              className="group flex w-fit items-center gap-3 border border-white/35 bg-black/35 px-7 py-4 text-xs font-black uppercase tracking-[0.28em] text-white shadow-2xl shadow-black/20 backdrop-blur-md transition hover:border-amber-300 hover:bg-amber-300 hover:text-black"
             >
-              <p className="text-sm text-slate-600">WhatsApp</p>
-              <p className="font-semibold text-slate-900">+86 {phone}</p>
-            </a>
-
-            {/* 邮箱 */}
-            <a
-              href={`mailto:${email}`}
-              className="block p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition"
-            >
-              <p className="text-sm text-slate-600">
-                {isZh ? '邮箱' : 'Email'}
-              </p>
-              <p className="font-semibold text-slate-900 break-all">{email}</p>
-            </a>
-
-            {/* WeChat QR Code - Smaller and Centered */}
-            <div className="text-center">
-              <p className="text-sm text-slate-600 mb-2">
-                {isZh ? '添加微信（推荐）' : 'Add me on WeChat'}
-              </p>
-              <div className="flex justify-center">
-                {/* 修复：使用 w-full h-auto 确保长方形图片完整显示，同时限制最大宽度 */}
-                <img
-                  src="wechat-qrcode.jpg"
-                  alt="微信二维码"
-                  className="w-48 h-auto max-w-[260px] rounded-lg border border-slate-200 shadow-sm object-contain bg-white"
-                />
-              </div>
-            </div>
+              {isZh ? '留下运输需求' : 'Send inquiry'}
+              <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </button>
           </div>
-        )}
+
+          <div className="animate-fade-up-delay-3 mt-12 grid max-w-4xl grid-cols-1 border border-white/14 bg-black/20 backdrop-blur-[2px] sm:grid-cols-3">
+            {stats.map((stat, index) => (
+              <div
+                key={stat.value}
+                className={`p-5 sm:p-7 ${
+                  index > 0 ? 'border-t border-white/14 sm:border-l sm:border-t-0' : ''
+                }`}
+              >
+                <div className="text-4xl font-black tabular-nums text-white sm:text-5xl">
+                  {stat.value}
+                </div>
+                <div className="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-amber-300 sm:text-xs">
+                  {isZh ? stat.zh : stat.en}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* === 报价/需求收集 Modal === */}
-      {showQuoteModal && (
-        <div className="fixed inset-0 z-[60] bg-slate-900/90 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl">
-            <div className="p-6 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl">
-              <h2 className="text-xl font-bold text-slate-900">
-                {isZh
-                  ? '留下你的需求，我会尽快回复'
-                  : 'Leave your inquiry and I will get back to you soon'}
-              </h2>
-              <button onClick={() => setShowQuoteModal(false)}>
-                <X className="text-slate-400 hover:text-slate-600" />
-              </button>
-            </div>
-            <div className="p-8 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder={
-                    isZh
-                      ? '起运城市 / 港口（如 Qingdao）'
-                      : 'POL (e.g. Qingdao)'
-                  }
-                  className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500"
-                />
-                <input
-                  type="text"
-                  placeholder={
-                    isZh ? '目的城市 / 港口' : 'POD / Destination city'
-                  }
-                  className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <input
-                  type="number"
-                  placeholder={isZh ? '重量 (KG)' : 'Weight (KG)'}
-                  className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500"
-                />
-                <input
-                  type="number"
-                  placeholder={isZh ? '体积 (CBM)' : 'Volume (CBM)'}
-                  className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500"
-                />
-                <select className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500">
-                  <option>{isZh ? '海运' : 'Sea Freight'}</option>
-                  <option>{isZh ? '空运' : 'Air Freight'}</option>
-                  <option>{isZh ? '陆运 / 拖车' : 'Trucking / Inland'}</option>
-                </select>
-              </div>
-              <input
-                type="text"
-                placeholder={
-                  isZh ? '你的称呼（公司 / 姓名）' : 'Your name / company'
-                }
-                className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500"
-              />
-              <input
-                type="text"
-                placeholder={
-                  isZh
-                    ? '你的联系方式（微信 / 手机 / 邮箱）'
-                    : 'Your contact (WeChat / mobile / email)'
-                }
-                className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500"
-              />
-              <textarea
-                placeholder={
-                  isZh
-                    ? '补充说明（货物品名、装货时间、是否有特殊要求等）'
-                    : 'Additional information (cargo name, ready time, special requirements, etc.)'
-                }
-                className="p-3 border rounded bg-slate-50 w-full outline-none focus:ring-2 focus:ring-amber-500 min-h-[120px]"
-              />
-              <p className="text-xs text-slate-500">
-                {isZh
-                  ? '当前表单仅作展示，不会自动发送信息。如果你希望真实沟通，请直接使用页面上的手机号、微信或邮箱联系我。'
-                  : 'This form is only for demo and will not actually send any data. For real communication, please contact me directly via mobile, WeChat or email shown on this page.'}
-              </p>
-              <button
-                onClick={() => setShowQuoteModal(false)}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-4 rounded transition"
-              >
-                {isZh ? '知道了，先关闭' : 'Got it, close this'}
-              </button>
-            </div>
+      <div className="absolute bottom-6 left-6 right-6 z-10 flex flex-col gap-3 text-xs font-black tracking-[0.18em] text-white/72 sm:left-10 sm:right-10 sm:flex-row sm:items-center sm:justify-between lg:left-16 lg:right-16">
+        <a className="transition hover:text-white" href={`tel:${phone}`}>
+          TEL&nbsp;&nbsp;{phone}
+        </a>
+        <a className="transition hover:text-white" href={`mailto:${email}`}>
+          {email}
+        </a>
+        <a
+          className="transition hover:text-white"
+          href={`https://wa.me/${whatsapp}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          WHATSAPP&nbsp;&nbsp;+86 {phone}
+        </a>
+      </div>
+    </section>
+  );
+}
+
+function TemplateIntro({
+  label,
+  title,
+  copy,
+}: {
+  label: string;
+  title: string;
+  copy: string;
+}) {
+  return (
+    <div className="max-w-4xl">
+      <p className="text-xs font-black uppercase tracking-[0.34em] text-amber-300">
+        {label}
+      </p>
+      <h2 className="mt-6 max-w-4xl text-[clamp(3rem,7vw,7.2rem)] font-black leading-[0.96] tracking-tight text-white">
+        {title}
+      </h2>
+      <p className="mt-6 max-w-2xl text-base leading-8 text-white/66">
+        {copy}
+      </p>
+    </div>
+  );
+}
+
+function MobileMenu({
+  lang,
+  menuOpen,
+  setLang,
+  setMenuOpen,
+  openInquiry,
+}: {
+  lang: Lang;
+  menuOpen: boolean;
+  setLang: (lang: Lang) => void;
+  setMenuOpen: (open: boolean) => void;
+  openInquiry: () => void;
+}) {
+  const isZh = lang === 'zh';
+
+  return (
+    <div
+      data-testid="mobile-menu"
+      className={`fixed inset-0 z-50 bg-black/96 px-6 py-5 backdrop-blur-sm transition-all duration-500 md:hidden ${
+        menuOpen ? 'visible opacity-100' : 'invisible opacity-0'
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <a
+          href="#home"
+          onClick={() => setMenuOpen(false)}
+          className="font-podium text-2xl font-black uppercase tracking-[0.18em] text-white"
+        >
+          Bryce Logistics
+        </a>
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          onClick={() => setMenuOpen(false)}
+          className="flex h-10 w-10 items-center justify-center border border-white/20 text-white"
+        >
+          <X className="h-6 w-6" />
+        </button>
+      </div>
+
+      <div className="flex h-[calc(100vh-96px)] flex-col items-center justify-center gap-7">
+        {navItems.map((item, index) => {
+          const style = {
+            transitionDelay: `${index * 80 + 100}ms`,
+          } as CSSProperties;
+
+          return item.label === 'INQUIRE' ? (
+            <button
+              key={item.label}
+              type="button"
+              onClick={openInquiry}
+              style={style}
+              className={`font-podium text-4xl uppercase tracking-[0.16em] text-white transition-all duration-500 sm:text-5xl ${
+                menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+              }`}
+            >
+              {item.label}
+            </button>
+          ) : (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              style={style}
+              className={`font-podium text-4xl uppercase tracking-[0.16em] text-white transition-all duration-500 sm:text-5xl ${
+                menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+
+        <button
+          type="button"
+          onClick={() => setLang(isZh ? 'en' : 'zh')}
+          className="border border-white/24 px-6 py-3 text-xs font-black uppercase tracking-[0.24em] text-white"
+        >
+          {isZh ? 'Switch to English' : '切换中文'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function FloatingContact({
+  lang,
+  contactOpen,
+  setContactOpen,
+}: {
+  lang: Lang;
+  contactOpen: boolean;
+  setContactOpen: (open: boolean) => void;
+}) {
+  const isZh = lang === 'zh';
+
+  return (
+    <div className="fixed bottom-5 right-5 z-40">
+      <button
+        type="button"
+        onClick={() => setContactOpen(!contactOpen)}
+        className="flex h-14 w-14 items-center justify-center bg-amber-300 text-black shadow-2xl shadow-black/30 transition hover:bg-white"
+        aria-label={isZh ? '打开联系菜单' : 'Open contact menu'}
+      >
+        {contactOpen ? <X className="h-6 w-6" /> : <Phone className="h-6 w-6" />}
+      </button>
+
+      {contactOpen && (
+        <div className="absolute bottom-16 right-0 mb-3 w-[min(20rem,calc(100vw-2.5rem))] border border-white/18 bg-[#05070a] p-5 text-white shadow-2xl">
+          <h3 className="text-lg font-black">
+            {isZh ? '联系 Bryce（李经理）' : 'Contact Bryce'}
+          </h3>
+          <p className="mt-1 text-xs leading-5 text-white/52">
+            {isZh
+              ? '选择你方便的方式联系我：微信、电话、WhatsApp 或邮件。'
+              : 'Choose the channel that works best: WeChat, phone, WhatsApp or email.'}
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <ContactRow icon={Phone} label={isZh ? '手机' : 'Mobile'} value={phone} href={`tel:${phone}`} />
+            <ContactRow icon={Mail} label="Email" value={email} href={`mailto:${email}`} />
+            <ContactRow
+              icon={Globe2}
+              label="WhatsApp"
+              value={`+86 ${phone}`}
+              href={`https://wa.me/${whatsapp}`}
+            />
+          </div>
+
+          <div className="mt-5 border-t border-white/12 pt-5 text-center">
+            <p className="mb-3 text-sm font-bold text-white/62">
+              {isZh ? '添加微信（推荐）' : 'Add me on WeChat'}
+            </p>
+            <img
+              src="/wechat-qrcode.jpg"
+              alt="Bryce WeChat QR code"
+              className="mx-auto w-48 border border-white/16 bg-white object-contain"
+            />
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ContactRow({
+  icon: Icon,
+  label,
+  value,
+  href,
+}: {
+  icon: IconType;
+  label: string;
+  value: string;
+  href: string;
+}) {
+  return (
+    <a
+      href={href}
+      target={href.startsWith('https://') ? '_blank' : undefined}
+      rel={href.startsWith('https://') ? 'noreferrer' : undefined}
+      className="flex items-center gap-3 border border-white/12 bg-white/[0.04] p-3 transition hover:bg-white/[0.08]"
+    >
+      <Icon className="h-5 w-5 text-amber-300" />
+      <span className="min-w-0">
+        <span className="block text-xs font-black uppercase tracking-[0.16em] text-white/38">
+          {label}
+        </span>
+        <span className="block break-all text-sm font-bold text-white">
+          {value}
+        </span>
+      </span>
+    </a>
+  );
+}
+
+function InquiryModal({
+  setQuoteOpen,
+}: {
+  setQuoteOpen: (open: boolean) => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/82 px-4 py-6 backdrop-blur-md sm:items-center">
+      <div className="animate-scale-in w-full max-w-2xl border border-white/18 bg-[#05070a] text-white shadow-2xl">
+        <div className="flex items-center justify-between border-b border-white/12 px-5 py-4 sm:px-7">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-amber-300">
+              Inquiry brief
+            </p>
+            <h2 className="mt-1 text-xl font-black tracking-tight">
+              留下运输需求，我来帮你梳理方案
+            </h2>
+          </div>
+          <button
+            type="button"
+            aria-label="Close inquiry dialog"
+            onClick={() => setQuoteOpen(false)}
+            className="text-white/58 transition hover:text-white"
+          >
+            <X className="h-7 w-7" />
+          </button>
+        </div>
+
+        <form
+          className="space-y-4 px-5 py-6 sm:px-7"
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            {inquiryFields.map((field) => (
+              <label key={field.label} className="block">
+                <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/48">
+                  {field.label}
+                </span>
+                <input
+                  className="mt-2 w-full border border-white/14 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/32 focus:border-amber-300 focus:bg-white/[0.07]"
+                  placeholder={field.placeholder}
+                />
+              </label>
+            ))}
+          </div>
+
+          <label className="block">
+            <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/48">
+              Notes / 补充说明
+            </span>
+            <textarea
+              className="mt-2 min-h-28 w-full border border-white/14 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/32 focus:border-amber-300 focus:bg-white/[0.07]"
+              placeholder="装货时间、是否需要拖车报关、是否有目的港特殊要求等"
+            />
+          </label>
+
+          <p className="text-xs leading-relaxed text-white/46">
+            当前表单只在本页面整理信息，不会自动发送。你可以直接电话、邮箱或
+            WhatsApp 联系我，我会按你的货物信息给出更清晰的运输方案。
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <a
+              href={`tel:${phone}`}
+              className="flex items-center justify-center bg-amber-300 px-5 py-4 text-xs font-black uppercase tracking-[0.24em] text-black transition hover:bg-white"
+            >
+              Call {phone}
+            </a>
+            <a
+              href={`mailto:${email}`}
+              className="flex items-center justify-center border border-white/28 px-5 py-4 text-xs font-black uppercase tracking-[0.24em] text-white transition hover:border-amber-300 hover:text-amber-300"
+            >
+              Email Bryce
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
