@@ -817,7 +817,11 @@ export function getSection(slug: string) {
 }
 
 export function getArticlesBySection(sectionSlug: string) {
-  return contentArticles.filter((article) => article.section === sectionSlug);
+  return contentArticles
+    .filter((article) => article.section === sectionSlug)
+    .sort((articleA, articleB) =>
+      articleB.updatedAt.localeCompare(articleA.updatedAt),
+    );
 }
 
 export function getArticle(sectionSlug: string, slug: string) {
