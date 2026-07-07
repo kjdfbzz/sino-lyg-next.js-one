@@ -11,6 +11,7 @@ import {
   getSectionCopy,
   type Lang,
 } from '../../../content-data';
+import { localizePath } from '../../../localized-path';
 import { usePreferredLanguage } from '../../../use-language';
 
 type ArticlePageClientProps = {
@@ -40,6 +41,8 @@ export default function ArticlePageClient({
   const articleCopy = getArticleCopy(article, lang);
   const sectionCopy = getSectionCopy(section, lang);
   const isZh = lang === 'zh';
+  const homeHref = localizePath('/', lang);
+  const sectionHref = localizePath(`/${section.slug}`, lang);
 
   return (
     <main className="min-h-screen bg-[#030508] font-inter text-white">
@@ -54,7 +57,7 @@ export default function ArticlePageClient({
         <div className="mx-auto max-w-7xl">
           <nav className="flex flex-wrap items-center justify-between gap-4 border-b border-white/12 pb-6">
             <Link
-              href="/"
+              href={homeHref}
               className="font-podium text-2xl font-black uppercase tracking-[0.18em]"
             >
               Bryce Logistics
@@ -68,7 +71,7 @@ export default function ArticlePageClient({
                 {isZh ? 'EN' : '中文'}
               </button>
               <Link
-                href={`/${section.slug}`}
+                href={sectionHref}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
               >
                 {isZh ? '返回分类' : 'Back'}
@@ -78,7 +81,7 @@ export default function ArticlePageClient({
 
           <div className="max-w-5xl py-20">
             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-amber-300">
-              <Link href={`/${section.slug}`} className="hover:text-white">
+              <Link href={sectionHref} className="hover:text-white">
                 {sectionCopy.label}
               </Link>
               <span className="text-white/24">/</span>
@@ -211,7 +214,7 @@ export default function ArticlePageClient({
                 return (
                   <Link
                     key={item.slug}
-                    href={getArticlePath(item)}
+                    href={localizePath(getArticlePath(item), lang)}
                     className="bg-[#05070a] p-6 transition hover:bg-[#091018]"
                   >
                     <h3 className="text-xl font-black leading-tight">

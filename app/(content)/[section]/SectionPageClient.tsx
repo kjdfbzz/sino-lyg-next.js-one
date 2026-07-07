@@ -7,6 +7,7 @@ import {
   getArticlePath,
   getSectionCopy,
 } from '../../content-data';
+import { localizePath } from '../../localized-path';
 import { usePreferredLanguage } from '../../use-language';
 
 type SectionPageClientProps = {
@@ -33,6 +34,7 @@ export default function SectionPageClient({
   });
   const sectionCopy = getSectionCopy(section, lang);
   const isZh = lang === 'zh';
+  const homeHref = localizePath('/', lang);
 
   return (
     <main className="min-h-screen bg-[#030508] font-inter text-white">
@@ -47,7 +49,7 @@ export default function SectionPageClient({
         <div className="mx-auto max-w-7xl">
           <nav className="flex flex-wrap items-center justify-between gap-4 border-b border-white/12 pb-6">
             <Link
-              href="/"
+              href={homeHref}
               className="font-podium text-2xl font-black uppercase tracking-[0.18em]"
             >
               Bryce Logistics
@@ -61,7 +63,7 @@ export default function SectionPageClient({
                 {isZh ? 'EN' : '中文'}
               </button>
               <Link
-                href="/#inquire"
+                href={`${homeHref}#inquire`}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
               >
                 {isZh ? '询盘' : 'Inquiry'}
@@ -94,7 +96,7 @@ export default function SectionPageClient({
               return (
                 <Link
                   key={article.slug}
-                  href={getArticlePath(article)}
+                  href={localizePath(getArticlePath(article), lang)}
                   className="group flex min-h-[360px] flex-col bg-[#05070a] p-6 transition hover:bg-[#091018] sm:p-8"
                 >
                   <div className="mb-8 flex items-center justify-between gap-4">

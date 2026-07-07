@@ -24,6 +24,7 @@ import {
   Truck,
   X,
 } from 'lucide-react';
+import { localizePath } from './localized-path';
 import { usePreferredLanguage } from './use-language';
 
 const phone = '18360639913';
@@ -78,7 +79,7 @@ const structuredData = {
 
 const navItems = [
   { label: 'SERVICES', href: '#services' },
-  { label: 'ROUTES', href: '#routes' },
+  { label: 'ROUTES', href: '/routes' },
   { label: 'BRYCE', href: '#about' },
   { label: 'GUIDES', href: '/requirements' },
   { label: 'INQUIRE', href: '#inquire' },
@@ -138,11 +139,6 @@ const routes = [
     copy: {
       zh: 'Kolkata 长期每月约 50 x 40HQ 稳定发货，熟悉印度港口目的港费用、清关习惯和旺季舱位节奏。',
       en: 'Long-term Kolkata volume around 50 x 40HQ monthly, with India destination cost, clearance and peak-space awareness.',
-    },
-    href: '/routes/lianyungang-to-india-fcl-shipping',
-    cta: {
-      zh: '连云港印度专线详情',
-      en: 'View Lianyungang India service',
     },
   },
   {
@@ -497,59 +493,32 @@ export default function Home({
           </div>
 
           <div className="space-y-4">
-            {routes.map((route) => {
-              const href = 'href' in route && route.href
-                ? isZh
-                  ? route.href
-                  : `/en${route.href}`
-                : null;
-              const content = (
-                <>
-                  <div className="text-5xl font-black leading-none tabular-nums text-amber-300">
-                    {route.code}
+            {routes.map((route) => (
+              <article
+                key={route.code}
+                className="grid gap-5 border border-white/16 bg-black/38 p-5 backdrop-blur-md transition hover:border-amber-300/50 sm:grid-cols-[86px_1fr] sm:p-6"
+              >
+                <div className="text-5xl font-black leading-none tabular-nums text-amber-300">
+                  {route.code}
+                </div>
+                <div>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 className="text-2xl font-black tracking-tight">
+                      {pick(route.title, lang)}
+                    </h3>
+                    <span className="text-xs font-bold uppercase tracking-[0.22em] text-white/46">
+                      {route.carrier}
+                    </span>
                   </div>
-                  <div>
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-                      <h3 className="text-2xl font-black tracking-tight">
-                        {pick(route.title, lang)}
-                      </h3>
-                      <span className="text-xs font-bold uppercase tracking-[0.22em] text-white/46">
-                        {route.carrier}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
-                      {route.meta}
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-white/68">
-                      {pick(route.copy, lang)}
-                    </p>
-                    {'cta' in route && route.cta && (
-                      <div className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-amber-300 transition group-hover:text-white">
-                        {pick(route.cta, lang)}
-                        <ArrowUpRight className="h-4 w-4" />
-                      </div>
-                    )}
-                  </div>
-                </>
-              );
-
-              return href ? (
-                <a
-                  key={route.code}
-                  href={href}
-                  className="group grid gap-5 border border-white/16 bg-black/38 p-5 backdrop-blur-md transition hover:border-amber-300/60 hover:bg-black/52 sm:grid-cols-[86px_1fr] sm:p-6"
-                >
-                  {content}
-                </a>
-              ) : (
-                <article
-                  key={route.code}
-                  className="grid gap-5 border border-white/16 bg-black/38 p-5 backdrop-blur-md transition hover:border-amber-300/50 sm:grid-cols-[86px_1fr] sm:p-6"
-                >
-                  {content}
-                </article>
-              );
-            })}
+                  <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
+                    {route.meta}
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-white/68">
+                    {pick(route.copy, lang)}
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -839,7 +808,7 @@ function Hero({
             ) : (
               <a
                 key={item.label}
-                href={item.href}
+                href={localizePath(item.href, lang)}
                 className="text-xs font-black uppercase tracking-[0.22em] text-white/78 transition hover:text-white lg:text-sm lg:tracking-[0.28em]"
               >
                 {item.label}
@@ -1047,7 +1016,7 @@ function MobileMenu({
           ) : (
             <a
               key={item.label}
-              href={item.href}
+              href={localizePath(item.href, lang)}
               onClick={() => setMenuOpen(false)}
               style={style}
               className={`font-podium text-4xl uppercase tracking-[0.16em] text-white transition-all duration-500 sm:text-5xl ${
