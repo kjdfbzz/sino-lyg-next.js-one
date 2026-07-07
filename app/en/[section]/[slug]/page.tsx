@@ -3,14 +3,16 @@ import { notFound } from 'next/navigation';
 import {
   contentArticles,
   getArticle,
+  getArticleCopy,
   getArticlePath,
   getArticlesBySection,
   getSection,
+  getSectionCopy,
   siteUrl,
 } from '../../../content-data';
-import ArticlePageClient from './ArticlePageClient';
+import ArticlePageClient from '../../../(content)/[section]/[slug]/ArticlePageClient';
 
-type ArticlePageProps = {
+type EnglishArticlePageProps = {
   params: {
     section: string;
     slug: string;
@@ -24,7 +26,7 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }: ArticlePageProps): Metadata {
+export function generateMetadata({ params }: EnglishArticlePageProps): Metadata {
   const article = getArticle(params.section, params.slug);
   const section = getSection(params.section);
 
@@ -32,40 +34,46 @@ export function generateMetadata({ params }: ArticlePageProps): Metadata {
     return {};
   }
 
-  const url = `${siteUrl}${getArticlePath(article)}`;
+  const copy = getArticleCopy(article, 'en');
+  const url = `${siteUrl}/en${getArticlePath(article)}`;
 
   return {
-    title: article.title,
-    description: article.description,
-    keywords: article.keywords,
+    title: copy.title,
+    description: copy.description,
+    keywords: article.en?.keywords ?? article.keywords,
     alternates: {
       canonical: url,
+      languages: {
+        en: url,
+        'zh-CN': `${siteUrl}${getArticlePath(article)}`,
+      },
     },
     openGraph: {
-      title: `${article.title} | Bryce Logistics`,
-      description: article.description,
+      title: `${copy.title} | Bryce Logistics`,
+      description: copy.description,
       url,
       type: 'article',
+      locale: 'en_US',
       publishedTime: article.updatedAt,
       modifiedTime: article.updatedAt,
       authors: ['Bryce Lee'],
       images: [
         {
           url: article.image,
-          alt: article.title,
+          alt: copy.title,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
-      description: article.description,
+      title: copy.title,
+      description: copy.description,
       images: [article.image],
     },
   };
 }
 
-export default function ArticlePage({ params }: ArticlePageProps) {
+export default function EnglishArticlePage({ params }: EnglishArticlePageProps) {
   const article = getArticle(params.section, params.slug);
   const section = getSection(params.section);
 
@@ -73,15 +81,17 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const articleCopy = getArticleCopy(article, 'en');
+  const sectionCopy = getSectionCopy(section, 'en');
   const related = getArticlesBySection(article.section)
     .filter((item) => item.slug !== article.slug)
     .slice(0, 3);
-  const articleUrl = `${siteUrl}${getArticlePath(article)}`;
+  const articleUrl = `${siteUrl}/en${getArticlePath(article)}`;
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: article.title,
-    description: article.description,
+    headline: articleCopy.title,
+    description: articleCopy.description,
     image: `${siteUrl}${article.image}`,
     datePublished: article.updatedAt,
     dateModified: article.updatedAt,
@@ -108,18 +118,18 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: siteUrl,
+        item: `${siteUrl}/en`,
       },
       {
         '@type': 'ListItem',
         position: 2,
-        name: section.title,
-        item: `${siteUrl}/${section.slug}`,
+        name: sectionCopy.title,
+        item: `${siteUrl}/en/${section.slug}`,
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: article.title,
+        name: articleCopy.title,
         item: articleUrl,
       },
     ],
@@ -135,7 +145,13 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <ArticlePageClient article={article} section={section} related={related} />
+      <ArticlePageClient
+        article={article}
+        section={section}
+        related={related}
+        initialLang="en"
+        detectLanguage={false}
+      />
     </>
   );
 }

@@ -24,6 +24,7 @@ import {
   Truck,
   X,
 } from 'lucide-react';
+import { usePreferredLanguage } from './use-language';
 
 const phone = '18360639913';
 const email = 'Bryce.Lee@gwl-lianyungang.com';
@@ -371,8 +372,16 @@ function BackgroundImage({
   );
 }
 
-export default function Home() {
-  const [lang, setLang] = useState<Lang>('zh');
+export default function Home({
+  initialLang = 'zh',
+  detectLanguage = true,
+}: {
+  initialLang?: Lang;
+  detectLanguage?: boolean;
+} = {}) {
+  const [lang, setLang] = usePreferredLanguage(initialLang, {
+    detect: detectLanguage,
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
