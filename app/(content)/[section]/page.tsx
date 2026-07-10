@@ -10,17 +10,18 @@ import {
 import SectionPageClient from './SectionPageClient';
 
 type SectionPageProps = {
-  params: {
+  params: Promise<{
     section: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
   return contentSections.map((section) => ({ section: section.slug }));
 }
 
-export function generateMetadata({ params }: SectionPageProps): Metadata {
-  const section = getSection(params.section);
+export async function generateMetadata({ params }: SectionPageProps): Promise<Metadata> {
+  const { section: sectionSlug } = await params;
+  const section = getSection(sectionSlug);
 
   if (!section) {
     return {};
@@ -42,8 +43,9 @@ export function generateMetadata({ params }: SectionPageProps): Metadata {
   };
 }
 
-export default function SectionPage({ params }: SectionPageProps) {
-  const section = getSection(params.section);
+export default async function SectionPage({ params }: SectionPageProps) {
+  const { section: sectionSlug } = await params;
+  const section = getSection(sectionSlug);
 
   if (!section) {
     notFound();

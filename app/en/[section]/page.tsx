@@ -12,17 +12,18 @@ import {
 import SectionPageClient from '../../(content)/[section]/SectionPageClient';
 
 type EnglishSectionPageProps = {
-  params: {
+  params: Promise<{
     section: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
   return contentSections.map((section) => ({ section: section.slug }));
 }
 
-export function generateMetadata({ params }: EnglishSectionPageProps): Metadata {
-  const section = getSection(params.section);
+export async function generateMetadata({ params }: EnglishSectionPageProps): Promise<Metadata> {
+  const { section: sectionSlug } = await params;
+  const section = getSection(sectionSlug);
 
   if (!section) {
     return {};
@@ -52,8 +53,9 @@ export function generateMetadata({ params }: EnglishSectionPageProps): Metadata 
   };
 }
 
-export default function EnglishSectionPage({ params }: EnglishSectionPageProps) {
-  const section = getSection(params.section);
+export default async function EnglishSectionPage({ params }: EnglishSectionPageProps) {
+  const { section: sectionSlug } = await params;
+  const section = getSection(sectionSlug);
 
   if (!section) {
     notFound();

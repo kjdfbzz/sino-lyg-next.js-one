@@ -13,10 +13,10 @@ import {
 import ArticlePageClient from '../../../(content)/[section]/[slug]/ArticlePageClient';
 
 type EnglishArticlePageProps = {
-  params: {
+  params: Promise<{
     section: string;
     slug: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
@@ -26,9 +26,10 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }: EnglishArticlePageProps): Metadata {
-  const article = getArticle(params.section, params.slug);
-  const section = getSection(params.section);
+export async function generateMetadata({ params }: EnglishArticlePageProps): Promise<Metadata> {
+  const { section: sectionSlug, slug } = await params;
+  const article = getArticle(sectionSlug, slug);
+  const section = getSection(sectionSlug);
 
   if (!article || !section) {
     return {};
@@ -73,9 +74,10 @@ export function generateMetadata({ params }: EnglishArticlePageProps): Metadata 
   };
 }
 
-export default function EnglishArticlePage({ params }: EnglishArticlePageProps) {
-  const article = getArticle(params.section, params.slug);
-  const section = getSection(params.section);
+export default async function EnglishArticlePage({ params }: EnglishArticlePageProps) {
+  const { section: sectionSlug, slug } = await params;
+  const article = getArticle(sectionSlug, slug);
+  const section = getSection(sectionSlug);
 
   if (!article || !section) {
     notFound();

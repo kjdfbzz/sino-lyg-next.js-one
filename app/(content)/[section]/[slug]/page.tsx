@@ -11,10 +11,10 @@ import {
 import ArticlePageClient from './ArticlePageClient';
 
 type ArticlePageProps = {
-  params: {
+  params: Promise<{
     section: string;
     slug: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
@@ -24,9 +24,10 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }: ArticlePageProps): Metadata {
-  const article = getArticle(params.section, params.slug);
-  const section = getSection(params.section);
+export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
+  const { section: sectionSlug, slug } = await params;
+  const article = getArticle(sectionSlug, slug);
+  const section = getSection(sectionSlug);
 
   if (!article || !section) {
     return {};
@@ -65,9 +66,10 @@ export function generateMetadata({ params }: ArticlePageProps): Metadata {
   };
 }
 
-export default function ArticlePage({ params }: ArticlePageProps) {
-  const article = getArticle(params.section, params.slug);
-  const section = getSection(params.section);
+export default async function ArticlePage({ params }: ArticlePageProps) {
+  const { section: sectionSlug, slug } = await params;
+  const article = getArticle(sectionSlug, slug);
+  const section = getSection(sectionSlug);
 
   if (!article || !section) {
     notFound();

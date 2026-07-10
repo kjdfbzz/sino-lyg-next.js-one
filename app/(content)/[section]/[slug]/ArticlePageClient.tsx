@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   contactEmail,
@@ -47,9 +48,11 @@ export default function ArticlePageClient({
   return (
     <main className="min-h-screen bg-[#030508] font-inter text-white">
       <section className="relative isolate overflow-hidden px-6 py-10 sm:px-10 lg:px-16">
-        <img
+        <Image
           src={article.image}
           alt=""
+          fill
+          sizes="100vw"
           className="absolute inset-0 -z-20 h-full w-full object-cover opacity-48"
         />
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,5,8,0.97)_0%,rgba(3,5,8,0.82)_48%,rgba(3,5,8,0.46)_100%)]" />

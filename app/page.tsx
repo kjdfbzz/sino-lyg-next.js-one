@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   useState,
   type ChangeEvent,
@@ -659,7 +660,7 @@ export default function Home({
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] lg:items-end">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.34em] text-black/54">
-                LET'S MOVE IT
+                LET&apos;S MOVE IT
               </p>
               <h2 className="mt-5 max-w-4xl font-podium text-[clamp(3.2rem,8vw,7rem)] font-black uppercase leading-[0.9]">
                 {isZh ? (
@@ -1088,9 +1089,12 @@ function FloatingContact({
             <p className="mb-3 text-sm font-bold text-white/62">
               {isZh ? '添加微信（推荐）' : 'Add me on WeChat'}
             </p>
-            <img
+            <Image
               src="/wechat-qrcode.jpg"
               alt="Bryce WeChat QR code"
+              width={192}
+              height={192}
+              sizes="192px"
               className="mx-auto w-48 border border-white/16 bg-white object-contain"
             />
           </div>
