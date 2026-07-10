@@ -24,6 +24,14 @@ The desktop Container Tracking System submits activation applications to:
 POST /api/container-tracking/activation-requests
 ```
 
+The desktop settings dialog checks endpoint health with:
+
+```text
+GET /api/container-tracking/activation-requests
+```
+
+The health response reports whether the endpoint is online and whether Resend delivery is configured, without exposing any key value.
+
 The endpoint validates the public request fields and delivers the request to the administrator mailbox through Resend. It does not create activation codes and never receives the CTS2 signing private key. Issue codes only with the local tool at `E:\管理员激活码工具` and keep the activation record in its Excel file.
 
 Configure these Vercel environment variables before using the endpoint in production:

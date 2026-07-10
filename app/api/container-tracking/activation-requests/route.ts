@@ -117,6 +117,17 @@ function buildHtml(payload: ActivationRequest) {
   `;
 }
 
+export async function GET() {
+  return noStoreJson(
+    {
+      status: 'ok',
+      schema: activationRequestSchema,
+      delivery_configured: Boolean(process.env.RESEND_API_KEY),
+    },
+    200,
+  );
+}
+
 export async function POST(request: NextRequest) {
   let incoming: unknown;
 
