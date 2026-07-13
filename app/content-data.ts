@@ -428,6 +428,38 @@ export const contentArticles: ContentArticle[] = [
       '是否有指定船司或目的港代理',
       '是否需要产地证、特殊单证或信用证要求',
     ],
+    title_en: 'China to India Ocean Freight: Kolkata, Nhava Sheva and Mundra',
+    description_en:
+      'Key export points for common India ports: sailing schedule, destination charges, customs habits and peak-season space risk.',
+    highlights_en: [
+      'India shipments should be compared by ocean freight, destination charges and clearance habits together.',
+      'Kolkata, Nhava Sheva and Mundra serve different inland markets, so port choice should not be based on price alone.',
+      'Peak-season space, rollovers and destination congestion need schedule buffer.',
+    ],
+    sections_en: [
+      {
+        heading: '1. How to choose the destination port',
+        body:
+          'Kolkata often serves eastern India, Nhava Sheva covers Mumbai and nearby regions, and Mundra is common for northwestern India and inland points. The right choice depends on the consignee address, clearance capability, inland transport and destination charges.',
+      },
+      {
+        heading: '2. Confirm India destination charges early',
+        body:
+          'Destination charges can vary a lot between Indian ports and local agents. If the buyer only compares origin-side rates from China, they may miss charges for delivery order, terminal, storage, clearance and inland movement.',
+      },
+      {
+        heading: '3. Leave buffer for peak season and holidays',
+        body:
+          'During peak season, holidays and port congestion, India lane space and schedule reliability can change quickly. Equipment, building materials, chemicals and long-term orders should confirm space earlier instead of waiting until cut-off.',
+      },
+    ],
+    checklist_en: [
+      'Destination port and final delivery city',
+      'Container type, cargo weight and destination clearance needs',
+      'Whether transshipment service is acceptable',
+      'Nominated carrier or destination agent',
+      'Certificate, special document or L/C requirements',
+    ],
     en: {
       title: 'China to India Ocean Freight: Kolkata, Nhava Sheva and Mundra',
       description:
@@ -828,6 +860,38 @@ export const contentArticles: ContentArticle[] = [
       '货物是否为化工品、危险品或带品牌',
       '客户是否要求产地证或特殊认证',
       '是否需要目的港清关或转运建议',
+    ],
+    title_en: 'China to Dubai Jebel Ali Ocean Freight: Middle East Export Essentials',
+    description_en:
+      'Schedules, transshipment, documents and destination charges to watch when exporting from China to Jebel Ali, Dammam and other Middle East ports.',
+    highlights_en: [
+      'Jebel Ali is a major Middle East transshipment and distribution hub, but still check the final destination.',
+      'Chemicals, building materials and dangerous goods need documents and carrier acceptance confirmed in advance.',
+      'Middle East customers often focus on schedule reliability, destination charges and clearance documents.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Jebel Ali is not every Middle East destination',
+        body:
+          'Many shipments first reach Jebel Ali, then move on to the UAE, Saudi Arabia or nearby countries. When quoting, confirm the final destination, whether transshipment is needed, the consignee\'s clearance capability and the trade terms.',
+      },
+      {
+        heading: '2. Schedule and transshipment reliability matter',
+        body:
+          'Middle East routes have many carrier options, but direct versus transshipment, space and arrival reliability differ significantly. A low-price option with long transshipment time may affect the customer\'s delivery plan.',
+      },
+      {
+        heading: '3. Confirm document requirements in advance',
+        body:
+          'Building materials, chemicals, dangerous goods, equipment and branded cargo may involve extra documents. Confirm invoice, packing list, certificate of origin, MSDS, dangerous goods packaging certificate and consignee requirements early.',
+      },
+    ],
+    checklist_en: [
+      'Jebel Ali or a final other city/country',
+      'Whether transshipment is acceptable and expected transit',
+      'Whether cargo is chemical, dangerous goods or branded',
+      'Whether the customer requires certificate of origin or special certification',
+      'Whether destination clearance or transshipment advice is needed',
     ],
     en: {
       title: 'China to Jebel Ali Ocean Freight: Middle East Export Guide',
