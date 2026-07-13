@@ -249,6 +249,83 @@ export const contentArticles: ContentArticle[] = [
     ],
   },
   {
+    slug: 'china-to-karachi-shipping',
+    section: 'routes',
+    title: '中国到巴基斯坦卡拉奇海运：AICT、KICT、PICT、Port Qasim、SAPT 码头详解',
+    description:
+      '连云港、青岛出口到卡拉奇 Karachi 的中转航线、五大码头区别、航程天数、常见船司和目的港费用要点。',
+    updatedAt: '2026-07-13',
+    readTime: '6 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '中国到卡拉奇海运',
+      'Karachi shipping',
+      '巴基斯坦海运',
+      '连云港到卡拉奇',
+      'Port Qasim',
+      'SAPT',
+    ],
+    highlights: [
+      '连云港到卡拉奇目前以中转为主，几乎没有稳定直航，需要提前留出航程缓冲。',
+      '卡拉奇有 AICT、KICT、PICT、Port Qasim (QICT)、SAPT 五个码头，收货人指定的码头会影响船司和清关。',
+      'SAPT 和 Port Qasim 船司选择最多、班次较密，是连云港出口卡拉奇较常见的选择。',
+    ],
+    sections: [
+      {
+        heading: '1. 卡拉奇五个码头有什么区别',
+        body:
+          '卡拉奇不是单一港口，而是分成多个集装箱码头，收货人清关和提货通常绑定具体码头，所以订舱前要先确认收货人要求到哪个码头，而不是笼统说“到卡拉奇”。',
+        bullets: [
+          'AICT（卡拉奇 AICT 港）：常见船司如 MAERSK、OOCL，多为二次中转，航程偏长。',
+          'KICT（卡拉奇 K 港）：OOCL、YML、COSCO、WHL 等，多经上海或宁波中转。',
+          'PICT（卡拉奇 P 港）：WHL、OOCL 为主，部分经新加坡等二转。',
+          'Port Qasim / QICT（卡西姆港）：ONE、CMA、OOCL、HAPAG 等船司较多，选择灵活。',
+          'SAPT（卡拉奇 SAPT 港）：船司最多，ONE、CMA、EMC、PIL、HMM、KMTC 等，班次密。',
+        ],
+      },
+      {
+        heading: '2. 连云港到卡拉奇以中转为主，没有稳定直航',
+        body:
+          '从连云港发往卡拉奇各码头，目前基本都是中转航线，常见走青岛、上海、宁波接大船，部分方案还会在新加坡或卡拉奇本地二次中转。这意味着报价时看到的“最快航程”通常是顺利接驳的理想情况，实际要为中转和港口拥堵留出缓冲。',
+      },
+      {
+        heading: '3. 航程天数大致范围',
+        body:
+          '根据不同码头和船司，连云港到卡拉奇的中转航程差异较大。SAPT 和 KICT 较快的方案约 16 到 23 天，Port Qasim 部分方案 17 天起，AICT、PICT 因二次中转常见 30 天以上。选择时不能只看最短天数，还要看船司稳定性和中转次数。',
+        bullets: [
+          'SAPT：快线约 17-23 天，慢线 26-37 天，船司选择最多。',
+          'KICT：约 16-25 天，OOCL、YML、COSCO 等。',
+          'Port Qasim：约 17 天起，船司较多。',
+          'AICT / PICT：多为二次中转，常见 30 天以上。',
+        ],
+      },
+      {
+        heading: '4. 目的港费用和清关要提前确认',
+        body:
+          '巴基斯坦目的港的换单、码头、仓储和清关费用，以及不同代理的收费差异，都会影响客户到货后的实际成本。客户如果只比较连云港起运港的低价，容易忽略到港后的费用。带电产品、化工品、二手设备和需要特殊单证的货物，更要提前沟通。',
+      },
+    ],
+    checklist: [
+      '收货人指定到哪个码头（AICT / KICT / PICT / Port Qasim / SAPT）',
+      '箱型、货重、品名和是否为二手设备或化工品',
+      '是否接受中转以及可接受的航程天数',
+      '是否有指定船司或目的港代理',
+      '是否需要产地证、装箱单认证或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '连云港到卡拉奇有直航吗？',
+        answer:
+          '目前基本以中转为主，没有稳定的直航班次，通常经青岛、上海或宁波接大船，部分还会二次中转。订舱时建议按中转航程预留时间。',
+      },
+      {
+        question: '卡拉奇这么多码头，我该选哪个？',
+        answer:
+          '主要看收货人清关代理绑定哪个码头。如果收货人没有硬性要求，SAPT 和 Port Qasim 船司选择多、班次较密，通常更灵活；具体仍需结合航程、船司和费用综合判断。',
+      },
+    ],
+  },
+  {
     slug: 'china-to-jebel-ali-shipping',
     section: 'routes',
     title: '中国到迪拜 Jebel Ali 海运：中东出口操作要点',
