@@ -929,6 +929,399 @@ export const contentArticles: ContentArticle[] = [
     },
   },
   {
+    slug: 'china-to-south-america-shipping',
+    section: 'routes',
+    title: '中国到南美海运：青岛自有合约，覆盖巴西、阿根廷、墨西哥等东西两岸',
+    description:
+      '青岛港南美东、南美西自有合约与订舱窗口，覆盖巴西、阿根廷、墨西哥、智利、秘鲁等主要港口，含航程、船司和特殊货物操作要点。',
+    updatedAt: '2026-07-13',
+    readTime: '6 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '中国到南美海运',
+      'South America shipping',
+      '青岛到巴西海运',
+      '青岛到墨西哥海运',
+      '南美东',
+      '南美西',
+    ],
+    highlights: [
+      '青岛港南美东、南美西均有自有合约和订舱窗口，直接订舱，舱位和价格更有保障。',
+      '南美东覆盖巴西、阿根廷、乌拉圭、巴拉圭等，南美西覆盖墨西哥、智利、秘鲁、厄瓜多尔、哥伦比亚等。',
+      '化工品、建材等特殊货物可操作，并可覆盖 Asuncion 等内陆点。',
+    ],
+    sections: [
+      {
+        heading: '1. 青岛港自有合约，东西两岸都能走',
+        body:
+          '我们在青岛港拥有南美东和南美西的自有合约与订舱窗口，属于自己家订舱，而不是二手转卖舱位，因此在舱位保障、价格和旺季稳定性上更有优势。无论是南美东的巴西、阿根廷，还是南美西的墨西哥、智利、秘鲁，都能直接安排。',
+      },
+      {
+        heading: '2. 南美东：巴西、阿根廷、乌拉圭、巴拉圭',
+        body:
+          '南美东有 CMA、MSC、COSCO、ONE、PIL、YML、EMC、HMM、ZIM、MSK 等多家船司的直达和中转资源，覆盖 Santos、Paranagua、Navegantes、Itapoa、Rio de Janeiro、Buenos Aires、Montevideo 等主要港口，并可覆盖 Asuncion（巴拉圭）等内陆点。',
+        bullets: [
+          '巴西 Santos：MSC 直达约 45 天，ONE 约 50 天。',
+          '阿根廷 Buenos Aires：约 50 天。',
+          '覆盖巴西南北部、阿根廷、乌拉圭主要港口及巴拉圭内陆点。',
+        ],
+      },
+      {
+        heading: '3. 南美西：墨西哥、智利、秘鲁、厄瓜多尔、哥伦比亚',
+        body:
+          '南美西以 CMA、MSK、KMTC 等自有舱位为主，覆盖 Manzanillo、Lazaro、Ensenada、Callao、San Antonio、Valparaiso、Guayaquil、Buenaventura 等港口。其中墨西哥航程较快，是南美西的重点市场。',
+        bullets: [
+          '墨西哥 Manzanillo：约 20 天，南美西最快。',
+          '智利 San Antonio、秘鲁 Callao：约 30 天。',
+          '覆盖墨西哥、智利、秘鲁、厄瓜多尔、哥伦比亚等主要港口。',
+        ],
+      },
+      {
+        heading: '4. 特殊货物和目的港费用',
+        body:
+          '化工品、建材等特殊货物可以操作，但需要提前确认单证和船司接受情况。南美部分港口和航线的目的港费用、清关要求差异较大，建议询价时一并确认，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港和最终收货城市（南美东 / 南美西）',
+      '箱型、货重、品名，是否为化工品或建材',
+      '是否需要覆盖内陆点（如 Asuncion）',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证、MSDS 或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '你们南美线是自己订舱还是转的舱位？',
+        answer:
+          '青岛港南美东和南美西都是我们自有合约和订舱窗口，属于自己家订舱，因此在舱位保障、价格和旺季稳定性上更有优势。',
+      },
+      {
+        question: '南美航程大概多久？',
+        answer:
+          '南美西较快，墨西哥 Manzanillo 约 20 天，智利、秘鲁约 30 天；南美东较长，巴西 Santos 直达约 45 天，阿根廷约 50 天。具体以实际船期为准。',
+      },
+    ],
+    title_en: 'China to South America Ocean Freight: Qingdao Contracted Space to Brazil, Argentina, Mexico & More',
+    description_en:
+      'Qingdao contracted space and booking windows for both South America East and West coasts — Brazil, Argentina, Mexico, Chile, Peru and more, with transit times, carriers and special cargo notes.',
+    highlights_en: [
+      'We hold our own contracts and booking windows at Qingdao for both South America East and West coasts — direct booking for better space and rate security.',
+      'East coast covers Brazil, Argentina, Uruguay and Paraguay; West coast covers Mexico, Chile, Peru, Ecuador and Colombia.',
+      'Chemicals, building materials and other special cargo can be handled, and inland points such as Asuncion are covered.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Our own contracts at Qingdao, both coasts covered',
+        body:
+          'We hold our own contracts and booking windows at Qingdao for both the South America East and West coasts. This is our own booking, not resold space, which gives an edge in space security, rate and peak-season reliability. Whether it is Brazil and Argentina on the east coast or Mexico, Chile and Peru on the west, we can arrange it directly.',
+      },
+      {
+        heading: '2. East coast: Brazil, Argentina, Uruguay, Paraguay',
+        body:
+          'The east coast has direct and transshipment resources from many carriers — CMA, MSC, COSCO, ONE, PIL, YML, EMC, HMM, ZIM, MSK — covering Santos, Paranagua, Navegantes, Itapoa, Rio de Janeiro, Buenos Aires, Montevideo and more, plus inland points such as Asuncion (Paraguay).',
+        bullets: [
+          'Brazil Santos: MSC direct about 45 days, ONE about 50 days.',
+          'Argentina Buenos Aires: about 50 days.',
+          'Covers major ports in north and south Brazil, Argentina, Uruguay and inland Paraguay.',
+        ],
+      },
+      {
+        heading: '3. West coast: Mexico, Chile, Peru, Ecuador, Colombia',
+        body:
+          'The west coast is mainly our own space with CMA, MSK and KMTC, covering Manzanillo, Lazaro, Ensenada, Callao, San Antonio, Valparaiso, Guayaquil, Buenaventura and more. Mexico has a faster transit and is a key west-coast market.',
+        bullets: [
+          'Mexico Manzanillo: about 20 days, fastest on the west coast.',
+          'Chile San Antonio, Peru Callao: about 30 days.',
+          'Covers major ports in Mexico, Chile, Peru, Ecuador and Colombia.',
+        ],
+      },
+      {
+        heading: '4. Special cargo and destination charges',
+        body:
+          'Chemicals, building materials and other special cargo can be handled, but confirm documents and carrier acceptance in advance. Destination charges and clearance requirements vary across South American ports and routes, so confirm them together when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port and final receiving city (East or West coast)',
+      'Container type, weight, commodity, and whether it is chemical or building material',
+      'Whether inland points (such as Asuncion) need to be covered',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin, MSDS or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'Is your South America space your own booking or resold?',
+        answer:
+          'Both South America East and West coasts at Qingdao are our own contracts and booking windows — our own booking — which gives an edge in space security, rate and peak-season reliability.',
+      },
+      {
+        question: 'How long is the transit to South America?',
+        answer:
+          'The west coast is faster: Mexico Manzanillo about 20 days, Chile and Peru about 30 days. The east coast is longer: Brazil Santos direct about 45 days, Argentina about 50 days. Actual sailings may vary.',
+      },
+    ],
+  },
+  {
+    slug: 'china-to-brazil-argentina-shipping',
+    section: 'routes',
+    title: '中国到巴西、阿根廷海运：南美东航线，青岛自有合约',
+    description:
+      '青岛出口到巴西 Santos、阿根廷 Buenos Aires 等南美东港口的自有合约、船司、航程和目的港操作要点。',
+    updatedAt: '2026-07-13',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '中国到巴西海运',
+      'China to Brazil shipping',
+      '青岛到 Santos',
+      '中国到阿根廷海运',
+      'Buenos Aires shipping',
+      '南美东',
+    ],
+    highlights: [
+      '青岛港南美东自有合约和订舱窗口，直接订舱，舱位和价格更有保障。',
+      '覆盖巴西 Santos、Paranagua、Rio de Janeiro 及阿根廷 Buenos Aires 等主要港口。',
+      '化工品、建材等特殊货物可操作，并可覆盖 Asuncion（巴拉圭）等内陆点。',
+    ],
+    sections: [
+      {
+        heading: '1. 南美东自有合约，船司资源全',
+        body:
+          '南美东是我们在青岛港的自有合约航线，有 CMA、MSC、COSCO、ONE、PIL、YML、EMC、HMM、ZIM、MSK 等多家船司的直达和中转资源。属于自己家订舱窗口，在舱位、价格和旺季稳定性上更有保障，而不是二手转卖舱位。',
+      },
+      {
+        heading: '2. 巴西主要港口和航程',
+        body:
+          '巴西是南美东最主要的市场，覆盖 Santos、Paranagua、Navegantes、Itapoa、Rio de Janeiro、Itaguai、Suape、Salvador、Pecem、Manaus 等港口，直达和中转方案都有。',
+        bullets: [
+          '巴西 Santos：MSC 直达约 45 天，ONE 约 50 天。',
+          '覆盖巴西南部（Santos、Paranagua、Navegantes）和北部（Suape、Salvador、Pecem、Manaus）。',
+          '直达船和中转方案可根据货物和时效选择。',
+        ],
+      },
+      {
+        heading: '3. 阿根廷、乌拉圭、巴拉圭',
+        body:
+          '除巴西外，南美东还覆盖阿根廷 Buenos Aires、La Plata、Rosario、Zarate，乌拉圭 Montevideo，以及巴拉圭 Asuncion 等内陆点。',
+        bullets: [
+          '阿根廷 Buenos Aires：约 50 天。',
+          '可覆盖 Montevideo（乌拉圭）、Asuncion（巴拉圭内陆点）。',
+        ],
+      },
+      {
+        heading: '4. 特殊货物和目的港费用',
+        body:
+          '化工品、建材等特殊货物可以操作，但需要提前确认单证和船司接受情况。巴西、阿根廷部分港口的目的港费用和清关要求差异较大，建议询价时一并确认。',
+      },
+    ],
+    checklist: [
+      '目的港（Santos / Buenos Aires / Montevideo 等）和最终收货城市',
+      '箱型、货重、品名，是否为化工品或建材',
+      '是否需要覆盖内陆点（如 Asuncion）',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证、MSDS 或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '巴西 Santos 航程多久？',
+        answer:
+          'MSC 直达约 45 天，ONE 约 50 天，具体以实际船期为准。可根据时效选择直达或中转方案。',
+      },
+      {
+        question: '南美东是自有合约吗？',
+        answer:
+          '是的，南美东是我们在青岛港的自有合约和订舱窗口，属于自己家订舱，在舱位保障、价格和旺季稳定性上更有优势。',
+      },
+    ],
+    title_en: 'China to Brazil & Argentina Ocean Freight: South America East Coast, Qingdao Contracted Space',
+    description_en:
+      'Qingdao contracted space, carriers, transit times and destination notes for South America East ports like Santos and Buenos Aires.',
+    highlights_en: [
+      'Our own contract and booking window at Qingdao for the South America East coast — direct booking for better space and rate security.',
+      'Covers Brazil Santos, Paranagua, Rio de Janeiro and Argentina Buenos Aires and more.',
+      'Chemicals, building materials and special cargo can be handled, and inland points like Asuncion (Paraguay) are covered.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Our own east-coast contract, full carrier resources',
+        body:
+          'The South America East coast is our own contracted lane at Qingdao, with direct and transshipment resources from CMA, MSC, COSCO, ONE, PIL, YML, EMC, HMM, ZIM and MSK. It is our own booking window — better space, rate and peak-season reliability, not resold space.',
+      },
+      {
+        heading: '2. Main Brazil ports and transit times',
+        body:
+          'Brazil is the main east-coast market, covering Santos, Paranagua, Navegantes, Itapoa, Rio de Janeiro, Itaguai, Suape, Salvador, Pecem and Manaus, with both direct and transshipment options.',
+        bullets: [
+          'Brazil Santos: MSC direct about 45 days, ONE about 50 days.',
+          'Covers south Brazil (Santos, Paranagua, Navegantes) and north Brazil (Suape, Salvador, Pecem, Manaus).',
+          'Direct and transshipment options based on cargo and timing.',
+        ],
+      },
+      {
+        heading: '3. Argentina, Uruguay, Paraguay',
+        body:
+          'Beyond Brazil, the east coast covers Argentina Buenos Aires, La Plata, Rosario, Zarate, Uruguay Montevideo, and inland points like Asuncion in Paraguay.',
+        bullets: [
+          'Argentina Buenos Aires: about 50 days.',
+          'Covers Montevideo (Uruguay) and Asuncion (inland Paraguay).',
+        ],
+      },
+      {
+        heading: '4. Special cargo and destination charges',
+        body:
+          'Chemicals, building materials and special cargo can be handled, but confirm documents and carrier acceptance in advance. Destination charges and clearance at some Brazil and Argentina ports vary, so confirm them when requesting a quote.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Santos / Buenos Aires / Montevideo etc.) and final receiving city',
+      'Container type, weight, commodity, and whether chemical or building material',
+      'Whether inland points (such as Asuncion) need to be covered',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin, MSDS or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'How long is transit to Brazil Santos?',
+        answer:
+          'MSC direct is about 45 days, ONE about 50 days; actual sailings may vary. Direct or transshipment options can be chosen by timing.',
+      },
+      {
+        question: 'Is the east coast your own contract?',
+        answer:
+          'Yes, the South America East coast is our own contract and booking window at Qingdao — our own booking — with an edge in space, rate and peak-season reliability.',
+      },
+    ],
+  },
+  {
+    slug: 'china-to-mexico-chile-peru-shipping',
+    section: 'routes',
+    title: '中国到墨西哥、智利、秘鲁海运：南美西航线，青岛自有舱位',
+    description:
+      '青岛出口到墨西哥 Manzanillo、智利 San Antonio、秘鲁 Callao 等南美西港口的自有舱位、船司、航程和操作要点。',
+    updatedAt: '2026-07-13',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '中国到墨西哥海运',
+      'China to Mexico shipping',
+      '青岛到 Manzanillo',
+      '中国到智利海运',
+      '中国到秘鲁海运',
+      '南美西',
+    ],
+    highlights: [
+      '青岛港南美西以 CMA、MSK、KMTC 等自有舱位为主，直接订舱更有保障。',
+      '墨西哥 Manzanillo 约 20 天，是南美西航程最快、最主力的市场。',
+      '覆盖墨西哥、智利、秘鲁、厄瓜多尔、哥伦比亚等主要港口。',
+    ],
+    sections: [
+      {
+        heading: '1. 南美西自有舱位，墨西哥主力',
+        body:
+          '南美西以 CMA、MSK、KMTC 等自有舱位为主，属于自己家订舱窗口，在舱位和价格上更有保障。其中墨西哥是南美西最主力的市场，航程较快、需求量大。',
+      },
+      {
+        heading: '2. 墨西哥主要港口和航程',
+        body:
+          '墨西哥覆盖 Manzanillo、Lazaro、Ensenada 等主要港口。Manzanillo 是太平洋侧最主要的门户港，航程较快。',
+        bullets: [
+          '墨西哥 Manzanillo：约 20 天，南美西最快。',
+          '覆盖 Manzanillo、Lazaro、Ensenada 等港口。',
+        ],
+      },
+      {
+        heading: '3. 智利、秘鲁、厄瓜多尔、哥伦比亚',
+        body:
+          '除墨西哥外，南美西还覆盖智利 San Antonio、Valparaiso、Iquique，秘鲁 Callao、Paita，厄瓜多尔 Guayaquil，哥伦比亚 Buenaventura 等港口。',
+        bullets: [
+          '智利 San Antonio、秘鲁 Callao：约 30 天。',
+          '覆盖智利、秘鲁、厄瓜多尔、哥伦比亚主要港口。',
+        ],
+      },
+      {
+        heading: '4. 特殊货物和目的港费用',
+        body:
+          '化工品、建材等特殊货物可以操作，但需要提前确认单证和船司接受情况。南美西部分港口的目的港费用和清关要求差异较大，建议询价时一并确认，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港（Manzanillo / San Antonio / Callao 等）和最终收货城市',
+      '箱型、货重、品名，是否为化工品或建材',
+      '是否接受中转以及可接受的航程天数',
+      '是否有指定船司或目的港代理',
+      '是否需要产地证、MSDS 或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '墨西哥 Manzanillo 航程多久？',
+        answer:
+          '约 20 天，是南美西航程最快的市场之一，具体以实际船期为准。',
+      },
+      {
+        question: '南美西是自有舱位吗？',
+        answer:
+          '南美西以 CMA、MSK、KMTC 等自有舱位为主，属于自己家订舱窗口，在舱位保障和价格上更有优势。',
+      },
+    ],
+    title_en: 'China to Mexico, Chile & Peru Ocean Freight: South America West Coast, Qingdao Own Space',
+    description_en:
+      'Qingdao own space, carriers, transit times and notes for South America West ports like Manzanillo, San Antonio and Callao.',
+    highlights_en: [
+      'The South America West coast is mainly our own space at Qingdao with CMA, MSK and KMTC — direct booking for better security.',
+      'Mexico Manzanillo is about 20 days — the fastest and leading west-coast market.',
+      'Covers major ports in Mexico, Chile, Peru, Ecuador and Colombia.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Own west-coast space, Mexico as the lead market',
+        body:
+          'The west coast is mainly our own space with CMA, MSK and KMTC — our own booking window, with better space and rate security. Mexico is the leading west-coast market, with faster transit and strong demand.',
+      },
+      {
+        heading: '2. Main Mexico ports and transit times',
+        body:
+          'Mexico covers Manzanillo, Lazaro and Ensenada. Manzanillo is the main Pacific-side gateway port with a faster transit.',
+        bullets: [
+          'Mexico Manzanillo: about 20 days, fastest on the west coast.',
+          'Covers Manzanillo, Lazaro and Ensenada.',
+        ],
+      },
+      {
+        heading: '3. Chile, Peru, Ecuador, Colombia',
+        body:
+          'Beyond Mexico, the west coast covers Chile San Antonio, Valparaiso, Iquique, Peru Callao, Paita, Ecuador Guayaquil and Colombia Buenaventura.',
+        bullets: [
+          'Chile San Antonio, Peru Callao: about 30 days.',
+          'Covers major ports in Chile, Peru, Ecuador and Colombia.',
+        ],
+      },
+      {
+        heading: '4. Special cargo and destination charges',
+        body:
+          'Chemicals, building materials and special cargo can be handled, but confirm documents and carrier acceptance in advance. Destination charges and clearance at some west-coast ports vary, so confirm them when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Manzanillo / San Antonio / Callao etc.) and final receiving city',
+      'Container type, weight, commodity, and whether chemical or building material',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Any nominated carrier or destination agent',
+      'Whether certificate of origin, MSDS or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'How long is transit to Mexico Manzanillo?',
+        answer:
+          'About 20 days, one of the fastest west-coast markets; actual sailings may vary.',
+      },
+      {
+        question: 'Is the west coast your own space?',
+        answer:
+          'The west coast is mainly our own space with CMA, MSK and KMTC — our own booking window — with an edge in space and rate.',
+      },
+    ],
+  },
+  {
     slug: 'ocean-freight-cost-breakdown',
     section: 'guides',
     title: '海运费由哪些部分组成？中国出口报价怎么看',
