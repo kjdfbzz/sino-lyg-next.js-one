@@ -2,18 +2,18 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import {
   contactEmail,
   contactPhone,
+  type ArticleCopy,
   type ContentArticle,
   type ContentSection,
-  getArticleCopy,
   getArticlePath,
   getSectionCopy,
   type Lang,
 } from '../../../content-data';
 import { localizePath } from '../../../localized-path';
-import { usePreferredLanguage } from '../../../use-language';
 
 type ArticlePageClientProps = {
   article: ContentArticle;
@@ -29,17 +29,44 @@ function formatReadTime(readTime: string, lang: Lang) {
     : readTime;
 }
 
+function getDetailArticleCopy(article: ContentArticle, lang: Lang): ArticleCopy {
+  if (lang === 'en') {
+    return {
+      title: article.title_en?.trim() ? article.title_en : article.title,
+      description: article.description_en?.trim()
+        ? article.description_en
+        : article.description,
+      highlights: article.highlights_en?.length
+        ? article.highlights_en
+        : article.highlights,
+      sections: article.sections_en?.length
+        ? article.sections_en
+        : article.sections,
+      checklist: article.checklist_en?.length
+        ? article.checklist_en
+        : article.checklist,
+      faqs: article.faqs_en?.length ? article.faqs_en : article.faqs,
+    };
+  }
+
+  return {
+    title: article.title,
+    description: article.description,
+    highlights: article.highlights,
+    sections: article.sections,
+    checklist: article.checklist,
+    faqs: article.faqs,
+  };
+}
+
 export default function ArticlePageClient({
   article,
   section,
   related,
   initialLang = 'zh',
-  detectLanguage = true,
 }: ArticlePageClientProps) {
-  const [lang, setLang] = usePreferredLanguage(initialLang, {
-    detect: detectLanguage,
-  });
-  const articleCopy = getArticleCopy(article, lang);
+  const [lang, setLang] = useState<Lang>(initialLang);
+  const articleCopy = getDetailArticleCopy(article, lang);
   const sectionCopy = getSectionCopy(section, lang);
   const isZh = lang === 'zh';
   const homeHref = localizePath('/', lang);
@@ -212,7 +239,7 @@ export default function ArticlePageClient({
             </h2>
             <div className="mt-8 grid gap-px border border-white/14 bg-white/14 md:grid-cols-3">
               {related.map((item) => {
-                const relatedCopy = getArticleCopy(item, lang);
+                const relatedCopy = getDetailArticleCopy(item, lang);
 
                 return (
                   <Link

@@ -48,6 +48,19 @@ export type ContentArticle = ArticleCopy & {
   readTime: string;
   image: string;
   keywords: string[];
+  title_en?: string;
+  description_en?: string;
+  highlights_en?: string[];
+  sections_en?: Array<{
+    heading: string;
+    body: string;
+    bullets?: string[];
+  }>;
+  checklist_en?: string[];
+  faqs_en?: Array<{
+    question: string;
+    answer: string;
+  }>;
   en?: ArticleCopy & {
     keywords?: string[];
   };
@@ -712,6 +725,68 @@ export const contentArticles: ContentArticle[] = [
         question: '卡拉奇这么多码头，我该选哪个？',
         answer:
           '主要看收货人清关代理绑定哪个码头。如果收货人没有硬性要求，SAPT 和 Port Qasim 船司选择多、班次较密，通常更灵活；具体仍需结合航程、船司和费用综合判断。',
+      },
+    ],
+    title_en: 'China to Karachi Ocean Freight: AICT, KICT, PICT, Port Qasim & SAPT Terminals Explained',
+    description_en:
+      'Transshipment routes, terminal differences, transit times, common carriers and destination charges for ocean freight from Lianyungang and Qingdao to Karachi, Pakistan.',
+    highlights_en: [
+      'Lianyungang to Karachi is currently transshipment-based with almost no stable direct service, so build in extra transit buffer.',
+      'Karachi has five terminals — AICT, KICT, PICT, Port Qasim (QICT) and SAPT — and the consignee\'s designated terminal affects carriers and customs clearance.',
+      'SAPT and Port Qasim offer the widest carrier choice and denser schedules, making them common picks out of Lianyungang.',
+    ],
+    sections_en: [
+      {
+        heading: '1. What are the differences between Karachi\'s five terminals',
+        body:
+          'Karachi is not a single port but is split into several container terminals. Consignee customs clearance and cargo pickup are usually tied to a specific terminal, so before booking, confirm which terminal the consignee requires rather than just saying "to Karachi".',
+        bullets: [
+          'AICT: carriers like MAERSK, OOCL; often second transshipment, longer transit.',
+          'KICT: OOCL, YML, COSCO, WHL; usually via Shanghai or Ningbo.',
+          'PICT: mainly WHL, OOCL; some via Singapore second transshipment.',
+          'Port Qasim / QICT: ONE, CMA, OOCL, HAPAG and more; flexible options.',
+          'SAPT: the most carriers — ONE, CMA, EMC, PIL, HMM, KMTC — with dense schedules.',
+        ],
+      },
+      {
+        heading: '2. Lianyungang to Karachi is transshipment-based, no stable direct service',
+        body:
+          'Shipments from Lianyungang to Karachi terminals are currently mostly transshipment routes, commonly connecting via Qingdao, Shanghai or Ningbo to a mother vessel, with some routes doing a second transshipment in Singapore or Karachi. This means the "fastest transit" shown in quotes is usually the ideal scenario with smooth connections; in practice, leave buffer for transshipment and port congestion.',
+      },
+      {
+        heading: '3. Approximate transit times',
+        body:
+          'Transit times vary widely by terminal and carrier. Faster SAPT and KICT options run about 16 to 23 days, some Port Qasim options from 17 days, while AICT and PICT often exceed 30 days due to second transshipment. Don\'t look at the shortest days alone — also weigh carrier reliability and number of transshipments.',
+        bullets: [
+          'SAPT: fast around 17-23 days, slow 26-37 days, most carrier choice.',
+          'KICT: about 16-25 days, OOCL, YML, COSCO etc.',
+          'Port Qasim: from about 17 days, plenty of carriers.',
+          'AICT / PICT: mostly second transshipment, often 30+ days.',
+        ],
+      },
+      {
+        heading: '4. Confirm destination charges and clearance in advance',
+        body:
+          'Pakistan destination charges — DO fees, terminal, storage and clearance — plus differences between agents all affect the consignee\'s real landed cost. Customers who only compare the low Lianyungang origin price often overlook destination-side costs. Electronics, chemicals, used equipment and cargo needing special documents should be discussed upfront.',
+      },
+    ],
+    checklist_en: [
+      'Which terminal the consignee designates (AICT / KICT / PICT / Port Qasim / SAPT)',
+      'Container type, weight, commodity, and whether it is used equipment or chemicals',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Any nominated carrier or destination agent',
+      'Whether certificate of origin, packing list attestation or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'Is there a direct service from Lianyungang to Karachi?',
+        answer:
+          'Currently it is mostly transshipment-based with no stable direct sailings, usually connecting via Qingdao, Shanghai or Ningbo to a mother vessel, sometimes with a second transshipment. Plan your timeline around transshipment transit.',
+      },
+      {
+        question: 'With so many Karachi terminals, which should I choose?',
+        answer:
+          'It mainly depends on which terminal the consignee\'s clearing agent is tied to. If the consignee has no hard requirement, SAPT and Port Qasim offer more carriers and denser schedules and are usually more flexible; still weigh transit, carrier and cost together.',
       },
     ],
   },

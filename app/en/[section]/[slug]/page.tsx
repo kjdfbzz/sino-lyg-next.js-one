@@ -35,12 +35,19 @@ export async function generateMetadata({ params }: EnglishArticlePageProps): Pro
     return {};
   }
 
-  const copy = getArticleCopy(article, 'en');
+  const fallbackCopy = getArticleCopy(article, 'en');
+  const hasEnglishVersion = Boolean(
+    article.title_en?.trim() && article.description_en?.trim(),
+  );
+  const title = hasEnglishVersion ? article.title_en! : fallbackCopy.title;
+  const description = hasEnglishVersion
+    ? article.description_en!
+    : fallbackCopy.description;
   const url = `${siteUrl}/en${getArticlePath(article)}`;
 
   return {
-    title: copy.title,
-    description: copy.description,
+    title,
+    description,
     keywords: article.en?.keywords ?? article.keywords,
     alternates: {
       canonical: url,
@@ -50,25 +57,30 @@ export async function generateMetadata({ params }: EnglishArticlePageProps): Pro
       },
     },
     openGraph: {
-      title: `${copy.title} | Bryce Logistics`,
-      description: copy.description,
+      title: `${title} | Bryce Logistics`,
+      description,
       url,
       type: 'article',
       locale: 'en_US',
+      ...(hasEnglishVersion
+        ? {
+            alternateLocale: ['zh_CN'],
+          }
+        : {}),
       publishedTime: article.updatedAt,
       modifiedTime: article.updatedAt,
       authors: ['Bryce Lee'],
       images: [
         {
           url: article.image,
-          alt: copy.title,
+          alt: title,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: copy.title,
-      description: copy.description,
+      title,
+      description,
       images: [article.image],
     },
   };
@@ -84,6 +96,12 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
   }
 
   const articleCopy = getArticleCopy(article, 'en');
+  const articleTitle = article.title_en?.trim()
+    ? article.title_en
+    : articleCopy.title;
+  const articleDescription = article.description_en?.trim()
+    ? article.description_en
+    : articleCopy.description;
   const sectionCopy = getSectionCopy(section, 'en');
   const related = getArticlesBySection(article.section)
     .filter((item) => item.slug !== article.slug)
@@ -92,8 +110,8 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: articleCopy.title,
-    description: articleCopy.description,
+    headline: articleTitle,
+    description: articleDescription,
     image: `${siteUrl}${article.image}`,
     datePublished: article.updatedAt,
     dateModified: article.updatedAt,
@@ -131,7 +149,7 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
       {
         '@type': 'ListItem',
         position: 3,
-        name: articleCopy.title,
+        name: articleTitle,
         item: articleUrl,
       },
     ],

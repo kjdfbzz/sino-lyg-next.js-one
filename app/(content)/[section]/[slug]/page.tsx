@@ -34,6 +34,10 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   }
 
   const url = `${siteUrl}${getArticlePath(article)}`;
+  const englishUrl = `${siteUrl}/en${getArticlePath(article)}`;
+  const hasEnglishVersion = Boolean(
+    article.title_en?.trim() && article.description_en?.trim(),
+  );
 
   return {
     title: article.title,
@@ -41,12 +45,26 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     keywords: article.keywords,
     alternates: {
       canonical: url,
+      ...(hasEnglishVersion
+        ? {
+            languages: {
+              'zh-CN': url,
+              en: englishUrl,
+            },
+          }
+        : {}),
     },
     openGraph: {
       title: `${article.title} | Bryce Logistics`,
       description: article.description,
       url,
       type: 'article',
+      ...(hasEnglishVersion
+        ? {
+            locale: 'zh_CN',
+            alternateLocale: ['en_US'],
+          }
+        : {}),
       publishedTime: article.updatedAt,
       modifiedTime: article.updatedAt,
       authors: ['Bryce Lee'],
