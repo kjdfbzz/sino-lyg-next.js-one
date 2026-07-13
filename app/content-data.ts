@@ -1457,14 +1457,28 @@ export function getSectionCopy(section: ContentSection, lang: Lang): SectionCopy
 }
 
 export function getArticleCopy(article: ContentArticle, lang: Lang): ArticleCopy {
-  if (lang === 'en' && article.en) {
+  if (lang === 'en') {
+    const legacyEnglishCopy = article.en;
+
     return {
-      title: article.en.title,
-      description: article.en.description,
-      highlights: article.en.highlights,
-      sections: article.en.sections,
-      checklist: article.en.checklist,
-      faqs: article.en.faqs,
+      title: article.title_en?.trim()
+        ? article.title_en
+        : legacyEnglishCopy?.title ?? article.title,
+      description: article.description_en?.trim()
+        ? article.description_en
+        : legacyEnglishCopy?.description ?? article.description,
+      highlights: article.highlights_en?.length
+        ? article.highlights_en
+        : legacyEnglishCopy?.highlights ?? article.highlights,
+      sections: article.sections_en?.length
+        ? article.sections_en
+        : legacyEnglishCopy?.sections ?? article.sections,
+      checklist: article.checklist_en?.length
+        ? article.checklist_en
+        : legacyEnglishCopy?.checklist ?? article.checklist,
+      faqs: article.faqs_en?.length
+        ? article.faqs_en
+        : legacyEnglishCopy?.faqs ?? article.faqs,
     };
   }
 
