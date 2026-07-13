@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   useState,
   type ChangeEvent,
@@ -24,6 +25,8 @@ import {
   Truck,
   X,
 } from 'lucide-react';
+import { localizePath } from './localized-path';
+import { usePreferredLanguage } from './use-language';
 
 const phone = '18360639913';
 const email = 'Bryce.Lee@gwl-lianyungang.com';
@@ -77,7 +80,7 @@ const structuredData = {
 
 const navItems = [
   { label: 'SERVICES', href: '#services' },
-  { label: 'ROUTES', href: '#routes' },
+  { label: 'ROUTES', href: '/routes' },
   { label: 'BRYCE', href: '#about' },
   { label: 'GUIDES', href: '/requirements' },
   { label: 'INQUIRE', href: '#inquire' },
@@ -371,8 +374,16 @@ function BackgroundImage({
   );
 }
 
-export default function Home() {
-  const [lang, setLang] = useState<Lang>('zh');
+export default function Home({
+  initialLang = 'zh',
+  detectLanguage = true,
+}: {
+  initialLang?: Lang;
+  detectLanguage?: boolean;
+} = {}) {
+  const [lang, setLang] = usePreferredLanguage(initialLang, {
+    detect: detectLanguage,
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
@@ -649,7 +660,7 @@ export default function Home() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] lg:items-end">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.34em] text-black/54">
-                LET'S MOVE IT
+                LET&apos;S MOVE IT
               </p>
               <h2 className="mt-5 max-w-4xl font-podium text-[clamp(3.2rem,8vw,7rem)] font-black uppercase leading-[0.9]">
                 {isZh ? (
@@ -798,7 +809,7 @@ function Hero({
             ) : (
               <a
                 key={item.label}
-                href={item.href}
+                href={localizePath(item.href, lang)}
                 className="text-xs font-black uppercase tracking-[0.22em] text-white/78 transition hover:text-white lg:text-sm lg:tracking-[0.28em]"
               >
                 {item.label}
@@ -1006,7 +1017,7 @@ function MobileMenu({
           ) : (
             <a
               key={item.label}
-              href={item.href}
+              href={localizePath(item.href, lang)}
               onClick={() => setMenuOpen(false)}
               style={style}
               className={`font-podium text-4xl uppercase tracking-[0.16em] text-white transition-all duration-500 sm:text-5xl ${
@@ -1078,9 +1089,12 @@ function FloatingContact({
             <p className="mb-3 text-sm font-bold text-white/62">
               {isZh ? '添加微信（推荐）' : 'Add me on WeChat'}
             </p>
-            <img
+            <Image
               src="/wechat-qrcode.jpg"
               alt="Bryce WeChat QR code"
+              width={192}
+              height={192}
+              sizes="192px"
               className="mx-auto w-48 border border-white/16 bg-white object-contain"
             />
           </div>

@@ -2,7 +2,35 @@ export const siteUrl = 'https://www.sinolyg.com';
 export const contactEmail = 'Bryce.Lee@gwl-lianyungang.com';
 export const contactPhone = '18360639913';
 
+export type Lang = 'zh' | 'en';
 export type ContentSectionSlug = 'requirements' | 'routes' | 'guides';
+
+export type ArticleBlock = {
+  heading: string;
+  body: string;
+  bullets?: string[];
+};
+
+export type ArticleFaq = {
+  question: string;
+  answer: string;
+};
+
+export type ArticleCopy = {
+  title: string;
+  description: string;
+  highlights: string[];
+  sections: ArticleBlock[];
+  checklist?: string[];
+  faqs?: ArticleFaq[];
+};
+
+export type SectionCopy = {
+  label: string;
+  title: string;
+  description: string;
+  intro: string;
+};
 
 export type ContentSection = {
   slug: ContentSectionSlug;
@@ -10,57 +38,72 @@ export type ContentSection = {
   title: string;
   description: string;
   intro: string;
+  en?: SectionCopy;
 };
 
-export type ContentArticle = {
+export type ContentArticle = ArticleCopy & {
   slug: string;
   section: ContentSectionSlug;
-  title: string;
-  description: string;
   updatedAt: string;
   readTime: string;
   image: string;
   keywords: string[];
-  highlights: string[];
-  sections: Array<{
-    heading: string;
-    body: string;
-    bullets?: string[];
-  }>;
-  checklist?: string[];
-  faqs?: Array<{
-    question: string;
-    answer: string;
-  }>;
+  en?: ArticleCopy & {
+    keywords?: string[];
+  };
 };
 
 export const contentSections: ContentSection[] = [
   {
     slug: 'requirements',
-    label: 'Shipping Requirements',
+    label: '出货要求',
     title: '中国出口出货要求',
     description:
       '整理整柜、拼箱、报关和单证资料，帮助外贸工厂在订舱前把出货信息准备清楚。',
     intro:
       '很多运输异常不是发生在海上，而是发生在订舱、截关、拖车、报关和资料确认阶段。下面这些清单适合在询价和出货前先对一遍。',
+    en: {
+      label: 'Shipping Requirements',
+      title: 'China Export Shipping Requirements',
+      description:
+        'Practical FCL, LCL, customs and documentation checklists for China export shipments.',
+      intro:
+        'Many shipment problems start before sailing: booking, cut-off, trucking, customs and document checks. These guides help you prepare the key details before asking for a rate.',
+    },
   },
   {
     slug: 'routes',
-    label: 'Route Guides',
+    label: '航线指南',
     title: '重点航线指南',
     description:
       '围绕印度、中东、南美等中国出口常见航线，说明港口、舱位、费用和目的港风险。',
     intro:
       '不同航线的差异不只是价格。港口习惯、目的港费用、旺季舱位和单证要求都会影响最终交付体验。',
+    en: {
+      label: 'Route Guides',
+      title: 'Priority Trade Lane Guides',
+      description:
+        'Port choices, space, destination costs and operational risks for China export lanes to India, the Middle East and South America.',
+      intro:
+        'A route is not just a price. Port habits, destination charges, peak-season space and document rules all affect whether the shipment lands smoothly.',
+    },
   },
   {
     slug: 'guides',
-    label: 'Freight Guides',
+    label: '费用指南',
     title: '海运费用和操作说明',
     description:
       '把海运费、附加费、拖车、报关、目的港费用等拆开说明，帮助客户看懂报价。',
     intro:
       '报价单上的一个总价很容易误导判断。把费用结构拆开看，才能知道哪里可控、哪里需要提前确认。',
+    en: {
+      label: 'Freight Guides',
+      title: 'Freight Cost and Operation Guides',
+      description:
+        'Break down ocean freight, surcharges, trucking, customs and destination charges so clients can compare quotes clearly.',
+      intro:
+        'A single all-in number can hide the real risk. Breaking the cost structure apart shows what is controllable and what needs confirmation before booking.',
+    },
   },
 ];
 
@@ -122,6 +165,58 @@ export const contentArticles: ContentArticle[] = [
           '通常可以尝试调整，但会受船司舱位、截关时间和费用影响。旺季或临近截关时改动难度更高。',
       },
     ],
+    en: {
+      title: 'FCL Export Booking and Shipment Data Checklist',
+      description:
+        'What information is needed before booking a China export FCL shipment: cargo details, container type, cut-off, trucking, customs and bill of lading checks.',
+      highlights: [
+        'Confirm container type, cargo weight, loading address and ready date before comparing rates.',
+        'Cut-off, SI deadline, port opening and laden return time should be checked together.',
+        'Customs data and bill of lading details should be reviewed from the booking stage.',
+      ],
+      sections: [
+        {
+          heading: '1. Prepare basic cargo information before quoting',
+          body:
+            'FCL shipments become inefficient when the cargo information is incomplete. For a useful quote, provide POL, POD, commodity, container type, package count, gross weight, volume, loading address, ready date and whether trucking or customs support is needed.',
+          bullets: [
+            'Common equipment: 20GP, 40GP, 40HQ and 45HQ.',
+            'If the cargo is close to the weight limit, port, road and carrier restrictions should be checked early.',
+            'Oversized cargo may need a non-standard equipment plan instead of a normal dry container.',
+          ],
+        },
+        {
+          heading: '2. Work backward from cut-off and trucking time',
+          body:
+            'A sailing date alone is not enough. After booking, the port opening time, customs cut-off, SI deadline, trucking appointment and laden container return time all affect whether the cargo can catch the vessel.',
+        },
+        {
+          heading: '3. Check customs data and B/L details early',
+          body:
+            'Customs documents and B/L instructions are not the same file set, but commodity name, package count, weight, shipper, consignee and destination should remain logically consistent. Chemical goods, DG cargo, batteries, wooden packing and regulated products need extra review.',
+        },
+      ],
+      checklist: [
+        'POL / POD',
+        'Commodity, HS Code, material and usage',
+        'Container type, package count, gross weight and volume',
+        'Loading address, contact person and loading time',
+        'Trucking, customs, warehouse, inspection or certificate requirements',
+        'Shipper, consignee, notify party and B/L display requirements',
+      ],
+      faqs: [
+        {
+          question: 'Can I request an FCL quote with only the destination port?',
+          answer:
+            'It is enough for a rough indication, but a formal quote should include equipment type, cargo weight, commodity, ready date and whether trucking or customs support is needed.',
+        },
+        {
+          question: 'Can the sailing be changed after booking?',
+          answer:
+            'Usually it can be requested, but it depends on carrier space, cut-off time and possible charges. During peak season or near cut-off, changes become harder.',
+        },
+      ],
+    },
   },
   {
     slug: 'lcl-export-checklist',
@@ -167,6 +262,45 @@ export const contentArticles: ContentArticle[] = [
       '入仓时间和仓库要求',
       '是否需要报关、产地证或商检',
     ],
+    en: {
+      title: 'LCL Export Checklist: Volume, Warehouse Entry and Destination Charges',
+      description:
+        'LCL export is useful for small shipments, but chargeable volume, warehouse rules, destination charges and documents need to be checked early.',
+      highlights: [
+        'LCL is normally charged by W/M, whichever is greater between weight and volume.',
+        'Marks, package count, outer packing and warehouse booking details must be clear before cargo entry.',
+        'Destination charges should be confirmed early, especially for India, the Middle East and South America.',
+      ],
+      sections: [
+        {
+          heading: '1. Check volume and weight first',
+          body:
+            'LCL cargo is not charged simply by shipment count. It is usually charged by W/M, meaning the greater of weight ton or measurement ton. Light cargo, heavy cargo and irregular packing can lead to very different costs.',
+        },
+        {
+          heading: '2. Confirm packing and shipping marks before warehouse entry',
+          body:
+            'LCL cargo is consolidated with other shipments, so outer packing, marks, package count and warehouse entry data must be accurate. Wooden cases, pallets, fragile goods, liquids and battery products should be declared in advance.',
+          bullets: [
+            'Confirm warehouse address, entry reference and cut-off time.',
+            'Package count and packing type should match customs and warehouse data.',
+            'Cargo photos, carton dimensions and mark photos can reduce communication errors.',
+          ],
+        },
+        {
+          heading: '3. Destination charges must be explained in advance',
+          body:
+            'Destination charges for LCL can be higher than expected, especially in India, the Middle East and parts of South America. When quoting, compare origin charges, ocean freight and common destination fee items together.',
+        },
+      ],
+      checklist: [
+        'Commodity, package count, gross weight and volume',
+        'Dimensions and packing type for each package',
+        'Battery, liquid, powder, magnetic or wooden packing details',
+        'Warehouse entry time and warehouse requirements',
+        'Customs, certificate of origin or inspection requirements',
+      ],
+    },
   },
   {
     slug: 'customs-documents',
@@ -207,6 +341,40 @@ export const contentArticles: ContentArticle[] = [
       '收发货人、通知人、目的港',
       '是否需要产地证、商检、危包证或 MSDS',
     ],
+    en: {
+      title: 'China Export Customs and Document Checklist',
+      description:
+        'A practical guide to customs documents, bill of lading details, certificates, inspection and special cargo paperwork before booking.',
+      highlights: [
+        'Customs data and B/L instructions are different, but key shipment facts must not conflict.',
+        'Regulatory conditions, inspection, DG documents and certificates should be checked before booking.',
+        'The later documents are confirmed, the higher the cost of fixing errors near cut-off.',
+      ],
+      sections: [
+        {
+          heading: '1. Common export customs documents',
+          body:
+            'A normal China export declaration may involve packing list, commercial invoice, contract, customs authorization, declaration elements and HS Code information. Exact requirements vary by commodity, control conditions, trade mode and port rules.',
+        },
+        {
+          heading: '2. Do not mix B/L details with customs documents',
+          body:
+            'The bill of lading supports transportation and cargo release, while customs documents support declaration. They are not the same document set, but shipper, consignee, commodity, package count, weight and destination should remain consistent.',
+        },
+        {
+          heading: '3. Special cargo should be identified early',
+          body:
+            'DG cargo, chemicals, battery products, powders, liquids, food-contact goods, wooden products and inspection-controlled cargo should be declared before booking. Discovering missing documents near cut-off can lead to sailing changes or extra costs.',
+        },
+      ],
+      checklist: [
+        'HS Code and Chinese / English commodity name',
+        'Packing list, invoice and contract',
+        'Declaration elements and regulatory conditions',
+        'Shipper, consignee, notify party and destination',
+        'Certificate of origin, inspection, DG package certificate or MSDS needs',
+      ],
+    },
   },
   {
     slug: 'china-to-india-shipping',
@@ -247,6 +415,228 @@ export const contentArticles: ContentArticle[] = [
       '是否有指定船司或目的港代理',
       '是否需要产地证、特殊单证或信用证要求',
     ],
+    en: {
+      title: 'China to India Ocean Freight: Kolkata, Nhava Sheva and Mundra',
+      description:
+        'Key export points for common India ports: sailing schedule, destination charges, customs habits and peak-season space risk.',
+      highlights: [
+        'India shipments should be compared by ocean freight, destination charges and clearance habits together.',
+        'Kolkata, Nhava Sheva and Mundra serve different inland markets, so port choice should not be based on price alone.',
+        'Peak-season space, rollovers and destination congestion need schedule buffer.',
+      ],
+      sections: [
+        {
+          heading: '1. How to choose the destination port',
+          body:
+            'Kolkata often serves eastern India, Nhava Sheva covers Mumbai and nearby regions, and Mundra is common for northwestern India and inland points. The right choice depends on the consignee address, clearance capability, inland transport and destination charges.',
+        },
+        {
+          heading: '2. Confirm India destination charges early',
+          body:
+            'Destination charges can vary a lot between Indian ports and local agents. If the buyer only compares origin-side rates from China, they may miss charges for delivery order, terminal, storage, clearance and inland movement.',
+        },
+        {
+          heading: '3. Leave buffer for peak season and holidays',
+          body:
+            'During peak season, holidays and port congestion, India lane space and schedule reliability can change quickly. Equipment, building materials, chemicals and long-term orders should confirm space earlier instead of waiting until cut-off.',
+        },
+      ],
+      checklist: [
+        'Destination port and final delivery city',
+        'Container type, cargo weight and destination clearance needs',
+        'Whether transshipment service is acceptable',
+        'Nominated carrier or destination agent',
+        'Certificate, special document or L/C requirements',
+      ],
+    },
+  },
+  {
+    slug: 'lianyungang-to-india-fcl-shipping',
+    section: 'routes',
+    title: '连云港出口印度海运专线：ONE / EMC 上海中转，周三周五驳船',
+    description:
+      '连云港至印度 FCL 整柜出口航线，经上海中转 ONE 与 EMC 大船，覆盖 Nhava Sheva、Mundra、Chennai 和 Kolkata。',
+    updatedAt: '2026-07-07',
+    readTime: '7 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '连云港到印度海运',
+      '连云港出口印度',
+      'ONE 印度航线',
+      'EMC 印度航线',
+      'Nhava Sheva',
+      'Mundra',
+      'Chennai',
+      'Kolkata',
+    ],
+    highlights: [
+      '连云港周三、周五两班驳船接上海大船，适合印度方向 FCL 整柜出口。',
+      '覆盖 Nhava Sheva、Mundra、Chennai、Kolkata 四大主流印度港口。',
+      'VIP 钻石舱保，重点降低上海中转甩柜和等待风险。',
+      '单票 10 TEU 以上可单独申请运价，大票货议价空间更大。',
+    ],
+    sections: [
+      {
+        heading: '1. 航线概况',
+        body:
+          '连云港至印度航线主推 ONE（海洋网联）与 EMC（长荣）两大船司，经上海港中转。连云港每周周三、周五两班驳船接驳上海大船，舱位衔接稳定，适合印度方向的 FCL 整柜出口。',
+      },
+      {
+        heading: '2. 覆盖港口与航程时间',
+        body:
+          '连云港驳船至上海约 1 天；上海至奈瓦舍瓦 Nhava Sheva、蒙德拉 Mundra、金奈 Chennai 约 15 天；上海至加尔各答 Kolkata 约 20 天。四大主流印度港全覆盖，西岸和东岸都能安排。',
+        bullets: [
+          '连云港驳船至上海：约 1 天。',
+          '上海至 Nhava Sheva / Mundra / Chennai：约 15 天。',
+          '上海至 Kolkata：约 20 天。',
+        ],
+      },
+      {
+        heading: '3. 为什么选这条线',
+        body:
+          '连云港本地接货加上海中转的组合，综合成本通常低于苏北货源绕道其他口岸的方案。VIP 钻石舱保用于保证接驳上海大船准时上船，旺季爆舱期也尽量避免货物在上海中转港等待。周三、周五双班期也方便工厂安排货好时间。',
+        bullets: [
+          '价格优势：连云港本地接货 + 上海中转，适合苏北及周边货源。',
+          '舱位保障：重点处理上海中转衔接，降低甩柜等待风险。',
+          '大票议价：单票 10 TEU 以上可单独申请运价。',
+          '班期灵活：每周三、周五两班，工厂交货时间更好安排。',
+        ],
+      },
+      {
+        heading: '4. 适合货物与柜型',
+        body:
+          '这条线适合 20GP、40GP、40HQ 常规干货柜。铅酸电池可按普货方案审核，需提供海运鉴定书和 MSDS，船司审核通过后即可安排。电动车、电池类出口印度客户，可以提前把资料发来判断是否能按普货操作。',
+      },
+      {
+        heading: '5. 出口印度需要提前准备的收货人资料',
+        body:
+          '印度清关对收货人资料要求严格，订舱前请向印度买家收齐公司全称与详细地址、IEC、PAN、GST 和联系邮箱。其中 IEC 必须与提单收货人登记信息一致，资料不完整可能导致目的港清关卡点。',
+        bullets: [
+          '公司全称与详细地址',
+          'IEC（进出口代码，提单收货人必须与 IEC 登记一致）',
+          'PAN（税务账号）',
+          'GST（商品服务税号）',
+          '联系邮箱（目的港放货通知用）',
+        ],
+      },
+      {
+        heading: '6. 目的港免堆期和报价方式',
+        body:
+          '印度港口正常约 14 天免堆。货量大或清关周期长的，可以在订舱前单独申请延长免堆。询价时请提供品名、件毛体、柜型柜量、目的港和预计货好时间，我会按当天舱位和船期回复方案。',
+      },
+    ],
+    checklist: [
+      '品名、件数、毛重、体积',
+      '柜型柜量：20GP / 40GP / 40HQ',
+      '目的港：Nhava Sheva / Mundra / Chennai / Kolkata',
+      '预计货好时间和是否能赶周三或周五驳船',
+      '印度收货人 IEC、PAN、GST、公司地址和联系邮箱',
+      '如为铅酸电池，提前提供海运鉴定书和 MSDS',
+    ],
+    faqs: [
+      {
+        question: '连云港到印度一定要经过上海中转吗？',
+        answer:
+          '这条方案主打连云港驳船接上海大船，通过上海衔接 ONE / EMC 印度方向主线。优势是本地接货方便、班期明确，并能利用上海大船资源。',
+      },
+      {
+        question: '铅酸电池可以按普货走吗？',
+        answer:
+          '可以按普货方案先审核，但需要提供海运鉴定书和 MSDS，最终以船司和舱位审核结果为准。资料越早提供，越容易提前判断价格和可操作性。',
+      },
+      {
+        question: '印度目的港免堆期可以延长吗？',
+        answer:
+          '正常约 14 天免堆。货量大或清关周期长的，可以在订舱前单独申请延长免堆，建议不要等到货到港后再处理。',
+      },
+    ],
+    en: {
+      title:
+        'Lianyungang to India FCL Service: ONE / EMC via Shanghai, Wed & Fri Feeder',
+      description:
+        'Weekly FCL service from Lianyungang to India via Shanghai, connecting to ONE and Evergreen mainline vessels for Nhava Sheva, Mundra, Chennai and Kolkata.',
+      highlights: [
+        'Direct feeder from Lianyungang to Shanghai every Wednesday and Friday for India-bound FCL cargo.',
+        'Coverage for Nhava Sheva, Mundra, Chennai and Kolkata.',
+        'Premium space protection helps reduce rollover and waiting risk at Shanghai transshipment.',
+        'Special rate filing can be requested for shipments of 10+ TEU.',
+      ],
+      sections: [
+        {
+          heading: '1. Service overview',
+          body:
+            'This Lianyungang to India FCL service connects by feeder to Shanghai and then to ONE and Evergreen (EMC) mainline vessels. The Lianyungang feeder runs every Wednesday and Friday, giving factories in northern Jiangsu a stable way to connect with India sailings.',
+        },
+        {
+          heading: '2. Ports covered and transit time',
+          body:
+            'The Lianyungang to Shanghai feeder takes about 1 day. Shanghai to Nhava Sheva, Mundra and Chennai is about 15 days, while Shanghai to Kolkata is about 20 days. The service covers major west-coast and east-coast India ports.',
+          bullets: [
+            'Lianyungang feeder to Shanghai: approx. 1 day.',
+            'Shanghai to Nhava Sheva / Mundra / Chennai: approx. 15 days.',
+            'Shanghai to Kolkata: approx. 20 days.',
+          ],
+        },
+        {
+          heading: '3. Why use this route',
+          body:
+            'Lianyungang local pickup plus Shanghai transshipment can be more cost-effective for northern Jiangsu cargo than routing through other ports. Premium space protection is used to secure the Shanghai mainline connection and reduce rollover risk during peak season.',
+          bullets: [
+            'Cost advantage for Lianyungang and nearby factory cargo.',
+            'Shanghai connection is managed as the key risk point.',
+            'Volume pricing can be requested for 10+ TEU shipments.',
+            'Twice-weekly feeder schedule gives factories more loading flexibility.',
+          ],
+        },
+        {
+          heading: '4. Cargo and equipment',
+          body:
+            'The service is suitable for standard dry containers: 20GP, 40GP and 40HQ. Lead-acid batteries can be reviewed as general cargo with a valid Sea Transport Appraisal Certificate and MSDS, subject to carrier approval.',
+        },
+        {
+          heading: '5. Required consignee information for India',
+          body:
+            'Indian customs requires complete consignee details before shipment. Please collect the full company name and address, IEC, PAN, GST and contact email from your buyer. The IEC must match the bill of lading consignee information.',
+          bullets: [
+            'Full company name and address',
+            'IEC, which must match the B/L consignee registration',
+            'PAN tax number',
+            'GST number',
+            'Contact email for arrival notice and release communication',
+          ],
+        },
+        {
+          heading: '6. Free time and quotation details',
+          body:
+            'Standard free time at Indian ports is normally about 14 days. Extended free time can be requested before booking for large volumes or shipments with longer customs clearance cycles. For a quote, send commodity, package count, weight, volume, container type, destination port and cargo ready date.',
+        },
+      ],
+      checklist: [
+        'Commodity, package count, gross weight and volume',
+        'Equipment: 20GP / 40GP / 40HQ',
+        'Destination port: Nhava Sheva / Mundra / Chennai / Kolkata',
+        'Cargo ready date and whether Wed or Fri feeder can be met',
+        'India consignee IEC, PAN, GST, company address and contact email',
+        'For lead-acid batteries, Sea Transport Appraisal Certificate and MSDS',
+      ],
+      faqs: [
+        {
+          question: 'Does Lianyungang to India have to transship via Shanghai?',
+          answer:
+            'This service is built around the Lianyungang feeder connecting to ONE / EMC mainline vessels in Shanghai. The advantage is local pickup convenience, clear feeder days and access to Shanghai mainline space.',
+        },
+        {
+          question: 'Can lead-acid batteries move as general cargo?',
+          answer:
+            'They can be reviewed as general cargo, but the Sea Transport Appraisal Certificate and MSDS are required. Final acceptance depends on carrier and space approval.',
+        },
+        {
+          question: 'Can India destination free time be extended?',
+          answer:
+            'Standard free time is normally about 14 days. For large volumes or longer clearance cycles, extended free time should be requested before booking.',
+        },
+      ],
+    },
   },
   {
     slug: 'china-to-karachi-shipping',
@@ -364,6 +754,40 @@ export const contentArticles: ContentArticle[] = [
       '客户是否要求产地证或特殊认证',
       '是否需要目的港清关或转运建议',
     ],
+    en: {
+      title: 'China to Jebel Ali Ocean Freight: Middle East Export Guide',
+      description:
+        'Key operating points for China exports to Jebel Ali, Dammam and other Middle East ports: schedule, transshipment, documents and destination charges.',
+      highlights: [
+        'Jebel Ali is a major Middle East transshipment and distribution port, but the final destination still matters.',
+        'Chemicals, building materials and DG cargo require early document and carrier acceptance checks.',
+        'Middle East buyers often care about schedule reliability, destination charges and clearance documents.',
+      ],
+      sections: [
+        {
+          heading: '1. Jebel Ali is not the final answer for every shipment',
+          body:
+            'Many shipments first arrive at Jebel Ali and then move to the UAE, Saudi Arabia or nearby countries. When quoting, confirm the final destination, whether onward movement is needed, consignee clearance ability and trade terms.',
+        },
+        {
+          heading: '2. Schedule and transshipment stability matter',
+          body:
+            'There are many carrier options on Middle East lanes, but direct service, transshipment plan, space and arrival reliability can differ greatly. A low-rate option with a long transshipment can disrupt the buyer delivery plan.',
+        },
+        {
+          heading: '3. Document requirements should be checked early',
+          body:
+            'Building materials, chemicals, DG cargo, equipment and branded goods may involve extra documents. Invoice, packing list, certificate of origin, MSDS, DG package certificate and consignee requirements should be reviewed as early as possible.',
+        },
+      ],
+      checklist: [
+        'Jebel Ali or another final city / country',
+        'Whether transshipment and expected transit time are acceptable',
+        'Whether cargo is chemical, DG or branded',
+        'Certificate of origin or special certification requirements',
+        'Destination clearance or onward transport needs',
+      ],
+    },
   },
   {
     slug: 'ocean-freight-cost-breakdown',
@@ -416,6 +840,52 @@ export const contentArticles: ContentArticle[] = [
           '不一定。若低价伴随中转时间长、甩柜风险高、目的港费用不清楚，最终总成本和交付风险可能更高。',
       },
     ],
+    en: {
+      title: 'What Is Included in an Ocean Freight Quote?',
+      description:
+        'Break down China export ocean freight quotes into ocean freight, surcharges, trucking, customs, documents and destination charges.',
+      highlights: [
+        'Ocean freight is only one part of the full shipment cost.',
+        'A low rate is not always a low final cost if rollover, delayed sailing or destination charges are unclear.',
+        'Quotes should separate ocean freight, trucking, customs, documents and destination risk.',
+      ],
+      sections: [
+        {
+          heading: '1. Ocean freight is only one part',
+          body:
+            'When clients say ocean freight, they often mean the base ocean freight charge. The actual export cost may also include booking fee, documentation fee, terminal charges, seal fee, customs fee, trucking, warehousing and destination charges.',
+        },
+        {
+          heading: '2. Surcharges and destination charges should be separated',
+          body:
+            'Different carriers and lanes may include fuel, peak-season, congestion, low-sulfur and other surcharges. Destination side may include delivery order, terminal, storage, clearance and inland movement. A quote should explain what is included and what is excluded.',
+        },
+        {
+          heading: '3. Why rates differ on the same lane',
+          body:
+            'Rate differences can come from carrier choice, direct service or transshipment, space level, cut-off timing, payment terms, destination agent and whether local charges are included. The lowest number may hide schedule or downstream risk.',
+        },
+      ],
+      checklist: [
+        'Whether ocean freight includes surcharges',
+        'Whether origin local charges are listed',
+        'Whether trucking, customs and warehousing are separate',
+        'Who pays destination charges',
+        'Quote validity and expected sailing schedule',
+      ],
+      faqs: [
+        {
+          question: 'Why do freight forwarder quotes differ so much?',
+          answer:
+            'They may include different fee items, use different carriers or provide different space reliability. Destination and origin local charges may also be listed differently. Compare line by line.',
+        },
+        {
+          question: 'Is the lowest ocean freight always the best choice?',
+          answer:
+            'Not always. If a low rate comes with long transshipment, high rollover risk or unclear destination charges, the final cost and delivery risk can be higher.',
+        },
+      ],
+    },
   },
 ];
 
@@ -424,7 +894,11 @@ export function getSection(slug: string) {
 }
 
 export function getArticlesBySection(sectionSlug: string) {
-  return contentArticles.filter((article) => article.section === sectionSlug);
+  return contentArticles
+    .filter((article) => article.section === sectionSlug)
+    .sort((articleA, articleB) =>
+      articleB.updatedAt.localeCompare(articleA.updatedAt),
+    );
 }
 
 export function getArticle(sectionSlug: string, slug: string) {
@@ -435,4 +909,39 @@ export function getArticle(sectionSlug: string, slug: string) {
 
 export function getArticlePath(article: ContentArticle) {
   return `/${article.section}/${article.slug}`;
+}
+
+export function getSectionCopy(section: ContentSection, lang: Lang): SectionCopy {
+  if (lang === 'en' && section.en) {
+    return section.en;
+  }
+
+  return {
+    label: section.label,
+    title: section.title,
+    description: section.description,
+    intro: section.intro,
+  };
+}
+
+export function getArticleCopy(article: ContentArticle, lang: Lang): ArticleCopy {
+  if (lang === 'en' && article.en) {
+    return {
+      title: article.en.title,
+      description: article.en.description,
+      highlights: article.en.highlights,
+      sections: article.en.sections,
+      checklist: article.en.checklist,
+      faqs: article.en.faqs,
+    };
+  }
+
+  return {
+    title: article.title,
+    description: article.description,
+    highlights: article.highlights,
+    sections: article.sections,
+    checklist: article.checklist,
+    faqs: article.faqs,
+  };
 }
