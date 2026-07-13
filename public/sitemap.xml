@@ -43,8 +43,80 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.sinolyg.com/routes/lianyungang-to-india-fcl-shipping</loc>
+    <lastmod>2026-07-07T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/routes/china-to-karachi-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.sinolyg.com/routes/china-to-jebel-ali-shipping</loc>
     <lastmod>2026-07-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/routes/china-to-south-america-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/routes/china-to-brazil-argentina-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/routes/china-to-mexico-chile-peru-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/china-to-india-shipping</loc>
+    <lastmod>2026-07-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/lianyungang-to-india-fcl-shipping</loc>
+    <lastmod>2026-07-07T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/china-to-karachi-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/china-to-jebel-ali-shipping</loc>
+    <lastmod>2026-07-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/china-to-south-america-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/china-to-brazil-argentina-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sinolyg.com/en/routes/china-to-mexico-chile-peru-shipping</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
