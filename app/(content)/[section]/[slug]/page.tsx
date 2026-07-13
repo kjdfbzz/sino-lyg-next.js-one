@@ -36,7 +36,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const url = `${siteUrl}${getArticlePath(article)}`;
   const englishUrl = `${siteUrl}/en${getArticlePath(article)}`;
   const hasEnglishVersion = Boolean(
-    article.title_en?.trim() && article.description_en?.trim(),
+    (article.title_en?.trim() && article.description_en?.trim()) ||
+      (article.en?.title.trim() && article.en.description.trim()),
   );
 
   return {
@@ -144,6 +145,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       },
     ],
   };
+  const faqJsonLd = article.faqs?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: article.faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      }
+    : null;
 
   return (
     <>
@@ -155,6 +170,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <ArticlePageClient article={article} section={section} related={related} />
     </>
   );

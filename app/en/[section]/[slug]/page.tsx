@@ -37,11 +37,14 @@ export async function generateMetadata({ params }: EnglishArticlePageProps): Pro
 
   const fallbackCopy = getArticleCopy(article, 'en');
   const hasEnglishVersion = Boolean(
-    article.title_en?.trim() && article.description_en?.trim(),
+    (article.title_en?.trim() && article.description_en?.trim()) ||
+      (article.en?.title.trim() && article.en.description.trim()),
   );
-  const title = hasEnglishVersion ? article.title_en! : fallbackCopy.title;
-  const description = hasEnglishVersion
-    ? article.description_en!
+  const title = article.title_en?.trim()
+    ? article.title_en
+    : fallbackCopy.title;
+  const description = article.description_en?.trim()
+    ? article.description_en
     : fallbackCopy.description;
   const url = `${siteUrl}/en${getArticlePath(article)}`;
 
@@ -154,6 +157,23 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
       },
     ],
   };
+  const englishFaqs = article.faqs_en?.length
+    ? article.faqs_en
+    : article.en?.faqs;
+  const faqJsonLd = englishFaqs?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: englishFaqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      }
+    : null;
 
   return (
     <>
@@ -165,6 +185,12 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <ArticlePageClient
         article={article}
         section={section}

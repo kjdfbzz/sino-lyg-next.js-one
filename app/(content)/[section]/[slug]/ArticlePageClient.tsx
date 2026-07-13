@@ -31,21 +31,27 @@ function formatReadTime(readTime: string, lang: Lang) {
 
 function getDetailArticleCopy(article: ContentArticle, lang: Lang): ArticleCopy {
   if (lang === 'en') {
+    const legacyEnglishCopy = article.en;
+
     return {
-      title: article.title_en?.trim() ? article.title_en : article.title,
+      title: article.title_en?.trim()
+        ? article.title_en
+        : legacyEnglishCopy?.title ?? article.title,
       description: article.description_en?.trim()
         ? article.description_en
-        : article.description,
+        : legacyEnglishCopy?.description ?? article.description,
       highlights: article.highlights_en?.length
         ? article.highlights_en
-        : article.highlights,
+        : legacyEnglishCopy?.highlights ?? article.highlights,
       sections: article.sections_en?.length
         ? article.sections_en
-        : article.sections,
+        : legacyEnglishCopy?.sections ?? article.sections,
       checklist: article.checklist_en?.length
         ? article.checklist_en
-        : article.checklist,
-      faqs: article.faqs_en?.length ? article.faqs_en : article.faqs,
+        : legacyEnglishCopy?.checklist ?? article.checklist,
+      faqs: article.faqs_en?.length
+        ? article.faqs_en
+        : legacyEnglishCopy?.faqs ?? article.faqs,
     };
   }
 
