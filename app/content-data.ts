@@ -1322,6 +1322,232 @@ export const contentArticles: ContentArticle[] = [
     ],
   },
   {
+    slug: 'china-to-vietnam-shipping',
+    section: 'routes',
+    title: '连云港到越南海运：胡志明、海防、岘港，含直航与中转方案',
+    description:
+      '连云港出口到越南胡志明 Ho Chi Minh、海防 Hai Phong、岘港 Da Nang 的直航与中转方案、航程、船司和目的港要点。',
+    updatedAt: '2026-07-20',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '连云港到越南海运',
+      'China to Vietnam shipping',
+      '连云港到胡志明',
+      'Ho Chi Minh shipping',
+      '海防海运',
+      'Hai Phong shipping',
+    ],
+    highlights: [
+      '海防 Hai Phong 有直航方案，COSCO、海安集运等直航班次，航程较短。',
+      '胡志明 Ho Chi Minh 多经青岛中转，岘港也可安排，覆盖越南南北主要港口。',
+      'SITC、MCC 等船司资源，直航和中转方案可按时效和成本选择。',
+    ],
+    sections: [
+      {
+        heading: '1. 越南主要港口和走法',
+        body:
+          '越南出口主要涉及北部海防（Hai Phong）、南部胡志明（Ho Chi Minh）和中部岘港（Da Nang）。北部海防有直航方案，南部胡志明多经青岛或香港中转，具体走法要结合收货人所在区域、时效要求和成本。',
+        bullets: [
+          '海防 Hai Phong：有直航，COSCO 约 13 天、海安集运（ECX）约 5 天直航。',
+          '胡志明 Ho Chi Minh：多经青岛中转，航程约 15 天。',
+          '岘港 Da Nang：可经中转安排。',
+        ],
+      },
+      {
+        heading: '2. 直航还是中转怎么选',
+        body:
+          '海防有直航班次，时效稳定，适合对时间敏感的货物；胡志明等港口经青岛或香港中转，船期选择多、覆盖广。SITC、MCC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
+      },
+      {
+        heading: '3. 目的港费用和滞箱期',
+        body:
+          '越南部分港口的目的港费用、滞箱和滞港免费期差异较大，例如海防常见 7 天滞箱加 14 天滞港期。询价时建议一并确认目的港费用和免费期，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港（Ho Chi Minh / Hai Phong / Da Nang 等）和最终收货城市',
+      '箱型、货重、品名，是否为特殊货物',
+      '对时效的要求（是否需要直航）',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '连云港到海防有直航吗？',
+        answer:
+          '有，海防有直航方案，例如 COSCO 约 13 天、海安集运约 5 天直航，具体以实际船期为准。',
+      },
+      {
+        question: '胡志明怎么走？',
+        answer:
+          '胡志明多经青岛中转，航程约 15 天，SITC、MCC 等船司都可以安排，可根据出货时间选择合适班次。',
+      },
+    ],
+    title_en: 'Lianyungang to Vietnam Ocean Freight: Ho Chi Minh, Hai Phong & Da Nang, Direct and Transshipment',
+    description_en:
+      'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Ho Chi Minh, Hai Phong and Da Nang in Vietnam.',
+    highlights_en: [
+      'Hai Phong has direct options with COSCO and ECX, offering shorter transit.',
+      'Ho Chi Minh is mostly via Qingdao transshipment; Da Nang can also be arranged, covering north and south Vietnam.',
+      'SITC, MCC and other carrier resources — direct or transshipment chosen by timing and cost.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Main Vietnam ports and routing',
+        body:
+          'Vietnam exports mainly involve Hai Phong in the north, Ho Chi Minh in the south and Da Nang in the center. Hai Phong has direct options, while Ho Chi Minh is mostly via Qingdao or Hong Kong transshipment. The routing depends on the consignee area, timing and cost.',
+        bullets: [
+          'Hai Phong: direct available, COSCO about 13 days, ECX about 5 days direct.',
+          'Ho Chi Minh: mostly via Qingdao transshipment, about 15 days.',
+          'Da Nang: can be arranged via transshipment.',
+        ],
+      },
+      {
+        heading: '2. Direct or transshipment — how to choose',
+        body:
+          'Hai Phong has direct sailings with stable transit, suitable for time-sensitive cargo; Ho Chi Minh and other ports go via Qingdao or Hong Kong transshipment with wider schedule choice. SITC, MCC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
+      },
+      {
+        heading: '3. Destination charges and free time',
+        body:
+          'Destination charges and demurrage/detention free time vary across Vietnam ports; for example Hai Phong commonly offers 7 days demurrage plus 14 days port free time. Confirm destination charges and free time together when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Ho Chi Minh / Hai Phong / Da Nang etc.) and final receiving city',
+      'Container type, weight, commodity, and whether special cargo',
+      'Timing requirement (whether direct service is needed)',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'Is there a direct service from Lianyungang to Hai Phong?',
+        answer:
+          'Yes, Hai Phong has direct options, for example COSCO about 13 days and ECX about 5 days direct; actual sailings may vary.',
+      },
+      {
+        question: 'How does Ho Chi Minh route?',
+        answer:
+          'Ho Chi Minh is mostly via Qingdao transshipment, about 15 days. SITC, MCC and other carriers can arrange it; choose the schedule based on your ready date.',
+      },
+    ],
+  },
+  {
+    slug: 'china-to-thailand-shipping',
+    section: 'routes',
+    title: '连云港到泰国海运：林查班、曼谷、莱卡邦，含直航与中转方案',
+    description:
+      '连云港出口到泰国林查班 Laem Chabang、曼谷 Bangkok、莱卡邦 Lat Krabang 的直航与中转方案、航程、船司和目的港要点。',
+    updatedAt: '2026-07-20',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '连云港到泰国海运',
+      'China to Thailand shipping',
+      '连云港到林查班',
+      'Laem Chabang shipping',
+      '曼谷海运',
+      'Bangkok shipping',
+    ],
+    highlights: [
+      '林查班 Laem Chabang 有直航方案，航程约 9 天，时效较快。',
+      '曼谷 Bangkok、莱卡邦 Lat Krabang 可经香港或支线中转，班次选择多。',
+      'SITC、MCC 等船司资源，直航和中转方案可按时效和成本选择。',
+    ],
+    sections: [
+      {
+        heading: '1. 泰国主要港口和走法',
+        body:
+          '泰国出口主要涉及林查班（Laem Chabang）、曼谷（Bangkok）和莱卡邦（Lat Krabang）。林查班是主力深水港，有直航方案；曼谷和莱卡邦多经香港或支线中转。具体走法要结合收货人所在区域、时效要求和成本。',
+        bullets: [
+          '林查班 Laem Chabang：直航约 9 天，时效较快。',
+          '曼谷 Bangkok：多经香港中转，约 13 天。',
+          '莱卡邦 Lat Krabang：经林查班支线中转，约 11 天。',
+        ],
+      },
+      {
+        heading: '2. 直航还是中转怎么选',
+        body:
+          '林查班有直航班次，航程较短、时效稳定，适合对时间敏感的货物；曼谷、莱卡邦经香港或支线中转，班次选择多。SITC、MCC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
+      },
+      {
+        heading: '3. 目的港费用和滞箱期',
+        body:
+          '泰国部分港口的目的港费用和滞箱免费期差异较大，部分航线目的港有 18 天滞箱免费期。询价时建议一并确认目的港费用和免费期，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港（Laem Chabang / Bangkok / Lat Krabang 等）和最终收货城市',
+      '箱型、货重、品名，是否为特殊货物',
+      '对时效的要求（是否需要直航）',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '连云港到林查班有直航吗？',
+        answer:
+          '有，林查班有直航方案，航程约 9 天，时效较快，具体以实际船期为准。',
+      },
+      {
+        question: '曼谷和莱卡邦怎么走？',
+        answer:
+          '曼谷多经香港中转约 13 天，莱卡邦经林查班支线中转约 11 天。SITC、MCC 等船司都可以安排。',
+      },
+    ],
+    title_en: 'Lianyungang to Thailand Ocean Freight: Laem Chabang, Bangkok & Lat Krabang, Direct and Transshipment',
+    description_en:
+      'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Laem Chabang, Bangkok and Lat Krabang in Thailand.',
+    highlights_en: [
+      'Laem Chabang has a direct option with about 9 days transit — faster timing.',
+      'Bangkok and Lat Krabang can go via Hong Kong or feeder transshipment with wide schedule choice.',
+      'SITC, MCC and other carrier resources — direct or transshipment chosen by timing and cost.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Main Thailand ports and routing',
+        body:
+          'Thailand exports mainly involve Laem Chabang, Bangkok and Lat Krabang. Laem Chabang is the main deep-water port with a direct option; Bangkok and Lat Krabang mostly go via Hong Kong or feeder transshipment. The routing depends on the consignee area, timing and cost.',
+        bullets: [
+          'Laem Chabang: direct about 9 days, faster timing.',
+          'Bangkok: mostly via Hong Kong transshipment, about 13 days.',
+          'Lat Krabang: via Laem Chabang feeder, about 11 days.',
+        ],
+      },
+      {
+        heading: '2. Direct or transshipment — how to choose',
+        body:
+          'Laem Chabang has direct sailings with shorter, stable transit, suitable for time-sensitive cargo; Bangkok and Lat Krabang go via Hong Kong or feeder transshipment with wider schedule choice. SITC, MCC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
+      },
+      {
+        heading: '3. Destination charges and free time',
+        body:
+          'Destination charges and demurrage free time vary across Thailand ports; some routes offer 18 days demurrage free time at destination. Confirm destination charges and free time together when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Laem Chabang / Bangkok / Lat Krabang etc.) and final receiving city',
+      'Container type, weight, commodity, and whether special cargo',
+      'Timing requirement (whether direct service is needed)',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'Is there a direct service from Lianyungang to Laem Chabang?',
+        answer:
+          'Yes, Laem Chabang has a direct option with about 9 days transit and faster timing; actual sailings may vary.',
+      },
+      {
+        question: 'How do Bangkok and Lat Krabang route?',
+        answer:
+          'Bangkok is mostly via Hong Kong transshipment about 13 days; Lat Krabang goes via Laem Chabang feeder about 11 days. SITC, MCC and other carriers can arrange it.',
+      },
+    ],
+  },
+  {
     slug: 'ocean-freight-cost-breakdown',
     section: 'guides',
     title: '海运费由哪些部分组成？中国出口报价怎么看',
