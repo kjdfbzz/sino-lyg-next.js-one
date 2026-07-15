@@ -1548,6 +1548,137 @@ export const contentArticles: ContentArticle[] = [
     ],
   },
   {
+    slug: 'china-to-philippines-shipping',
+    section: 'routes',
+    title: '连云港到菲律宾海运：马尼拉、宿务、达沃等多港覆盖，含中转方案',
+    description:
+      '连云港出口到菲律宾马尼拉 Manila、宿务 Cebu、达沃 Davao、卡加延、八打雁等港口的中转方案、航程、船司和目的港要点。',
+    updatedAt: '2026-07-20',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '连云港到菲律宾海运',
+      'China to Philippines shipping',
+      '连云港到马尼拉',
+      'Manila shipping',
+      '宿务海运',
+      'Cebu shipping',
+    ],
+    highlights: [
+      '覆盖马尼拉、宿务、达沃、卡加延、八打雁、苏比克、伊洛伊洛等多个菲律宾港口。',
+      '马尼拉分南北两个码头，订舱前需确认收货人指定码头。',
+      '多经青岛或香港中转，SITC 等船司资源，班次选择多。',
+    ],
+    sections: [
+      {
+        heading: '1. 马尼拉南北码头要先确认',
+        body:
+          '马尼拉是菲律宾最主要的市场，分为马尼拉北（Manila North，PHMNN）和马尼拉南（Manila South，PHMNS）两个码头。收货人清关和提货通常绑定具体码头，所以订舱前要先确认收货人要求到北港还是南港，而不是笼统说"到马尼拉"。',
+        bullets: [
+          '马尼拉北 PHMNN、马尼拉南 PHMNS：经青岛中转，航程约 15 天。',
+          '收货人指定的码头会影响清关和提货，订舱前先确认。',
+        ],
+      },
+      {
+        heading: '2. 其他主要港口和航程',
+        body:
+          '除马尼拉外，菲律宾还覆盖宿务、达沃、卡加延、八打雁、苏比克、伊洛伊洛等港口，多经青岛或香港中转。港口较多、覆盖较广，可根据收货人所在区域选择。',
+        bullets: [
+          '八打雁 Batangas：经香港中转，约 12 天。',
+          '宿务 Cebu、卡加延 Cagayan de Oro：经香港中转，约 15 天。',
+          '达沃 Davao、苏比克 Subic、伊洛伊洛 Iloilo：可经中转安排。',
+        ],
+      },
+      {
+        heading: '3. 中转班次和时效',
+        body:
+          '菲律宾各港口以中转为主，经青岛或香港接驳。SITC 等船司资源班次较多，报价时看到的航程通常是顺利接驳的理想情况，实际要为中转和港口情况留出缓冲。',
+      },
+      {
+        heading: '4. 目的港费用和滞箱期',
+        body:
+          '菲律宾部分港口的目的港费用、滞箱免费期差异较大，部分航线目的港有 18 天滞箱免费期，部分含起运港 THC。询价时建议一并确认目的港费用和免费期，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港（马尼拉北/南 / 宿务 / 达沃等）和最终收货城市',
+      '马尼拉需确认收货人指定的码头（北港 / 南港）',
+      '箱型、货重、品名，是否为特殊货物',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '连云港到马尼拉航程多久？',
+        answer:
+          '马尼拉北、南港经青岛中转，航程约 15 天，具体以实际船期为准。订舱前需确认收货人指定的是北港还是南港。',
+      },
+      {
+        question: '菲律宾港口这么多，怎么选？',
+        answer:
+          '主要看收货人所在区域和指定港口。马尼拉是最大市场，分南北两个码头；宿务、达沃、卡加延等港口覆盖其他区域，多经青岛或香港中转。',
+      },
+    ],
+    title_en: 'Lianyungang to Philippines Ocean Freight: Manila, Cebu, Davao & More, via Transshipment',
+    description_en:
+      'Transshipment options, transit times, carriers and destination notes for Lianyungang exports to Manila, Cebu, Davao, Cagayan, Batangas and more in the Philippines.',
+    highlights_en: [
+      'Covers many Philippine ports — Manila, Cebu, Davao, Cagayan, Batangas, Subic and Iloilo.',
+      'Manila has two terminals (North and South) — confirm the consignee terminal before booking.',
+      'Mostly via Qingdao or Hong Kong transshipment, with SITC and other carriers offering wide schedule choice.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Confirm Manila North or South terminal first',
+        body:
+          'Manila is the main market in the Philippines, split into Manila North (PHMNN) and Manila South (PHMNS). Consignee clearance and pickup are usually tied to a specific terminal, so before booking, confirm whether the consignee needs North or South rather than just saying "to Manila".',
+        bullets: [
+          'Manila North (PHMNN), Manila South (PHMNS): via Qingdao transshipment, about 15 days.',
+          'The consignee-designated terminal affects clearance and pickup — confirm before booking.',
+        ],
+      },
+      {
+        heading: '2. Other main ports and transit times',
+        body:
+          'Beyond Manila, the Philippines covers Cebu, Davao, Cagayan, Batangas, Subic and Iloilo, mostly via Qingdao or Hong Kong transshipment. Wide port coverage — choose based on the consignee area.',
+        bullets: [
+          'Batangas: via Hong Kong transshipment, about 12 days.',
+          'Cebu, Cagayan de Oro: via Hong Kong transshipment, about 15 days.',
+          'Davao, Subic, Iloilo: can be arranged via transshipment.',
+        ],
+      },
+      {
+        heading: '3. Transshipment schedules and timing',
+        body:
+          'Philippine ports are mostly transshipment-based, connecting via Qingdao or Hong Kong. SITC and other carriers offer many sailings; the transit shown in quotes is usually the ideal scenario with smooth connections, so leave buffer for transshipment and port conditions.',
+      },
+      {
+        heading: '4. Destination charges and free time',
+        body:
+          'Destination charges and demurrage free time vary across Philippine ports; some routes offer 18 days demurrage free time, and some include origin THC. Confirm destination charges and free time together when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Manila North/South / Cebu / Davao etc.) and final receiving city',
+      'For Manila, confirm the consignee-designated terminal (North / South)',
+      'Container type, weight, commodity, and whether special cargo',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'How long is transit from Lianyungang to Manila?',
+        answer:
+          'Manila North and South go via Qingdao transshipment, about 15 days; actual sailings may vary. Confirm whether the consignee needs North or South before booking.',
+      },
+      {
+        question: 'With so many Philippine ports, how to choose?',
+        answer:
+          'It mainly depends on the consignee area and designated port. Manila is the largest market with two terminals; Cebu, Davao, Cagayan and others cover other regions, mostly via Qingdao or Hong Kong transshipment.',
+      },
+    ],
+  },
+  {
     slug: 'ocean-freight-cost-breakdown',
     section: 'guides',
     title: '海运费由哪些部分组成？中国出口报价怎么看',
