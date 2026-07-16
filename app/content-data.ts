@@ -1679,6 +1679,137 @@ export const contentArticles: ContentArticle[] = [
     ],
   },
   {
+    slug: 'china-to-indonesia-shipping',
+    section: 'routes',
+    title: '连云港到印尼海运：雅加达、泗水、三宝垄，含直航与中转方案',
+    description:
+      '连云港出口到印尼雅加达 Jakarta、泗水 Surabaya、三宝垄 Semarang、棉兰等港口的直航与中转方案、航程、船司和目的港要点。',
+    updatedAt: '2026-07-20',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '连云港到印尼海运',
+      'China to Indonesia shipping',
+      '连云港到雅加达',
+      'Jakarta shipping',
+      '泗水海运',
+      'Surabaya shipping',
+    ],
+    highlights: [
+      '雅加达 Jakarta 有直航方案（SITC 周三直航），航程约 16 天。',
+      '泗水 Surabaya、三宝垄 Semarang 等多经青岛或支线中转，覆盖印尼主要港口。',
+      'SITC、MCC 等船司资源，直航和中转方案可按时效和成本选择。',
+    ],
+    sections: [
+      {
+        heading: '1. 印尼主要港口和走法',
+        body:
+          '印尼出口主要涉及雅加达（Jakarta）、泗水（Surabaya）、三宝垄（Semarang）和棉兰（Belawan）等港口。雅加达是主力市场，有直航方案；其他港口多经青岛或支线中转。具体走法要结合收货人所在区域、时效要求和成本。',
+        bullets: [
+          '雅加达 Jakarta：SITC 周三直航，航程约 16 天。',
+          '泗水 Surabaya：青岛中转或支线中转，约 19 天。',
+          '三宝垄 Semarang：青岛中转，约 24 天。',
+        ],
+      },
+      {
+        heading: '2. 其他港口和覆盖',
+        body:
+          '除主力港口外，印尼还覆盖棉兰（Belawan）、打拉根（Tarakan）、望加锡（Makassar）、巴淡（Batam）等港口，多经青岛或支线中转，部分港口舱位需单独确认。港口覆盖较广，可根据收货人所在岛屿和区域选择。',
+        bullets: [
+          '棉兰 Belawan：青岛中转，约 28 天。',
+          '打拉根、望加锡、巴淡：经支线中转，部分舱位单独确认。',
+        ],
+      },
+      {
+        heading: '3. 直航还是中转怎么选',
+        body:
+          '雅加达有直航班次，时效较稳定，适合对时间敏感的货物；泗水、三宝垄等港口经青岛或支线中转，班次选择多、覆盖广。SITC、MCC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
+      },
+      {
+        heading: '4. 目的港费用和滞箱期',
+        body:
+          '印尼部分港口的目的港费用、滞箱免费期差异较大，常见目的港 14 天免箱期，部分小柜有超重费。询价时建议一并确认目的港费用和免费期，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港（Jakarta / Surabaya / Semarang / Belawan 等）和最终收货城市',
+      '箱型、货重、品名，是否为特殊货物或小柜超重',
+      '对时效的要求（是否需要直航）',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '连云港到雅加达有直航吗？',
+        answer:
+          '有，雅加达有直航方案（例如 SITC 周三直航），航程约 16 天，具体以实际船期为准。',
+      },
+      {
+        question: '泗水、三宝垄怎么走？',
+        answer:
+          '泗水多经青岛或支线中转约 19 天，三宝垄经青岛中转约 24 天。SITC、MCC 等船司都可以安排，可根据出货时间选择合适班次。',
+      },
+    ],
+    title_en: 'Lianyungang to Indonesia Ocean Freight: Jakarta, Surabaya & Semarang, Direct and Transshipment',
+    description_en:
+      'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Jakarta, Surabaya, Semarang and more in Indonesia.',
+    highlights_en: [
+      'Jakarta has a direct option (SITC Wednesday direct) with about 16 days transit.',
+      'Surabaya, Semarang and others go via Qingdao or feeder transshipment, covering main Indonesian ports.',
+      'SITC, MCC and other carrier resources — direct or transshipment chosen by timing and cost.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Main Indonesia ports and routing',
+        body:
+          'Indonesia exports mainly involve Jakarta, Surabaya, Semarang and Belawan. Jakarta is the main market with a direct option; other ports mostly go via Qingdao or feeder transshipment. The routing depends on the consignee area, timing and cost.',
+        bullets: [
+          'Jakarta: SITC Wednesday direct, about 16 days.',
+          'Surabaya: Qingdao or feeder transshipment, about 19 days.',
+          'Semarang: Qingdao transshipment, about 24 days.',
+        ],
+      },
+      {
+        heading: '2. Other ports and coverage',
+        body:
+          'Beyond the main ports, Indonesia also covers Belawan, Tarakan, Makassar and Batam, mostly via Qingdao or feeder transshipment, with some ports needing separate space confirmation. Wide port coverage — choose based on the consignee island and region.',
+        bullets: [
+          'Belawan: Qingdao transshipment, about 28 days.',
+          'Tarakan, Makassar, Batam: via feeder transshipment, some space confirmed separately.',
+        ],
+      },
+      {
+        heading: '3. Direct or transshipment — how to choose',
+        body:
+          'Jakarta has direct sailings with more stable transit, suitable for time-sensitive cargo; Surabaya, Semarang and others go via Qingdao or feeder transshipment with wider schedule choice. SITC, MCC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
+      },
+      {
+        heading: '4. Destination charges and free time',
+        body:
+          'Destination charges and demurrage free time vary across Indonesian ports; 14 days free time is common at destination, and some small containers have overweight charges. Confirm destination charges and free time together when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Jakarta / Surabaya / Semarang / Belawan etc.) and final receiving city',
+      'Container type, weight, commodity, and whether special cargo or small-container overweight',
+      'Timing requirement (whether direct service is needed)',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'Is there a direct service from Lianyungang to Jakarta?',
+        answer:
+          'Yes, Jakarta has a direct option (for example SITC Wednesday direct) with about 16 days transit; actual sailings may vary.',
+      },
+      {
+        question: 'How do Surabaya and Semarang route?',
+        answer:
+          'Surabaya is mostly via Qingdao or feeder transshipment about 19 days; Semarang via Qingdao transshipment about 24 days. SITC, MCC and other carriers can arrange it.',
+      },
+    ],
+  },
+  {
     slug: 'ocean-freight-cost-breakdown',
     section: 'guides',
     title: '海运费由哪些部分组成？中国出口报价怎么看',
