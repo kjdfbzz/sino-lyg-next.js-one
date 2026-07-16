@@ -1810,6 +1810,135 @@ export const contentArticles: ContentArticle[] = [
     ],
   },
   {
+    slug: 'china-to-malaysia-shipping',
+    section: 'routes',
+    title: '连云港到马来西亚海运：巴生港、帕西谷当、关丹，含中转方案',
+    description:
+      '连云港出口到马来西亚巴生港 Port Klang、帕西谷当 Pasir Gudang、关丹等港口的中转方案、航程、船司和目的港要点。',
+    updatedAt: '2026-07-20',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: [
+      '连云港到马来西亚海运',
+      'China to Malaysia shipping',
+      '连云港到巴生港',
+      'Port Klang shipping',
+      '帕西谷当',
+      'Pasir Gudang shipping',
+    ],
+    highlights: [
+      '巴生港 Port Klang 是马来西亚主力大港，覆盖巴生北、巴生西两个码头。',
+      '帕西谷当 Pasir Gudang、关丹 Kuantan 等港口也可安排，多经青岛中转。',
+      'SITC、MCC 等船司资源，班次选择多，可按时效和成本选择。',
+    ],
+    sections: [
+      {
+        heading: '1. 巴生港北码头和西码头',
+        body:
+          '巴生港（Port Klang）是马来西亚最主要的港口，分为巴生北（North Port）和巴生西（West Port）两个码头。收货人清关和提货通常绑定具体码头，所以订舱前要先确认收货人要求到北港还是西港。',
+        bullets: [
+          '巴生北 MYPKG、巴生西 MYPKW：经青岛中转，航程约 18 天。',
+          '收货人指定的码头会影响清关和提货，订舱前先确认。',
+        ],
+      },
+      {
+        heading: '2. 帕西谷当和其他港口',
+        body:
+          '除巴生港外，马来西亚还覆盖帕西谷当（Pasir Gudang）、关丹（Kuantan）、丹戎帕拉帕斯（Tanjung Pelepas）等港口，多经青岛中转。帕西谷当靠近新山，服务马来南部和新加坡周边。',
+        bullets: [
+          '帕西谷当 Pasir Gudang：青岛中转，约 16 天。',
+          '关丹 Kuantan、丹戎帕拉帕斯 Tanjung Pelepas：可经中转安排。',
+        ],
+      },
+      {
+        heading: '3. 中转班次和时效',
+        body:
+          '马来西亚各港口以青岛中转为主，SITC、MCC 等船司资源班次较多。报价时看到的航程通常是顺利接驳的理想情况，实际要为中转和港口情况留出缓冲。',
+      },
+      {
+        heading: '4. 目的港费用和滞箱期',
+        body:
+          '马来西亚部分港口的目的港费用、滞箱免费期差异较大，常见目的港 14 天免箱期。询价时建议一并确认目的港费用和免费期，避免只看起运港价格。',
+      },
+    ],
+    checklist: [
+      '目的港（巴生北/西 / 帕西谷当 / 关丹 等）和最终收货城市',
+      '巴生港需确认收货人指定的码头（北港 / 西港）',
+      '箱型、货重、品名，是否为特殊货物',
+      '是否接受中转以及可接受的航程天数',
+      '是否需要产地证或其他特殊单证',
+    ],
+    faqs: [
+      {
+        question: '连云港到巴生港航程多久？',
+        answer:
+          '巴生北、巴生西经青岛中转，航程约 18 天，具体以实际船期为准。订舱前需确认收货人指定的是北港还是西港。',
+      },
+      {
+        question: '帕西谷当怎么走？',
+        answer:
+          '帕西谷当经青岛中转，约 16 天，靠近新山、服务马来南部。SITC、MCC 等船司都可以安排。',
+      },
+    ],
+    title_en: 'Lianyungang to Malaysia Ocean Freight: Port Klang, Pasir Gudang & Kuantan, via Transshipment',
+    description_en:
+      'Transshipment options, transit times, carriers and destination notes for Lianyungang exports to Port Klang, Pasir Gudang, Kuantan and more in Malaysia.',
+    highlights_en: [
+      'Port Klang is Malaysia\'s main gateway, with North Port and West Port terminals.',
+      'Pasir Gudang, Kuantan and others can also be arranged, mostly via Qingdao transshipment.',
+      'SITC, MCC and other carrier resources with wide schedule choice, by timing and cost.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Port Klang North Port and West Port',
+        body:
+          'Port Klang is Malaysia\'s main port, split into North Port and West Port. Consignee clearance and pickup are usually tied to a specific terminal, so before booking, confirm whether the consignee needs North Port or West Port.',
+        bullets: [
+          'North Port (MYPKG), West Port (MYPKW): via Qingdao transshipment, about 18 days.',
+          'The consignee-designated terminal affects clearance and pickup — confirm before booking.',
+        ],
+      },
+      {
+        heading: '2. Pasir Gudang and other ports',
+        body:
+          'Beyond Port Klang, Malaysia also covers Pasir Gudang, Kuantan and Tanjung Pelepas, mostly via Qingdao transshipment. Pasir Gudang is near Johor Bahru, serving southern Malaysia and the Singapore area.',
+        bullets: [
+          'Pasir Gudang: Qingdao transshipment, about 16 days.',
+          'Kuantan, Tanjung Pelepas: can be arranged via transshipment.',
+        ],
+      },
+      {
+        heading: '3. Transshipment schedules and timing',
+        body:
+          'Malaysian ports are mostly via Qingdao transshipment, with SITC, MCC and other carriers offering many sailings. The transit shown in quotes is usually the ideal scenario with smooth connections, so leave buffer for transshipment and port conditions.',
+      },
+      {
+        heading: '4. Destination charges and free time',
+        body:
+          'Destination charges and demurrage free time vary across Malaysian ports; 14 days free time is common at destination. Confirm destination charges and free time together when requesting a quote rather than looking at origin price alone.',
+      },
+    ],
+    checklist_en: [
+      'Destination port (Port Klang North/West / Pasir Gudang / Kuantan etc.) and final receiving city',
+      'For Port Klang, confirm the consignee-designated terminal (North / West)',
+      'Container type, weight, commodity, and whether special cargo',
+      'Whether transshipment is acceptable and the acceptable transit days',
+      'Whether certificate of origin or other special documents are needed',
+    ],
+    faqs_en: [
+      {
+        question: 'How long is transit from Lianyungang to Port Klang?',
+        answer:
+          'North Port and West Port go via Qingdao transshipment, about 18 days; actual sailings may vary. Confirm whether the consignee needs North or West Port before booking.',
+      },
+      {
+        question: 'How does Pasir Gudang route?',
+        answer:
+          'Pasir Gudang goes via Qingdao transshipment, about 16 days, near Johor Bahru serving southern Malaysia. SITC, MCC and other carriers can arrange it.',
+      },
+    ],
+  },
+  {
     slug: 'ocean-freight-cost-breakdown',
     section: 'guides',
     title: '海运费由哪些部分组成？中国出口报价怎么看',
