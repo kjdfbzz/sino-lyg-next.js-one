@@ -5,8 +5,8 @@ import {
   getArticlesBySection,
   getArticlePath,
   getSection,
-  siteUrl,
 } from '../../content-data';
+import { absoluteUrl, languageAlternates } from '../../seo';
 import SectionPageClient from './SectionPageClient';
 
 type SectionPageProps = {
@@ -30,14 +30,14 @@ export async function generateMetadata({ params }: SectionPageProps): Promise<Me
   return {
     title: section.title,
     description: section.description,
-    alternates: {
-      canonical: `${siteUrl}/${section.slug}`,
-    },
+    alternates: languageAlternates(`/${section.slug}`, 'zh'),
     openGraph: {
       title: `${section.title} | Bryce Logistics`,
       description: section.description,
-      url: `${siteUrl}/${section.slug}`,
+      url: absoluteUrl(`/${section.slug}`),
       type: 'website',
+      locale: 'zh_CN',
+      alternateLocale: ['en_US'],
       images: ['/og-bryce-logistics.jpg'],
     },
   };
@@ -52,23 +52,50 @@ export default async function SectionPage({ params }: SectionPageProps) {
   }
 
   const articles = getArticlesBySection(section.slug);
+  const sectionUrl = absoluteUrl(`/${section.slug}`);
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
+    '@id': `${sectionUrl}#webpage`,
     name: section.title,
     description: section.description,
-    url: `${siteUrl}/${section.slug}`,
+    url: sectionUrl,
+    inLanguage: 'zh-CN',
+    publisher: {
+      '@type': 'Organization',
+      '@id': absoluteUrl('/#organization'),
+      name: 'Bryce Logistics',
+    },
+    breadcrumb: { '@id': `${sectionUrl}#breadcrumb` },
     mainEntity: articles.map((article) => ({
       '@type': 'Article',
+      '@id': `${absoluteUrl(getArticlePath(article))}#article`,
       headline: article.title,
       description: article.description,
-      url: `${siteUrl}${getArticlePath(article)}`,
+      url: absoluteUrl(getArticlePath(article)),
+      inLanguage: 'zh-CN',
       dateModified: article.updatedAt,
       author: {
         '@type': 'Person',
+        '@id': absoluteUrl('/#person'),
         name: 'Bryce Lee',
+        url: absoluteUrl('/'),
+      },
+      publisher: {
+        '@type': 'Organization',
+        '@id': absoluteUrl('/#organization'),
+        name: 'Bryce Logistics',
       },
     })),
+  };
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': `${sectionUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: absoluteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: section.title, item: sectionUrl },
+    ],
   };
 
   return (
@@ -77,7 +104,11 @@ export default async function SectionPage({ params }: SectionPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
       />
-      <SectionPageClient section={section} articles={articles} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <SectionPageClient section={section} articles={articles} initialLang="zh" />
     </>
   );
 }

@@ -16,6 +16,23 @@ bun run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## SEO and multilingual content
+
+Chinese pages use `/`, `/routes`, `/requirements` and `/guides`; their English equivalents use `/en`. Language links navigate to the matching URL. Each URL keeps its language regardless of browser headers or saved preferences, with its own canonical and reciprocal `zh-CN`, `en` and `x-default` alternates.
+
+`app/sitemap.ts` generates `/sitemap.xml` from the homepage, sections and article data in both languages. Article `updatedAt` values are real content update dates; only change them when the content changes. No publication dates are inferred from update dates. `app/robots.ts` allows public search crawlers, including AI search crawlers, and points to this sitemap. API responses carry `X-Robots-Tag: noindex`.
+
+The shared entity IDs and homepage search metadata live in `app/seo.ts`. Article pages expose author, update date, navigation to related preparation guides and visible FAQs. New articles should include complete Chinese and English copies, practical shipment details and sources for any changing schedule, fee or document requirement. Business volumes, partnerships, qualifications and testimonials must be backed by actual records.
+
+Optional ownership verification tokens can be configured in the deployment environment:
+
+```text
+GOOGLE_SITE_VERIFICATION=...
+BING_SITE_VERIFICATION=...
+```
+
+These are public verification values rendered in HTML. Configure them before building the deployment, then submit `https://www.sinolyg.com/sitemap.xml` in the verified search-engine properties. Use those properties to measure indexing and query performance; metadata and a successful build do not confirm search visibility.
+
 ## Container Tracking activation requests
 
 The desktop Container Tracking System submits activation applications to:

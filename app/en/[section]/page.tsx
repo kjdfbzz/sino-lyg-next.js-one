@@ -7,8 +7,8 @@ import {
   getArticlePath,
   getSection,
   getSectionCopy,
-  siteUrl,
 } from '../../content-data';
+import { absoluteUrl, languageAlternates } from '../../seo';
 import SectionPageClient from '../../(content)/[section]/SectionPageClient';
 
 type EnglishSectionPageProps = {
@@ -30,24 +30,19 @@ export async function generateMetadata({ params }: EnglishSectionPageProps): Pro
   }
 
   const copy = getSectionCopy(section, 'en');
-  const url = `${siteUrl}/en/${section.slug}`;
+  const url = absoluteUrl(`/en/${section.slug}`);
 
   return {
     title: copy.title,
     description: copy.description,
-    alternates: {
-      canonical: url,
-      languages: {
-        en: url,
-        'zh-CN': `${siteUrl}/${section.slug}`,
-      },
-    },
+    alternates: languageAlternates(`/${section.slug}`, 'en'),
     openGraph: {
       title: `${copy.title} | Bryce Logistics`,
       description: copy.description,
       url,
       type: 'website',
       locale: 'en_US',
+      alternateLocale: ['zh_CN'],
       images: ['/og-bryce-logistics.jpg'],
     },
   };
@@ -63,27 +58,54 @@ export default async function EnglishSectionPage({ params }: EnglishSectionPageP
 
   const articles = getArticlesBySection(section.slug);
   const sectionCopy = getSectionCopy(section, 'en');
+  const sectionUrl = absoluteUrl(`/en/${section.slug}`);
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
+    '@id': `${sectionUrl}#webpage`,
     name: sectionCopy.title,
     description: sectionCopy.description,
-    url: `${siteUrl}/en/${section.slug}`,
+    url: sectionUrl,
+    inLanguage: 'en',
+    publisher: {
+      '@type': 'Organization',
+      '@id': absoluteUrl('/#organization'),
+      name: 'Bryce Logistics',
+    },
+    breadcrumb: { '@id': `${sectionUrl}#breadcrumb` },
     mainEntity: articles.map((article) => {
       const articleCopy = getArticleCopy(article, 'en');
 
       return {
         '@type': 'Article',
+        '@id': `${absoluteUrl(`/en${getArticlePath(article)}`)}#article`,
         headline: articleCopy.title,
         description: articleCopy.description,
-        url: `${siteUrl}/en${getArticlePath(article)}`,
+        url: absoluteUrl(`/en${getArticlePath(article)}`),
+        inLanguage: 'en',
         dateModified: article.updatedAt,
         author: {
           '@type': 'Person',
+          '@id': absoluteUrl('/#person'),
           name: 'Bryce Lee',
+          url: absoluteUrl('/'),
+        },
+        publisher: {
+          '@type': 'Organization',
+          '@id': absoluteUrl('/#organization'),
+          name: 'Bryce Logistics',
         },
       };
     }),
+  };
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': `${sectionUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/en') },
+      { '@type': 'ListItem', position: 2, name: sectionCopy.title, item: sectionUrl },
+    ],
   };
 
   return (
@@ -92,11 +114,14 @@ export default async function EnglishSectionPage({ params }: EnglishSectionPageP
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <SectionPageClient
         section={section}
         articles={articles}
         initialLang="en"
-        detectLanguage={false}
       />
     </>
   );

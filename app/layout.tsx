@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { siteUrl } from './content-data';
+import { siteJsonLd } from './seo';
 import './globals.css';
 
 export const viewport = {
@@ -7,7 +9,7 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.sinolyg.com'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Bryce Logistics | 中国出口海运空运拖车报关顾问',
     template: '%s | Bryce Logistics',
@@ -29,8 +31,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Bryce Lee', url: 'https://www.sinolyg.com' }],
   creator: 'Bryce Lee',
   publisher: 'Bryce Logistics',
-  alternates: {
-    canonical: 'https://www.sinolyg.com',
+  verification: {
+    ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+    ...(process.env.BING_SITE_VERIFICATION ? { other: { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } } : {}),
   },
   openGraph: {
     type: 'website',
@@ -76,7 +79,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }} />
+        {children}
+      </body>
     </html>
   );
 }

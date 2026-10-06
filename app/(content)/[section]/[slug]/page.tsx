@@ -6,8 +6,8 @@ import {
   getArticlePath,
   getArticlesBySection,
   getSection,
-  siteUrl,
 } from '../../../content-data';
+import { absoluteUrl, languageAlternates } from '../../../seo';
 import ArticlePageClient from './ArticlePageClient';
 
 type ArticlePageProps = {
@@ -33,40 +33,20 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     return {};
   }
 
-  const url = `${siteUrl}${getArticlePath(article)}`;
-  const englishUrl = `${siteUrl}/en${getArticlePath(article)}`;
-  const hasEnglishVersion = Boolean(
-    (article.title_en?.trim() && article.description_en?.trim()) ||
-      (article.en?.title.trim() && article.en.description.trim()),
-  );
+  const url = absoluteUrl(getArticlePath(article));
 
   return {
     title: article.title,
     description: article.description,
     keywords: article.keywords,
-    alternates: {
-      canonical: url,
-      ...(hasEnglishVersion
-        ? {
-            languages: {
-              'zh-CN': url,
-              en: englishUrl,
-            },
-          }
-        : {}),
-    },
+    alternates: languageAlternates(getArticlePath(article), 'zh'),
     openGraph: {
       title: `${article.title} | Bryce Logistics`,
       description: article.description,
       url,
       type: 'article',
-      ...(hasEnglishVersion
-        ? {
-            locale: 'zh_CN',
-            alternateLocale: ['en_US'],
-          }
-        : {}),
-      publishedTime: article.updatedAt,
+      locale: 'zh_CN',
+      alternateLocale: ['en_US'],
       modifiedTime: article.updatedAt,
       authors: ['Bryce Lee'],
       images: [
@@ -97,45 +77,52 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const related = getArticlesBySection(article.section)
     .filter((item) => item.slug !== article.slug)
     .slice(0, 3);
-  const articleUrl = `${siteUrl}${getArticlePath(article)}`;
+  const articleUrl = absoluteUrl(getArticlePath(article));
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    '@id': `${articleUrl}#article`,
+    url: articleUrl,
+    inLanguage: 'zh-CN',
     headline: article.title,
     description: article.description,
-    image: `${siteUrl}${article.image}`,
-    datePublished: article.updatedAt,
+    image: absoluteUrl(article.image),
     dateModified: article.updatedAt,
     author: {
       '@type': 'Person',
+      '@id': absoluteUrl('/#person'),
       name: 'Bryce Lee',
-      url: siteUrl,
+      url: absoluteUrl('/'),
     },
     publisher: {
       '@type': 'Organization',
+      '@id': absoluteUrl('/#organization'),
       name: 'Bryce Logistics',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${siteUrl}/og-bryce-logistics.jpg`,
-      },
     },
-    mainEntityOfPage: articleUrl,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${articleUrl}#webpage`,
+      url: articleUrl,
+      inLanguage: 'zh-CN',
+      breadcrumb: { '@id': `${articleUrl}#breadcrumb` },
+    },
   };
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${articleUrl}#breadcrumb`,
     itemListElement: [
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
-        item: siteUrl,
+        name: '首页',
+        item: absoluteUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: section.title,
-        item: `${siteUrl}/${section.slug}`,
+        item: absoluteUrl(`/${section.slug}`),
       },
       {
         '@type': 'ListItem',
@@ -149,6 +136,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     ? {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
+        '@id': `${articleUrl}#faq`,
+        inLanguage: 'zh-CN',
+        isPartOf: { '@id': `${articleUrl}#webpage` },
         mainEntity: article.faqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,
@@ -176,7 +166,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <ArticlePageClient article={article} section={section} related={related} />
+      <ArticlePageClient article={article} section={section} related={related} initialLang="zh" />
     </>
   );
 }

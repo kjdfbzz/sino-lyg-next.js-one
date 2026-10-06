@@ -8,8 +8,8 @@ import {
   getArticlesBySection,
   getSection,
   getSectionCopy,
-  siteUrl,
 } from '../../../content-data';
+import { absoluteUrl, languageAlternates } from '../../../seo';
 import ArticlePageClient from '../../../(content)/[section]/[slug]/ArticlePageClient';
 
 type EnglishArticlePageProps = {
@@ -35,42 +35,21 @@ export async function generateMetadata({ params }: EnglishArticlePageProps): Pro
     return {};
   }
 
-  const fallbackCopy = getArticleCopy(article, 'en');
-  const hasEnglishVersion = Boolean(
-    (article.title_en?.trim() && article.description_en?.trim()) ||
-      (article.en?.title.trim() && article.en.description.trim()),
-  );
-  const title = article.title_en?.trim()
-    ? article.title_en
-    : fallbackCopy.title;
-  const description = article.description_en?.trim()
-    ? article.description_en
-    : fallbackCopy.description;
-  const url = `${siteUrl}/en${getArticlePath(article)}`;
+  const { title, description } = getArticleCopy(article, 'en');
+  const url = absoluteUrl(`/en${getArticlePath(article)}`);
 
   return {
     title,
     description,
     keywords: article.en?.keywords ?? article.keywords,
-    alternates: {
-      canonical: url,
-      languages: {
-        en: url,
-        'zh-CN': `${siteUrl}${getArticlePath(article)}`,
-      },
-    },
+    alternates: languageAlternates(getArticlePath(article), 'en'),
     openGraph: {
       title: `${title} | Bryce Logistics`,
       description,
       url,
       type: 'article',
       locale: 'en_US',
-      ...(hasEnglishVersion
-        ? {
-            alternateLocale: ['zh_CN'],
-          }
-        : {}),
-      publishedTime: article.updatedAt,
+      alternateLocale: ['zh_CN'],
       modifiedTime: article.updatedAt,
       authors: ['Bryce Lee'],
       images: [
@@ -99,55 +78,58 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
   }
 
   const articleCopy = getArticleCopy(article, 'en');
-  const articleTitle = article.title_en?.trim()
-    ? article.title_en
-    : articleCopy.title;
-  const articleDescription = article.description_en?.trim()
-    ? article.description_en
-    : articleCopy.description;
+  const articleTitle = articleCopy.title;
+  const articleDescription = articleCopy.description;
   const sectionCopy = getSectionCopy(section, 'en');
   const related = getArticlesBySection(article.section)
     .filter((item) => item.slug !== article.slug)
     .slice(0, 3);
-  const articleUrl = `${siteUrl}/en${getArticlePath(article)}`;
+  const articleUrl = absoluteUrl(`/en${getArticlePath(article)}`);
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    '@id': `${articleUrl}#article`,
+    url: articleUrl,
+    inLanguage: 'en',
     headline: articleTitle,
     description: articleDescription,
-    image: `${siteUrl}${article.image}`,
-    datePublished: article.updatedAt,
+    image: absoluteUrl(article.image),
     dateModified: article.updatedAt,
     author: {
       '@type': 'Person',
+      '@id': absoluteUrl('/#person'),
       name: 'Bryce Lee',
-      url: siteUrl,
+      url: absoluteUrl('/'),
     },
     publisher: {
       '@type': 'Organization',
+      '@id': absoluteUrl('/#organization'),
       name: 'Bryce Logistics',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${siteUrl}/og-bryce-logistics.jpg`,
-      },
     },
-    mainEntityOfPage: articleUrl,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${articleUrl}#webpage`,
+      url: articleUrl,
+      inLanguage: 'en',
+      breadcrumb: { '@id': `${articleUrl}#breadcrumb` },
+    },
   };
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${articleUrl}#breadcrumb`,
     itemListElement: [
       {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: `${siteUrl}/en`,
+        item: absoluteUrl('/en'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: sectionCopy.title,
-        item: `${siteUrl}/en/${section.slug}`,
+        item: absoluteUrl(`/en/${section.slug}`),
       },
       {
         '@type': 'ListItem',
@@ -157,13 +139,14 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
       },
     ],
   };
-  const englishFaqs = article.faqs_en?.length
-    ? article.faqs_en
-    : article.en?.faqs;
+  const englishFaqs = articleCopy.faqs;
   const faqJsonLd = englishFaqs?.length
     ? {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
+        '@id': `${articleUrl}#faq`,
+        inLanguage: 'en',
+        isPartOf: { '@id': `${articleUrl}#webpage` },
         mainEntity: englishFaqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,
@@ -196,7 +179,6 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
         section={section}
         related={related}
         initialLang="en"
-        detectLanguage={false}
       />
     </>
   );

@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ContentArticle, ContentSection, Lang } from '../../content-data';
@@ -9,13 +7,12 @@ import {
   getSectionCopy,
 } from '../../content-data';
 import { localizePath } from '../../localized-path';
-import { usePreferredLanguage } from '../../use-language';
+import PageLanguage from '../../PageLanguage';
 
 type SectionPageClientProps = {
   section: ContentSection;
   articles: ContentArticle[];
   initialLang?: Lang;
-  detectLanguage?: boolean;
 };
 
 function formatReadTime(readTime: string, lang: Lang) {
@@ -28,17 +25,16 @@ export default function SectionPageClient({
   section,
   articles,
   initialLang = 'zh',
-  detectLanguage = true,
 }: SectionPageClientProps) {
-  const [lang, setLang] = usePreferredLanguage(initialLang, {
-    detect: detectLanguage,
-  });
+  const lang = initialLang;
   const sectionCopy = getSectionCopy(section, lang);
   const isZh = lang === 'zh';
   const homeHref = localizePath('/', lang);
+  const alternateLang = isZh ? 'en' : 'zh';
 
   return (
-    <main className="min-h-screen bg-[#030508] font-inter text-white">
+    <main lang={isZh ? 'zh-CN' : 'en'} className="min-h-screen bg-[#030508] font-inter text-white">
+      <PageLanguage lang={lang} />
       <section className="relative isolate overflow-hidden px-6 py-10 sm:px-10 lg:px-16">
         <Image
           src="/bryce-routes-command.webp"
@@ -58,13 +54,13 @@ export default function SectionPageClient({
               Bryce Logistics
             </Link>
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setLang(isZh ? 'en' : 'zh')}
+              <Link
+                href={localizePath(`/${section.slug}`, alternateLang)}
+                hrefLang={alternateLang === 'zh' ? 'zh-CN' : 'en'}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
               >
                 {isZh ? 'EN' : '中文'}
-              </button>
+              </Link>
               <Link
                 href={`${homeHref}#inquire`}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
@@ -107,7 +103,7 @@ export default function SectionPageClient({
                       {formatReadTime(article.readTime, lang)}
                     </span>
                     <span className="text-xs font-bold text-white/38">
-                      {isZh ? '更新' : 'Updated'} {article.updatedAt}
+                      {isZh ? '更新' : 'Updated'} <time dateTime={article.updatedAt}>{article.updatedAt}</time>
                     </span>
                   </div>
                   <h2 className="text-2xl font-black leading-tight tracking-tight text-white">

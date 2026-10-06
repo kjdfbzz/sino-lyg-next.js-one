@@ -1,13 +1,15 @@
 import type { Lang } from './content-data';
 
 export function localizePath(path: string, lang: Lang) {
-  if (path.startsWith('#') || lang === 'zh') {
+  if (path.startsWith('#') || !path.startsWith('/')) {
     return path;
   }
 
-  if (path === '/') {
-    return '/en';
+  const basePath = path.replace(/^\/en(?=\/|\?|#|$)/, '') || '/';
+
+  if (lang === 'zh') {
+    return basePath;
   }
 
-  return path.startsWith('/en') ? path : `/en${path}`;
+  return basePath === '/' ? '/en' : `/en${basePath}`;
 }
