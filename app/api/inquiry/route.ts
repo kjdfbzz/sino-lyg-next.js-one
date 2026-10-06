@@ -89,13 +89,19 @@ function buildHtml(payload: InquiryPayload) {
 }
 
 export async function POST(request: NextRequest) {
-  let payload: InquiryPayload;
+  let body: unknown;
 
   try {
-    payload = await request.json();
+    body = await request.json();
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
+
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) {
+    return NextResponse.json({ error: 'Invalid inquiry payload.' }, { status: 400 });
+  }
+
+  const payload = body as InquiryPayload;
 
   if (!clean(payload.cargo) && !clean(payload.contact)) {
     return NextResponse.json(
