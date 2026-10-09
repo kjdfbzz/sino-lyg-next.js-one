@@ -85,7 +85,13 @@ export default function ArticlePageClient({
             >
               Bryce Logistics
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href={localizePath('/about', lang)}
+                className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
+              >
+                {isZh ? '公司与作者' : 'Company & Author'}
+              </Link>
               <Link
                 href={localizePath(getArticlePath(article), alternateLang)}
                 hrefLang={alternateLang === 'zh' ? 'zh-CN' : 'en'}
@@ -110,10 +116,21 @@ export default function ArticlePageClient({
               <span className="text-white/24">/</span>
               <span>{formatReadTime(article.readTime, lang)}</span>
               <span className="text-white/24">/</span>
-              <span>{isZh ? '作者' : 'Author'}: Bryce Lee</span>
+              <Link
+                href={localizePath('/about', lang)}
+                rel="author"
+                className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white"
+              >
+                {isZh ? '作者：李海文 Bryce Lee' : 'Author: Bryce Lee'}
+              </Link>
               <span className="text-white/24">/</span>
               <span>{isZh ? '更新' : 'Updated'} <time dateTime={article.updatedAt}>{article.updatedAt}</time></span>
             </div>
+            <p className="mt-4 text-sm leading-7 text-white/64">
+              {isZh
+                ? '港威国际物流 · 连云港销售经理'
+                : 'Global View Logistics · Lianyungang Sales Manager'}
+            </p>
             <h1 className="mt-7 max-w-5xl text-[clamp(2.25rem,4.6vw,4.35rem)] font-black leading-[1.1] tracking-tight">
               {articleCopy.title}
             </h1>
@@ -238,6 +255,14 @@ export default function ArticlePageClient({
               <p className="text-xs font-black uppercase tracking-[0.28em] text-black/54">
                 {isZh ? '联系 Bryce' : 'Contact Bryce'}
               </p>
+              <Link
+                href={localizePath('/about', lang)}
+                className="mt-3 block text-sm font-semibold leading-6 text-black/70 underline decoration-black/30 underline-offset-4"
+              >
+                {isZh
+                  ? '港威国际物流 · 连云港销售经理'
+                  : 'Global View Logistics · Lianyungang Sales Manager'}
+              </Link>
               <h2 className="mt-4 text-2xl font-black leading-tight">
                 {isZh
                   ? '有具体货物信息，可以直接发我判断'
@@ -256,10 +281,10 @@ export default function ArticlePageClient({
                   {isZh ? '发送邮件' : 'Send email'}
                 </a>
                 <a
-                  href={`tel:${contactPhone}`}
+                  href={`tel:+86${contactPhone}`}
                   className="border border-black px-4 py-4 text-center text-xs font-black uppercase tracking-[0.18em]"
                 >
-                  {isZh ? '电话' : 'Call'} {contactPhone}
+                  {isZh ? '电话' : 'Call'} +86 {contactPhone}
                 </a>
               </div>
             </section>

@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: EnglishArticlePageProps): Pro
       locale: 'en_US',
       alternateLocale: ['zh_CN'],
       modifiedTime: article.updatedAt,
-      authors: ['Bryce Lee'],
+      authors: [absoluteUrl('/en/about')],
       images: [
         {
           url: article.image,
@@ -99,12 +99,13 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
       '@type': 'Person',
       '@id': absoluteUrl('/#person'),
       name: 'Bryce Lee',
-      url: absoluteUrl('/'),
+      url: absoluteUrl('/en/about'),
     },
     publisher: {
-      '@type': 'Organization',
-      '@id': absoluteUrl('/#organization'),
-      name: 'Bryce Logistics',
+      '@type': 'Person',
+      '@id': absoluteUrl('/#person'),
+      name: 'Bryce Lee',
+      url: absoluteUrl('/en/about'),
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

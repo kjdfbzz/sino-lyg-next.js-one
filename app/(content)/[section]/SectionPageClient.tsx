@@ -53,7 +53,13 @@ export default function SectionPageClient({
             >
               Bryce Logistics
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href={localizePath('/about', lang)}
+                className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
+              >
+                {isZh ? '公司与作者' : 'Company & Author'}
+              </Link>
               <Link
                 href={localizePath(`/${section.slug}`, alternateLang)}
                 hrefLang={alternateLang === 'zh' ? 'zh-CN' : 'en'}

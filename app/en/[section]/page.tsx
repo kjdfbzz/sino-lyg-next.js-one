@@ -68,9 +68,10 @@ export default async function EnglishSectionPage({ params }: EnglishSectionPageP
     url: sectionUrl,
     inLanguage: 'en',
     publisher: {
-      '@type': 'Organization',
-      '@id': absoluteUrl('/#organization'),
-      name: 'Bryce Logistics',
+      '@type': 'Person',
+      '@id': absoluteUrl('/#person'),
+      name: 'Bryce Lee',
+      url: absoluteUrl('/en/about'),
     },
     breadcrumb: { '@id': `${sectionUrl}#breadcrumb` },
     mainEntity: articles.map((article) => {
@@ -88,12 +89,13 @@ export default async function EnglishSectionPage({ params }: EnglishSectionPageP
           '@type': 'Person',
           '@id': absoluteUrl('/#person'),
           name: 'Bryce Lee',
-          url: absoluteUrl('/'),
+          url: absoluteUrl('/en/about'),
         },
         publisher: {
-          '@type': 'Organization',
-          '@id': absoluteUrl('/#organization'),
-          name: 'Bryce Logistics',
+          '@type': 'Person',
+          '@id': absoluteUrl('/#person'),
+          name: 'Bryce Lee',
+          url: absoluteUrl('/en/about'),
         },
       };
     }),

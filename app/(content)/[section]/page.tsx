@@ -62,9 +62,10 @@ export default async function SectionPage({ params }: SectionPageProps) {
     url: sectionUrl,
     inLanguage: 'zh-CN',
     publisher: {
-      '@type': 'Organization',
-      '@id': absoluteUrl('/#organization'),
-      name: 'Bryce Logistics',
+      '@type': 'Person',
+      '@id': absoluteUrl('/#person'),
+      name: '李海文 Bryce Lee',
+      url: absoluteUrl('/about'),
     },
     breadcrumb: { '@id': `${sectionUrl}#breadcrumb` },
     mainEntity: articles.map((article) => ({
@@ -78,13 +79,14 @@ export default async function SectionPage({ params }: SectionPageProps) {
       author: {
         '@type': 'Person',
         '@id': absoluteUrl('/#person'),
-        name: 'Bryce Lee',
-        url: absoluteUrl('/'),
+        name: '李海文 Bryce Lee',
+        url: absoluteUrl('/about'),
       },
       publisher: {
-        '@type': 'Organization',
-        '@id': absoluteUrl('/#organization'),
-        name: 'Bryce Logistics',
+        '@type': 'Person',
+        '@id': absoluteUrl('/#person'),
+        name: '李海文 Bryce Lee',
+        url: absoluteUrl('/about'),
       },
     })),
   };

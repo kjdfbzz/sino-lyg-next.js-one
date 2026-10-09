@@ -27,11 +27,12 @@ import {
 } from 'lucide-react';
 import { localizePath } from './localized-path';
 import { usePreferredLanguage } from './use-language';
+import { contactEmail, contactPhone, siteUrl } from './content-data';
+import { companyProfile } from './company-profile';
 
-const phone = '18360639913';
-const email = 'Bryce.Lee@gwl-lianyungang.com';
-const whatsapp = '8618360639913';
-const siteUrl = 'https://www.sinolyg.com';
+const phone = contactPhone;
+const email = contactEmail;
+const whatsapp = `86${contactPhone}`;
 
 type Lang = 'zh' | 'en';
 type Copy = Record<Lang, string>;
@@ -57,15 +58,15 @@ const initialInquiryForm: InquiryFormData = {
 const navItems = [
   { label: 'SERVICES', href: '#services' },
   { label: 'ROUTES', href: '/routes' },
-  { label: 'BRYCE', href: '#about' },
+  { label: 'ABOUT', href: '/about' },
   { label: 'GUIDES', href: '/requirements' },
   { label: 'INQUIRE', href: '#inquire' },
 ];
 
 const stats = [
-  { value: '10+', zh: '货代操作经验', en: 'Years Experience' },
-  { value: '50+', zh: '熟悉港口 / 国家', en: 'Ports Covered' },
-  { value: '20+', zh: '合作船东 / 车队', en: 'Carrier Partners' },
+  { value: 'FCL', zh: '海运整柜 / 拼箱', en: 'FCL / LCL Ocean Freight' },
+  { value: 'LYG', zh: '连云港业务联系', en: 'Lianyungang Contact' },
+  { value: 'GWL', zh: '港威国际物流', en: 'Global View Logistics' },
 ];
 
 const services: Array<{
@@ -504,9 +505,13 @@ export default function Home({
             </h2>
             <p className="mt-7 max-w-xl text-base leading-8 text-white/64">
               {isZh
-                ? '我常年在中国连云港从事国际货运代理工作，从业接近十年。主要服务外贸工厂、贸易商、设备和工程物资出口客户，专注印巴、南美、中东等航线，对不同国家港口的操作习惯、清关要求和费用结构都有长期实操经验。'
-                : 'Based in Lianyungang, China, I have worked in freight forwarding for nearly ten years, serving factories, traders, equipment and project-cargo exporters across India-Pakistan, Middle East and South America trade lanes.'}
+                ? '我是李海文 Bryce Lee，港威国际物流连云港销售经理。在青岛港威国际物流有限公司连云港分公司，为外贸工厂、贸易商、设备和工程物资出口客户梳理运输方案，协调整柜、拼箱、空运、内陆运输与单证，重点关注印巴、中东和拉美航线。'
+                : 'I am Bryce Lee, Sales Manager at Qingdao Global View Logistics Co., Ltd. Lianyungang Branch. I help factories, traders, equipment and project-cargo exporters plan FCL, LCL, air freight, inland transport and documentation, with a focus on India-Pakistan, the Middle East and Latin America.'}
             </p>
+            <a href={localizePath('/about', lang)} className="mt-7 inline-flex items-center gap-3 border border-white/25 px-5 py-4 text-sm font-bold text-amber-300 transition hover:border-amber-300 hover:text-white">
+              {isZh ? '了解公司与李海文 Bryce Lee' : 'About the company & Bryce Lee'}
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
           </div>
 
           <div className="grid border border-white/16 md:grid-cols-2">
@@ -658,7 +663,7 @@ export default function Home({
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </button>
               <a
-                href={`tel:${phone}`}
+                href={companyProfile.mobileHref}
                 className="flex items-center justify-center gap-3 border border-black px-6 py-5 text-xs font-black uppercase tracking-[0.24em] transition hover:bg-black hover:text-white"
               >
                 <Phone className="h-4 w-4" />
@@ -686,14 +691,17 @@ export default function Home({
             </div>
             <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
               {isZh
-                ? '个人国际货运顾问 · 中国出口整柜 / 拼箱 / 拖车 / 报关'
-                : 'Independent freight consultant · China export FCL / LCL / trucking / customs'}
+                ? '李海文 Bryce Lee · 港威国际物流连云港销售经理'
+                : 'Bryce Lee · Global View Logistics · Lianyungang Sales Manager'}
             </p>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">{companyProfile.branchName[lang]}</p>
+            <p className="mt-2 max-w-xl text-xs leading-6 text-white/42">{companyProfile.officeAddress[lang]}</p>
+            <a href={localizePath('/about', lang)} className="mt-3 inline-block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '公司介绍与联系方式' : 'Company profile & contact details'}</a>
           </div>
 
           <div className="flex flex-col gap-3 text-sm font-bold text-white/66 md:items-end">
-            <a className="hover:text-white" href={`tel:${phone}`}>
-              {phone}
+            <a className="hover:text-white" href={companyProfile.mobileHref}>
+              {companyProfile.mobileDisplay}
             </a>
             <a className="hover:text-white" href={`mailto:${email}`}>
               {email}
@@ -843,8 +851,8 @@ function Hero({
           <div className="animate-fade-up-delay-2 mt-7 grid gap-6 lg:grid-cols-[minmax(0,640px)_auto] lg:items-end">
             <p className="max-w-2xl text-sm leading-7 text-white/74 sm:text-base">
               {isZh
-                ? '我是 Bryce，在中国连云港从事国际货运代理。为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和重点航线方案，让每一票货都有清楚的费用、节点和可执行路径。'
-                : 'I am Bryce, a freight forwarding consultant based in Lianyungang, China. I turn FCL, LCL, trucking, customs, air freight and trade-lane decisions into clear costed shipment plans.'}
+                ? '我是李海文 Bryce Lee，港威国际物流连云港销售经理。为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和重点航线方案，让每一票货都有清楚的费用、节点和可执行路径。'
+                : 'I am Bryce Lee, Sales Manager at Global View Logistics in Lianyungang, China. I help exporters turn FCL, LCL, trucking, customs, air freight and trade-lane decisions into clear shipment plans.'}
             </p>
 
             <button
@@ -878,8 +886,8 @@ function Hero({
       </div>
 
       <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-7xl flex-col gap-3 text-xs font-black tracking-[0.18em] text-white/72 sm:left-10 sm:right-10 sm:flex-row sm:items-center sm:justify-between lg:left-16 lg:right-16 xl:left-0 xl:right-0">
-        <a className="transition hover:text-white" href={`tel:${phone}`}>
-          TEL&nbsp;&nbsp;{phone}
+        <a className="transition hover:text-white" href={companyProfile.mobileHref}>
+          TEL&nbsp;&nbsp;{companyProfile.mobileDisplay}
         </a>
         <a className="transition hover:text-white" href={`mailto:${email}`}>
           {email}
@@ -1043,7 +1051,7 @@ function FloatingContact({
           </p>
 
           <div className="mt-5 space-y-3">
-            <ContactRow icon={Phone} label={isZh ? '手机' : 'Mobile'} value={phone} href={`tel:${phone}`} />
+            <ContactRow icon={Phone} label={isZh ? '手机' : 'Mobile'} value={companyProfile.mobileDisplay} href={companyProfile.mobileHref} />
             <ContactRow icon={Mail} label="Email" value={email} href={`mailto:${email}`} />
             <ContactRow
               icon={Globe2}
@@ -1252,10 +1260,10 @@ function InquiryModal({
 
           <div className="grid gap-3 sm:grid-cols-2">
             <a
-              href={`tel:${phone}`}
+              href={companyProfile.mobileHref}
               className="flex items-center justify-center border border-white/16 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
             >
-              Call {phone}
+              Call {companyProfile.mobileDisplay}
             </a>
             <a
               href={mailtoHref}

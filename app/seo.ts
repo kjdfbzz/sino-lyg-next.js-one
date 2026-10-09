@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { contactEmail, contactPhone, siteUrl, type Lang } from './content-data';
 import { localizePath } from './localized-path';
+import { companyProfile } from './company-profile';
 
 export function absoluteUrl(path: string) {
   return new URL(path, siteUrl).toString();
@@ -23,14 +24,14 @@ export function languageAlternates(path: string, lang: Lang): Metadata['alternat
 
 const homepageCopy = {
   zh: {
-    title: '连云港货代 · 青岛出口海运空运 | Bryce Logistics',
+    title: '连云港货代 · 青岛出口海运 | 港威国际物流 Bryce Lee',
     description:
-      'Bryce Lee 在连云港提供中国出口货运方案咨询，涵盖连云港与青岛整柜、拼箱、空运、拖车和报关，整理印度、巴基斯坦、中东和南美航线的单证、费用与操作要求。',
+      '李海文 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、中东和拉美航线的单证、费用与操作要求。',
   },
   en: {
-    title: 'China Freight Forwarding from Lianyungang & Qingdao | Bryce Logistics',
+    title: 'Lianyungang & Qingdao Freight | Global View Logistics · Bryce Lee',
     description:
-      'China export freight consulting with Bryce Lee in Lianyungang: FCL, LCL, air freight, trucking and customs from Lianyungang and Qingdao, with practical guides for India, Pakistan, the Middle East and South America.',
+      'Bryce Lee, Sales Manager at Global View Logistics in Lianyungang, helps China exporters plan FCL, LCL, air freight, trucking and customs from Lianyungang and Qingdao, with guides for India, the Middle East and Latin America.',
   },
 };
 
@@ -80,15 +81,23 @@ export const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'ProfessionalService',
+      '@type': 'Organization',
       '@id': absoluteUrl('/#organization'),
-      name: 'Bryce Logistics',
-      alternateName: 'Bryce Lee Freight Consultant',
-      url: absoluteUrl('/'),
-      image: absoluteUrl('/og-bryce-logistics.jpg'),
+      name: companyProfile.branchName.zh,
+      legalName: companyProfile.branchName.zh,
+      alternateName: companyProfile.branchName.en,
+      url: companyProfile.corporateWebsite,
+      parentOrganization: { '@id': absoluteUrl('/#parent-organization') },
       email: contactEmail,
       telephone: `+86${contactPhone}`,
-      address: { '@type': 'PostalAddress', addressLocality: 'Lianyungang', addressCountry: 'CN' },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '海滨大道2号阳光国际中心D-2601室',
+        addressLocality: '连云港市',
+        addressRegion: '江苏省',
+        postalCode: companyProfile.postalCode,
+        addressCountry: 'CN',
+      },
       areaServed: ['China', 'India', 'Pakistan', 'Middle East', 'South America'],
       contactPoint: {
         '@type': 'ContactPoint',
@@ -99,19 +108,38 @@ export const siteJsonLd = {
       },
     },
     {
+      '@type': 'Organization',
+      '@id': absoluteUrl('/#parent-organization'),
+      name: companyProfile.companyName.zh,
+      legalName: companyProfile.companyName.zh,
+      alternateName: [companyProfile.companyName.en, companyProfile.brand.zh, companyProfile.brand.en],
+      url: companyProfile.corporateWebsite,
+      sameAs: [companyProfile.networkProfile],
+    },
+    {
+      '@type': 'Organization',
+      '@id': absoluteUrl('/#supply-chain-company'),
+      name: companyProfile.supplyChainCompanyName,
+      legalName: companyProfile.supplyChainCompanyName,
+    },
+    {
       '@type': 'Service',
       '@id': absoluteUrl('/#freight-service'),
       name: 'China export freight consulting',
       serviceType: ['China export ocean freight', 'FCL and LCL freight forwarding', 'Trucking and inland haulage', 'Customs and documentation', 'Air freight and express'],
       provider: { '@id': absoluteUrl('/#organization') },
+      broker: { '@id': absoluteUrl('/#person') },
     },
     {
       '@type': 'Person',
       '@id': absoluteUrl('/#person'),
-      name: 'Bryce Lee',
-      url: absoluteUrl('/#about'),
-      jobTitle: 'Freight forwarding consultant',
+      name: companyProfile.personName.en,
+      alternateName: companyProfile.personName.zh,
+      url: absoluteUrl('/about'),
+      jobTitle: companyProfile.role.en,
+      worksFor: { '@id': absoluteUrl('/#organization') },
       email: contactEmail,
+      telephone: `+86${contactPhone}`,
       knowsAbout: ['China export freight', 'FCL and LCL shipping', 'Trucking', 'Customs documentation'],
     },
     {
@@ -120,7 +148,82 @@ export const siteJsonLd = {
       name: 'Bryce Logistics',
       url: absoluteUrl('/'),
       inLanguage: ['zh-CN', 'en'],
-      publisher: { '@id': absoluteUrl('/#organization') },
+      publisher: { '@id': absoluteUrl('/#person') },
+      about: { '@id': absoluteUrl('/#organization') },
     },
   ],
 };
+
+const aboutCopy = {
+  zh: {
+    title: '公司介绍与李海文 Bryce Lee | 港威国际物流连云港',
+    description: '了解青岛港威国际物流有限公司及连云港业务联系单位，联系销售经理李海文 Bryce Lee，获取出口海运、空运、内陆运输与单证方案。办公地址、公司邮箱和国际电话均可直接查询。',
+    breadcrumb: '公司与 Bryce',
+  },
+  en: {
+    title: 'About Global View Logistics & Bryce Lee | Lianyungang',
+    description: 'Meet Bryce Lee, Sales Manager at Global View Logistics in Lianyungang. Learn about the company and its ocean freight, air freight, inland transport and documentation services, with direct office and contact details.',
+    breadcrumb: 'Company & Bryce',
+  },
+};
+
+export function aboutMetadata(lang: Lang): Metadata {
+  const copy = aboutCopy[lang];
+  return {
+    title: { absolute: copy.title },
+    description: copy.description,
+    alternates: languageAlternates('/about', lang),
+    authors: [{ name: lang === 'zh' ? '李海文 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
+    openGraph: {
+      type: 'website',
+      url: absoluteUrl(localizePath('/about', lang)),
+      title: copy.title,
+      description: copy.description,
+      siteName: 'Bryce Logistics',
+      locale: lang === 'zh' ? 'zh_CN' : 'en_US',
+      alternateLocale: [lang === 'zh' ? 'en_US' : 'zh_CN'],
+      images: ['/og-bryce-logistics.jpg'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: copy.title,
+      description: copy.description,
+      images: ['/og-bryce-logistics.jpg'],
+    },
+  };
+}
+
+export function aboutPageJsonLd(lang: Lang) {
+  const url = absoluteUrl(localizePath('/about', lang));
+  const copy = aboutCopy[lang];
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'AboutPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: copy.title,
+        description: copy.description,
+        inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        dateModified: companyProfile.updatedAt,
+        isPartOf: { '@id': absoluteUrl('/#website') },
+        mainEntity: { '@id': absoluteUrl('/#person') },
+        about: [
+          { '@id': absoluteUrl('/#organization') },
+          { '@id': absoluteUrl('/#parent-organization') },
+          { '@id': absoluteUrl('/#supply-chain-company') },
+        ],
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: lang === 'zh' ? '首页' : 'Home', item: absoluteUrl(localizePath('/', lang)) },
+          { '@type': 'ListItem', position: 2, name: copy.breadcrumb, item: url },
+        ],
+      },
+    ],
+  };
+}
