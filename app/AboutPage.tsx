@@ -184,7 +184,13 @@ export default function AboutPage({ lang }: { lang: Lang }) {
             </ol>
           </nav>
           <p className="text-xs font-bold tracking-[0.18em] text-amber-300">{text.eyebrow}</p>
-          <h1 className="mt-5 max-w-4xl text-balance text-[clamp(2rem,5vw,4.75rem)] font-black leading-[1.12] tracking-tight">{text.title}</h1>
+          <h1 aria-label={text.title} className="mt-5 max-w-4xl text-[clamp(2rem,5vw,4.75rem)] font-black leading-[1.12] tracking-tight">
+            <span className="block text-balance">{companyProfile.brand[lang]}</span>
+            <span className="sr-only"> · </span>
+            <span className="mt-3 block text-[clamp(1.5rem,4vw,3rem)] leading-tight text-white/85">
+              {isZh ? `${companyProfile.personName.zh} ${companyProfile.personName.en}` : companyProfile.personName.en}
+            </span>
+          </h1>
           <p className="mt-7 max-w-3xl text-base leading-8 text-white/70 sm:text-lg">{text.intro}</p>
         </header>
 
