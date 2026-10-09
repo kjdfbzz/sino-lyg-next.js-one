@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: '%s | Bryce Logistics',
   },
   description:
-    '李海文 Bryce Lee，港威国际物流连云港销售经理，提供出口整柜、拼箱、拖车、报关、空运方案，服务连云港、青岛及印巴、中东、拉美等贸易航线。',
+    '李经理 Bryce Lee，港威国际物流连云港销售经理，提供出口整柜、拼箱、拖车、报关、空运方案，服务连云港、青岛及印巴、中东、拉美等贸易航线。',
   keywords: [
     '中国出口货代',
     '连云港货代',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     'Middle East freight',
     'South America shipping',
   ],
-  authors: [{ name: '李海文 Bryce Lee', url: 'https://www.sinolyg.com/about' }],
+  authors: [{ name: '李经理 Bryce Lee', url: 'https://www.sinolyg.com/about' }],
   creator: 'Bryce Lee',
   publisher: 'Bryce Lee',
   verification: {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: 'Bryce Logistics',
     title: 'Bryce Logistics | 中国出口海运空运拖车报关顾问',
     description:
-      '港威国际物流连云港销售经理李海文 Bryce Lee，为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和航线方案。',
+      '港威国际物流连云港李经理 Bryce Lee，为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和航线方案。',
     images: [
       {
         url: '/og-bryce-logistics.jpg',

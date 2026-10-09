@@ -91,13 +91,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     author: {
       '@type': 'Person',
       '@id': absoluteUrl('/#person'),
-      name: '李海文 Bryce Lee',
+      name: '李经理 Bryce Lee',
       url: absoluteUrl('/about'),
     },
     publisher: {
       '@type': 'Person',
       '@id': absoluteUrl('/#person'),
-      name: '李海文 Bryce Lee',
+      name: '李经理 Bryce Lee',
       url: absoluteUrl('/about'),
     },
     mainEntityOfPage: {

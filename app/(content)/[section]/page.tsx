@@ -64,7 +64,7 @@ export default async function SectionPage({ params }: SectionPageProps) {
     publisher: {
       '@type': 'Person',
       '@id': absoluteUrl('/#person'),
-      name: '李海文 Bryce Lee',
+      name: '李经理 Bryce Lee',
       url: absoluteUrl('/about'),
     },
     breadcrumb: { '@id': `${sectionUrl}#breadcrumb` },
@@ -79,13 +79,13 @@ export default async function SectionPage({ params }: SectionPageProps) {
       author: {
         '@type': 'Person',
         '@id': absoluteUrl('/#person'),
-        name: '李海文 Bryce Lee',
+        name: '李经理 Bryce Lee',
         url: absoluteUrl('/about'),
       },
       publisher: {
         '@type': 'Person',
         '@id': absoluteUrl('/#person'),
-        name: '李海文 Bryce Lee',
+        name: '李经理 Bryce Lee',
         url: absoluteUrl('/about'),
       },
     })),

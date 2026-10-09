@@ -28,7 +28,7 @@ const homepageCopy = {
   zh: {
     title: '连云港货代 · 青岛出口海运 | 港威国际物流 Bryce Lee',
     description:
-      '李海文 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、中东和拉美航线的单证、费用与操作要求。',
+      '李经理 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、中东和拉美航线的单证、费用与操作要求。',
   },
   en: {
     title: 'Lianyungang & Qingdao Freight | Global View Logistics · Bryce Lee',
@@ -158,8 +158,8 @@ export const siteJsonLd = {
 
 const aboutCopy = {
   zh: {
-    title: '公司介绍与李海文 Bryce Lee | 港威国际物流连云港',
-    description: '了解青岛港威国际物流有限公司及连云港业务联系单位，联系销售经理李海文 Bryce Lee，获取出口海运、空运、内陆运输与单证方案。办公地址、公司邮箱和国际电话均可直接查询。',
+    title: '公司介绍与李经理 Bryce Lee | 港威国际物流连云港',
+    description: '了解青岛港威国际物流有限公司及连云港业务联系单位，联系李经理 Bryce Lee，获取出口海运、空运、内陆运输与单证方案。办公地址、公司邮箱和国际电话均可直接查询。',
     breadcrumb: '公司与 Bryce',
   },
   en: {
@@ -175,7 +175,7 @@ export function aboutMetadata(lang: Lang): Metadata {
     title: { absolute: copy.title },
     description: copy.description,
     alternates: languageAlternates('/about', lang),
-    authors: [{ name: lang === 'zh' ? '李海文 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
+    authors: [{ name: lang === 'zh' ? '李经理 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
     openGraph: {
       type: 'website',
       url: absoluteUrl(localizePath('/about', lang)),
@@ -233,7 +233,7 @@ export function aboutPageJsonLd(lang: Lang) {
 const experienceCopy = {
   zh: {
     title: '合作客户与工厂展示 | 港威国际物流 · 连云港与青岛货代',
-    description: '了解港威合作客户与机械、车辆、钢材等运输服务，浏览徐工、福田和柳工的设备、港口发运与海外应用图片。联系销售经理李海文 Bryce Lee 沟通整柜、特种箱和项目货需求。',
+    description: '了解港威合作客户与机械、车辆、钢材等运输服务，浏览徐工、福田和柳工的设备、港口发运与海外应用图片。联系李经理 Bryce Lee 沟通整柜、特种箱和项目货需求。',
     breadcrumb: '合作客户与工厂展示',
   },
   en: {
@@ -250,7 +250,7 @@ export function experienceMetadata(lang: Lang): Metadata {
     title: { absolute: copy.title },
     description: copy.description,
     alternates: languageAlternates('/experience', lang),
-    authors: [{ name: lang === 'zh' ? '李海文 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
+    authors: [{ name: lang === 'zh' ? '李经理 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
     openGraph: {
       type: 'website', url, title: copy.title, description: copy.description,
       siteName: 'Bryce Logistics',

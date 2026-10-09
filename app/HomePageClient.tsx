@@ -507,11 +507,11 @@ export default function Home({
             </h2>
             <p className="mt-7 max-w-xl text-base leading-8 text-white/64">
               {isZh
-                ? '我是李海文 Bryce Lee，港威国际物流连云港销售经理。在青岛港威国际物流有限公司连云港分公司，为外贸工厂、贸易商、设备和工程物资出口客户梳理运输方案，协调整柜、拼箱、空运、内陆运输与单证，重点关注印巴、中东和拉美航线。'
+                ? '我是李经理 Bryce Lee，港威国际物流连云港销售经理。在青岛港威国际物流有限公司连云港分公司，为外贸工厂、贸易商、设备和工程物资出口客户梳理运输方案，协调整柜、拼箱、空运、内陆运输与单证，重点关注印巴、中东和拉美航线。'
                 : 'I am Bryce Lee, Sales Manager at Qingdao Global View Logistics Co., Ltd. Lianyungang Branch. I help factories, traders, equipment and project-cargo exporters plan FCL, LCL, air freight, inland transport and documentation, with a focus on India-Pakistan, the Middle East and Latin America.'}
             </p>
             <a href={localizePath('/about', lang)} className="mt-7 inline-flex items-center gap-3 border border-white/25 px-5 py-4 text-sm font-bold text-amber-300 transition hover:border-amber-300 hover:text-white">
-              {isZh ? '了解公司与李海文 Bryce Lee' : 'About the company & Bryce Lee'}
+              {isZh ? '了解公司与李经理 Bryce Lee' : 'About the company & Bryce Lee'}
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
@@ -728,7 +728,7 @@ export default function Home({
             </div>
             <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
               {isZh
-                ? '李海文 Bryce Lee · 港威国际物流连云港销售经理'
+                ? '李经理 Bryce Lee · 港威国际物流连云港销售经理'
                 : 'Bryce Lee · Global View Logistics · Lianyungang Sales Manager'}
             </p>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">{companyProfile.branchName[lang]}</p>
@@ -889,7 +889,7 @@ function Hero({
           <div className="animate-fade-up-delay-2 mt-7 grid gap-6 lg:grid-cols-[minmax(0,640px)_auto] lg:items-end">
             <p className="max-w-2xl text-sm leading-7 text-white/74 sm:text-base">
               {isZh
-                ? '我是李海文 Bryce Lee，港威国际物流连云港销售经理。为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和重点航线方案，让每一票货都有清楚的费用、节点和可执行路径。'
+                ? '我是李经理 Bryce Lee，港威国际物流连云港销售经理。为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和重点航线方案，让每一票货都有清楚的费用、节点和可执行路径。'
                 : 'I am Bryce Lee, Sales Manager at Global View Logistics in Lianyungang, China. I help exporters turn FCL, LCL, trucking, customs, air freight and trade-lane decisions into clear shipment plans.'}
             </p>
 

@@ -11,7 +11,7 @@ export const companyProfile = {
     en: 'Qingdao Global View Logistics Co., Ltd. Lianyungang Branch',
   },
   supplyChainCompanyName: '连云港港威国际供应链管理有限公司',
-  personName: { zh: '李海文', en: 'Bryce Lee' },
+  personName: { zh: '李经理', en: 'Bryce Lee' },
   role: { zh: '销售经理', en: 'Sales Manager' },
   officeAddress: {
     zh: '江苏省连云港市海滨大道2号阳光国际中心D-2601室',

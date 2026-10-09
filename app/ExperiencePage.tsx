@@ -24,7 +24,7 @@ const copy = {
     servicesHeading: '运输与配套服务',
     servicesIntro: '从集装箱到大型设备，从工厂提货到港口出运。',
     contactHeading: '沟通您的出货需求',
-    contactIntro: '联系港威连云港销售经理李海文（Bryce Lee），沟通连云港、青岛等起运港至印度、中东、拉美及其他目的地的运输需求。',
+    contactIntro: '联系港威连云港李经理（Bryce Lee），沟通连云港、青岛等起运港至印度、中东、拉美及其他目的地的运输需求。',
     inquiryInfo: '请提供品名、重量与体积、货物尺寸、起运地与目的港、预计备货时间，以及提货、报关或目的地服务要求。',
     emailAction: '邮件询价',
     whatsappAction: 'WhatsApp 联系',

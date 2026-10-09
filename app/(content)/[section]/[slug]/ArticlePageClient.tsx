@@ -121,7 +121,7 @@ export default function ArticlePageClient({
                 rel="author"
                 className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white"
               >
-                {isZh ? '作者：李海文 Bryce Lee' : 'Author: Bryce Lee'}
+                {isZh ? '作者：李经理 Bryce Lee' : 'Author: Bryce Lee'}
               </Link>
               <span className="text-white/24">/</span>
               <span>{isZh ? '更新' : 'Updated'} <time dateTime={article.updatedAt}>{article.updatedAt}</time></span>
