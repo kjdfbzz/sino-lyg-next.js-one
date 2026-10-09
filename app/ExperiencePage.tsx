@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { companyProfile } from './company-profile';
 import { contactEmail, contactPhone, type Lang } from './content-data';
 import { cargoCategories, experienceCustomers, experienceServices } from './experience-data';
-import { factoryShipments } from './factory-shipments';
+import { factoryGalleries } from './factory-shipments';
 import { localizePath } from './localized-path';
 import PageLanguage from './PageLanguage';
 
@@ -12,13 +12,12 @@ const copy = {
     home: '首页',
     about: '公司与联系人',
     routes: '航线指南',
-    pageName: '客户与发运',
+    pageName: '客户与工厂展示',
     eyebrow: 'GLOBAL VIEW LOGISTICS · 港威国际物流',
-    title: '合作客户与工厂发运',
-    intro: '连接工厂、港口与海外市场。了解合作客户、工厂出口动态，以及我们提供的运输服务。',
-    shipmentsHeading: '工厂公开发运与交付',
-    shipmentsIntro: '徐工、福田与柳工的官方出口发运、设备交付报道。',
-    published: '发布',
+    title: '合作客户与工厂展示',
+    intro: '连接工厂、港口与海外市场。了解合作客户、工厂与设备图片，以及我们提供的运输服务。',
+    shipmentsHeading: '客户工厂与设备图片',
+    shipmentsIntro: '徐工、福田与柳工的设备、工厂及发运场景。',
     customersHeading: '合作客户',
     customersIntro: '港威国际物流服务过的制造业与贸易客户。',
     cargoHeading: '货物品类',
@@ -31,19 +30,18 @@ const copy = {
     whatsappAction: 'WhatsApp 联系',
     profileAction: '公司与联系人',
     routeAction: '航线指南',
-    footer: '合作客户 · 工厂发运 · 国际运输',
+    footer: '合作客户 · 工厂展示 · 国际运输',
   },
   en: {
     home: 'Home',
     about: 'Company & contact',
     routes: 'Route guides',
-    pageName: 'Customers & shipments',
+    pageName: 'Customers & factory gallery',
     eyebrow: 'GLOBAL VIEW LOGISTICS',
-    title: 'Customers & factory shipments',
-    intro: 'Connecting factories, ports and overseas markets. Explore our customers, factory export news and freight services.',
-    shipmentsHeading: 'Factory shipments & deliveries',
-    shipmentsIntro: 'Official shipment and delivery reports from XCMG, FOTON and LiuGong.',
-    published: 'Published',
+    title: 'Customers & factory gallery',
+    intro: 'Connecting factories, ports and overseas markets. Explore our customers, factory and equipment photos, and freight services.',
+    shipmentsHeading: 'Customer factories & equipment',
+    shipmentsIntro: 'Equipment, factory and shipment scenes from XCMG, FOTON and LiuGong.',
     customersHeading: 'Customers',
     customersIntro: 'Manufacturing and trading customers served by Global View Logistics.',
     cargoHeading: 'Cargo categories',
@@ -56,7 +54,7 @@ const copy = {
     whatsappAction: 'Contact on WhatsApp',
     profileAction: 'Company & contact',
     routeAction: 'Route guides',
-    footer: 'Customers · Factory shipments · International freight',
+    footer: 'Customers · Factory gallery · International freight',
   },
 } as const;
 
@@ -67,7 +65,8 @@ export default function ExperiencePage({ lang }: { lang: Lang }) {
   const text = copy[lang];
   const isZh = lang === 'zh';
   const homeHref = localizePath('/', lang);
-  const leadShipment = factoryShipments[0];
+  const leadGallery = factoryGalleries[0];
+  const leadImage = leadGallery?.images[0];
 
   return (
     <main lang={isZh ? 'zh-CN' : 'en'} className="min-h-screen bg-[#030508] font-inter text-white">
@@ -101,14 +100,15 @@ export default function ExperiencePage({ lang }: { lang: Lang }) {
                 <a href="#customers" className={sectionLinkStyle}>{text.customersHeading} <span aria-hidden="true">↓</span></a>
               </div>
             </div>
-            {leadShipment && (
+            {leadGallery && leadImage && (
               <figure className="min-w-0">
-                <a href={leadShipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="group relative block aspect-[16/10] overflow-hidden bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">
-                  <Image src={leadShipment.imageUrl} alt={leadShipment.imageAlt[lang]} fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" unoptimized priority />
-                </a>
-                <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs leading-6">
-                  <span className="text-white/60">{leadShipment.title[lang]}</span>
-                  <a href={leadShipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-amber-300 hover:text-amber-100">{leadShipment.sourceName[lang]} <span aria-hidden="true">↗</span></a>
+                <div className="relative aspect-[16/10] overflow-hidden bg-white/5">
+                  <Image src={leadImage.imageUrl} alt={leadImage.imageAlt[lang]} fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover" unoptimized priority />
+                </div>
+                <figcaption className="mt-3 text-xs leading-6 text-white/60">
+                  <span className="font-semibold text-amber-300">{leadGallery.brand[lang]}</span>
+                  <span className="mx-2 text-white/30" aria-hidden="true">·</span>
+                  <span>{leadImage.imageAlt[lang]}</span>
                 </figcaption>
               </figure>
             )}
@@ -118,21 +118,21 @@ export default function ExperiencePage({ lang }: { lang: Lang }) {
         <section id="factory-shipments" aria-labelledby="shipments-heading" className="scroll-mt-8 border-b border-white/15 py-10 sm:py-14">
           <h2 id="shipments-heading" className="text-2xl font-bold sm:text-3xl">{text.shipmentsHeading}</h2>
           <p className="mt-3 text-sm leading-7 text-white/60">{text.shipmentsIntro}</p>
-          <div className="mt-7 grid gap-7 md:grid-cols-3">
-            {factoryShipments.map((shipment) => (
-              <article key={shipment.id} className="min-w-0">
-                <a href={shipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="group relative block aspect-[16/10] overflow-hidden bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">
-                  <Image src={shipment.imageUrl} alt={shipment.imageAlt[lang]} fill sizes="(min-width: 1024px) 350px, (min-width: 768px) 30vw, 90vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" unoptimized loading="lazy" />
-                </a>
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[11px] leading-5">
-                  <p className="font-semibold tracking-wide text-amber-300">{shipment.brand[lang]}</p>
-                  <p className="text-white/45">{text.published} <time dateTime={shipment.publishedAt}>{shipment.publishedAt}</time></p>
+          <div className="mt-8 space-y-10 sm:space-y-12">
+            {factoryGalleries.map((gallery) => (
+              <article key={gallery.id} id={gallery.id} className="min-w-0">
+                <h3 className="text-xl font-semibold leading-8 text-amber-300">{gallery.brand[lang]}</h3>
+                <p className="mt-2 max-w-3xl text-sm leading-7 text-white/65">{gallery.introduction[lang]}</p>
+                <div className={`mt-5 grid gap-5 sm:grid-cols-2 ${gallery.images.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+                  {gallery.images.map((photo) => (
+                    <figure key={photo.id} className="min-w-0">
+                      <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
+                        <Image src={photo.imageUrl} alt={photo.imageAlt[lang]} fill sizes={gallery.images.length === 4 ? '(min-width: 1024px) 270px, (min-width: 640px) 45vw, 90vw' : '(min-width: 1024px) 350px, (min-width: 640px) 45vw, 90vw'} className="object-contain" unoptimized loading="lazy" />
+                      </div>
+                      <figcaption className="mt-2 text-xs leading-6 text-white/55">{photo.imageAlt[lang]}</figcaption>
+                    </figure>
+                  ))}
                 </div>
-                <h3 className="mt-2 text-lg font-semibold leading-7">
-                  <a href={shipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="transition hover:text-amber-300">{shipment.title[lang]}</a>
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-white/65">{shipment.summary[lang]}</p>
-                <a href={shipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-xs font-semibold text-amber-300 hover:text-amber-100">{shipment.sourceName[lang]} <span aria-hidden="true">↗</span></a>
               </article>
             ))}
           </div>
