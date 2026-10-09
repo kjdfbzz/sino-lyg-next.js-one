@@ -237,8 +237,8 @@ export default function AboutPage({ lang }: { lang: Lang }) {
           <h2 id="experience-heading" className="text-2xl font-bold sm:text-3xl">{isZh ? '合作客户与货物经验' : 'Customers & cargo experience'}</h2>
           <p className="mt-4 max-w-3xl leading-8 text-white/70">
             {isZh
-              ? '公司简介列示了柳工、卡特彼勒、徐工集团、中国重汽、青岛双星、中集集团等服务客户，以及轮胎、钢材、车辆、机械设备、光伏产品和食品等进出口物流经验。'
-              : 'The company brochure lists customer experience including Liugong, Caterpillar, Xugong Group, China National Heavy Duty Truck Group, Qingdao Doublestar and China International Marine Containers Group, together with import and export experience in tires, steel, vehicles, machinery, photovoltaic products and food.'}
+              ? '合作客户包括柳工、卡特彼勒、徐工集团、中国重汽、青岛双星、中集集团等。进出口物流经验涵盖轮胎、钢材、车辆、机械设备、光伏产品和食品。'
+              : 'Customer experience includes Liugong, Caterpillar, Xugong Group, China National Heavy Duty Truck Group, Qingdao Doublestar and China International Marine Containers Group. Import and export logistics experience covers tires, steel, vehicles, machinery, photovoltaic products and food.'}
           </p>
           <Link href={localizePath('/experience', lang)} className={`mt-6 inline-block text-sm font-semibold text-amber-300 ${linkStyle}`}>{isZh ? '查看客户名单与业务经验' : 'Explore customers & logistics experience'} <span aria-hidden="true">→</span></Link>
         </section>

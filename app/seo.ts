@@ -3,6 +3,7 @@ import { contactEmail, contactPhone, siteUrl, type Lang } from './content-data';
 import { localizePath } from './localized-path';
 import { companyProfile } from './company-profile';
 import { cargoCategories, experienceServices, experienceUpdatedAt } from './experience-data';
+import { factoryShipments } from './factory-shipments';
 
 export function absoluteUrl(path: string) {
   return new URL(path, siteUrl).toString();
@@ -231,14 +232,14 @@ export function aboutPageJsonLd(lang: Lang) {
 
 const experienceCopy = {
   zh: {
-    title: '合作客户与业务经验 | 港威国际物流 · 连云港与青岛货代',
-    description: '根据港威公司简介了解合作过的客户、轮胎、钢材、车辆、机械及光伏等货物经验，以及整柜拼箱、特种箱、散杂货和配套物流服务。联系连云港销售经理李海文 Bryce Lee 沟通出口需求。',
-    breadcrumb: '合作客户与业务经验',
+    title: '合作客户与工厂发运 | 港威国际物流 · 连云港与青岛货代',
+    description: '了解港威合作客户与机械、车辆、钢材等货物服务，查看徐工连云港出口、福田南美发运及柳工海外交付的工厂公开图文。联系销售经理李海文 Bryce Lee 沟通海运整柜、特种箱和项目货需求。',
+    breadcrumb: '合作客户与工厂发运',
   },
   en: {
-    title: 'Customers & Logistics Experience | Global View Logistics',
-    description: 'Explore customers and cargo experience listed in Global View Logistics’ company brochure, covering vehicles, machinery, tires, steel and photovoltaic products, with ocean freight, special containers and supporting services. Contact Bryce Lee in Lianyungang.',
-    breadcrumb: 'Customers & experience',
+    title: 'Customers & Factory Shipments | Global View Logistics',
+    description: 'Explore Global View customer experience, ocean freight and project cargo services, plus official factory reports of XCMG exports from Lianyungang, FOTON pickups for South America and LiuGong deliveries. Contact Bryce Lee for shipment planning.',
+    breadcrumb: 'Customers & factory shipments',
   },
 };
 
@@ -255,9 +256,9 @@ export function experienceMetadata(lang: Lang): Metadata {
       siteName: 'Bryce Logistics',
       locale: lang === 'zh' ? 'zh_CN' : 'en_US',
       alternateLocale: [lang === 'zh' ? 'en_US' : 'zh_CN'],
-      images: [{ url: '/experience/brochure-port.jpg', width: 1299, height: 787, alt: lang === 'zh' ? '公司简介中的港口业务图片' : 'Port image from the company brochure' }],
+      images: [{ url: factoryShipments[0].imageUrl, alt: factoryShipments[0].imageAlt[lang] }],
     },
-    twitter: { card: 'summary_large_image', title: copy.title, description: copy.description, images: ['/experience/brochure-port.jpg'] },
+    twitter: { card: 'summary_large_image', title: copy.title, description: copy.description, images: [factoryShipments[0].imageUrl] },
   };
 }
 
@@ -279,18 +280,31 @@ export function experiencePageJsonLd(lang: Lang) {
           ...cargoCategories.map((category) => ({ '@type': 'Thing', name: category[lang] })),
         ],
         citation: { '@type': 'CreativeWork', name: 'Global View Logistics company brochure', inLanguage: 'es' },
-        mainEntity: { '@id': `${url}#service-experience` },
+        mainEntity: [{ '@id': `${url}#factory-reports` }, { '@id': `${url}#service-experience` }],
         breadcrumb: { '@id': `${url}#breadcrumb` },
       },
       {
         '@type': 'ItemList', '@id': `${url}#service-experience`,
-        name: lang === 'zh' ? '公司简介中的业务服务经验' : 'Service experience described in the company brochure',
+        name: lang === 'zh' ? '业务服务' : 'Logistics services',
         itemListElement: experienceServices.map((service, index) => ({
           '@type': 'ListItem', position: index + 1,
           item: {
             '@type': 'Service', '@id': `${url}#${service.id}`,
             name: service.title[lang], description: service.description[lang],
             provider: { '@id': absoluteUrl('/#parent-organization') },
+          },
+        })),
+      },
+      {
+        '@type': 'ItemList', '@id': `${url}#factory-reports`,
+        name: lang === 'zh' ? '工厂公开发运动态' : 'Official factory shipment reports',
+        itemListElement: factoryShipments.map((shipment, index) => ({
+          '@type': 'ListItem', position: index + 1,
+          item: {
+            '@type': 'CreativeWork', name: shipment.title[lang],
+            description: shipment.summary[lang], url: shipment.sourceUrl,
+            image: shipment.imageUrl, datePublished: shipment.publishedAt,
+            publisher: { '@type': 'Organization', name: shipment.brand[lang] },
           },
         })),
       },

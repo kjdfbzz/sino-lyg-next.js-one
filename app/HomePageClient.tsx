@@ -30,6 +30,7 @@ import { usePreferredLanguage } from './use-language';
 import { contactEmail, contactPhone, siteUrl } from './content-data';
 import { companyProfile } from './company-profile';
 import { cargoCategories } from './experience-data';
+import { factoryShipments } from './factory-shipments';
 
 const phone = contactPhone;
 const email = contactEmail;
@@ -541,26 +542,31 @@ export default function Home({
           <div>
             <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-300">GLOBAL VIEW · EXPERIENCE</p>
             <h2 id="experience-heading" className="mt-5 text-3xl font-black leading-tight sm:text-5xl">
-              {isZh ? '合作客户与业务经验' : 'Customers & logistics experience'}
+              {isZh ? '合作客户与工厂发运' : 'Customers & factory shipments'}
             </h2>
             <p className="mt-6 text-base leading-8 text-white/70">
               {isZh
-                ? '港威公司简介列示的服务客户包括柳工、卡特彼勒、徐工集团、中国重汽、青岛双星、中集集团等。货物经验覆盖机械、车辆、钢材、轮胎、光伏产品与消费品，服务包括海运整柜拼箱、特种箱、散杂货和配套物流。'
-                : 'Global View’s brochure lists customers including Liugong, Caterpillar, Xugong Group, China National Heavy Duty Truck Group, Qingdao Doublestar and China International Marine Containers Group. Cargo experience spans machinery, vehicles, steel, tires, photovoltaic products and consumer goods.'}
+                ? '合作客户包括柳工、卡特彼勒、徐工集团、中国重汽、青岛双星、中集集团等，货物涵盖机械、车辆、钢材、轮胎与能源设备。了解客户与业务服务，查看工厂公开的出口发运动态。'
+                : 'Customers include Liugong, Caterpillar, Xugong Group, China National Heavy Duty Truck Group, Qingdao Doublestar and China International Marine Containers Group. Explore our services and the factories’ publicly reported export shipments.'}
             </p>
-            <ul className="mt-6 flex flex-wrap gap-2" aria-label={isZh ? '资料列示的货物类别' : 'Cargo categories listed in the brochure'}>
+            <ul className="mt-6 flex flex-wrap gap-2" aria-label={isZh ? '货物类别' : 'Cargo categories'}>
               {cargoCategories.map((category) => (
                 <li key={category.en} className="border border-white/15 px-3 py-2 text-xs leading-5 text-white/70">{category[lang]}</li>
               ))}
             </ul>
             <a href={localizePath('/experience', lang)} className="mt-8 inline-flex items-center gap-3 bg-amber-300 px-5 py-4 text-sm font-bold text-black transition hover:bg-white">
-              {isZh ? '查看客户名单与业务经验' : 'Explore customers & experience'}
+              {isZh ? '查看客户与工厂发运' : 'Explore customers & shipments'}
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
           <figure className="min-w-0">
-            <Image src="/experience/brochure-port.jpg" alt={isZh ? '公司简介中的港口船舶与装卸图片' : 'Port vessels and cargo handling image from the company brochure'} width={1299} height={787} sizes="(min-width: 1024px) 50vw, 100vw" className="h-auto w-full border border-white/15" />
-            <figcaption className="mt-3 text-xs leading-6 text-white/45">{isZh ? '公司简介中的港口业务图片 · 第 13 页' : 'Port image from the company brochure · page 13'}</figcaption>
+            <a href={factoryShipments[0].sourceUrl} target="_blank" rel="noopener noreferrer" className="relative block aspect-[16/10] overflow-hidden border border-white/15">
+              <Image src={factoryShipments[0].imageUrl} alt={factoryShipments[0].imageAlt[lang]} fill unoptimized sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            </a>
+            <figcaption className="mt-3 flex flex-wrap justify-between gap-2 text-xs leading-6 text-white/55">
+              <span>{factoryShipments[0].title[lang]}</span>
+              <a href={factoryShipments[0].sourceUrl} target="_blank" rel="noopener noreferrer" className="text-amber-300 hover:text-white">{factoryShipments[0].sourceName[lang]} ↗</a>
+            </figcaption>
           </figure>
         </div>
       </section>
@@ -727,7 +733,7 @@ export default function Home({
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">{companyProfile.branchName[lang]}</p>
             <p className="mt-2 max-w-xl text-xs leading-6 text-white/42">{companyProfile.officeAddress[lang]}</p>
             <a href={localizePath('/about', lang)} className="mt-3 inline-block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '公司介绍与联系方式' : 'Company profile & contact details'}</a>
-            <a href={localizePath('/experience', lang)} className="mt-3 block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '合作客户与业务经验' : 'Customers & logistics experience'}</a>
+            <a href={localizePath('/experience', lang)} className="mt-3 block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '合作客户与工厂发运' : 'Customers & factory shipments'}</a>
           </div>
 
           <div className="flex flex-col gap-3 text-sm font-bold text-white/66 md:items-end">

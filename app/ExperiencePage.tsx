@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { companyProfile } from './company-profile';
 import { contactEmail, contactPhone, type Lang } from './content-data';
 import { cargoCategories, experienceCustomers, experienceServices } from './experience-data';
+import { factoryShipments } from './factory-shipments';
 import { localizePath } from './localized-path';
 import PageLanguage from './PageLanguage';
 
@@ -11,68 +12,62 @@ const copy = {
     home: '首页',
     about: '公司与联系人',
     routes: '航线指南',
-    pageName: '合作客户与业务经验',
+    pageName: '客户与发运',
     eyebrow: 'GLOBAL VIEW LOGISTICS · 港威国际物流',
-    title: '合作客户与业务经验',
-    intro: '从工厂货物到港口出运，了解港威国际物流公司资料中列示的客户与业务经验，沟通适合您货物的运输和配套操作。',
-    source: '客户名单及业务经验依据港威公司简介第 9–13 页整理，属于 Global View 公司经验。具体运输方案按当票货物与出运要求确认。',
-    customersHeading: '合作过的客户',
-    customersIntro: '公司简介列示的服务客户。客户名称按资料原文及常用品牌名称展示。',
-    cargoHeading: '进出口货物经验',
-    cargoIntro: '公司简介介绍的货物品类，涵盖制造业设备、工业材料、车辆与消费品。',
-    servicesHeading: '业务服务经验',
-    servicesIntro: '从海运集装箱到设备、项目货及配套服务，以下内容对应公司简介中的服务范围与操作经验。',
-    cargoLabel: '涉及货物',
-    operationsLabel: '服务与操作',
-    sourcePages: '资料页码',
-    imageHeading: '公司简介中的业务图片',
-    portCaption: '公司简介中的港口业务图片（第 13 页）',
+    title: '合作客户与工厂发运',
+    intro: '连接工厂、港口与海外市场。了解合作客户、工厂出口动态，以及我们提供的运输服务。',
+    shipmentsHeading: '工厂公开发运与交付',
+    shipmentsIntro: '徐工、福田与柳工的官方出口发运、设备交付报道。',
+    published: '发布',
+    customersHeading: '合作客户',
+    customersIntro: '港威国际物流服务过的制造业与贸易客户。',
+    cargoHeading: '货物品类',
+    servicesHeading: '运输与配套服务',
+    servicesIntro: '从集装箱到大型设备，从工厂提货到港口出运。',
     contactHeading: '沟通您的出货需求',
     contactIntro: '联系港威连云港销售经理李海文（Bryce Lee），沟通连云港、青岛等起运港至印度、中东、拉美及其他目的地的运输需求。',
-    inquiryInfo: '请提供品名、重量与体积、货物尺寸、起运地与目的港、预计备货时间，以及需要提货、报关或目的地服务的要求。',
+    inquiryInfo: '请提供品名、重量与体积、货物尺寸、起运地与目的港、预计备货时间，以及提货、报关或目的地服务要求。',
     emailAction: '邮件询价',
     whatsappAction: 'WhatsApp 联系',
-    profileAction: '查看公司与联系人',
-    routeAction: '查看航线指南',
-    footer: '客户与业务经验 · 公司资料 · 出口运输咨询',
+    profileAction: '公司与联系人',
+    routeAction: '航线指南',
+    footer: '合作客户 · 工厂发运 · 国际运输',
   },
   en: {
     home: 'Home',
     about: 'Company & contact',
     routes: 'Route guides',
-    pageName: 'Customers & experience',
+    pageName: 'Customers & shipments',
     eyebrow: 'GLOBAL VIEW LOGISTICS',
-    title: 'Customers & logistics experience',
-    intro: 'Explore the customers and logistics experience listed in Global View Logistics’ company brochure, from factory cargo to port operations, and discuss transport options for your shipment.',
-    source: 'Customer names and service experience are drawn from pages 9–13 of the Global View company brochure and describe company experience. Transport arrangements are confirmed for each shipment against its cargo and operating requirements.',
-    customersHeading: 'Customers served',
-    customersIntro: 'Customers listed in the company brochure, displayed using the source names and commonly used brand names.',
-    cargoHeading: 'Import and export cargo experience',
-    cargoIntro: 'Cargo categories described in the company brochure include manufacturing equipment, industrial materials, vehicles and consumer goods.',
-    servicesHeading: 'Logistics service experience',
-    servicesIntro: 'The following services reflect the company brochure’s operational scope, including ocean containers, equipment, project cargo and supporting logistics.',
-    cargoLabel: 'Cargo',
-    operationsLabel: 'Services and operations',
-    sourcePages: 'Brochure pages',
-    imageHeading: 'Operations images from the company brochure',
-    portCaption: 'Port image from the company brochure (page 13)',
+    title: 'Customers & factory shipments',
+    intro: 'Connecting factories, ports and overseas markets. Explore our customers, factory export news and freight services.',
+    shipmentsHeading: 'Factory shipments & deliveries',
+    shipmentsIntro: 'Official shipment and delivery reports from XCMG, FOTON and LiuGong.',
+    published: 'Published',
+    customersHeading: 'Customers',
+    customersIntro: 'Manufacturing and trading customers served by Global View Logistics.',
+    cargoHeading: 'Cargo categories',
+    servicesHeading: 'Freight & supporting services',
+    servicesIntro: 'From containers to heavy equipment, and from factory collection to port operations.',
     contactHeading: 'Discuss your shipment',
     contactIntro: 'Speak with Bryce Lee, the Lianyungang Sales Manager, about freight from Lianyungang, Qingdao and other origin ports to India, the Middle East, Latin America and other destinations.',
     inquiryInfo: 'Share the commodity, weight and volume, cargo dimensions, origin and destination port, expected cargo-ready date, and any collection, customs or destination service requirements.',
     emailAction: 'Email an inquiry',
     whatsappAction: 'Contact on WhatsApp',
-    profileAction: 'Company and contact details',
-    routeAction: 'Explore route guides',
-    footer: 'Customers and experience · Company information · Export freight inquiries',
+    profileAction: 'Company & contact',
+    routeAction: 'Route guides',
+    footer: 'Customers · Factory shipments · International freight',
   },
 } as const;
 
 const linkStyle = 'underline decoration-white/25 underline-offset-4 transition hover:text-amber-300 hover:decoration-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300';
+const sectionLinkStyle = 'border border-white/20 px-4 py-2.5 text-sm font-semibold transition hover:border-amber-300 hover:text-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300';
 
 export default function ExperiencePage({ lang }: { lang: Lang }) {
   const text = copy[lang];
   const isZh = lang === 'zh';
   const homeHref = localizePath('/', lang);
+  const leadShipment = factoryShipments[0];
 
   return (
     <main lang={isZh ? 'zh-CN' : 'en'} className="min-h-screen bg-[#030508] font-inter text-white">
@@ -88,76 +83,95 @@ export default function ExperiencePage({ lang }: { lang: Lang }) {
           </div>
         </nav>
 
-        <header className="border-b border-white/15 py-12 sm:py-20">
-          <nav aria-label={isZh ? '面包屑导航' : 'Breadcrumb'} className="mb-10 text-sm text-white/60">
+        <header className="border-b border-white/15 py-10 sm:py-14">
+          <nav aria-label={isZh ? '面包屑导航' : 'Breadcrumb'} className="mb-8 text-xs text-white/50">
             <ol className="flex flex-wrap items-center gap-3">
               <li><Link href={homeHref} className="hover:text-amber-300">{text.home}</Link></li>
               <li aria-hidden="true">/</li>
-              <li aria-current="page" className="text-white/85">{text.pageName}</li>
+              <li aria-current="page" className="text-white/70">{text.pageName}</li>
             </ol>
           </nav>
-          <p className="text-xs font-bold tracking-[0.18em] text-amber-300">{text.eyebrow}</p>
-          <h1 className="mt-5 max-w-4xl text-balance text-[clamp(2rem,5vw,4.75rem)] font-black leading-[1.12] tracking-tight">{text.title}</h1>
-          <p className="mt-7 max-w-3xl text-base leading-8 text-white/75 sm:text-lg">{text.intro}</p>
-          <p className="mt-6 max-w-3xl border-l-2 border-amber-300/60 pl-4 text-sm leading-7 text-white/60">{text.source}</p>
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12">
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold leading-6 tracking-[0.15em] text-amber-300 sm:text-xs">{text.eyebrow}</p>
+              <h1 className="mt-4 max-w-xl text-balance text-[clamp(2.25rem,4.4vw,4rem)] font-black leading-[1.14] tracking-tight">{text.title}</h1>
+              <p className="mt-5 max-w-xl text-base leading-8 text-white/70">{text.intro}</p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a href="#factory-shipments" className={sectionLinkStyle}>{text.shipmentsHeading} <span aria-hidden="true">↓</span></a>
+                <a href="#customers" className={sectionLinkStyle}>{text.customersHeading} <span aria-hidden="true">↓</span></a>
+              </div>
+            </div>
+            {leadShipment && (
+              <figure className="min-w-0">
+                <a href={leadShipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="group relative block aspect-[16/10] overflow-hidden bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">
+                  <Image src={leadShipment.imageUrl} alt={leadShipment.imageAlt[lang]} fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" unoptimized priority />
+                </a>
+                <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs leading-6">
+                  <span className="text-white/60">{leadShipment.title[lang]}</span>
+                  <a href={leadShipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-amber-300 hover:text-amber-100">{leadShipment.sourceName[lang]} <span aria-hidden="true">↗</span></a>
+                </figcaption>
+              </figure>
+            )}
+          </div>
         </header>
 
-        <section aria-labelledby="customers-heading" className="border-b border-white/15 py-12 sm:py-16">
-          <h2 id="customers-heading" className="text-2xl font-bold sm:text-3xl">{text.customersHeading}</h2>
-          <p className="mt-4 max-w-3xl leading-8 text-white/65">{text.customersIntro}</p>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {experienceCustomers.map((customer) => (
-              <li key={customer.id} className="min-w-0 border border-white/15 bg-white/[0.025] p-5">
-                <p className="break-words text-sm font-semibold leading-6 text-white/90">{customer.name[lang]}</p>
-                {isZh && customer.name.zh !== customer.name.en && (
-                  <p lang="en" className="mt-2 break-words text-xs leading-5 text-white/50">{customer.name.en}</p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="cargo-heading" className="border-b border-white/15 py-12 sm:py-16">
-          <h2 id="cargo-heading" className="text-2xl font-bold sm:text-3xl">{text.cargoHeading}</h2>
-          <p className="mt-4 max-w-3xl leading-8 text-white/65">{text.cargoIntro}</p>
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {cargoCategories.map((cargo) => (
-              <li key={cargo.en} className="border border-amber-300/20 bg-amber-300/[0.04] px-4 py-4 text-sm font-medium leading-6 text-amber-100">{cargo[lang]}</li>
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="services-heading" className="border-b border-white/15 py-12 sm:py-16">
-          <h2 id="services-heading" className="text-2xl font-bold sm:text-3xl">{text.servicesHeading}</h2>
-          <p className="mt-4 max-w-3xl leading-8 text-white/65">{text.servicesIntro}</p>
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {experienceServices.map((service) => (
-              <article key={service.id} id={service.id} className="min-w-0 border border-white/15 bg-white/[0.025] p-6 sm:p-8">
-                <h3 className="text-xl font-semibold leading-7 text-amber-300">{service.title[lang]}</h3>
-                <p className="mt-4 text-sm leading-7 text-white/70">{service.description[lang]}</p>
-                <dl className="mt-6 space-y-4 border-t border-white/10 pt-5 text-sm leading-7">
-                  <div><dt className="font-semibold text-white/90">{text.cargoLabel}</dt><dd className="mt-1 text-white/65">{service.cargo[lang]}</dd></div>
-                  <div><dt className="font-semibold text-white/90">{text.operationsLabel}</dt><dd className="mt-1 text-white/65">{service.operations[lang]}</dd></div>
-                </dl>
-                <p className="mt-6 text-xs text-white/45">{text.sourcePages}: {service.sourcePages.join(', ')}</p>
+        <section id="factory-shipments" aria-labelledby="shipments-heading" className="scroll-mt-8 border-b border-white/15 py-10 sm:py-14">
+          <h2 id="shipments-heading" className="text-2xl font-bold sm:text-3xl">{text.shipmentsHeading}</h2>
+          <p className="mt-3 text-sm leading-7 text-white/60">{text.shipmentsIntro}</p>
+          <div className="mt-7 grid gap-7 md:grid-cols-3">
+            {factoryShipments.map((shipment) => (
+              <article key={shipment.id} className="min-w-0">
+                <a href={shipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="group relative block aspect-[16/10] overflow-hidden bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">
+                  <Image src={shipment.imageUrl} alt={shipment.imageAlt[lang]} fill sizes="(min-width: 1024px) 350px, (min-width: 768px) 30vw, 90vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" unoptimized loading="lazy" />
+                </a>
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[11px] leading-5">
+                  <p className="font-semibold tracking-wide text-amber-300">{shipment.brand[lang]}</p>
+                  <p className="text-white/45">{text.published} <time dateTime={shipment.publishedAt}>{shipment.publishedAt}</time></p>
+                </div>
+                <h3 className="mt-2 text-lg font-semibold leading-7">
+                  <a href={shipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="transition hover:text-amber-300">{shipment.title[lang]}</a>
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-white/65">{shipment.summary[lang]}</p>
+                <a href={shipment.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-xs font-semibold text-amber-300 hover:text-amber-100">{shipment.sourceName[lang]} <span aria-hidden="true">↗</span></a>
               </article>
             ))}
           </div>
         </section>
 
-        <section aria-labelledby="images-heading" className="border-b border-white/15 py-12 sm:py-16">
-          <h2 id="images-heading" className="text-2xl font-bold sm:text-3xl">{text.imageHeading}</h2>
-          <div className="mt-8 max-w-3xl">
-            <figure className="min-w-0">
-              <div className="relative aspect-[3/2] overflow-hidden border border-white/15 bg-white/5">
-                <Image src="/experience/brochure-port.jpg" alt={text.portCaption} fill sizes="(min-width: 1024px) 768px, 90vw" className="object-cover" />
-              </div>
-              <figcaption className="mt-3 text-sm leading-6 text-white/60">{text.portCaption}</figcaption>
-            </figure>
+        <section id="customers" aria-labelledby="customers-heading" className="scroll-mt-8 border-b border-white/15 py-10 sm:py-14">
+          <h2 id="customers-heading" className="text-2xl font-bold sm:text-3xl">{text.customersHeading}</h2>
+          <p className="mt-3 text-sm leading-7 text-white/60">{text.customersIntro}</p>
+          <ul className="mt-7 grid grid-cols-2 gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-3 lg:grid-cols-4">
+            {experienceCustomers.map((customer) => (
+              <li key={customer.id} className="flex min-w-0 items-center bg-[#080b0f] px-4 py-4 sm:px-5">
+                <span className="break-words text-sm font-medium leading-6 text-white/80">{customer.name[lang]}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="services" aria-labelledby="services-heading" className="scroll-mt-8 border-b border-white/15 py-10 sm:py-14">
+          <h2 id="services-heading" className="text-2xl font-bold sm:text-3xl">{text.servicesHeading}</h2>
+          <p className="mt-3 text-sm leading-7 text-white/60">{text.servicesIntro}</p>
+          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {experienceServices.map((service) => (
+              <article key={service.id} id={service.id} className="min-w-0 border border-white/15 bg-white/[0.025] p-5 sm:p-6">
+                <h3 className="text-base font-semibold leading-7 text-amber-300">{service.title[lang]}</h3>
+                <p className="mt-3 text-sm leading-7 text-white/65">{service.description[lang]}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8">
+            <h3 className="text-sm font-semibold text-white/85">{text.cargoHeading}</h3>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {cargoCategories.map((cargo) => (
+                <li key={cargo.en} className="border border-white/10 bg-white/[0.025] px-3 py-1.5 text-xs leading-6 text-white/65">{cargo[lang]}</li>
+              ))}
+            </ul>
           </div>
         </section>
 
-        <section aria-labelledby="contact-heading" className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-12">
+        <section aria-labelledby="contact-heading" className="grid gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-12">
           <div>
             <h2 id="contact-heading" className="text-2xl font-bold sm:text-3xl">{text.contactHeading}</h2>
             <p className="mt-5 max-w-3xl leading-8 text-white/75">{text.contactIntro}</p>
