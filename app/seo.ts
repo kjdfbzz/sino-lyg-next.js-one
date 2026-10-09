@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { contactEmail, contactPhone, siteUrl, type Lang } from './content-data';
 import { localizePath } from './localized-path';
 import { companyProfile } from './company-profile';
+import { cargoCategories, experienceServices, experienceUpdatedAt } from './experience-data';
 
 export function absoluteUrl(path: string) {
   return new URL(path, siteUrl).toString();
@@ -219,6 +220,82 @@ export function aboutPageJsonLd(lang: Lang) {
       {
         '@type': 'BreadcrumbList',
         '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: lang === 'zh' ? '首页' : 'Home', item: absoluteUrl(localizePath('/', lang)) },
+          { '@type': 'ListItem', position: 2, name: copy.breadcrumb, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+const experienceCopy = {
+  zh: {
+    title: '合作客户与业务经验 | 港威国际物流 · 连云港与青岛货代',
+    description: '根据港威公司简介了解合作过的客户、轮胎、钢材、车辆、机械及光伏等货物经验，以及整柜拼箱、特种箱、散杂货和配套物流服务。联系连云港销售经理李海文 Bryce Lee 沟通出口需求。',
+    breadcrumb: '合作客户与业务经验',
+  },
+  en: {
+    title: 'Customers & Logistics Experience | Global View Logistics',
+    description: 'Explore customers and cargo experience listed in Global View Logistics’ company brochure, covering vehicles, machinery, tires, steel and photovoltaic products, with ocean freight, special containers and supporting services. Contact Bryce Lee in Lianyungang.',
+    breadcrumb: 'Customers & experience',
+  },
+};
+
+export function experienceMetadata(lang: Lang): Metadata {
+  const copy = experienceCopy[lang];
+  const url = absoluteUrl(localizePath('/experience', lang));
+  return {
+    title: { absolute: copy.title },
+    description: copy.description,
+    alternates: languageAlternates('/experience', lang),
+    authors: [{ name: lang === 'zh' ? '李海文 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
+    openGraph: {
+      type: 'website', url, title: copy.title, description: copy.description,
+      siteName: 'Bryce Logistics',
+      locale: lang === 'zh' ? 'zh_CN' : 'en_US',
+      alternateLocale: [lang === 'zh' ? 'en_US' : 'zh_CN'],
+      images: [{ url: '/experience/brochure-port.jpg', width: 1299, height: 787, alt: lang === 'zh' ? '公司简介中的港口业务图片' : 'Port image from the company brochure' }],
+    },
+    twitter: { card: 'summary_large_image', title: copy.title, description: copy.description, images: ['/experience/brochure-port.jpg'] },
+  };
+}
+
+export function experiencePageJsonLd(lang: Lang) {
+  const url = absoluteUrl(localizePath('/experience', lang));
+  const copy = experienceCopy[lang];
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage', '@id': `${url}#webpage`, url,
+        name: copy.title, description: copy.description,
+        inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        dateModified: experienceUpdatedAt,
+        isPartOf: { '@id': absoluteUrl('/#website') },
+        author: { '@id': absoluteUrl('/#person') },
+        about: [
+          { '@id': absoluteUrl('/#parent-organization') },
+          ...cargoCategories.map((category) => ({ '@type': 'Thing', name: category[lang] })),
+        ],
+        citation: { '@type': 'CreativeWork', name: 'Global View Logistics company brochure', inLanguage: 'es' },
+        mainEntity: { '@id': `${url}#service-experience` },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+      },
+      {
+        '@type': 'ItemList', '@id': `${url}#service-experience`,
+        name: lang === 'zh' ? '公司简介中的业务服务经验' : 'Service experience described in the company brochure',
+        itemListElement: experienceServices.map((service, index) => ({
+          '@type': 'ListItem', position: index + 1,
+          item: {
+            '@type': 'Service', '@id': `${url}#${service.id}`,
+            name: service.title[lang], description: service.description[lang],
+            provider: { '@id': absoluteUrl('/#parent-organization') },
+          },
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList', '@id': `${url}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: lang === 'zh' ? '首页' : 'Home', item: absoluteUrl(localizePath('/', lang)) },
           { '@type': 'ListItem', position: 2, name: copy.breadcrumb, item: url },

@@ -3,12 +3,14 @@ import { contentArticles, contentSections, getArticlePath, getArticlesBySection,
 import { absoluteUrl, languageUrls } from './seo';
 import { localizePath } from './localized-path';
 import { companyProfile } from './company-profile';
+import { experienceUpdatedAt } from './experience-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const languages: Lang[] = ['zh', 'en'];
   const pages: Array<{ path: string; lastModified?: string }> = [
     { path: '/' },
     { path: '/about', lastModified: companyProfile.updatedAt },
+    { path: '/experience', lastModified: experienceUpdatedAt },
     ...contentSections.map((section) => ({
       path: `/${section.slug}`,
       lastModified: getArticlesBySection(section.slug)[0]?.updatedAt,

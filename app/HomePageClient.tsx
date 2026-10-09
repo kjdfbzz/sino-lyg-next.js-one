@@ -29,6 +29,7 @@ import { localizePath } from './localized-path';
 import { usePreferredLanguage } from './use-language';
 import { contactEmail, contactPhone, siteUrl } from './content-data';
 import { companyProfile } from './company-profile';
+import { cargoCategories } from './experience-data';
 
 const phone = contactPhone;
 const email = contactEmail;
@@ -535,6 +536,35 @@ export default function Home({
         </div>
       </section>
 
+      <section id="experience" aria-labelledby="experience-heading" className="border-y border-white/14 bg-[#080c11] px-6 py-20 sm:px-10 lg:px-16">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-300">GLOBAL VIEW · EXPERIENCE</p>
+            <h2 id="experience-heading" className="mt-5 text-3xl font-black leading-tight sm:text-5xl">
+              {isZh ? '合作客户与业务经验' : 'Customers & logistics experience'}
+            </h2>
+            <p className="mt-6 text-base leading-8 text-white/70">
+              {isZh
+                ? '港威公司简介列示的服务客户包括柳工、卡特彼勒、徐工集团、中国重汽、青岛双星、中集集团等。货物经验覆盖机械、车辆、钢材、轮胎、光伏产品与消费品，服务包括海运整柜拼箱、特种箱、散杂货和配套物流。'
+                : 'Global View’s brochure lists customers including Liugong, Caterpillar, Xugong Group, China National Heavy Duty Truck Group, Qingdao Doublestar and China International Marine Containers Group. Cargo experience spans machinery, vehicles, steel, tires, photovoltaic products and consumer goods.'}
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-2" aria-label={isZh ? '资料列示的货物类别' : 'Cargo categories listed in the brochure'}>
+              {cargoCategories.map((category) => (
+                <li key={category.en} className="border border-white/15 px-3 py-2 text-xs leading-5 text-white/70">{category[lang]}</li>
+              ))}
+            </ul>
+            <a href={localizePath('/experience', lang)} className="mt-8 inline-flex items-center gap-3 bg-amber-300 px-5 py-4 text-sm font-bold text-black transition hover:bg-white">
+              {isZh ? '查看客户名单与业务经验' : 'Explore customers & experience'}
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+          <figure className="min-w-0">
+            <Image src="/experience/brochure-port.jpg" alt={isZh ? '公司简介中的港口船舶与装卸图片' : 'Port vessels and cargo handling image from the company brochure'} width={1299} height={787} sizes="(min-width: 1024px) 50vw, 100vw" className="h-auto w-full border border-white/15" />
+            <figcaption className="mt-3 text-xs leading-6 text-white/45">{isZh ? '公司简介中的港口业务图片 · 第 13 页' : 'Port image from the company brochure · page 13'}</figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section className="relative isolate overflow-hidden px-6 py-24 sm:px-10 lg:px-16">
         <BackgroundImage
           webpSrc="/bryce-process-desk.webp"
@@ -697,6 +727,7 @@ export default function Home({
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">{companyProfile.branchName[lang]}</p>
             <p className="mt-2 max-w-xl text-xs leading-6 text-white/42">{companyProfile.officeAddress[lang]}</p>
             <a href={localizePath('/about', lang)} className="mt-3 inline-block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '公司介绍与联系方式' : 'Company profile & contact details'}</a>
+            <a href={localizePath('/experience', lang)} className="mt-3 block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '合作客户与业务经验' : 'Customers & logistics experience'}</a>
           </div>
 
           <div className="flex flex-col gap-3 text-sm font-bold text-white/66 md:items-end">

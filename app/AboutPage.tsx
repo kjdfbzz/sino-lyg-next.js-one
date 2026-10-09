@@ -169,6 +169,7 @@ export default function AboutPage({ lang }: { lang: Lang }) {
           <div className="flex flex-wrap items-center gap-5 text-sm font-semibold">
             <Link href={homeHref} className="transition hover:text-amber-300">{text.home}</Link>
             <Link href={localizePath('/routes', lang)} className="transition hover:text-amber-300">{text.routes}</Link>
+            <Link href={localizePath('/experience', lang)} className="transition hover:text-amber-300">{isZh ? '客户与业务经验' : 'Customers & experience'}</Link>
             <Link href={localizePath('/about', isZh ? 'en' : 'zh')} hrefLang={isZh ? 'en' : 'zh-CN'} className="border border-white/25 px-3 py-2 transition hover:border-amber-300 hover:text-amber-300">
               {isZh ? 'EN' : '中文'}
             </Link>
@@ -230,6 +231,16 @@ export default function AboutPage({ lang }: { lang: Lang }) {
               </div>
             ))}
           </div>
+        </section>
+
+        <section aria-labelledby="experience-heading" className="border-b border-white/15 py-12 sm:py-16">
+          <h2 id="experience-heading" className="text-2xl font-bold sm:text-3xl">{isZh ? '合作客户与货物经验' : 'Customers & cargo experience'}</h2>
+          <p className="mt-4 max-w-3xl leading-8 text-white/70">
+            {isZh
+              ? '公司简介列示了柳工、卡特彼勒、徐工集团、中国重汽、青岛双星、中集集团等服务客户，以及轮胎、钢材、车辆、机械设备、光伏产品和食品等进出口物流经验。'
+              : 'The company brochure lists customer experience including Liugong, Caterpillar, Xugong Group, China National Heavy Duty Truck Group, Qingdao Doublestar and China International Marine Containers Group, together with import and export experience in tires, steel, vehicles, machinery, photovoltaic products and food.'}
+          </p>
+          <Link href={localizePath('/experience', lang)} className={`mt-6 inline-block text-sm font-semibold text-amber-300 ${linkStyle}`}>{isZh ? '查看客户名单与业务经验' : 'Explore customers & logistics experience'} <span aria-hidden="true">→</span></Link>
         </section>
 
         <section aria-labelledby="contact-heading" className="grid gap-10 border-b border-white/15 py-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16 sm:py-16">
