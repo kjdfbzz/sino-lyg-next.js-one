@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { ContentArticle, ContentSection, Lang } from '../../content-data';
+import type { ContentArticle, ContentSection, Lang } from '../../../content-data';
 import {
   getArticleCopy,
   getArticlePath,
   getSectionCopy,
-} from '../../content-data';
-import { localizePath } from '../../localized-path';
-import PageLanguage from '../../PageLanguage';
+} from '../../../content-data';
+import { localizePath } from '../../../localized-path';
+import PageLanguage from '../../../PageLanguage';
 
 type SectionPageClientProps = {
   section: ContentSection;

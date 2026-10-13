@@ -1,5 +1,5 @@
-import AboutPage from '../AboutPage';
-import { aboutMetadata, aboutPageJsonLd } from '../seo';
+import AboutPage from '../../AboutPage';
+import { aboutMetadata, aboutPageJsonLd } from '../../seo';
 
 export const metadata = aboutMetadata('zh');
 

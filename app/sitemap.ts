@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { contentArticles, contentSections, getArticlePath, getArticlesBySection, type Lang } from './content-data';
-import { absoluteUrl, languageUrls } from './seo';
+import { absoluteUrl, homeUpdatedAt, languageUrls } from './seo';
 import { localizePath } from './localized-path';
 import { companyProfile } from './company-profile';
 import { experienceUpdatedAt } from './experience-data';
@@ -8,7 +8,7 @@ import { experienceUpdatedAt } from './experience-data';
 export default function sitemap(): MetadataRoute.Sitemap {
   const languages: Lang[] = ['zh', 'en'];
   const pages: Array<{ path: string; lastModified?: string }> = [
-    { path: '/' },
+    { path: '/', lastModified: homeUpdatedAt },
     { path: '/about', lastModified: companyProfile.updatedAt },
     { path: '/experience', lastModified: experienceUpdatedAt },
     ...contentSections.map((section) => ({

@@ -10,7 +10,7 @@ import {
   getSectionCopy,
 } from '../../../content-data';
 import { absoluteUrl, languageAlternates } from '../../../seo';
-import ArticlePageClient from '../../../(content)/[section]/[slug]/ArticlePageClient';
+import ArticlePageClient from '../../../(zh)/(content)/[section]/[slug]/ArticlePageClient';
 
 type EnglishArticlePageProps = {
   params: Promise<{

@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import type { Lang } from './content-data';
 
 function persistLanguage(lang: Lang) {
-  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   document.cookie = `bryce_lang=${lang}; path=/; max-age=31536000; SameSite=Lax`;
   try {
     window.localStorage.setItem('bryce_lang', lang);
@@ -18,6 +17,6 @@ export function usePreferredLanguage(initialLang: Lang = 'zh') {
     persistLanguage(initialLang);
   }, [initialLang]);
 
-  // The URL owns the language; saved preferences never replace page content.
+  // Root layouts render the URL's language on the server; this only saves preferences.
   return [initialLang, persistLanguage] as const;
 }

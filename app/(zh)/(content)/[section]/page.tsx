@@ -5,8 +5,8 @@ import {
   getArticlesBySection,
   getArticlePath,
   getSection,
-} from '../../content-data';
-import { absoluteUrl, languageAlternates } from '../../seo';
+} from '../../../content-data';
+import { absoluteUrl, languageAlternates } from '../../../seo';
 import SectionPageClient from './SectionPageClient';
 
 type SectionPageProps = {

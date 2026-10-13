@@ -1,5 +1,5 @@
-import Home from './HomePageClient';
-import { homeMetadata, homePageJsonLd } from './seo';
+import Home from '../HomePageClient';
+import { homeMetadata, homePageJsonLd } from '../seo';
 
 export const metadata = homeMetadata('zh');
 

@@ -10,9 +10,9 @@ import {
   getArticlePath,
   getSectionCopy,
   type Lang,
-} from '../../../content-data';
-import { localizePath } from '../../../localized-path';
-import PageLanguage from '../../../PageLanguage';
+} from '../../../../content-data';
+import { localizePath } from '../../../../localized-path';
+import PageLanguage from '../../../../PageLanguage';
 
 type ArticlePageClientProps = {
   article: ContentArticle;

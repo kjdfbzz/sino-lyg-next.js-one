@@ -1,5 +1,5 @@
-import ExperiencePage from '../ExperiencePage';
-import { experienceMetadata, experiencePageJsonLd } from '../seo';
+import ExperiencePage from '../../ExperiencePage';
+import { experienceMetadata, experiencePageJsonLd } from '../../seo';
 
 export const metadata = experienceMetadata('zh');
 

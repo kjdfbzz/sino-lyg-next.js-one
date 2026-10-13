@@ -9,7 +9,7 @@ import {
   getSectionCopy,
 } from '../../content-data';
 import { absoluteUrl, languageAlternates } from '../../seo';
-import SectionPageClient from '../../(content)/[section]/SectionPageClient';
+import SectionPageClient from '../../(zh)/(content)/[section]/SectionPageClient';
 
 type EnglishSectionPageProps = {
   params: Promise<{

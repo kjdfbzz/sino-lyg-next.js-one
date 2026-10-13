@@ -31,6 +31,7 @@ import { contactEmail, contactPhone, siteUrl } from './content-data';
 import { companyProfile } from './company-profile';
 import { cargoCategories } from './experience-data';
 import { factoryGalleries } from './factory-shipments';
+import { homeSearchContentEn } from './home-search-content';
 
 const phone = contactPhone;
 const email = contactEmail;
@@ -233,33 +234,33 @@ const knowledgeCards = [
 
 const inquiryFields: Array<{
   name: keyof InquiryFormData;
-  label: string;
-  placeholder: string;
+  label: Copy;
+  placeholder: Copy;
 }> = [
   {
     name: 'pol',
-    label: 'POL / 起运港',
-    placeholder: 'Qingdao / Lianyungang / Shanghai',
+    label: { zh: '起运港 / POL', en: 'Departure port / POL' },
+    placeholder: { zh: '青岛 / 连云港 / 上海', en: 'Qingdao / Lianyungang / Shanghai' },
   },
   {
     name: 'pod',
-    label: 'POD / 目的港',
-    placeholder: 'Kolkata / Jebel Ali / Santos',
+    label: { zh: '目的港 / POD', en: 'Destination port / POD' },
+    placeholder: { zh: 'Kolkata / Jebel Ali / Santos', en: 'Kolkata / Jebel Ali / Santos' },
   },
   {
     name: 'cargo',
-    label: 'Cargo / 货物',
-    placeholder: '品名、件数、重量、体积',
+    label: { zh: '货物信息', en: 'Cargo details' },
+    placeholder: { zh: '品名、件数、重量、体积', en: 'Commodity, packages, weight and volume' },
   },
   {
     name: 'contact',
-    label: 'Contact / 联系方式',
-    placeholder: '微信 / 手机 / 邮箱',
+    label: { zh: '联系方式', en: 'Contact details' },
+    placeholder: { zh: '微信 / 手机 / 邮箱', en: 'Email / phone / WhatsApp / WeChat' },
   },
   {
     name: 'readyDate',
-    label: 'Ready Date / 出货时间',
-    placeholder: '本周 / 下周 / 具体日期',
+    label: { zh: '出货时间', en: 'Cargo ready date' },
+    placeholder: { zh: '本周 / 下周 / 具体日期', en: 'This week / next week / specific date' },
   },
 ];
 
@@ -363,6 +364,22 @@ export default function Home({
   const [contactOpen, setContactOpen] = useState(false);
 
   const isZh = lang === 'zh';
+  const displayedRoutes = isZh
+    ? routes.map((route) => ({
+        id: route.code,
+        code: route.code,
+        title: route.title.zh,
+        ports: route.meta,
+        description: route.copy.zh,
+        carrier: route.carrier,
+        href: '',
+        linkLabel: '',
+      }))
+    : homeSearchContentEn.routeCards.map((route, index) => ({
+        ...route,
+        code: String(index + 1).padStart(2, '0'),
+        carrier: 'Lianyungang / Qingdao',
+      }));
 
   const openInquiry = () => {
     setMenuOpen(false);
@@ -387,6 +404,8 @@ export default function Home({
           setMenuOpen={setMenuOpen}
           openInquiry={openInquiry}
         />
+
+        {!isZh && <EnglishOriginPlanning />}
 
       <section id="services" className="relative isolate min-h-screen overflow-hidden px-6 py-24 sm:px-10 lg:px-16">
         <BackgroundImage
@@ -462,9 +481,10 @@ export default function Home({
           </div>
 
           <div className="space-y-4">
-            {routes.map((route) => (
+            {displayedRoutes.map((route) => (
               <article
-                key={route.code}
+                key={route.id}
+                data-route={route.id}
                 className="grid gap-5 border border-white/16 bg-black/38 p-5 backdrop-blur-md transition hover:border-amber-300/50 sm:grid-cols-[86px_1fr] sm:p-6"
               >
                 <div className="text-5xl font-black leading-none tabular-nums text-amber-300">
@@ -473,18 +493,24 @@ export default function Home({
                 <div>
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
                     <h3 className="text-2xl font-black tracking-tight">
-                      {pick(route.title, lang)}
+                      {route.title}
                     </h3>
                     <span className="text-xs font-bold uppercase tracking-[0.22em] text-white/46">
                       {route.carrier}
                     </span>
                   </div>
                   <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-white/42">
-                    {route.meta}
+                    {route.ports}
                   </p>
                   <p className="mt-4 text-sm leading-7 text-white/68">
-                    {pick(route.copy, lang)}
+                    {route.description}
                   </p>
+                  {route.href && (
+                    <a href={route.href} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-amber-300 transition hover:text-white">
+                      {route.linkLabel}
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  )}
                 </div>
               </article>
             ))}
@@ -658,6 +684,8 @@ export default function Home({
         </div>
       </section>
 
+      {!isZh && <EnglishQuotePreparation />}
+
       <section
         id="inquire"
         className="relative overflow-hidden bg-amber-300 px-6 py-20 text-black sm:px-10 lg:px-16"
@@ -704,7 +732,7 @@ export default function Home({
                 className="flex items-center justify-center gap-3 border border-black px-6 py-5 text-xs font-black uppercase tracking-[0.24em] transition hover:bg-black hover:text-white"
               >
                 <Phone className="h-4 w-4" />
-                Call
+                {isZh ? '电话联系' : 'Call'}
               </a>
             </div>
           </div>
@@ -768,6 +796,81 @@ export default function Home({
   );
 }
 
+function EnglishOriginPlanning() {
+  return (
+    <section id="china-origin-planning" aria-labelledby="china-origin-heading" className="border-y border-white/14 bg-[#080c11] px-6 py-16 sm:px-10 lg:px-16">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-300">CHINA ORIGIN · IMPORTER SUPPORT</p>
+            <h2 id="china-origin-heading" className="mt-5 max-w-2xl text-3xl font-black leading-tight sm:text-4xl">
+              {homeSearchContentEn.introduction.title}
+            </h2>
+          </div>
+          <p className="text-sm leading-7 text-white/70 sm:text-base sm:leading-8">{homeSearchContentEn.introduction.description}</p>
+        </div>
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {homeSearchContentEn.origins.map((origin) => (
+            <article key={origin.id} data-origin={origin.id} className="border border-white/16 bg-black/25 p-6 sm:p-8">
+              <MapPin className="h-6 w-6 text-amber-300" />
+              <h3 className="mt-5 text-2xl font-black tracking-tight">{origin.title}</h3>
+              <p className="mt-4 text-sm leading-7 text-white/68">{origin.description}</p>
+              <a href={origin.href} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-amber-300 transition hover:text-white">
+                {origin.linkLabel}
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EnglishQuotePreparation() {
+  return (
+    <>
+      <section id="quote-checklist" aria-labelledby="quote-checklist-heading" className="border-y border-white/14 bg-[#080c11] px-6 py-16 sm:px-10 lg:px-16">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-300">BEFORE YOU REQUEST A RATE</p>
+            <h2 id="quote-checklist-heading" className="mt-5 text-3xl font-black leading-tight sm:text-4xl">{homeSearchContentEn.quoteChecklist.title}</h2>
+            <p className="mt-5 text-sm leading-7 text-white/68">{homeSearchContentEn.quoteChecklist.intro}</p>
+            <a href={homeSearchContentEn.quoteChecklist.href} className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-amber-300 transition hover:text-white">
+              {homeSearchContentEn.quoteChecklist.linkLabel}
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {homeSearchContentEn.quoteChecklist.items.map((item) => (
+              <li key={item} className="flex items-start gap-3 border border-white/14 bg-black/25 p-5 text-sm leading-7 text-white/75">
+                <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+      <section id="shipping-faq" aria-labelledby="shipping-faq-heading" className="bg-[#030508] px-6 py-16 sm:px-10 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-300">CHINA FREIGHT QUESTIONS</p>
+          <h2 id="shipping-faq-heading" className="mt-5 text-3xl font-black leading-tight sm:text-4xl">Planning your shipment from China</h2>
+          <div className="mt-9 divide-y divide-white/14 border-y border-white/14">
+            {homeSearchContentEn.faqs.map((faq, index) => (
+              <details key={faq.question} data-faq-index={index + 1} className="group py-5">
+                <summary className="cursor-pointer text-base font-bold leading-7 text-white transition hover:text-amber-300 sm:text-lg">
+                  {faq.question}
+                </summary>
+                <p className="mt-4 max-w-4xl text-sm leading-7 text-white/68">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 function Hero({
   lang,
   menuOpen,
@@ -799,7 +902,7 @@ function Hero({
         <a
           href="#home"
           className="min-w-0 max-w-[13rem] font-podium text-lg font-black uppercase tracking-[0.08em] text-white sm:max-w-none sm:text-3xl sm:tracking-[0.18em]"
-          aria-label="Bryce Logistics home"
+          aria-label={isZh ? 'Bryce Logistics 首页' : 'Bryce Logistics home'}
         >
           Bryce Logistics
         </a>
@@ -841,7 +944,7 @@ function Hero({
             onClick={openInquiry}
             className="group flex items-center gap-3 border border-white/30 px-5 py-3 text-xs font-black uppercase tracking-[0.22em] text-white transition hover:border-white/60 hover:bg-white/10 lg:px-6 lg:tracking-[0.28em]"
           >
-            Get in touch
+            {isZh ? '联系我们' : 'Get in touch'}
             <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -858,7 +961,7 @@ function Hero({
           <button
             type="button"
             className="flex h-10 w-10 items-center justify-center border border-white/20 text-white"
-            aria-label="Open navigation menu"
+            aria-label={isZh ? '打开导航菜单' : 'Open navigation menu'}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(true)}
           >
@@ -869,28 +972,31 @@ function Hero({
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-96px)] max-w-7xl flex-col justify-center px-6 pb-28 pt-10 sm:px-10 lg:px-16 xl:px-0">
         <div className="max-w-[920px]">
+          {!isZh && (
+            <p className="animate-fade-up mb-4 text-xs font-black uppercase leading-6 tracking-[0.18em] text-amber-300">{homeSearchContentEn.hero.eyebrow}</p>
+          )}
           <div className="animate-fade-up mb-6 flex max-w-[19rem] items-start gap-3 sm:max-w-none sm:items-center lg:mb-8">
             <Crown className="h-4 w-4 text-white/78" />
             <h1 className="text-xs font-black uppercase leading-5 tracking-[0.18em] text-white/72 sm:text-sm sm:tracking-[0.3em]">
               {isZh
                 ? '连云港 · 青岛出口货代：海运、空运、拖车与报关'
-                : 'Lianyungang & Qingdao China Export Freight Forwarding'}
+                : homeSearchContentEn.hero.title}
             </h1>
           </div>
 
           <div aria-hidden="true" className="animate-fade-up-delay-1 font-podium text-[3.35rem] font-black uppercase leading-[0.9] text-white [text-shadow:0_18px_45px_rgba(0,0,0,0.78)] sm:text-[5rem] md:text-[6.6rem] lg:text-[8.1rem] xl:text-[9.3rem]">
             China
             <br />
-            Export
+            {isZh ? 'Export' : 'Freight'}
             <br />
-            Freight
+            {isZh ? 'Freight' : 'Partner'}
           </div>
 
           <div className="animate-fade-up-delay-2 mt-7 grid gap-6 lg:grid-cols-[minmax(0,640px)_auto] lg:items-end">
             <p className="max-w-2xl text-sm leading-7 text-white/74 sm:text-base">
               {isZh
                 ? '我是李经理 Bryce Lee，港威国际物流连云港销售经理。为外贸工厂和出口客户梳理整柜、拼箱、拖车、报关、空运和重点航线方案，让每一票货都有清楚的费用、节点和可执行路径。'
-                : 'I am Bryce Lee, Sales Manager at Global View Logistics in Lianyungang, China. I help exporters turn FCL, LCL, trucking, customs, air freight and trade-lane decisions into clear shipment plans.'}
+                : homeSearchContentEn.hero.description}
             </p>
 
             <button
@@ -1001,7 +1107,7 @@ function MobileMenu({
         </a>
         <button
           type="button"
-          aria-label="Close navigation menu"
+          aria-label={isZh ? '关闭导航菜单' : 'Close navigation menu'}
           onClick={() => setMenuOpen(false)}
           className="flex h-10 w-10 items-center justify-center border border-white/20 text-white"
         >
@@ -1204,20 +1310,20 @@ function InquiryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/82 px-4 py-6 backdrop-blur-md sm:py-8">
+    <div role="dialog" aria-modal="true" aria-labelledby="inquiry-dialog-heading" className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/82 px-4 py-6 backdrop-blur-md sm:py-8">
       <div className="animate-scale-in w-full max-w-2xl border border-white/18 bg-[#05070a] text-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-white/12 px-5 py-4 sm:px-7">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-amber-300">
-              Inquiry brief
+              {isZh ? '运输询价信息' : 'Inquiry brief'}
             </p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">
+            <h2 id="inquiry-dialog-heading" className="mt-1 text-xl font-black tracking-tight">
               {isZh ? '留下运输需求，我来帮你梳理方案' : 'Send the shipment brief'}
             </h2>
           </div>
           <button
             type="button"
-            aria-label="Close inquiry dialog"
+            aria-label={isZh ? '关闭运输询价窗口' : 'Close inquiry dialog'}
             onClick={() => setQuoteOpen(false)}
             className="text-white/58 transition hover:text-white"
           >
@@ -1231,13 +1337,14 @@ function InquiryModal({
         >
           <div className="grid gap-4 sm:grid-cols-2">
             {inquiryFields.map((field) => (
-              <label key={field.label} className="block">
+              <label key={field.name} className="block">
                 <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/48">
-                  {field.label}
+                  {field.label[lang]}
                 </span>
                 <input
+                  name={field.name}
                   className="mt-2 w-full border border-white/14 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/32 focus:border-amber-300 focus:bg-white/[0.07]"
-                  placeholder={field.placeholder}
+                  placeholder={field.placeholder[lang]}
                   value={form[field.name]}
                   onChange={updateField(field.name)}
                 />
@@ -1247,11 +1354,12 @@ function InquiryModal({
 
           <label className="block">
             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/48">
-              Notes / 补充说明
+              {isZh ? '补充说明' : 'Additional notes'}
             </span>
             <textarea
+              name="notes"
               className="mt-2 min-h-28 w-full border border-white/14 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/32 focus:border-amber-300 focus:bg-white/[0.07]"
-              placeholder="是否需要拖车、报关、仓储、目的港清关建议，或其他特殊要求"
+              placeholder={isZh ? '是否需要拖车、报关、仓储、目的港清关建议，或其他特殊要求' : 'Pickup address, Incoterm, container type, destination services or special handling'}
               value={form.notes}
               onChange={updateField('notes')}
             />
@@ -1259,8 +1367,8 @@ function InquiryModal({
 
           <p className="text-xs leading-relaxed text-white/46">
             {isZh
-              ? '点击发送后会优先提交到 Bryce 邮箱；如果服务器邮件服务尚未配置，页面会自动打开你的邮箱并带入完整询盘内容。'
-              : 'Submitting first tries to send the brief to Bryce by email. If server email is not configured yet, your mail app opens with the full brief prepared.'}
+              ? '填写货物信息和联系方式后发送。也可以复制询价信息，通过邮件或 WhatsApp 联系 Bryce。'
+              : 'Send the cargo details with your contact information. You can also copy the brief and contact Bryce by email or WhatsApp.'}
           </p>
 
           {submitState === 'sent' && (
@@ -1301,7 +1409,7 @@ function InquiryModal({
               href={companyProfile.mobileHref}
               className="flex items-center justify-center border border-white/16 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
             >
-              Call {companyProfile.mobileDisplay}
+              {isZh ? '电话联系' : 'Call'} {companyProfile.mobileDisplay}
             </a>
             <a
               href={mailtoHref}

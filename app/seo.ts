@@ -4,6 +4,9 @@ import { localizePath } from './localized-path';
 import { companyProfile } from './company-profile';
 import { cargoCategories, experienceServices, experienceUpdatedAt } from './experience-data';
 import { factoryGalleries } from './factory-shipments';
+import { homeSearchContentEn } from './home-search-content';
+
+export const homeUpdatedAt = '2026-10-13';
 
 export function absoluteUrl(path: string) {
   return new URL(path, siteUrl).toString();
@@ -31,9 +34,9 @@ const homepageCopy = {
       '李经理 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、中东和拉美航线的单证、费用与操作要求。',
   },
   en: {
-    title: 'Lianyungang & Qingdao Freight | Global View Logistics · Bryce Lee',
+    title: 'Lianyungang & Qingdao Freight Forwarder | Global View Logistics',
     description:
-      'Bryce Lee, Sales Manager at Global View Logistics in Lianyungang, helps China exporters plan FCL, LCL, air freight, trucking and customs from Lianyungang and Qingdao, with guides for India, the Middle East and Latin America.',
+      'China export freight from Lianyungang and Qingdao to India, the Middle East and Latin America. Plan FCL, LCL, trucking and documents with Bryce Lee.',
   },
 };
 
@@ -43,6 +46,7 @@ export function homeMetadata(lang: Lang): Metadata {
   return {
     title: { absolute: copy.title },
     description: copy.description,
+    authors: [{ name: lang === 'zh' ? '李经理 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
     alternates: languageAlternates('/', lang),
     openGraph: {
       type: 'website',
@@ -65,7 +69,7 @@ export function homeMetadata(lang: Lang): Metadata {
 
 export function homePageJsonLd(lang: Lang) {
   const url = absoluteUrl(localizePath('/', lang));
-  return {
+  const webPage = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     '@id': `${url}#webpage`,
@@ -73,9 +77,46 @@ export function homePageJsonLd(lang: Lang) {
     name: homepageCopy[lang].title,
     description: homepageCopy[lang].description,
     inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+    dateModified: homeUpdatedAt,
     isPartOf: { '@id': absoluteUrl('/#website') },
     about: { '@id': absoluteUrl('/#organization') },
-    mainEntity: { '@id': absoluteUrl('/#freight-service') },
+    mainEntity: { '@id': lang === 'en' ? `${url}#export-freight-service` : absoluteUrl('/#freight-service') },
+  };
+
+  if (lang === 'zh') return webPage;
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        ...webPage,
+        relatedLink: homeSearchContentEn.routeCards.map((route) => absoluteUrl(route.href)),
+        hasPart: { '@id': `${url}#shipping-faq` },
+      },
+      {
+        '@type': 'Service',
+        '@id': `${url}#export-freight-service`,
+        name: homeSearchContentEn.hero.title,
+        description: homeSearchContentEn.introduction.description,
+        url,
+        provider: { '@id': absoluteUrl('/#organization') },
+        broker: { '@id': absoluteUrl('/#person') },
+        serviceType: ['FCL and LCL ocean freight', 'China export shipment planning', 'Trucking and inland transport', 'Customs and export documentation'],
+        areaServed: ['Lianyungang', 'Qingdao', 'India', 'Middle East', 'Latin America'],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${url}#shipping-faq`,
+        url: `${url}#shipping-faq`,
+        inLanguage: 'en',
+        isPartOf: { '@id': `${url}#webpage` },
+        mainEntity: homeSearchContentEn.faqs.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      },
+    ],
   };
 }
 
