@@ -498,15 +498,15 @@ export const contentArticles: ContentArticle[] = [
   {
     slug: 'lianyungang-to-india-fcl-shipping',
     section: 'routes',
-    title: '连云港出口印度海运专线：ONE / EMC 上海中转，周三周五驳船',
-    description:
-      '连云港至印度 FCL 整柜出口航线，经上海中转 ONE 与 EMC 大船，覆盖 Nhava Sheva、Mundra、Chennai 和 Kolkata。',
-    updatedAt: '2026-07-07',
-    readTime: '7 min read',
+    title: '连云港到印度整柜海运：上海接驳、目的港与订舱清单',
+    description: '连云港出口印度 FCL 整柜方案，说明上海接驳、Nhava Sheva、Mundra、Chennai、Kolkata 港口选择，以及船期、免费期、单证和报价确认。',
+    updatedAt: '2026-10-14',
+    readTime: '6 min read',
     image: '/bryce-routes-command.webp',
     keywords: [
       '连云港到印度海运',
-      '连云港出口印度',
+      '连云港印度整柜',
+      '上海中转印度',
       'ONE 印度航线',
       'EMC 印度航线',
       'Nhava Sheva',
@@ -515,170 +515,176 @@ export const contentArticles: ContentArticle[] = [
       'Kolkata',
     ],
     highlights: [
-      '连云港周三、周五两班驳船接上海大船，适合印度方向 FCL 整柜出口。',
-      '覆盖 Nhava Sheva、Mundra、Chennai、Kolkata 四大主流印度港口。',
-      'VIP 钻石舱保，重点降低上海中转甩柜和等待风险。',
-      '单票 10 TEU 以上可单独申请运价，大票货议价空间更大。',
+      '从工厂货好时间倒推连云港接货、上海接驳和大船截关，询价时一并核对两段运输。',
+      'Nhava Sheva、Mundra、Chennai、Kolkata 应结合买家提货地点和指定港口比较。',
+      '班期、舱位、航程和免费期按具体船司、航次、箱型及本票确认，不统一承诺固定天数。',
+      '电池、化工品和特殊设备先审核运输分类与资料，再确定可接受的柜型和船期。',
     ],
     sections: [
       {
-        heading: '1. 航线概况',
-        body:
-          '连云港至印度航线主推 ONE（海洋网联）与 EMC（长荣）两大船司，经上海港中转。连云港每周周三、周五两班驳船接驳上海大船，舱位衔接稳定，适合印度方向的 FCL 整柜出口。',
-      },
-      {
-        heading: '2. 覆盖港口与航程时间',
-        body:
-          '连云港驳船至上海约 1 天；上海至奈瓦舍瓦 Nhava Sheva、蒙德拉 Mundra、金奈 Chennai 约 15 天；上海至加尔各答 Kolkata 约 20 天。四大主流印度港全覆盖，西岸和东岸都能安排。',
+        heading: '1. 连云港接货与上海接驳怎么安排',
+        body: '江苏及周边工厂询价时，先提供装货地址、货好日期、箱型箱量和目的港，再比较连云港接货、驳船至上海和印度主线的整体安排。ONE、EMC 等船司可以纳入方案比较，实际可订航次、接驳日期和船司接受条件由本票订舱确认。',
         bullets: [
-          '连云港驳船至上海：约 1 天。',
-          '上海至 Nhava Sheva / Mundra / Chennai：约 15 天。',
-          '上海至 Kolkata：约 20 天。',
+          '核对驳船开航与上海主线截关之间的时间衔接。',
+          '把拖车、装柜、还重箱、报关、截单和 VGM 截止时间列在同一张计划中。',
+          '如需要比较青岛或其他口岸，同时核算工厂到港费用、操作时间和中转等待。',
         ],
       },
       {
-        heading: '3. 为什么选这条线',
-        body:
-          '连云港本地接货加上海中转的组合，综合成本通常低于苏北货源绕道其他口岸的方案。VIP 钻石舱保用于保证接驳上海大船准时上船，旺季爆舱期也尽量避免货物在上海中转港等待。周三、周五双班期也方便工厂安排货好时间。',
+        heading: '2. 印度目的港要与买家提货地点匹配',
+        body: '报价不能只写“印度”。请确认买家指定的是 Nhava Sheva、Mundra、Chennai 还是 Kolkata，并写清最终交货城市、是否安排内陆运输以及谁负责目的港清关。海运到港报价和到门方案应分别列出服务范围。',
         bullets: [
-          '价格优势：连云港本地接货 + 上海中转，适合苏北及周边货源。',
-          '舱位保障：重点处理上海中转衔接，降低甩柜等待风险。',
-          '大票议价：单票 10 TEU 以上可单独申请运价。',
-          '班期灵活：每周三、周五两班，工厂交货时间更好安排。',
+          'Nhava Sheva / Mundra：分别询问买家指定卸货港、码头及后续提货安排。',
+          'Chennai / Kolkata：核对具体港口、收货人要求和接驳方式。',
+          '如果需要内陆交付，补充详细地址、卸货条件和收货时间要求。',
         ],
       },
       {
-        heading: '4. 适合货物与柜型',
-        body:
-          '这条线适合 20GP、40GP、40HQ 常规干货柜。铅酸电池可按普货方案审核，需提供海运鉴定书和 MSDS，船司审核通过后即可安排。电动车、电池类出口印度客户，可以提前把资料发来判断是否能按普货操作。',
-      },
-      {
-        heading: '5. 出口印度需要提前准备的收货人资料',
-        body:
-          '印度清关对收货人资料要求严格，订舱前请向印度买家收齐公司全称与详细地址、IEC、PAN、GST 和联系邮箱。其中 IEC 必须与提单收货人登记信息一致，资料不完整可能导致目的港清关卡点。',
+        heading: '3. 船期、航程和舱位按哪一票确认',
+        body: '订舱方案应列明起运港、接驳港、船名航次、预计离港与到港日期、截关时间和中转次数。固定星期班期或历史航程只能作为方案沟通背景，实际交货计划要以当前订舱和船期更新为准；如购买舱位保障服务，还应核对适用航段、服务条款及发生变更时的处理方式。',
         bullets: [
-          '公司全称与详细地址',
-          'IEC（进出口代码，提单收货人必须与 IEC 登记一致）',
-          'PAN（税务账号）',
-          'GST（商品服务税号）',
-          '联系邮箱（目的港放货通知用）',
+          '请提供最晚可接受到港日期，方便比较不同航次。',
+          '驳船与主线分别确认，不能把主线航程直接当作工厂到港总时长。',
+          '报价写明有效期、适用航次、货类和箱型；大票货可提供同批箱量申请项目报价。',
         ],
       },
       {
-        heading: '6. 目的港免堆期和报价方式',
-        body:
-          '印度港口正常约 14 天免堆。货量大或清关周期长的，可以在订舱前单独申请延长免堆。询价时请提供品名、件毛体、柜型柜量、目的港和预计货好时间，我会按当天舱位和船期回复方案。',
+        heading: '4. 免费期要区分船司用箱与码头堆存',
+        body: '船司滞箱、滞港和码头堆存费用可能采用不同计费口径。不要把一份报价上的“14 天”直接理解为所有印度港口、所有柜型和全部费用都免费。订舱前逐项确认适用天数、起算事件、自然日或工作日、合并或分开计费以及超过免费期后的费率。',
+        bullets: [
+          '分别确认 demurrage、detention 和 terminal storage 的收费方与范围。',
+          '需要延长免费期时，先申请并取得本票书面确认。',
+          '让买家提前安排清关、提柜和还空箱，避免免费期结束后才开始准备。',
+        ],
+      },
+      {
+        heading: '5. 收货人资料与特殊货物先审核',
+        body: '请买家及当地清关代理确认本票适用的进口资质与识别信息，例如 IEC、PAN、GST，以及提单收货人名称、地址、通知人和联系邮箱。发票、箱单、货物说明与提单资料应保持一致。铅酸电池、带电设备和化工品不能仅凭品名或一份 MSDS 默认按普货操作，需结合运输鉴定、包装和船司审核确定分类。',
+        bullets: [
+          '常规干货可询问 20GP、40GP、40HQ；超重或超尺寸货物另审设备与装载方案。',
+          '特殊货物提前提供 SDS / MSDS、运输鉴定及船司要求的其他资料。',
+          '收货人登记信息、放货方式和目的港代理在截单前核对。',
+        ],
+      },
+      {
+        heading: '6. 一份可比较的印度报价应包含什么',
+        body: '向李经理提供货物资料后，比较海运费时也应同时看拖车、起运港操作、报关、接驳、目的港费用和免费期。需要到门服务的，另外明确清关、税费和内陆交付由谁安排、哪些项目包含在报价中。方案确认后，再按货好日期安排装柜与资料提交。',
       },
     ],
     checklist: [
-      '品名、件数、毛重、体积',
-      '柜型柜量：20GP / 40GP / 40HQ',
-      '目的港：Nhava Sheva / Mundra / Chennai / Kolkata',
-      '预计货好时间和是否能赶周三或周五驳船',
-      '印度收货人 IEC、PAN、GST、公司地址和联系邮箱',
-      '如为铅酸电池，提前提供海运鉴定书和 MSDS',
+      '工厂装货地址、货好日期和最晚可接受到港日期',
+      '品名、用途、件数、毛重、体积及适用 HS Code',
+      '箱型箱量与是否超重、超尺寸或带电',
+      '指定目的港、最终交货城市和贸易条款',
+      '是否接受上海或其他港口中转',
+      '收货人名称、地址、通知人与适用进口登记资料',
+      '船期、截关、截单与 VGM 截止时间',
+      '免费期口径、目的港费用及报价有效期',
     ],
     faqs: [
       {
-        question: '连云港到印度一定要经过上海中转吗？',
-        answer:
-          '这条方案主打连云港驳船接上海大船，通过上海衔接 ONE / EMC 印度方向主线。优势是本地接货方便、班期明确，并能利用上海大船资源。',
+        question: '连云港到印度一定要经上海吗？',
+        answer: '本页说明的是上海接驳方案。是否采用该方案，应结合当前可订航次、工厂交货时间、目的港和整体费用比较；询价时也可以提出其他起运或接驳要求。',
       },
       {
-        question: '铅酸电池可以按普货走吗？',
-        answer:
-          '可以按普货方案先审核，但需要提供海运鉴定书和 MSDS，最终以船司和舱位审核结果为准。资料越早提供，越容易提前判断价格和可操作性。',
+        question: '印度目的港统一有 14 天免费期吗？',
+        answer: '不能统一认定。免费期与船司、合同、港口、箱型和收费项目有关，须分别确认船司用箱与码头堆存；需要延长时在订舱前取得本票确认。',
       },
       {
-        question: '印度目的港免堆期可以延长吗？',
-        answer:
-          '正常约 14 天免堆。货量大或清关周期长的，可以在订舱前单独申请延长免堆，建议不要等到货到港后再处理。',
+        question: '铅酸电池提供 MSDS 后就可以按普货走吗？',
+        answer: '不能仅凭 MSDS 认定。需提供货物与包装资料、适用运输鉴定，由船司审核分类和接受条件后确定运输方案。',
+      },
+      {
+        question: '什么时候询价最有帮助？',
+        answer: '货好日期、箱型箱量、货物和目的港确定后即可询价。若买家有交付期限、指定船司或免费期要求，请一起说明，方便比较完整方案。',
       },
     ],
     en: {
-      title:
-        'Lianyungang to India FCL Service: ONE / EMC via Shanghai, Wed & Fri Feeder',
-      description:
-        'Weekly FCL service from Lianyungang to India via Shanghai, connecting to ONE and Evergreen mainline vessels for Nhava Sheva, Mundra, Chennai and Kolkata.',
+      title: 'Lianyungang to India FCL Shipping: Shanghai Connections & Booking Checklist',
+      description: 'Plan India-bound FCL from Lianyungang via Shanghai: destination ports, feeder connections, booking deadlines, free-time terms, consignee details and quote scope.',
       highlights: [
-        'Direct feeder from Lianyungang to Shanghai every Wednesday and Friday for India-bound FCL cargo.',
-        'Coverage for Nhava Sheva, Mundra, Chennai and Kolkata.',
-        'Premium space protection helps reduce rollover and waiting risk at Shanghai transshipment.',
-        'Special rate filing can be requested for shipments of 10+ TEU.',
+        'Plan factory pickup, the Shanghai connection and mainline deadlines from the cargo ready date.',
+        'Compare Nhava Sheva, Mundra, Chennai and Kolkata against the buyer’s delivery location.',
+        'Confirm schedules, space, transit and free time for the specific carrier, voyage, equipment and booking.',
+        'Review batteries, chemicals and special equipment before choosing the shipping plan.',
       ],
       sections: [
         {
-          heading: '1. Service overview',
-          body:
-            'This Lianyungang to India FCL service connects by feeder to Shanghai and then to ONE and Evergreen (EMC) mainline vessels. The Lianyungang feeder runs every Wednesday and Friday, giving factories in northern Jiangsu a stable way to connect with India sailings.',
-        },
-        {
-          heading: '2. Ports covered and transit time',
-          body:
-            'The Lianyungang to Shanghai feeder takes about 1 day. Shanghai to Nhava Sheva, Mundra and Chennai is about 15 days, while Shanghai to Kolkata is about 20 days. The service covers major west-coast and east-coast India ports.',
+          heading: '1. Plan Lianyungang pickup and the Shanghai connection',
+          body: 'Send the factory address, ready date, equipment, container count and destination before comparing local pickup, the feeder to Shanghai and the India mainline connection. ONE and Evergreen (EMC) may be considered when comparing options; available voyages, connection dates and cargo acceptance need booking-specific confirmation.',
           bullets: [
-            'Lianyungang feeder to Shanghai: approx. 1 day.',
-            'Shanghai to Nhava Sheva / Mundra / Chennai: approx. 15 days.',
-            'Shanghai to Kolkata: approx. 20 days.',
+            'Check the feeder arrival against the mainline cargo cut-off.',
+            'Put trucking, loading, laden return, customs, SI and VGM deadlines on one plan.',
+            'If comparing Qingdao or another origin, include factory-to-port cost and connection time.',
           ],
         },
         {
-          heading: '3. Why use this route',
-          body:
-            'Lianyungang local pickup plus Shanghai transshipment can be more cost-effective for northern Jiangsu cargo than routing through other ports. Premium space protection is used to secure the Shanghai mainline connection and reduce rollover risk during peak season.',
+          heading: '2. Match the Indian port to the buyer’s delivery plan',
+          body: 'A useful request names Nhava Sheva, Mundra, Chennai or Kolkata rather than only “India”. Confirm the requested discharge port, final delivery city, inland transport scope and destination clearance arrangements. Separate port-to-port pricing from a door delivery proposal.',
           bullets: [
-            'Cost advantage for Lianyungang and nearby factory cargo.',
-            'Shanghai connection is managed as the key risk point.',
-            'Volume pricing can be requested for 10+ TEU shipments.',
-            'Twice-weekly feeder schedule gives factories more loading flexibility.',
+            'For each destination, confirm the port and terminal requested by the consignee.',
+            'Check whether the proposal includes inland transport or ends at the discharge port.',
+            'For door delivery, provide the full address, unloading conditions and receiving window.',
           ],
         },
         {
-          heading: '4. Cargo and equipment',
-          body:
-            'The service is suitable for standard dry containers: 20GP, 40GP and 40HQ. Lead-acid batteries can be reviewed as general cargo with a valid Sea Transport Appraisal Certificate and MSDS, subject to carrier approval.',
-        },
-        {
-          heading: '5. Required consignee information for India',
-          body:
-            'Indian customs requires complete consignee details before shipment. Please collect the full company name and address, IEC, PAN, GST and contact email from your buyer. The IEC must match the bill of lading consignee information.',
+          heading: '3. Confirm the schedule and space for the actual booking',
+          body: 'A proposal should identify origin, connection port, vessel and voyage, estimated departure and arrival, cut-off times and transshipment count. Historical sailing days and transit figures are planning references, not the current booking schedule. If a space protection product is offered, review the covered leg, terms and change procedure.',
           bullets: [
-            'Full company name and address',
-            'IEC, which must match the B/L consignee registration',
-            'PAN tax number',
-            'GST number',
-            'Contact email for arrival notice and release communication',
+            'State the latest acceptable arrival date.',
+            'Check feeder and mainline legs separately; mainline transit is not total factory-to-arrival time.',
+            'Confirm quote validity, applicable voyage, commodity and equipment; send batch volume for a project quote.',
           ],
         },
         {
-          heading: '6. Free time and quotation details',
-          body:
-            'Standard free time at Indian ports is normally about 14 days. Extended free time can be requested before booking for large volumes or shipments with longer customs clearance cycles. For a quote, send commodity, package count, weight, volume, container type, destination port and cargo ready date.',
+          heading: '4. Separate carrier free time from terminal storage',
+          body: 'Demurrage, detention and terminal storage can have different rules and charging parties. A 14-day term in one proposal does not mean every Indian port, equipment type and charge has the same free period. Confirm the starting event, calendar or working days, combined or separate calculation and rates after expiry.',
+          bullets: [
+            'Identify the charging party and scope for each fee.',
+            'Request extra free time before booking and obtain written confirmation for the shipment.',
+            'Arrange clearance, pickup and empty return before the relevant free period expires.',
+          ],
+        },
+        {
+          heading: '5. Review consignee details and special cargo',
+          body: 'Ask the buyer and local broker to confirm applicable import registration and identification details, such as IEC, PAN and GST, together with consignee name, address, notify party and email. Invoice, packing list and B/L data should agree. Lead-acid batteries, powered equipment and chemicals require cargo classification and carrier acceptance review; an MSDS alone does not establish general-cargo status.',
+          bullets: [
+            'Quote standard dry equipment or review overweight and oversized cargo separately.',
+            'Provide SDS / MSDS, applicable transport appraisal and other carrier-requested documents early.',
+            'Check consignee registration, cargo release method and destination agent before SI cut-off.',
+          ],
+        },
+        {
+          heading: '6. Compare the full quote scope',
+          body: 'Compare ocean freight together with trucking, origin handling, customs, connection costs, destination charges and free-time conditions. For door delivery, clarify clearance, duties and inland delivery responsibility and list included and excluded charges. Then arrange loading and documentation against the confirmed cargo ready date.',
         },
       ],
       checklist: [
-        'Commodity, package count, gross weight and volume',
-        'Equipment: 20GP / 40GP / 40HQ',
-        'Destination port: Nhava Sheva / Mundra / Chennai / Kolkata',
-        'Cargo ready date and whether Wed or Fri feeder can be met',
-        'India consignee IEC, PAN, GST, company address and contact email',
-        'For lead-acid batteries, Sea Transport Appraisal Certificate and MSDS',
+        'Factory address, ready date and latest acceptable arrival',
+        'Commodity, use, packages, gross weight, volume and applicable HS code',
+        'Equipment, container count and any overweight, oversize or battery cargo',
+        'Discharge port, final delivery city and trade terms',
+        'Acceptable Shanghai or other transshipment routing',
+        'Consignee, notify party and applicable import registration details',
+        'Schedule, cargo cut-off, SI and VGM deadlines',
+        'Free-time terms, destination charges and quote validity',
       ],
       faqs: [
         {
-          question: 'Does Lianyungang to India have to transship via Shanghai?',
-          answer:
-            'This service is built around the Lianyungang feeder connecting to ONE / EMC mainline vessels in Shanghai. The advantage is local pickup convenience, clear feeder days and access to Shanghai mainline space.',
+          question: 'Must Lianyungang to India cargo connect via Shanghai?',
+          answer: 'This guide describes a Shanghai connection option. Compare it against available voyages, factory readiness, destination and total cost; include any alternative origin or connection preference in the request.',
         },
         {
-          question: 'Can lead-acid batteries move as general cargo?',
-          answer:
-            'They can be reviewed as general cargo, but the Sea Transport Appraisal Certificate and MSDS are required. Final acceptance depends on carrier and space approval.',
+          question: 'Is 14 days of free time standard for every Indian shipment?',
+          answer: 'No uniform allowance should be assumed. Carrier, contract, port, equipment and charge type matter. Check carrier free time and terminal storage separately and confirm any extension before booking.',
         },
         {
-          question: 'Can India destination free time be extended?',
-          answer:
-            'Standard free time is normally about 14 days. For large volumes or longer clearance cycles, extended free time should be requested before booking.',
+          question: 'Does an MSDS make lead-acid batteries general cargo?',
+          answer: 'No. Supply cargo, packaging and applicable transport appraisal details for carrier classification and acceptance review before deciding the shipping plan.',
+        },
+        {
+          question: 'When should I request a quote?',
+          answer: 'Send the ready date, cargo, equipment, volume and destination once known. Include delivery deadlines, nominated carriers and free-time requests so the full proposal can be compared.',
         },
       ],
     },
@@ -686,245 +692,367 @@ export const contentArticles: ContentArticle[] = [
   {
     slug: 'china-to-karachi-shipping',
     section: 'routes',
-    title: '中国到巴基斯坦卡拉奇海运：AICT、KICT、PICT、Port Qasim、SAPT 码头详解',
-    description:
-      '连云港、青岛出口到卡拉奇 Karachi 的中转航线、五大码头区别、航程天数、常见船司和目的港费用要点。',
-    updatedAt: '2026-07-13',
+    title: '连云港、青岛到卡拉奇海运：Karachi Port、Port Qasim 与订舱要点',
+    description: '区分 Karachi Port 的 KICT、KGTL、SAPT，Port Qasim 的 QICT 与 AICT 港外堆场，整理连云港、青岛出口巴基斯坦的码头、船期、费用和询价资料。',
+    updatedAt: '2026-10-14',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
     keywords: [
-      '中国到卡拉奇海运',
-      'Karachi shipping',
+      '连云港到卡拉奇海运',
+      '青岛到卡拉奇海运',
+      'China to Karachi shipping',
       '巴基斯坦海运',
-      '连云港到卡拉奇',
       'Port Qasim',
+      'QICT',
+      'KICT',
+      'KGTL',
+      'PICT',
       'SAPT',
+      'AICT',
     ],
     highlights: [
-      '连云港到卡拉奇目前以中转为主，几乎没有稳定直航，需要提前留出航程缓冲。',
-      '卡拉奇有 AICT、KICT、PICT、Port Qasim (QICT)、SAPT 五个码头，收货人指定的码头会影响船司和清关。',
-      'SAPT 和 Port Qasim 船司选择最多、班次较密，是连云港出口卡拉奇较常见的选择。',
+      '先区分 Karachi Port 与 Port Qasim，再确认船司实际挂靠码头和收货人提货要求。',
+      'KICT、KGTL、SAPT / SAPTL 属于 Karachi Port；QICT 属于 Port Qasim，AICT 是港外堆场。',
+      '报价中的旧码头名称和代理简称要核对现行名称，不能只凭“Karachi”订舱。',
+      '同时比较起运港、接驳、中转次数、目的港费用、免费期和最终交付范围。',
     ],
     sections: [
       {
-        heading: '1. 卡拉奇五个码头有什么区别',
-        body:
-          '卡拉奇不是单一港口，而是分成多个集装箱码头，收货人清关和提货通常绑定具体码头，所以订舱前要先确认收货人要求到哪个码头，而不是笼统说“到卡拉奇”。',
+        heading: '1. Karachi Port 与 Port Qasim 是不同港区',
+        body: '中国到卡拉奇地区的运输询价，应先写明实际卸货港及码头。Karachi Port 与 Port Qasim 是不同港区，选择会影响船司挂靠、清关、提柜和后续内陆运输。请收货人或当地代理确认指定港区，不要只用城市名替代订舱中的港口信息。',
+      },
+      {
+        heading: '2. 码头与港外堆场名称怎么区分',
+        body: 'Karachi Port Trust 当前资料列出 KICT、KGTL、SAPTL 三个集装箱码头运营主体；SAPT 是常见业务称呼。Port Qasim 的 QICT 应单独识别。报价中出现 PICT 等旧称时，要核对现行码头名称和订舱显示。AICT 运营方将其标示为港外集装箱场站，不能与海港卸船码头混为一谈。',
         bullets: [
-          'AICT（卡拉奇 AICT 港）：常见船司如 MAERSK、OOCL，多为二次中转，航程偏长。',
-          'KICT（卡拉奇 K 港）：OOCL、YML、COSCO、WHL 等，多经上海或宁波中转。',
-          'PICT（卡拉奇 P 港）：WHL、OOCL 为主，部分经新加坡等二转。',
-          'Port Qasim / QICT（卡西姆港）：ONE、CMA、OOCL、HAPAG 等船司较多，选择灵活。',
-          'SAPT（卡拉奇 SAPT 港）：船司最多，ONE、CMA、EMC、PIL、HMM、KMTC 等，班次密。',
+          'KICT：Karachi International Container Terminal。',
+          'KGTL：Karachi Gateway Terminal Limited；报价出现 PICT 旧称时核对实际码头。',
+          'SAPT / SAPTL：South Asia Pakistan Terminals，属于 Karachi Port。',
+          'Port Qasim / QICT：独立港区及其集装箱码头。',
+          'AICT：港外场站；如需该场站服务，另确认卸船码头、转运和交付范围。',
         ],
       },
       {
-        heading: '2. 连云港到卡拉奇以中转为主，没有稳定直航',
-        body:
-          '从连云港发往卡拉奇各码头，目前基本都是中转航线，常见走青岛、上海、宁波接大船，部分方案还会在新加坡或卡拉奇本地二次中转。这意味着报价时看到的“最快航程”通常是顺利接驳的理想情况，实际要为中转和港口拥堵留出缓冲。',
-      },
-      {
-        heading: '3. 航程天数大致范围',
-        body:
-          '根据不同码头和船司，连云港到卡拉奇的中转航程差异较大。SAPT 和 KICT 较快的方案约 16 到 23 天，Port Qasim 部分方案 17 天起，AICT、PICT 因二次中转常见 30 天以上。选择时不能只看最短天数，还要看船司稳定性和中转次数。',
+        heading: '3. 连云港与青岛起运怎样比较',
+        body: '连云港询价时，把本地接货、支线接驳和主线运输一并比较；青岛询价时，确认主线订舱条件和工厂到港安排。直航或中转、船司、挂靠码头和可接受货类都应按当前航次确认，不沿用固定的“某船司只到某码头”对照表。',
         bullets: [
-          'SAPT：快线约 17-23 天，慢线 26-37 天，船司选择最多。',
-          'KICT：约 16-25 天，OOCL、YML、COSCO 等。',
-          'Port Qasim：约 17 天起，船司较多。',
-          'AICT / PICT：多为二次中转，常见 30 天以上。',
+          '提供装货地址、货好日期和箱型箱量。',
+          '注明收货人指定的港口、码头、船司或目的港代理。',
+          '若需要超尺寸设备方案，提前提供尺寸、重量、重心与装卸条件。',
         ],
       },
       {
-        heading: '4. 目的港费用和清关要提前确认',
-        body:
-          '巴基斯坦目的港的换单、码头、仓储和清关费用，以及不同代理的收费差异，都会影响客户到货后的实际成本。客户如果只比较连云港起运港的低价，容易忽略到港后的费用。带电产品、化工品、二手设备和需要特殊单证的货物，更要提前沟通。',
+        heading: '4. 航程要拆成运输与等待环节',
+        body: '询价时请同时看预计离港、预计到港、中转港、中转次数和交付结束点。主线海上航程不包含工厂备货、拖车、接驳等待、清关和提货。若买家有交付期限，应先说明最晚到港或到门日期，再比较可订方案，并预留衔接变化的时间。',
+      },
+      {
+        heading: '5. 到港费用和免费期逐项确认',
+        body: '报价应区分海运、起运港操作、目的港换单、码头、仓储、用箱、清关和内陆运输费用，写明收费方和承担方。免费期要核对开始计算的事件、天数和费用类型。Port Qasim 与 Karachi Port、海港码头与港外场站的费用不能直接当成同一套。',
+        bullets: [
+          '请目的港代理确认换单、提货与还空箱安排。',
+          '免费期延长需本票确认，不凭其他订单或历史报价推断。',
+          '到门服务补充完整收货地址、卸货方式和清关责任。',
+        ],
+      },
+      {
+        heading: '6. 文件和放货方式在截单前核对',
+        body: '提前核对发票、箱单、品名、HS Code、件重体和收发货人资料，并让买家与当地代理确认适用进口手续和单证。化工品、电池、二手或大型设备应提前审核运输接受条件。提单显示的卸货港、交货地点、通知人和放货方式须与报价及买家安排一致。',
       },
     ],
     checklist: [
-      '收货人指定到哪个码头（AICT / KICT / PICT / Port Qasim / SAPT）',
-      '箱型、货重、品名和是否为二手设备或化工品',
-      '是否接受中转以及可接受的航程天数',
-      '是否有指定船司或目的港代理',
-      '是否需要产地证、装箱单认证或其他特殊单证',
+      '装货地址、连云港或青岛起运要求、货好日期',
+      '品名、件数、毛重、体积、HS Code 与特殊货物资料',
+      '箱型箱量及超重、超尺寸或装卸限制',
+      'Karachi Port 或 Port Qasim，以及具体码头名称',
+      'AICT 等港外场站是否另含转运与交付服务',
+      '指定船司、目的港代理及可接受中转次数',
+      '预计到港或到门日期与最终交付地址',
+      '费用承担方、免费期、报价有效期和放货方式',
     ],
     faqs: [
       {
-        question: '连云港到卡拉奇有直航吗？',
-        answer:
-          '目前基本以中转为主，没有稳定的直航班次，通常经青岛、上海或宁波接大船，部分还会二次中转。订舱时建议按中转航程预留时间。',
+        question: 'Port Qasim 和 Karachi Port 是同一个港吗？',
+        answer: '不是同一港区。询价和订舱应写清实际卸货港及码头，再由收货人确认清关与提货安排。',
       },
       {
-        question: '卡拉奇这么多码头，我该选哪个？',
-        answer:
-          '主要看收货人清关代理绑定哪个码头。如果收货人没有硬性要求，SAPT 和 Port Qasim 船司选择多、班次较密，通常更灵活；具体仍需结合航程、船司和费用综合判断。',
+        question: 'AICT 是船舶卸货的海港码头吗？',
+        answer: 'AICT 是港外集装箱场站。若买家指定 AICT，还要核对船舶实际卸货码头、转运安排和报价中的最终交付范围。',
+      },
+      {
+        question: '报价写 PICT，应该如何确认？',
+        answer: '请船司或目的港代理核对现行码头名称、代码及挂靠安排，确认是否指 KGTL 相关作业区域，不直接沿用旧名称对应船司的表格。',
+      },
+      {
+        question: '连云港到卡拉奇有直航吗，多久到？',
+        answer: '是否有符合货好日期和指定码头的直航或中转方案，要按当前航次查询。请提供货好日期、港区、箱型和可接受到港时间，再比较起运至到港的完整计划。',
       },
     ],
-    title_en: 'China to Karachi Ocean Freight: AICT, KICT, PICT, Port Qasim & SAPT Terminals Explained',
-    description_en:
-      'Transshipment routes, terminal differences, transit times, common carriers and destination charges for ocean freight from Lianyungang and Qingdao to Karachi, Pakistan.',
-    highlights_en: [
-      'Lianyungang to Karachi is currently transshipment-based with almost no stable direct service, so build in extra transit buffer.',
-      'Karachi has five terminals — AICT, KICT, PICT, Port Qasim (QICT) and SAPT — and the consignee\'s designated terminal affects carriers and customs clearance.',
-      'SAPT and Port Qasim offer the widest carrier choice and denser schedules, making them common picks out of Lianyungang.',
-    ],
-    sections_en: [
-      {
-        heading: '1. What are the differences between Karachi\'s five terminals',
-        body:
-          'Karachi is not a single port but is split into several container terminals. Consignee customs clearance and cargo pickup are usually tied to a specific terminal, so before booking, confirm which terminal the consignee requires rather than just saying "to Karachi".',
-        bullets: [
-          'AICT: carriers like MAERSK, OOCL; often second transshipment, longer transit.',
-          'KICT: OOCL, YML, COSCO, WHL; usually via Shanghai or Ningbo.',
-          'PICT: mainly WHL, OOCL; some via Singapore second transshipment.',
-          'Port Qasim / QICT: ONE, CMA, OOCL, HAPAG and more; flexible options.',
-          'SAPT: the most carriers — ONE, CMA, EMC, PIL, HMM, KMTC — with dense schedules.',
-        ],
-      },
-      {
-        heading: '2. Lianyungang to Karachi is transshipment-based, no stable direct service',
-        body:
-          'Shipments from Lianyungang to Karachi terminals are currently mostly transshipment routes, commonly connecting via Qingdao, Shanghai or Ningbo to a mother vessel, with some routes doing a second transshipment in Singapore or Karachi. This means the "fastest transit" shown in quotes is usually the ideal scenario with smooth connections; in practice, leave buffer for transshipment and port congestion.',
-      },
-      {
-        heading: '3. Approximate transit times',
-        body:
-          'Transit times vary widely by terminal and carrier. Faster SAPT and KICT options run about 16 to 23 days, some Port Qasim options from 17 days, while AICT and PICT often exceed 30 days due to second transshipment. Don\'t look at the shortest days alone — also weigh carrier reliability and number of transshipments.',
-        bullets: [
-          'SAPT: fast around 17-23 days, slow 26-37 days, most carrier choice.',
-          'KICT: about 16-25 days, OOCL, YML, COSCO etc.',
-          'Port Qasim: from about 17 days, plenty of carriers.',
-          'AICT / PICT: mostly second transshipment, often 30+ days.',
-        ],
-      },
-      {
-        heading: '4. Confirm destination charges and clearance in advance',
-        body:
-          'Pakistan destination charges — DO fees, terminal, storage and clearance — plus differences between agents all affect the consignee\'s real landed cost. Customers who only compare the low Lianyungang origin price often overlook destination-side costs. Electronics, chemicals, used equipment and cargo needing special documents should be discussed upfront.',
-      },
-    ],
-    checklist_en: [
-      'Which terminal the consignee designates (AICT / KICT / PICT / Port Qasim / SAPT)',
-      'Container type, weight, commodity, and whether it is used equipment or chemicals',
-      'Whether transshipment is acceptable and the acceptable transit days',
-      'Any nominated carrier or destination agent',
-      'Whether certificate of origin, packing list attestation or other special documents are needed',
-    ],
-    faqs_en: [
-      {
-        question: 'Is there a direct service from Lianyungang to Karachi?',
-        answer:
-          'Currently it is mostly transshipment-based with no stable direct sailings, usually connecting via Qingdao, Shanghai or Ningbo to a mother vessel, sometimes with a second transshipment. Plan your timeline around transshipment transit.',
-      },
-      {
-        question: 'With so many Karachi terminals, which should I choose?',
-        answer:
-          'It mainly depends on which terminal the consignee\'s clearing agent is tied to. If the consignee has no hard requirement, SAPT and Port Qasim offer more carriers and denser schedules and are usually more flexible; still weigh transit, carrier and cost together.',
-      },
-    ],
+    en: {
+      title: 'Lianyungang & Qingdao to Karachi Shipping: Ports, Terminals & Booking Guide',
+      description: 'Compare Karachi Port and Port Qasim, KICT, KGTL, SAPT, QICT and the AICT off-dock facility. Prepare China export booking, charges and cargo details.',
+      highlights: [
+        'Distinguish Karachi Port from Port Qasim before confirming the vessel terminal and consignee pickup plan.',
+        'KICT, KGTL and SAPT / SAPTL are at Karachi Port; QICT is at Port Qasim, while AICT is an off-dock facility.',
+        'Check current terminal names and booking references instead of relying on a city name or an old terminal label.',
+        'Compare origin, connections, destination charges, free time and the delivery endpoint together.',
+      ],
+      sections: [
+        {
+          heading: '1. Karachi Port and Port Qasim are different port areas',
+          body: 'Name the actual discharge port and terminal when requesting China-to-Karachi-area freight. Karachi Port and Port Qasim are different port areas, affecting vessel calls, clearance, pickup and inland movement. Ask the consignee or local agent to confirm the required port instead of using the city name alone.',
+        },
+        {
+          heading: '2. Distinguish marine terminals from off-dock facilities',
+          body: 'Karachi Port Trust lists KICT, KGTL and SAPTL as its three container terminal operators; SAPT is a common commercial reference. Identify QICT at Port Qasim separately. If a proposal uses a historical PICT reference, confirm the current terminal and booking details. AICT describes itself as an off-dock facility and should not be treated as a vessel discharge terminal.',
+          bullets: [
+            'KICT: Karachi International Container Terminal.',
+            'KGTL: Karachi Gateway Terminal Limited; verify the actual terminal if a quote uses PICT.',
+            'SAPT / SAPTL: South Asia Pakistan Terminals at Karachi Port.',
+            'Port Qasim / QICT: the separate port area and its container terminal.',
+            'AICT: an off-dock facility; confirm the marine terminal, transfer and delivery scope separately.',
+          ],
+        },
+        {
+          heading: '3. Compare Lianyungang and Qingdao origins',
+          body: 'For Lianyungang, compare factory pickup, feeder connections and mainline transport together. For Qingdao, confirm the mainline booking and factory-to-port arrangements. Direct or transshipment routing, carrier, terminal calls and cargo acceptance depend on the current voyage; do not rely on a fixed carrier-to-terminal table.',
+          bullets: [
+            'Supply loading address, ready date, equipment and container count.',
+            'State any nominated port, terminal, carrier or destination agent.',
+            'For oversized equipment, provide dimensions, weight, centre of gravity and lifting conditions early.',
+          ],
+        },
+        {
+          heading: '4. Separate sailing time from the whole delivery plan',
+          body: 'Check estimated departure and arrival, connection ports, transshipment count and the quoted delivery endpoint. Mainline sailing time excludes factory preparation, trucking, connection waiting, customs and pickup. State the latest acceptable port or door arrival date before comparing available plans and allow for connection changes.',
+        },
+        {
+          heading: '5. Confirm destination costs and free-time terms',
+          body: 'Separate ocean freight, origin handling, delivery order, terminal, storage, equipment use, clearance and inland transport. Identify who charges and who pays each item. Confirm the free-time starting event, days and charge scope. Different port areas, marine terminals and off-dock facilities do not share one universal charge package.',
+          bullets: [
+            'Confirm release, pickup and empty return with the destination agent.',
+            'Obtain booking-specific confirmation for any free-time extension.',
+            'For door delivery, supply the full address, unloading method and clearance responsibility.',
+          ],
+        },
+        {
+          heading: '6. Check documents and release before SI cut-off',
+          body: 'Review invoice, packing list, commodity, HS code, packages, weight, volume and shipper/consignee data. Ask the buyer and local agent to confirm applicable import procedures and documents. Review chemicals, batteries and used or large equipment early. Align the B/L discharge port, delivery place, notify party and release method with the agreed proposal.',
+        },
+      ],
+      checklist: [
+        'Factory address, preferred Lianyungang or Qingdao origin and ready date',
+        'Commodity, packages, gross weight, volume, HS code and special-cargo documents',
+        'Equipment, volume and weight, size or handling restrictions',
+        'Karachi Port or Port Qasim and the named terminal',
+        'Any AICT off-dock transfer and delivery scope',
+        'Nominated carrier or agent and acceptable connections',
+        'Port or door deadline and final address',
+        'Charge responsibility, free time, quote validity and release method',
+      ],
+      faqs: [
+        {
+          question: 'Are Karachi Port and Port Qasim the same port?',
+          answer: 'They are different port areas. Name the discharge port and terminal in the request and confirm clearance and pickup with the consignee.',
+        },
+        {
+          question: 'Is AICT a vessel discharge terminal?',
+          answer: 'AICT is an off-dock facility. If it is requested, also confirm the marine discharge terminal, transfer and final delivery scope.',
+        },
+        {
+          question: 'What should I check if a quote says PICT?',
+          answer: 'Ask the carrier or local agent to verify the current terminal name, code and vessel call, including whether the reference relates to the KGTL operating area.',
+        },
+        {
+          question: 'Is there a direct Lianyungang service and how long does it take?',
+          answer: 'Check available direct or transshipment options for the actual ready date and required terminal. Supply equipment and arrival requirements so the complete origin-to-arrival plan can be compared.',
+        },
+      ],
+    },
   },
   {
     slug: 'china-to-jebel-ali-shipping',
     section: 'routes',
-    title: '中国到迪拜 Jebel Ali 海运：中东出口操作要点',
-    description:
-      '中国到 Jebel Ali、Dammam 等中东港口出口时，需要关注船期、转运、文件和目的港费用。',
-    updatedAt: '2026-07-05',
-    readTime: '5 min read',
+    title: '青岛、连云港到中东海运：迪拜 Jebel Ali、Dammam 与 Jeddah',
+    description: '青岛与连云港出口中东海运指南：比较 Jebel Ali、Dammam、Jeddah 目的港，核对订舱、直航与中转、单证、免费期、目的港费用和到门范围。',
+    updatedAt: '2026-10-14',
+    readTime: '6 min read',
     image: '/bryce-routes-command.webp',
-    keywords: ['中国到迪拜海运', 'Jebel Ali shipping', '中东海运', 'Dammam'],
+    keywords: [
+      '青岛中东海运',
+      '青岛到迪拜海运',
+      '连云港中东海运',
+      '连云港到 Jebel Ali',
+      'Jebel Ali shipping',
+      'Dammam shipping',
+      'Jeddah shipping',
+      '中东出口货代',
+    ],
     highlights: [
-      'Jebel Ali 是中东重要中转和分拨港，但仍要看最终目的地。',
-      '化工品、建材和危险品要提前确认文件和船司接受情况。',
-      '中东客户常关注船期稳定性、目的港费用和清关资料。',
+      '青岛或连云港起运，应把工厂到港、主线或接驳、中转和交付范围一起比较。',
+      'Jebel Ali 在阿联酋，Dammam 与 Jeddah 在沙特；最终买家所在地决定目的港及后续运输。',
+      '到港价与到门价分别列出包含项目，目的港清关、税费和内陆运输责任提前写清。',
+      '按本票确认船期、接受货类、免费期和报价有效期，方便工厂与买家安排交货。',
     ],
     sections: [
       {
-        heading: '1. Jebel Ali 不等于所有中东目的地',
-        body:
-          '很多货物会先到 Jebel Ali，再转往阿联酋、沙特或周边国家。询价时应确认最终目的地、是否需要转运、收货人清关能力和贸易条款。',
+        heading: '1. 青岛与连云港起运需要哪些资料',
+        body: '港威国际物流总部在青岛，李经理在连云港为出口客户沟通运输方案。询价先提供工厂地址、货物、箱型箱量、货好时间、目的港和贸易条款。青岛方案确认主线订舱及工厂到港安排；连云港方案同时比较本地接货、支线接驳及主线衔接。是否直航、经哪里中转和具体船司按当前可订航次确认。',
+        bullets: [
+          '常规 FCL 提供箱型、箱量、毛重和装柜地址。',
+          'LCL 提供包装尺寸、件数、重量、体积和是否可叠放。',
+          '设备、化工品和带电货物提前提供尺寸、包装、运输鉴定或 SDS / MSDS 等适用资料。',
+        ],
       },
       {
-        heading: '2. 船期和中转稳定性很重要',
-        body:
-          '中东航线可选船司较多，但不同方案在直航、中转、舱位和到港稳定性上差异明显。低价方案如果中转时间长，可能影响客户交付计划。',
+        heading: '2. Jebel Ali、Dammam、Jeddah 怎么比较',
+        body: '中东不是一个统一目的港。Jebel Ali 是迪拜港口，Dammam 对应沙特东部港口需求，Jeddah 位于沙特红海一侧。应先确认买家最终收货城市、指定卸货港、清关代理和是否需要内陆运输，再比较海运及后续交付；不能因为报价写“迪拜”就默认包含进入其他国家的转运和清关。',
+        bullets: [
+          'Jebel Ali：确认交货是到港、阿联酋本地到门，还是另含后续转运。',
+          'Dammam：询问买家是否指定 King Abdulaziz Port，以及后续收货地址。',
+          'Jeddah：确认 Jeddah Islamic Port 的卸货安排与买家交付要求。',
+          '如需跨国或内陆交付，把路线、交货地点与责任范围单独列明。',
+        ],
       },
       {
-        heading: '3. 文件要求需要提前确认',
-        body:
-          '建材、化工品、危险品、设备和品牌货物可能涉及额外文件。发票、箱单、产地证、MSDS、危包证和收货人要求应尽早核对。',
+        heading: '3. 直航、中转和交货时间如何确认',
+        body: '询价提供最晚可接受到港或到门日期，比只问“最快几天”更便于安排。比较方案时分别列出起运港、船名航次、预计离港与到港、中转港、截关、截单和 VGM 截止时间。船期变化、支线接驳和港口操作会影响交付，正式订舱以具体航次确认。',
+      },
+      {
+        heading: '4. 中东报价要分清包含与不包含',
+        body: '一份可比较的报价应列明起运港操作、拖车、报关、海运及附加费，另说明目的港换单、码头、用箱、仓储、清关与内陆运输是否包含。免费期还应区分船司用箱与码头堆存，并确认起算方式和适用箱型。到门方案需明确进口清关、税费、卸货和收货条件的安排及承担方。',
+        bullets: [
+          '写明运费支付方式、费用币种及报价有效期。',
+          '买家指定代理时，提前核对当地服务与收费。',
+          '延长免费期或其他特殊要求，取得本票书面确认后再纳入方案。',
+        ],
+      },
+      {
+        heading: '5. 普货、建材、化工与设备单证分别核对',
+        body: '基础资料包括货物英文说明、发票、箱单、件重体、收发货人和适用 HS Code。产地证、认证或产品准入资料是否需要，应由买家与当地清关代理按目的国家和货物确认。化工品、危险品、带电产品及超尺寸设备另审船司接受条件、包装和适用运输文件，避免装柜后才补资料。',
+      },
+      {
+        heading: '6. 从询价到出货的确认步骤',
+        body: '先确认货物、目的港与最终交付需求，再比较航次和费用范围；方案选定后确认订舱、装柜和资料截止时间，复核提单信息与放货方式。出货后按约定跟进船期与接驳更新，收货人提前准备到港清关、提货和还空箱。',
+        bullets: [
+          '第一步：提交货物、地址、箱量、日期与贸易条款。',
+          '第二步：比较起运方案、船期、总费用项目和目的港责任。',
+          '第三步：确认订舱、截关、单证、装柜与提单。',
+          '第四步：衔接到港清关、提货、内陆交付和空箱归还。',
+        ],
       },
     ],
     checklist: [
-      'Jebel Ali 还是最终其他城市/国家',
-      '是否接受中转和预计航程',
-      '货物是否为化工品、危险品或带品牌',
-      '客户是否要求产地证或特殊认证',
-      '是否需要目的港清关或转运建议',
+      '青岛或连云港起运要求与工厂装货地址',
+      'Jebel Ali / Dammam / Jeddah 或其他明确目的港',
+      '最终交付国家、城市、地址及到港或到门范围',
+      '品名、HS Code、件数、毛重、体积、箱型箱量',
+      '货好日期、最晚到港时间与可接受中转方案',
+      '收货人、当地清关代理和适用单证要求',
+      '费用承担方、免费期要求及报价有效期',
+      '特殊货物包装、尺寸与船司审核资料',
     ],
-    title_en: 'China to Dubai Jebel Ali Ocean Freight: Middle East Export Essentials',
-    description_en:
-      'Schedules, transshipment, documents and destination charges to watch when exporting from China to Jebel Ali, Dammam and other Middle East ports.',
-    highlights_en: [
-      'Jebel Ali is a major Middle East transshipment and distribution hub, but still check the final destination.',
-      'Chemicals, building materials and dangerous goods need documents and carrier acceptance confirmed in advance.',
-      'Middle East customers often focus on schedule reliability, destination charges and clearance documents.',
-    ],
-    sections_en: [
+    faqs: [
       {
-        heading: '1. Jebel Ali is not every Middle East destination',
-        body:
-          'Many shipments first reach Jebel Ali, then move on to the UAE, Saudi Arabia or nearby countries. When quoting, confirm the final destination, whether transshipment is needed, the consignee\'s clearance capability and the trade terms.',
+        question: '青岛到中东海运询价要提供什么？',
+        answer: '请提供装货地址、目的港、最终交付城市、品名、箱型箱量、件重体、货好日期和贸易条款。特殊货物另附包装及适用运输资料。',
       },
       {
-        heading: '2. Schedule and transshipment reliability matter',
-        body:
-          'Middle East routes have many carrier options, but direct versus transshipment, space and arrival reliability differ significantly. A low-price option with long transshipment time may affect the customer\'s delivery plan.',
+        question: '到 Jebel Ali 就能直接交付沙特买家吗？',
+        answer: '到 Jebel Ali 的海运到港报价不自动包含沙特交付。若需后续转运或跨国运输，另确认路线、手续、清关、费用和最终交货地点。',
       },
       {
-        heading: '3. Confirm document requirements in advance',
-        body:
-          'Building materials, chemicals, dangerous goods, equipment and branded cargo may involve extra documents. Confirm invoice, packing list, certificate of origin, MSDS, dangerous goods packaging certificate and consignee requirements early.',
+        question: 'Dammam 和 Jeddah 应该怎么选？',
+        answer: '先让买家确认收货城市、清关代理和指定卸货港，再比较海运与内陆交付安排；不能只按海运费判断。',
       },
-    ],
-    checklist_en: [
-      'Jebel Ali or a final other city/country',
-      'Whether transshipment is acceptable and expected transit',
-      'Whether cargo is chemical, dangerous goods or branded',
-      'Whether the customer requires certificate of origin or special certification',
-      'Whether destination clearance or transshipment advice is needed',
+      {
+        question: '中东海运到门报价包含税费和卸货吗？',
+        answer: '需逐项约定。请核对进口清关、税费、码头与用箱费用、内陆运输、卸货及收货限制的包含范围和承担方。',
+      },
     ],
     en: {
-      title: 'China to Jebel Ali Ocean Freight: Middle East Export Guide',
-      description:
-        'Key operating points for China exports to Jebel Ali, Dammam and other Middle East ports: schedule, transshipment, documents and destination charges.',
+      title: 'Qingdao & Lianyungang to Middle East Shipping: Jebel Ali, Dammam & Jeddah',
+      description: 'Plan China exports from Qingdao or Lianyungang to Jebel Ali, Dammam and Jeddah. Compare routing, booking data, destination charges and delivery scope.',
       highlights: [
-        'Jebel Ali is a major Middle East transshipment and distribution port, but the final destination still matters.',
-        'Chemicals, building materials and DG cargo require early document and carrier acceptance checks.',
-        'Middle East buyers often care about schedule reliability, destination charges and clearance documents.',
+        'Compare factory-to-port arrangements, mainline or feeder connections and delivery scope together.',
+        'Jebel Ali is in the UAE; Dammam and Jeddah are in Saudi Arabia. Match the port to the buyer’s final location.',
+        'Separate port delivery from door delivery and clarify clearance, duties and inland transport responsibility.',
+        'Confirm schedule, cargo acceptance, free time and quote validity for the actual shipment.',
       ],
       sections: [
         {
-          heading: '1. Jebel Ali is not the final answer for every shipment',
-          body:
-            'Many shipments first arrive at Jebel Ali and then move to the UAE, Saudi Arabia or nearby countries. When quoting, confirm the final destination, whether onward movement is needed, consignee clearance ability and trade terms.',
+          heading: '1. Prepare a Qingdao or Lianyungang origin request',
+          body: 'Global View Logistics is headquartered in Qingdao, with Bryce Lee supporting export enquiries from Lianyungang. Send factory address, cargo, equipment, container count, ready date, destination and trade terms. For Qingdao, confirm mainline booking and factory-to-port arrangements; for Lianyungang, compare local pickup and feeder/mainline connections. Available direct or transshipment routing and carrier depend on the voyage.',
+          bullets: [
+            'For FCL, provide equipment, volume, gross weight and loading address.',
+            'For LCL, provide package dimensions, count, weight, volume and stackability.',
+            'For equipment, chemicals or battery cargo, send applicable dimensions, packing, transport appraisal or SDS / MSDS details early.',
+          ],
         },
         {
-          heading: '2. Schedule and transshipment stability matter',
-          body:
-            'There are many carrier options on Middle East lanes, but direct service, transshipment plan, space and arrival reliability can differ greatly. A low-rate option with a long transshipment can disrupt the buyer delivery plan.',
+          heading: '2. Compare Jebel Ali, Dammam and Jeddah',
+          body: 'The Middle East is not a single destination port. Jebel Ali is in Dubai; Dammam serves Saudi Arabia’s eastern port demand, while Jeddah is on the Red Sea side. Confirm the buyer’s final city, nominated discharge port, broker and inland requirement before comparing ocean and onward transport. A Dubai port quote does not automatically cover movement or clearance in another country.',
+          bullets: [
+            'Jebel Ali: clarify port delivery, UAE door delivery or a separately agreed onward movement.',
+            'Dammam: ask whether King Abdulaziz Port is required and confirm the final address.',
+            'Jeddah: confirm Jeddah Islamic Port discharge and the buyer’s delivery requirements.',
+            'List cross-border or inland routing, delivery point and responsibilities separately.',
+          ],
         },
         {
-          heading: '3. Document requirements should be checked early',
-          body:
-            'Building materials, chemicals, DG cargo, equipment and branded goods may involve extra documents. Invoice, packing list, certificate of origin, MSDS, DG package certificate and consignee requirements should be reviewed as early as possible.',
+          heading: '3. Compare routing against the delivery deadline',
+          body: 'State the latest acceptable port or door arrival date instead of only asking for the fastest sailing time. Compare origin, vessel/voyage, estimated departure and arrival, connection ports, cargo cut-off, SI and VGM deadlines. Schedule changes, feeder connections and port operations affect delivery; confirm the actual voyage when booking.',
+        },
+        {
+          heading: '4. Separate included and excluded charges',
+          body: 'List origin handling, trucking, customs, ocean freight and surcharges, then identify whether delivery order, terminal, equipment use, storage, clearance and inland transport are included. Separate carrier free time from terminal storage and confirm the starting event and equipment scope. A door proposal must clarify import clearance, duties, unloading and receiving conditions.',
+          bullets: [
+            'Identify freight payment terms, currency and quote validity.',
+            'Check local services and charges when the buyer nominates an agent.',
+            'Obtain shipment-specific written confirmation for extra free time or other special requests.',
+          ],
+        },
+        {
+          heading: '5. Review documents for the actual cargo and country',
+          body: 'Prepare cargo description, invoice, packing list, packages, weight, volume, shipper/consignee details and applicable HS code. Ask the buyer and local broker to confirm any origin certificate, attestation or product approval for the country and goods. Review carrier acceptance, packing and transport documents for chemicals, dangerous goods, batteries and oversized equipment before loading.',
+        },
+        {
+          heading: '6. Follow the enquiry-to-shipment sequence',
+          body: 'Confirm cargo, discharge port and delivery scope, then compare voyages and charge coverage. After selecting a proposal, confirm booking, loading and document deadlines and check B/L data and release method. Follow agreed schedule and connection updates, while the buyer prepares clearance, pickup and empty return.',
+          bullets: [
+            'Step 1: send cargo, addresses, volume, dates and trade terms.',
+            'Step 2: compare origin routing, schedule, charges and destination responsibilities.',
+            'Step 3: confirm booking, cut-offs, documents, loading and B/L.',
+            'Step 4: arrange arrival clearance, pickup, inland delivery and empty return.',
+          ],
         },
       ],
       checklist: [
-        'Jebel Ali or another final city / country',
-        'Whether transshipment and expected transit time are acceptable',
-        'Whether cargo is chemical, DG or branded',
-        'Certificate of origin or special certification requirements',
-        'Destination clearance or onward transport needs',
+        'Preferred Qingdao or Lianyungang origin and factory address',
+        'Jebel Ali, Dammam, Jeddah or another named port',
+        'Final country, city, address and port or door scope',
+        'Commodity, HS code, packages, weight, volume and equipment',
+        'Ready date, latest arrival and acceptable connections',
+        'Consignee, local broker and applicable documents',
+        'Charge responsibility, free-time request and quote validity',
+        'Special-cargo packing, dimensions and acceptance documents',
+      ],
+      faqs: [
+        {
+          question: 'What is needed for a Qingdao to Middle East quote?',
+          answer: 'Send factory address, discharge port, final city, commodity, equipment, volume, packages, weight, ready date and trade terms. Add applicable packing and transport details for special cargo.',
+        },
+        {
+          question: 'Does Jebel Ali freight automatically include delivery to Saudi Arabia?',
+          answer: 'No. A port quote to Jebel Ali does not automatically include onward or cross-border delivery. Agree routing, procedures, clearance, charges and final delivery place separately.',
+        },
+        {
+          question: 'How should I choose between Dammam and Jeddah?',
+          answer: 'Confirm the buyer’s city, broker and required discharge port, then compare ocean and inland arrangements rather than ocean freight alone.',
+        },
+        {
+          question: 'Does a Middle East door quote include duties and unloading?',
+          answer: 'Check the agreed scope item by item, including import clearance, duties, terminal and equipment charges, inland transport, unloading and receiving restrictions.',
+        },
       ],
     },
   },

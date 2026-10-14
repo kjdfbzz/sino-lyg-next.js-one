@@ -26,7 +26,7 @@ The shared entity IDs and homepage search metadata live in `app/seo.ts`. Article
 
 ### Company and author profile
 
-`/about` and `/en/about` identify Li Haiwen (Bryce Lee), Sales Manager at Global View Logistics in Lianyungang, and link to the separate corporate website. The public identity and office data in `app/company-profile.ts` comes from the supplied company brochure and business card. The card lists both the Lianyungang branch of Qingdao Global View Logistics Co., Ltd. and 连云港港威国际供应链管理有限公司; these are kept as separate entities. No registered English name is inferred for the latter.
+`/about` and `/en/about` identify Manager Li (Bryce Lee), Sales Manager at Global View Logistics in Lianyungang, and link to the separate corporate website. The public identity and office data in `app/company-profile.ts` comes from the supplied company brochure and business card. The card lists both the Lianyungang branch of Qingdao Global View Logistics Co., Ltd. and 连云港港威国际供应链管理有限公司; these are kept as separate entities. No registered English name is inferred for the latter.
 
 The shared graph links the person to the Lianyungang branch through `worksFor`. The personal website and its articles use the person as publisher. Company memberships, licensing numbers, client endorsements, asset ownership and experience figures need current evidence before publication. The brochure's team experience must not become a company founding date or the author's experience. Update the profile date only when its content changes.
 
