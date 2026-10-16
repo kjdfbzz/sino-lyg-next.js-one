@@ -2164,6 +2164,54 @@ export const contentArticles: ContentArticle[] = [
       ],
     },
   },
+  {
+    slug: 'china-export-freight-market-notes',
+    section: 'guides',
+    title: '中国出口海运市场观察：东南亚、印巴、中东、南美舱位动态',
+    description: '连云港、青岛出口航线的舱位与市场节奏观察，覆盖东南亚、印巴、中东和南美，定期更新，不含具体运价。',
+    updatedAt: '2026-10-16',
+    readTime: '4 min read',
+    image: '/bryce-hero-port.webp',
+    keywords: ['中国出口海运市场', '海运舱位', '提前订舱', '东南亚海运', '印度排灯节海运', '南美海运'],
+    highlights: [
+      '本页是定期更新的市场观察，只写舱位和节奏判断，不含具体运价；价格以当期报价为准。',
+      '东南亚舱位仍然偏紧，甩柜和爆仓较多，建议尽早订舱。',
+      '印度航线在 10 月下旬到排灯节前后舱位紧张，部分船司有空班。',
+    ],
+    sections: [
+      { heading: '1. 本期概览（10 月 15 日至 21 日）', body: '国庆假期后，多条航线延续了节前的舱位紧张。上海港和部分目的港仍有压港，船舶回程节奏被打乱，进而影响后续班次。本页只记录舱位和时间节奏，不列具体运价；需要当期价格，请按具体港口和货物单独询价。' },
+      { heading: '2. 东南亚：舱位紧、甩柜多', body: '东南亚航线整体仍处于舱位紧张、甩柜和爆仓较多的状态。国庆期间船东囤货，加上上海及目的港压港，船舶无法按时回程；同时冷冻柜持续大批量出运，进一步挤占舱位。预计运力在 11 月逐步恢复，10 月下旬仍以紧张为主。', bullets: ['建议提前订舱，并为甩柜和改期留出缓冲。', '核对截关和进港时间，避免错过开港窗口被顺延。'] },
+      { heading: '3. 印度、巴基斯坦：空班叠加排灯节', body: '印巴航线国庆期间接货良好，甩货延续。10 月下旬部分船司有空班，11 月初印度有约一周的排灯节假期，节前订舱集中，舱位偏紧。', bullets: ['节前出货请尽早确认舱位和目的港提货安排。', '节假日期间目的港操作和提货可能放缓，请预留时间。'] },
+      { heading: '4. 中东：红海与波斯湾', body: '红海方向直达班次在增加，但地区局势仍是不确定因素，部分客户出货意愿受影响。波斯湾方向出货意愿在恢复，订舱前仍应与收货人沟通好相关风险。' },
+      { heading: '5. 南美：西岸偏紧，东岸运力充足', body: '南美西岸国庆期间接货良好，多家船司停班或跳挂，上海及目的港压港尚未好转，运力偏紧；节后客户出货节奏相对平稳，不少客户在观望。南美东岸加班船和准班船较满，整体运力充足，中小客户货量增长有限。', bullets: ['南美西：舱位紧张时，稳定的订舱窗口更重要，建议提前锁定舱位。', '南美东：运力充足，可以多方案比较，但仍需核对船期和目的港。'] },
+      { heading: '6. 如何使用这页', body: '这页是定期更新的参考，不构成报价或舱位承诺。运价、舱位和船期以船司和当期确认为准；有具体货物时，请把起运港、目的港、货物信息和出货时间发给我判断。' },
+    ],
+    checklist: ['起运港（连云港 / 青岛）和目的港', '预计出货时间和截关要求', '是否能接受改期或中转', '货物类型，是否为冻柜、危险品或特殊货', '目的港假期或清关安排'],
+    faqs: [
+      { question: '为什么现在要提前订舱？', answer: '国庆后多条航线舱位紧张，船司停班、跳挂和压港较多，临近截关再订舱容易被甩柜。具体提前量因航线而异，建议先确认舱位再备货。' },
+      { question: '这页会写具体运价吗？', answer: '不会。运价变化快，且因港口、箱型和货物而异，请提供具体信息单独询价。' },
+    ],
+    title_en: 'China Export Freight Market Notes: Space Trends for Southeast Asia, India-Pakistan, Middle East & South America',
+    description_en: 'Regularly updated notes on space and timing for exports from Lianyungang and Qingdao to Southeast Asia, India-Pakistan, the Middle East and South America. No freight rates.',
+    highlights_en: [
+      'This page is a regularly updated market note covering space and timing only, with no freight rates; prices depend on the current quotation.',
+      'Southeast Asia space remains tight with frequent rollovers, so book early.',
+      'India-bound space is tight from late October through the Diwali period, with some carrier blank sailings.',
+    ],
+    sections_en: [
+      { heading: '1. This period at a glance (Oct 15–21)', body: 'After the National Day holiday, many trade lanes stayed as tight as before the break. Congestion at Shanghai and some destination ports continues, disrupting vessel return schedules and later sailings. This page records space and timing only, with no freight rates; for current pricing, request a quotation for your specific port and cargo.' },
+      { heading: '2. Southeast Asia: tight space and frequent rollovers', body: 'Southeast Asia remains tight overall, with frequent rollovers and overbooked sailings. Carriers held cargo over the holiday while congestion at Shanghai and destination ports kept vessels from returning on time, and large weekly reefer volumes are taking up more space. Capacity is expected to recover gradually from November; late October stays tight.', bullets: ['Book early and allow buffer for rollovers and schedule changes.', 'Check cut-off and gate-in times so you do not miss the opening window and get pushed to a later sailing.'] },
+      { heading: '3. India and Pakistan: blank sailings plus Diwali', body: 'India-Pakistan lanes loaded well over the holiday, and rollovers continue. Some carriers have blank sailings in late October, and the Diwali holiday of about one week in early November concentrates bookings before the break, keeping space tight.', bullets: ['For pre-holiday shipments, confirm space and destination pickup arrangements early.', 'Destination handling and pickup may slow during the holiday, so allow extra time.'] },
+      { heading: '4. Middle East: Red Sea and Persian Gulf', body: 'On the Red Sea side, direct services are increasing, but regional uncertainty remains a factor and some shippers are hesitant. On the Persian Gulf side, shipper appetite is recovering, but risks should still be discussed with the consignee before booking.' },
+      { heading: '5. South America: tight west coast, ample east coast capacity', body: 'On the west coast, loading over the holiday was strong, several carriers blanked or skipped calls, and congestion at Shanghai and destination ports has not improved, so capacity is tight; after the holiday, shipping pace has been steady with many shippers waiting and watching. On the east coast, extra and ad hoc sailings are well loaded, overall capacity is ample, and small and mid-size shippers have not added volume.', bullets: ['West coast: when space is tight, a stable booking window matters more — lock space early.', 'East coast: capacity is ample so you can compare options, but still verify sailing dates and destination details.'] },
+      { heading: '6. How to use this page', body: 'This page is a regularly updated reference, not a quotation or space commitment. Rates, space and sailings depend on the carrier and current confirmation. If you have a shipment, send the origin port, destination port, cargo details and ready date and I will review it.' },
+    ],
+    checklist_en: ['Origin (Lianyungang / Qingdao) and destination port', 'Expected ready date and cut-off requirements', 'Whether schedule changes or transshipment are acceptable', 'Cargo type, including reefer, dangerous goods or special cargo', 'Destination holidays or clearance arrangements'],
+    faqs_en: [
+      { question: 'Why book earlier right now?', answer: 'After the National Day holiday, many lanes are tight, with carrier blank sailings, skipped calls and congestion. Booking close to cut-off risks a rollover. The lead time varies by lane, so confirm space before preparing cargo.' },
+      { question: 'Does this page show freight rates?', answer: 'No. Rates change quickly and vary by port, container type and cargo. Send your shipment details for a separate quotation.' },
+    ],
+  },
 ];
 
 export function getSection(slug: string) {
