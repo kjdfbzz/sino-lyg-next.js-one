@@ -141,6 +141,27 @@ const routes = [
       zh: '南美线运价高、航程长，合约资源能让舱位和价格更稳定，适合设备、工程物资、建材等长期出口客户。',
       en: 'Contracted long-haul resources for equipment, project cargo and building-material exporters.',
     },
+    links: [
+      { href: '/routes/china-to-mexico-chile-peru-shipping', linkLabel: '墨西哥、智利与秘鲁航线指南' },
+      { href: '/routes/china-to-brazil-argentina-shipping', linkLabel: '巴西与阿根廷航线指南' },
+    ],
+  },
+  {
+    code: '04',
+    title: { zh: '中国到东南亚', en: 'China to Southeast Asia' },
+    meta: 'Vietnam · Thailand · Philippines · Indonesia · Malaysia',
+    carrier: 'Lianyungang / Qingdao',
+    copy: {
+      zh: '从连云港或青岛出运，按目的港、货物和备货时间核对航线、单证及费用。',
+      en: 'Compare routes, documents and costs by destination, cargo and ready date from Lianyungang or Qingdao.',
+    },
+    links: [
+      { href: '/routes/china-to-vietnam-shipping', linkLabel: '越南' },
+      { href: '/routes/china-to-thailand-shipping', linkLabel: '泰国' },
+      { href: '/routes/china-to-philippines-shipping', linkLabel: '菲律宾' },
+      { href: '/routes/china-to-indonesia-shipping', linkLabel: '印度尼西亚' },
+      { href: '/routes/china-to-malaysia-shipping', linkLabel: '马来西亚' },
+    ],
   },
 ];
 
@@ -216,8 +237,8 @@ const knowledgeCards = [
     label: 'Routes',
     title: { zh: '重点航线指南', en: 'Route guides' },
     copy: {
-      zh: '印度、中东等航线的港口选择、目的港费用和旺季风险。',
-      en: 'Port choices, destination costs and peak-season risks for India and Middle East lanes.',
+      zh: '印度、中东、拉美和东南亚航线的港口选择、目的港费用和旺季风险。',
+      en: 'Port choices, destination costs and peak-season risks for India, the Middle East, Latin America and Southeast Asia lanes.',
     },
     href: '/routes',
   },
@@ -372,8 +393,9 @@ export default function Home({
         ports: route.meta,
         description: route.copy.zh,
         carrier: route.carrier,
-        href: '',
-        linkLabel: '',
+        href: route.links?.[0]?.href ?? '',
+        linkLabel: route.links?.[0]?.linkLabel ?? '',
+        additionalLinks: route.links?.slice(1) ?? [],
       }))
     : homeSearchContentEn.routeCards.map((route, index) => ({
         ...route,
@@ -506,10 +528,18 @@ export default function Home({
                     {route.description}
                   </p>
                   {route.href && (
-                    <a href={route.href} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-amber-300 transition hover:text-white">
-                      {route.linkLabel}
-                      <ArrowRight className="h-4 w-4" />
-                    </a>
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
+                      <a href={route.href} className="inline-flex items-center gap-2 text-sm font-bold text-amber-300 transition hover:text-white">
+                        {route.linkLabel}
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                      {route.additionalLinks?.map((link) => (
+                        <a key={link.href} href={link.href} className="inline-flex items-center gap-2 text-sm font-bold text-amber-300 transition hover:text-white">
+                          {link.linkLabel}
+                          <ArrowRight className="h-4 w-4" />
+                        </a>
+                      ))}
+                    </div>
                   )}
                 </div>
               </article>

@@ -16,6 +16,7 @@ export type HomeSearchContent = {
     destinations: string[];
     href: string;
     linkLabel: string;
+    additionalLinks?: Array<{ href: string; linkLabel: string }>;
   }>;
   quoteChecklist: {
     title: string;
@@ -89,6 +90,28 @@ export const homeSearchContentEn: HomeSearchContent = {
       destinations: ['Brazil', 'Argentina', 'Chile', 'Peru', 'Mexico'],
       href: '/en/routes/china-to-mexico-chile-peru-shipping',
       linkLabel: 'Read the Mexico, Chile & Peru guide',
+      additionalLinks: [
+        {
+          href: '/en/routes/china-to-brazil-argentina-shipping',
+          linkLabel: 'Read the Brazil & Argentina guide',
+        },
+      ],
+    },
+    {
+      id: 'southeast-asia',
+      title: 'China to Southeast Asia',
+      ports: 'Vietnam · Thailand · Philippines · Indonesia · Malaysia',
+      description:
+        'Compare destination ports, cargo requirements, documents and costs for shipments from Lianyungang or Qingdao before booking.',
+      destinations: ['Vietnam', 'Thailand', 'Philippines', 'Indonesia', 'Malaysia'],
+      href: '/en/routes/china-to-vietnam-shipping',
+      linkLabel: 'Vietnam',
+      additionalLinks: [
+        { href: '/en/routes/china-to-thailand-shipping', linkLabel: 'Thailand' },
+        { href: '/en/routes/china-to-philippines-shipping', linkLabel: 'Philippines' },
+        { href: '/en/routes/china-to-indonesia-shipping', linkLabel: 'Indonesia' },
+        { href: '/en/routes/china-to-malaysia-shipping', linkLabel: 'Malaysia' },
+      ],
     },
   ],
   quoteChecklist: {

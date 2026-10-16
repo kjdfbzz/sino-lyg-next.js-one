@@ -41,11 +41,19 @@ const homepageCopy = {
 };
 
 export function homeMetadata(lang: Lang): Metadata {
-  const copy = homepageCopy[lang];
+  const copy = {
+    ...homepageCopy[lang],
+    description: lang === 'zh'
+      ? '李经理 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、东南亚、中东和拉美航线的单证、费用与操作要求。'
+      : 'China export freight from Lianyungang and Qingdao to India, Southeast Asia, the Middle East and Latin America. Plan FCL, LCL, trucking and documents with Bryce Lee.',
+  };
 
   return {
     title: { absolute: copy.title },
     description: copy.description,
+    keywords: lang === 'zh'
+      ? ['中国出口货代', '连云港货代', '青岛货代', '国际海运', '整柜', '拼箱', '拖车报关', 'India shipping', 'Middle East freight', 'South America shipping', '东南亚']
+      : ['China freight forwarder', 'Lianyungang freight forwarder', 'Qingdao freight forwarder', 'FCL shipping', 'LCL shipping', 'China export customs', 'India shipping', 'Middle East freight', 'South America shipping', 'Southeast Asia'],
     authors: [{ name: lang === 'zh' ? '李经理 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
     alternates: languageAlternates('/', lang),
     openGraph: {
