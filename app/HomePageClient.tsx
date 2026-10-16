@@ -121,6 +121,11 @@ const routes = [
       zh: 'Kolkata 长期每月约 50 x 40HQ 稳定发货，熟悉印度港口目的港费用、清关习惯和旺季舱位节奏。',
       en: 'Long-term Kolkata volume around 50 x 40HQ monthly, with India destination cost, clearance and peak-space awareness.',
     },
+    links: [
+      { href: '/routes/china-to-india-shipping', linkLabel: '印度航线指南' },
+      { href: '/routes/lianyungang-to-india-fcl-shipping', linkLabel: '连云港到印度整柜专线' },
+      { href: '/routes/china-to-karachi-shipping', linkLabel: '卡拉奇航线指南' },
+    ],
   },
   {
     code: '02',
@@ -131,6 +136,9 @@ const routes = [
       zh: '熟悉 Jebel Ali、Dammam 等港口收费结构和实际操作，对化工、危险品、建材等品类可提前判断单证要求。',
       en: 'Practical knowledge of Jebel Ali, Dammam and document requirements for chemical, DG and building-material cargo.',
     },
+    links: [
+      { href: '/routes/china-to-jebel-ali-shipping', linkLabel: '迪拜 Jebel Ali 航线指南' },
+    ],
   },
   {
     code: '03',
