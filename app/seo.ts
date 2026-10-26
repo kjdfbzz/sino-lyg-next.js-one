@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { contactEmail, contactPhone, siteUrl, type Lang } from './content-data';
+import { contactEmail, contactPhone, getArticlePath, siteUrl, type ArticleLang, type ContentArticle, type Lang } from './content-data';
 import { localizePath } from './localized-path';
 import { companyProfile } from './company-profile';
 import { cargoCategories, experienceServices, experienceUpdatedAt } from './experience-data';
@@ -24,6 +24,27 @@ export function languageAlternates(path: string, lang: Lang): Metadata['alternat
   return {
     canonical: absoluteUrl(localizePath(path, lang)),
     languages: languageUrls(path),
+  };
+}
+
+export function articleLanguageUrls(article: ContentArticle) {
+  const path = getArticlePath(article);
+  const urls = languageUrls(path);
+
+  if (!article.es) return urls;
+
+  return {
+    'zh-CN': urls['zh-CN'],
+    en: urls.en,
+    es: absoluteUrl(localizePath(path, 'es')),
+    'x-default': urls['x-default'],
+  };
+}
+
+export function articleLanguageAlternates(article: ContentArticle, lang: ArticleLang): Metadata['alternates'] {
+  return {
+    canonical: absoluteUrl(localizePath(getArticlePath(article), lang)),
+    languages: articleLanguageUrls(article),
   };
 }
 

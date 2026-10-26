@@ -3,6 +3,7 @@ export const contactEmail = 'Bryce.Lee@gwl-lianyungang.com';
 export const contactPhone = '18360639913';
 
 export type Lang = 'zh' | 'en';
+export type ArticleLang = Lang | 'es';
 export type ContentSectionSlug = 'requirements' | 'routes' | 'guides';
 
 export type ArticleBlock = {
@@ -19,6 +20,7 @@ export type ArticleFaq = {
 export type ArticleCopy = {
   title: string;
   description: string;
+  keywords?: string[];
   highlights: string[];
   sections: ArticleBlock[];
   checklist?: string[];
@@ -64,6 +66,7 @@ export type ContentArticle = ArticleCopy & {
   en?: ArticleCopy & {
     keywords?: string[];
   };
+  es?: ArticleCopy;
 };
 
 export const contentSections: ContentSection[] = [
@@ -1448,6 +1451,68 @@ export const contentArticles: ContentArticle[] = [
           'The west coast is mainly our own space with CMA, MSK and KMTC — our own booking window — with an edge in space and rate.',
       },
     ],
+    es: {
+      title: 'Flete marítimo de China a México, Chile y Perú: Manzanillo, San Antonio y Callao',
+      description: 'Envíos FCL desde Qingdao a México, Chile y Perú con espacio propio en CMA, MSK y KMTC: puertos, tiempos de tránsito, documentos y cargos en destino.',
+      keywords: ['flete marítimo China México', 'importar de China a México', 'Qingdao a Manzanillo', 'flete marítimo China Chile', 'flete marítimo China Perú', 'contenedor China Manzanillo'],
+      highlights: [
+        'Salidas desde Qingdao con espacio propio contratado en CMA, MSK y KMTC; también podemos coordinar carga con origen en Lianyungang.',
+        'Manzanillo es la ruta más rápida de la costa oeste: unos 20 días de tránsito.',
+        'Cobertura en México, Centroamérica y la costa oeste de Sudamérica: Chile, Perú, Ecuador y Colombia.',
+      ],
+      sections: [
+        {
+          heading: '1. Espacio propio en Qingdao, no reventa',
+          body: 'Trabajamos la costa oeste de Latinoamérica con contratos y ventanas de reserva propias en Qingdao con CMA, MSK y KMTC. Al reservar directamente, y no con espacio revendido, tenemos más control sobre la disponibilidad, la tarifa y la estabilidad del embarque en temporada alta, cuando las navieras suelen dejar carga en puerto o cancelar escalas.',
+        },
+        {
+          heading: '2. México: Manzanillo, Lázaro Cárdenas y Ensenada',
+          body: 'Manzanillo es el principal puerto del Pacífico mexicano y la opción más usada para carga con destino a Ciudad de México, Guadalajara y el Bajío. Lázaro Cárdenas es una alternativa para el centro del país, y Ensenada atiende el noroeste.',
+          bullets: [
+            'Manzanillo: unos 20 días de tránsito desde Qingdao.',
+            'Lázaro Cárdenas y Ensenada: según la naviera y la salida disponible.',
+            'Confirme con su agente aduanal el puerto de entrada y el destino final antes de reservar.',
+          ],
+        },
+        {
+          heading: '3. Chile, Perú y el resto de la costa oeste',
+          body: 'Además de México, cubrimos San Antonio y Lirquén en Chile, Callao y Chancay en Perú, Guayaquil y Posorja en Ecuador y Buenaventura en Colombia. Para Centroamérica atendemos Puerto Quetzal, Acajutla, Corinto, Caldera y Balboa.',
+          bullets: [
+            'Chile (San Antonio) y Perú (Callao): unos 30 días de tránsito.',
+            'Los tiempos indicados son referencias; cada salida se confirma con la naviera.',
+          ],
+        },
+        {
+          heading: '4. Documentos y carga especial',
+          body: 'Podemos manejar materiales de construcción, maquinaria y químicos, pero la aceptación de la naviera y los documentos se confirman antes de reservar. Para mercancía peligrosa se necesita la hoja de datos de seguridad (SDS/MSDS), el número UN y la clase. Revise también si su producto requiere certificado de origen u otros permisos de importación en su país.',
+        },
+        {
+          heading: '5. Cargos en destino y tiempo libre',
+          body: 'El costo total no es solo el flete. Los cargos en puerto de destino, el tiempo libre de contenedor, el despacho aduanal y el transporte terrestre varían según el puerto y el agente. Al pedir una cotización, confirme qué incluye y qué paga cada parte según el Incoterm acordado.',
+        },
+      ],
+      checklist: [
+        'Puerto de destino y ciudad de entrega final',
+        'Tipo y cantidad de contenedores, peso bruto y volumen',
+        'Descripción de la mercancía y si es carga especial o peligrosa',
+        'Fecha estimada de carga lista en China e Incoterm de compra',
+        'Si necesita recolección en fábrica, despacho de exportación o servicios en destino',
+      ],
+      faqs: [
+        {
+          question: '¿Cuánto tarda un contenedor de China a Manzanillo?',
+          answer: 'Desde Qingdao, unos 20 días de puerto a puerto. Al tiempo total hay que sumar la recolección en fábrica, el despacho aduanal y el transporte terrestre en México. Cada salida se confirma con la naviera.',
+        },
+        {
+          question: '¿Su espacio es propio o revendido?',
+          answer: 'Tenemos contratos y ventanas de reserva propias en Qingdao con CMA, MSK y KMTC para la costa oeste de Latinoamérica, lo que da más estabilidad de espacio y tarifa en temporada alta.',
+        },
+        {
+          question: '¿Puedo escribirles en español?',
+          answer: 'Sí. Envíenos el puerto de destino, la mercancía, el peso, el volumen y la fecha de carga, en español o en inglés, y le responderemos con las opciones disponibles.',
+        },
+      ],
+    },
   },
   {
     slug: 'china-to-vietnam-shipping',
@@ -2236,7 +2301,32 @@ export function getArticlePath(article: ContentArticle) {
   return `/${article.section}/${article.slug}`;
 }
 
-export function getSectionCopy(section: ContentSection, lang: Lang): SectionCopy {
+export function getSectionCopy(section: ContentSection, lang: ArticleLang): SectionCopy {
+  if (lang === 'es') {
+    const spanishSections: Record<ContentSectionSlug, SectionCopy> = {
+      requirements: {
+        label: 'Requisitos de envío',
+        title: 'Requisitos para exportar desde China',
+        description: 'Listas de verificación para contenedores completos, carga consolidada, aduanas y documentos de exportación desde China.',
+        intro: 'Revise la información de la carga y los documentos antes de reservar.',
+      },
+      routes: {
+        label: 'Guías de rutas',
+        title: 'Guías de rutas marítimas',
+        description: 'Opciones de puertos, espacio, costes en destino y requisitos operativos para exportaciones desde China.',
+        intro: 'Compare cada ruta según los puertos, la carga, la fecha y el alcance del servicio.',
+      },
+      guides: {
+        label: 'Guías de fletes',
+        title: 'Guías de costes y operaciones de transporte',
+        description: 'Información sobre flete marítimo, recargos, transporte terrestre, aduanas y gastos en destino.',
+        intro: 'Revise los conceptos incluidos y excluidos de cada cotización antes de reservar.',
+      },
+    };
+
+    return spanishSections[section.slug];
+  }
+
   if (lang === 'en' && section.en) {
     return section.en;
   }
@@ -2249,7 +2339,15 @@ export function getSectionCopy(section: ContentSection, lang: Lang): SectionCopy
   };
 }
 
-export function getArticleCopy(article: ContentArticle, lang: Lang): ArticleCopy {
+export function getArticleCopy(article: ContentArticle, lang: ArticleLang): ArticleCopy {
+  if (lang === 'es') {
+    if (!article.es) {
+      throw new Error(`Spanish content is not available for article: ${article.slug}`);
+    }
+
+    return article.es;
+  }
+
   if (lang === 'en') {
     const legacyEnglishCopy = article.en;
 

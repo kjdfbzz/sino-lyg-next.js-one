@@ -9,7 +9,7 @@ import {
   getArticleCopy,
   getArticlePath,
   getSectionCopy,
-  type Lang,
+  type ArticleLang,
 } from '../../../../content-data';
 import { localizePath } from '../../../../localized-path';
 import PageLanguage from '../../../../PageLanguage';
@@ -18,10 +18,14 @@ type ArticlePageClientProps = {
   article: ContentArticle;
   section: ContentSection;
   related: ContentArticle[];
-  initialLang?: Lang;
+  initialLang?: ArticleLang;
 };
 
-function formatReadTime(readTime: string, lang: Lang) {
+function formatReadTime(readTime: string, lang: ArticleLang) {
+  if (lang === 'es') {
+    return `Lectura de ${readTime.replace(' min read', '')} min`;
+  }
+
   return lang === 'zh'
     ? `约 ${readTime.replace(' min read', ' 分钟阅读')}`
     : readTime;
@@ -37,8 +41,10 @@ export default function ArticlePageClient({
   const articleCopy = getArticleCopy(article, lang);
   const sectionCopy = getSectionCopy(section, lang);
   const isZh = lang === 'zh';
-  const homeHref = localizePath('/', lang);
-  const sectionHref = localizePath(`/${section.slug}`, lang);
+  const isEs = lang === 'es';
+  const navigationLang = isEs ? 'en' : lang;
+  const homeHref = localizePath('/', navigationLang);
+  const sectionHref = localizePath(`/${section.slug}`, navigationLang);
   const alternateLang = isZh ? 'en' : 'zh';
   const supportingSlugs = article.section === 'requirements'
     ? ['ocean-freight-cost-breakdown']
@@ -48,25 +54,32 @@ export default function ArticlePageClient({
   const supportingGuides = contentArticles.filter(
     (item) => item.section !== article.section && supportingSlugs.includes(item.slug),
   );
+  const displayedSupportingGuides = isEs && supportingGuides.some((item) => item.es)
+    ? supportingGuides.filter((item) => item.es)
+    : supportingGuides;
+  const displayedRelated = isEs && related.some((item) => item.es)
+    ? related.filter((item) => item.es)
+    : related;
+  const guideLang = (item: ContentArticle): ArticleLang => isEs && !item.es ? 'en' : lang;
   const contents = [
     ...(articleCopy.highlights.length > 0
-      ? [{ id: 'key-points', label: isZh ? '重点提示' : 'Key Points' }]
+      ? [{ id: 'key-points', label: isEs ? 'Puntos clave' : isZh ? '重点提示' : 'Key Points' }]
       : []),
     ...articleCopy.sections.map((block, index) => ({
       id: `section-${index + 1}`,
       label: block.heading,
     })),
     ...(articleCopy.faqs?.length
-      ? [{ id: 'faq', label: isZh ? '常见问题' : 'FAQ' }]
+      ? [{ id: 'faq', label: isEs ? 'Preguntas frecuentes' : isZh ? '常见问题' : 'FAQ' }]
       : []),
     ...(articleCopy.checklist?.length
-      ? [{ id: 'inquiry-checklist', label: isZh ? '询盘清单' : 'Inquiry Checklist' }]
+      ? [{ id: 'inquiry-checklist', label: isEs ? 'Lista para cotizar' : isZh ? '询盘清单' : 'Inquiry Checklist' }]
       : []),
   ];
 
   return (
-    <main lang={isZh ? 'zh-CN' : 'en'} className="min-h-screen bg-[#030508] font-inter text-white">
-      <PageLanguage lang={lang} />
+    <main lang={isZh ? 'zh-CN' : lang} className="min-h-screen bg-[#030508] font-inter text-white">
+      {lang !== 'es' && <PageLanguage lang={lang} />}
       <section className="relative isolate overflow-hidden px-6 py-10 sm:px-10 lg:px-16">
         <Image
           src={article.image}
@@ -87,10 +100,10 @@ export default function ArticlePageClient({
             </Link>
             <div className="flex flex-wrap items-center gap-3">
               <Link
-                href={localizePath('/about', lang)}
+                href={localizePath('/about', navigationLang)}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
               >
-                {isZh ? '公司与作者' : 'Company & Author'}
+                {isEs ? 'Empresa y autor' : isZh ? '公司与作者' : 'Company & Author'}
               </Link>
               <Link
                 href={localizePath(getArticlePath(article), alternateLang)}
@@ -99,11 +112,30 @@ export default function ArticlePageClient({
               >
                 {isZh ? 'EN' : '中文'}
               </Link>
+              {isEs && (
+                <Link
+                  href={localizePath(getArticlePath(article), 'en')}
+                  hrefLang="en"
+                  className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
+                >
+                  EN
+                </Link>
+              )}
+              {article.es && (
+                <Link
+                  href={localizePath(getArticlePath(article), 'es')}
+                  hrefLang="es"
+                  aria-current={isEs ? 'page' : undefined}
+                  className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
+                >
+                  ES
+                </Link>
+              )}
               <Link
                 href={sectionHref}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
               >
-                {isZh ? '返回分类' : 'Back'}
+                {isEs ? 'Volver' : isZh ? '返回分类' : 'Back'}
               </Link>
             </div>
           </nav>
@@ -117,17 +149,19 @@ export default function ArticlePageClient({
               <span>{formatReadTime(article.readTime, lang)}</span>
               <span className="text-white/24">/</span>
               <Link
-                href={localizePath('/about', lang)}
+                href={localizePath('/about', navigationLang)}
                 rel="author"
                 className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white"
               >
-                {isZh ? '作者：李经理 Bryce Lee' : 'Author: Bryce Lee'}
+                {isEs ? 'Autor: Bryce Lee' : isZh ? '作者：李经理 Bryce Lee' : 'Author: Bryce Lee'}
               </Link>
               <span className="text-white/24">/</span>
-              <span>{isZh ? '更新' : 'Updated'} <time dateTime={article.updatedAt}>{article.updatedAt}</time></span>
+              <span>{isEs ? 'Actualizado' : isZh ? '更新' : 'Updated'} <time dateTime={article.updatedAt}>{article.updatedAt}</time></span>
             </div>
             <p className="mt-4 text-sm leading-7 text-white/64">
-              {isZh
+              {isEs
+                ? 'Global View Logistics · Gerente de ventas en Lianyungang'
+                : isZh
                 ? '港威国际物流 · 连云港销售经理'
                 : 'Global View Logistics · Lianyungang Sales Manager'}
             </p>
@@ -144,9 +178,9 @@ export default function ArticlePageClient({
       <article className="px-6 py-16 sm:px-10 lg:px-16">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,760px)_minmax(280px,1fr)]">
           <div>
-            <nav aria-label={isZh ? '文章目录' : 'Table of contents'} className="mb-8 border-b border-white/12 pb-8">
+            <nav aria-label={isEs ? 'Índice del artículo' : isZh ? '文章目录' : 'Table of contents'} className="mb-8 border-b border-white/12 pb-8">
               <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
-                {isZh ? '文章目录' : 'On this page'}
+                {isEs ? 'En esta página' : isZh ? '文章目录' : 'On this page'}
               </h2>
               <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm leading-7 text-white/70">
                 {contents.map((item) => (
@@ -161,7 +195,7 @@ export default function ArticlePageClient({
 
             <section id="key-points" className="scroll-mt-8 border border-white/14 bg-white/[0.03] p-6 sm:p-8">
               <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
-                {isZh ? '重点提示' : 'Key Points'}
+                {isEs ? 'Puntos clave' : isZh ? '重点提示' : 'Key Points'}
               </h2>
               <ul className="mt-6 list-disc space-y-4 pl-5">
                 {articleCopy.highlights.map((item) => (
@@ -195,7 +229,7 @@ export default function ArticlePageClient({
             {articleCopy.faqs && articleCopy.faqs.length > 0 && (
               <section id="faq" className="mt-14 scroll-mt-8 border-t border-white/12 pt-12">
                 <h2 className="text-3xl font-black tracking-tight">
-                  {isZh ? '常见问题' : 'FAQ'}
+                  {isEs ? 'Preguntas frecuentes' : isZh ? '常见问题' : 'FAQ'}
                 </h2>
                 <div className="mt-6 space-y-6">
                   {articleCopy.faqs.map((faq) => (
@@ -211,24 +245,26 @@ export default function ArticlePageClient({
             )}
 
             <p className="mt-12 border-l border-amber-300/40 pl-5 text-sm leading-7 text-white/58">
-              {isZh
+              {isEs
+                ? 'Use esta guía para preparar su envío. Los fletes, itinerarios, fechas de cierre y requisitos documentales dependen de la carga y la ruta concretas, y de la confirmación más reciente de la naviera, el puerto o el proveedor del servicio.'
+                : isZh
                 ? '本指南用于出货准备。实际海运价格、船期、截关时间和单证要求，应按具体货物、航线及船公司、港口或相关服务方的最新确认执行。'
                 : 'Use this guide to prepare your shipment. Freight rates, schedules, cut-off times and document requirements depend on the specific cargo and route, and the latest confirmation from the carrier, port or relevant service provider.'}
             </p>
 
-            {supportingGuides.length > 0 && (
+            {displayedSupportingGuides.length > 0 && (
               <section className="mt-12 border-t border-white/12 pt-8">
                 <h2 className="text-2xl font-black tracking-tight">
-                  {isZh ? '配套操作指南' : 'Shipment preparation guides'}
+                  {isEs ? 'Guías de preparación del envío' : isZh ? '配套操作指南' : 'Shipment preparation guides'}
                 </h2>
                 <ul className="mt-5 space-y-4">
-                  {supportingGuides.map((item) => (
+                  {displayedSupportingGuides.map((item) => (
                     <li key={item.slug}>
                       <Link
-                        href={localizePath(getArticlePath(item), lang)}
+                        href={localizePath(getArticlePath(item), guideLang(item))}
                         className="text-base leading-8 text-amber-300 underline decoration-amber-300/30 underline-offset-4 transition hover:text-white"
                       >
-                        {getArticleCopy(item, lang).title}
+                        {getArticleCopy(item, guideLang(item)).title}
                       </Link>
                     </li>
                   ))}
@@ -241,7 +277,7 @@ export default function ArticlePageClient({
             {articleCopy.checklist && articleCopy.checklist.length > 0 && (
               <section id="inquiry-checklist" className="scroll-mt-8 border border-white/14 bg-black/32 p-6">
                 <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
-                  {isZh ? '询盘清单' : 'Inquiry Checklist'}
+                  {isEs ? 'Lista para cotizar' : isZh ? '询盘清单' : 'Inquiry Checklist'}
                 </h2>
                 <ul className="mt-6 list-disc space-y-3 pl-5 text-sm leading-7 text-white/70">
                   {articleCopy.checklist.map((item) => (
@@ -253,23 +289,29 @@ export default function ArticlePageClient({
 
             <section className="mt-6 bg-amber-300 p-6 text-black">
               <p className="text-xs font-black uppercase tracking-[0.28em] text-black/54">
-                {isZh ? '联系 Bryce' : 'Contact Bryce'}
+                {isEs ? 'Contactar con Bryce' : isZh ? '联系 Bryce' : 'Contact Bryce'}
               </p>
               <Link
-                href={localizePath('/about', lang)}
+                href={localizePath('/about', navigationLang)}
                 className="mt-3 block text-sm font-semibold leading-6 text-black/70 underline decoration-black/30 underline-offset-4"
               >
-                {isZh
+                {isEs
+                  ? 'Global View Logistics · Gerente de ventas en Lianyungang'
+                  : isZh
                   ? '港威国际物流 · 连云港销售经理'
                   : 'Global View Logistics · Lianyungang Sales Manager'}
               </Link>
               <h2 className="mt-4 text-2xl font-black leading-tight">
-                {isZh
+                {isEs
+                  ? 'Envíeme los datos de su carga para revisar la ruta'
+                  : isZh
                   ? '有具体货物信息，可以直接发我判断'
                   : 'Send the shipment details and I will review the route'}
               </h2>
               <p className="mt-4 text-sm font-semibold leading-7 text-black/66">
-                {isZh
+                {isEs
+                  ? 'Incluya puerto de origen y destino, mercancía, tipo de contenedor, bultos, peso, volumen y fecha de carga.'
+                  : isZh
                   ? '建议附上起运港、目的港、品名、箱型、件重尺和出货时间。'
                   : 'Include POL, POD, commodity, equipment, package count, weight, volume and ready date.'}
               </p>
@@ -278,13 +320,13 @@ export default function ArticlePageClient({
                   href={`mailto:${contactEmail}`}
                   className="bg-black px-4 py-4 text-center text-xs font-black uppercase tracking-[0.18em] text-white"
                 >
-                  {isZh ? '发送邮件' : 'Send email'}
+                  {isEs ? 'Enviar correo' : isZh ? '发送邮件' : 'Send email'}
                 </a>
                 <a
                   href={`tel:+86${contactPhone}`}
                   className="border border-black px-4 py-4 text-center text-xs font-black uppercase tracking-[0.18em]"
                 >
-                  {isZh ? '电话' : 'Call'} +86 {contactPhone}
+                  {isEs ? 'Teléfono' : isZh ? '电话' : 'Call'} +86 {contactPhone}
                 </a>
               </div>
             </section>
@@ -292,20 +334,20 @@ export default function ArticlePageClient({
         </div>
       </article>
 
-      {related.length > 0 && (
+      {displayedRelated.length > 0 && (
         <section className="border-t border-white/12 px-6 py-16 sm:px-10 lg:px-16">
           <div className="mx-auto max-w-7xl">
             <h2 className="text-3xl font-black tracking-tight">
-              {isZh ? '相关指南' : 'Related Guides'}
+              {isEs ? 'Guías relacionadas' : isZh ? '相关指南' : 'Related Guides'}
             </h2>
             <div className="mt-8 grid gap-px border border-white/14 bg-white/14 md:grid-cols-3">
-              {related.map((item) => {
-                const relatedCopy = getArticleCopy(item, lang);
+              {displayedRelated.map((item) => {
+                const relatedCopy = getArticleCopy(item, guideLang(item));
 
                 return (
                   <Link
                     key={item.slug}
-                    href={localizePath(getArticlePath(item), lang)}
+                    href={localizePath(getArticlePath(item), guideLang(item))}
                     className="bg-[#05070a] p-6 transition hover:bg-[#091018]"
                   >
                     <h3 className="text-xl font-black leading-tight">

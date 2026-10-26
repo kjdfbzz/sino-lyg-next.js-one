@@ -9,7 +9,7 @@ import {
   getSection,
   getSectionCopy,
 } from '../../../content-data';
-import { absoluteUrl, languageAlternates } from '../../../seo';
+import { absoluteUrl, articleLanguageAlternates } from '../../../seo';
 import ArticlePageClient from '../../../(zh)/(content)/[section]/[slug]/ArticlePageClient';
 
 type EnglishArticlePageProps = {
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: EnglishArticlePageProps): Pro
     title,
     description,
     keywords: article.en?.keywords ?? article.keywords,
-    alternates: languageAlternates(getArticlePath(article), 'en'),
+    alternates: articleLanguageAlternates(article, 'en'),
     openGraph: {
       title: `${title} | Bryce Logistics`,
       description,

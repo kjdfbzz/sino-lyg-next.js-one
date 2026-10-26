@@ -7,7 +7,7 @@ import {
   getArticlesBySection,
   getSection,
 } from '../../../../content-data';
-import { absoluteUrl, languageAlternates } from '../../../../seo';
+import { absoluteUrl, articleLanguageAlternates } from '../../../../seo';
 import ArticlePageClient from './ArticlePageClient';
 
 type ArticlePageProps = {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     title: article.title,
     description: article.description,
     keywords: article.keywords,
-    alternates: languageAlternates(getArticlePath(article), 'zh'),
+    alternates: articleLanguageAlternates(article, 'zh'),
     openGraph: {
       title: `${article.title} | Bryce Logistics`,
       description: article.description,
