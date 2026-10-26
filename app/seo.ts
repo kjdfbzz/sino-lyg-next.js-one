@@ -5,6 +5,7 @@ import { companyProfile } from './company-profile';
 import { cargoCategories, experienceServices, experienceUpdatedAt } from './experience-data';
 import { factoryGalleries } from './factory-shipments';
 import { homeSearchContentEn } from './home-search-content';
+import { formatPageTitle } from './metadata-title';
 
 export const homeUpdatedAt = '2026-10-13';
 
@@ -70,7 +71,7 @@ export function homeMetadata(lang: Lang): Metadata {
   };
 
   return {
-    title: { absolute: copy.title },
+    title: { absolute: formatPageTitle(copy.title) },
     description: copy.description,
     keywords: lang === 'zh'
       ? ['中国出口货代', '连云港货代', '青岛货代', '国际海运', '整柜', '拼箱', '拖车报关', 'India shipping', 'Middle East freight', 'South America shipping', '东南亚']
@@ -243,7 +244,7 @@ const aboutCopy = {
 export function aboutMetadata(lang: Lang): Metadata {
   const copy = aboutCopy[lang];
   return {
-    title: { absolute: copy.title },
+    title: { absolute: formatPageTitle(copy.title) },
     description: copy.description,
     alternates: languageAlternates('/about', lang),
     authors: [{ name: lang === 'zh' ? '李经理 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],
@@ -318,7 +319,7 @@ export function experienceMetadata(lang: Lang): Metadata {
   const copy = experienceCopy[lang];
   const url = absoluteUrl(localizePath('/experience', lang));
   return {
-    title: { absolute: copy.title },
+    title: { absolute: formatPageTitle(copy.title) },
     description: copy.description,
     alternates: languageAlternates('/experience', lang),
     authors: [{ name: lang === 'zh' ? '李经理 Bryce Lee' : 'Bryce Lee', url: absoluteUrl(localizePath('/about', lang)) }],

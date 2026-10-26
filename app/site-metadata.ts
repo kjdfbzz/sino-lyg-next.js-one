@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { siteUrl, type Lang } from './content-data';
+import { formatPageTitle } from './metadata-title';
 
 export const siteViewport: Viewport = {
   width: 'device-width',
@@ -36,10 +37,7 @@ export function siteMetadata(lang: Lang): Metadata {
 
   return {
     metadataBase: new URL(siteUrl),
-    title: {
-      default: copy.title,
-      template: '%s | Bryce Logistics',
-    },
+    title: { absolute: formatPageTitle(copy.title) },
     description: copy.description,
     keywords: copy.keywords,
     authors: [{ name: copy.author, url: new URL(copy.aboutPath, siteUrl).toString() }],

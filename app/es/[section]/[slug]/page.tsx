@@ -9,6 +9,7 @@ import {
   getSectionCopy,
 } from '../../../content-data';
 import { getRelatedArticles } from '../../../article-related';
+import { formatPageTitle } from '../../../metadata-title';
 import { absoluteUrl, articleLanguageAlternates } from '../../../seo';
 import ArticlePageClient from '../../../(zh)/(content)/[section]/[slug]/ArticlePageClient';
 
@@ -37,16 +38,17 @@ export async function generateMetadata({ params }: SpanishArticlePageProps): Pro
     notFound();
   }
 
-  const { title, description } = getArticleCopy(article, 'es');
+  const { title, description, metaTitle } = getArticleCopy(article, 'es');
+  const seoTitle = metaTitle?.trim() ? metaTitle : title;
   const url = absoluteUrl(`/es${getArticlePath(article)}`);
 
   return {
-    title,
+    title: { absolute: formatPageTitle(seoTitle) },
     description,
     keywords: article.es.keywords ?? article.keywords,
     alternates: articleLanguageAlternates(article, 'es'),
     openGraph: {
-      title: `${title} | Bryce Logistics`,
+      title: metaTitle?.trim() ? seoTitle : `${title} | Bryce Logistics`,
       description,
       url,
       type: 'article',
@@ -63,7 +65,7 @@ export async function generateMetadata({ params }: SpanishArticlePageProps): Pro
     },
     twitter: {
       card: 'summary_large_image',
-      title,
+      title: seoTitle,
       description,
       images: [article.image],
     },

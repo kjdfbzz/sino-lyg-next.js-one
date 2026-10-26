@@ -7,6 +7,7 @@ import {
   getSection,
 } from '../../../content-data';
 import { absoluteUrl, languageAlternates } from '../../../seo';
+import { formatPageTitle } from '../../../metadata-title';
 import SectionPageClient from './SectionPageClient';
 
 type SectionPageProps = {
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: SectionPageProps): Promise<Me
   }
 
   return {
-    title: section.title,
+    title: { absolute: formatPageTitle(section.title) },
     description: section.description,
     alternates: languageAlternates(`/${section.slug}`, 'zh'),
     openGraph: {

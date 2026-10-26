@@ -9,6 +9,7 @@ import {
   getSectionCopy,
 } from '../../content-data';
 import { absoluteUrl, languageAlternates } from '../../seo';
+import { formatPageTitle } from '../../metadata-title';
 import SectionPageClient from '../../(zh)/(content)/[section]/SectionPageClient';
 
 type EnglishSectionPageProps = {
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: EnglishSectionPageProps): Pro
   const url = absoluteUrl(`/en/${section.slug}`);
 
   return {
-    title: copy.title,
+    title: { absolute: formatPageTitle(copy.title) },
     description: copy.description,
     alternates: languageAlternates(`/${section.slug}`, 'en'),
     openGraph: {

@@ -19,6 +19,7 @@ export type ArticleFaq = {
 
 export type ArticleCopy = {
   title: string;
+  metaTitle?: string;
   description: string;
   quickAnswer?: string;
   keywords?: string[];
@@ -52,6 +53,7 @@ export type ContentArticle = ArticleCopy & {
   image: string;
   keywords: string[];
   title_en?: string;
+  metaTitle_en?: string;
   description_en?: string;
   quickAnswer_en?: string;
   highlights_en?: string[];
@@ -435,6 +437,7 @@ export const contentArticles: ContentArticle[] = [
       '是否需要产地证、特殊单证或信用证要求',
     ],
     title_en: 'China to India Ocean Freight: Kolkata, Nhava Sheva and Mundra',
+    metaTitle_en: 'China to India Ocean Freight: Kolkata, Nhava Sheva & Mundra',
     description_en:
       'Key export points for common India ports: sailing schedule, destination charges, customs habits and peak-season space risk.',
     highlights_en: [
@@ -505,6 +508,7 @@ export const contentArticles: ContentArticle[] = [
     slug: 'lianyungang-to-india-fcl-shipping',
     section: 'routes',
     title: '连云港到印度整柜海运：上海接驳、目的港与订舱清单',
+    metaTitle_en: 'Lianyungang to India FCL Shipping: Routes & Booking Checklist',
     description: '连云港出口印度 FCL 整柜方案，说明上海接驳、Nhava Sheva、Mundra、Chennai、Kolkata 港口选择，以及船期、免费期、单证和报价确认。',
     updatedAt: '2026-10-14',
     readTime: '6 min read',
@@ -699,6 +703,7 @@ export const contentArticles: ContentArticle[] = [
     slug: 'china-to-karachi-shipping',
     section: 'routes',
     title: '连云港、青岛到卡拉奇海运：Karachi Port、Port Qasim 与订舱要点',
+    metaTitle_en: 'Lianyungang & Qingdao to Karachi Shipping: Terminals & Transit',
     description: '区分 Karachi Port 的 KICT、KGTL、SAPT，Port Qasim 的 QICT 与 AICT 港外堆场，整理连云港、青岛出口巴基斯坦的码头、船期、费用和询价资料。',
     quickAnswer: '青岛到卡拉奇海运约 25 天；连云港出运经青岛中转，约 30 天。目前主要订舱船司为长荣（EMC）和 KMTC。卡拉奇的集装箱在卡拉奇港（KICT、KGTL、SAPT）和卡西姆港（QICT）作业，AICT 为场外堆场，订舱前请先确认收货人指定的码头。以上航程为参考，具体以船公司当期船期为准。',
     quickAnswer_en: 'Ocean transit from Qingdao to Karachi is about 25 days; from Lianyungang, cargo connects via Qingdao and takes about 30 days. We mainly book with EMC (Evergreen) and KMTC. Containers in Karachi are handled at Karachi Port terminals (KICT, KGTL, SAPT) and at Port Qasim (QICT), with AICT as an off-dock facility, so confirm the consignee\'s required terminal before booking. Transit times are references; each sailing is confirmed with the carrier.',
@@ -881,6 +886,7 @@ export const contentArticles: ContentArticle[] = [
     slug: 'china-to-jebel-ali-shipping',
     section: 'routes',
     title: '青岛、连云港到中东海运：迪拜 Jebel Ali、Dammam 与 Jeddah',
+    metaTitle_en: 'China to Middle East Shipping: Jebel Ali, Dammam & Jeddah',
     description: '青岛与连云港出口中东海运指南：比较 Jebel Ali、Dammam、Jeddah 目的港，核对订舱、直航与中转、单证、免费期、目的港费用和到门范围。',
     updatedAt: '2026-10-14',
     readTime: '6 min read',
@@ -1138,6 +1144,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'China to South America Ocean Freight: Qingdao Contracted Space to Brazil, Argentina, Mexico & More',
+    metaTitle_en: 'China to South America Ocean Freight: Qingdao Contracted Space',
     description_en:
       'Qingdao contracted space and booking windows for both South America East and West coasts — Brazil, Argentina, Mexico, Chile, Peru and more, with transit times, carriers and special cargo notes.',
     highlights_en: [
@@ -1270,6 +1277,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'China to Brazil & Argentina Ocean Freight: South America East Coast, Qingdao Contracted Space',
+    metaTitle_en: 'China to Brazil & Argentina Ocean Freight: Santos, Buenos Aires',
     description_en:
       'Qingdao contracted space, carriers, transit times and destination notes for South America East ports like Santos and Buenos Aires.',
     highlights_en: [
@@ -1406,6 +1414,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'China to Mexico, Chile & Peru Ocean Freight: South America West Coast, Qingdao Own Space',
+    metaTitle_en: 'China to Mexico, Chile & Peru Ocean Freight from Qingdao',
     description_en:
       'Qingdao own space, carriers, transit times and notes for South America West ports like Manzanillo, San Antonio and Callao.',
     highlights_en: [
@@ -1464,6 +1473,7 @@ export const contentArticles: ContentArticle[] = [
     ],
     es: {
       title: 'Flete marítimo de China a México, Chile y Perú: Manzanillo, San Antonio y Callao',
+      metaTitle: 'Flete marítimo de China a México, Chile y Perú desde Qingdao',
       description: 'Envíos FCL desde Qingdao a México, Chile y Perú con espacio propio en CMA, MSK y KMTC: puertos, tiempos de tránsito, documentos y cargos en destino.',
       keywords: ['flete marítimo China México', 'importar de China a México', 'Qingdao a Manzanillo', 'flete marítimo China Chile', 'flete marítimo China Perú', 'contenedor China Manzanillo'],
       highlights: [
@@ -1559,6 +1569,7 @@ export const contentArticles: ContentArticle[] = [
       { question: '可以用西班牙语联系吗？', answer: '可以，用西班牙语或英文发送目的港、货物、重量、体积和出货时间即可。' },
     ],
     title_en: 'China to Central America & Caribbean Ocean Freight: Panama, Guatemala, Costa Rica, Jamaica & Dominican Republic',
+    metaTitle_en: 'China to Central America & Caribbean Ocean Freight',
     description_en: 'Routing, transshipment hubs, transit references, carriers and booking notes for exports from Qingdao and Lianyungang to Central America and the Caribbean.',
     highlights_en: [
       'Central America has a Pacific coast and a Caribbean coast, and the routing differs by side, so confirm which port the consignee needs before booking.',
@@ -1580,6 +1591,7 @@ export const contentArticles: ContentArticle[] = [
     ],
     es: {
       title: 'Flete marítimo de China a Centroamérica y el Caribe: Panamá, Guatemala, Costa Rica, Jamaica y República Dominicana',
+      metaTitle: 'Flete marítimo de China a Centroamérica y el Caribe',
       description: 'Rutas, puertos de transbordo, tiempos de tránsito de referencia, navieras y recomendaciones de reserva para envíos desde Qingdao y Lianyungang a Centroamérica y el Caribe.',
       keywords: ['flete marítimo China Centroamérica', 'flete marítimo China Caribe', 'importar de China a Guatemala', 'flete China Panamá', 'contenedor China República Dominicana', 'flete marítimo China Costa Rica'],
       highlights: [
@@ -1666,6 +1678,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'Lianyungang to Vietnam Ocean Freight: Ho Chi Minh, Hai Phong & Da Nang, Direct and Transshipment',
+    metaTitle_en: 'Lianyungang to Vietnam Ocean Freight: Ho Chi Minh & Hai Phong',
     description_en:
       'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Ho Chi Minh, Hai Phong and Da Nang in Vietnam.',
     highlights_en: [
@@ -1779,6 +1792,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'Lianyungang to Thailand Ocean Freight: Laem Chabang, Bangkok & Lat Krabang, Direct and Transshipment',
+    metaTitle_en: 'Lianyungang to Thailand Ocean Freight: Laem Chabang & Bangkok',
     description_en:
       'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Laem Chabang, Bangkok and Lat Krabang in Thailand.',
     highlights_en: [
@@ -1901,6 +1915,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'Lianyungang to Philippines Ocean Freight: Manila, Cebu, Davao & More, via Transshipment',
+    metaTitle_en: 'Lianyungang to Philippines Ocean Freight: Manila, Cebu & Davao',
     description_en:
       'Transshipment options, transit times, carriers and destination notes for Lianyungang exports to Manila, Cebu, Davao, Cagayan, Batangas and more in the Philippines.',
     highlights_en: [
@@ -1965,7 +1980,8 @@ export const contentArticles: ContentArticle[] = [
     title: '连云港到印尼海运：雅加达、泗水、三宝垄，含直航与中转方案',
     description:
       '连云港出口到印尼雅加达 Jakarta、泗水 Surabaya、三宝垄 Semarang、棉兰等港口的直航与中转方案、航程、船司和目的港要点。',
-    updatedAt: '2026-07-20',
+    quickAnswer: '连云港到雅加达（Jakarta）有直航船，正常约 10 天；泗水（Surabaya）、三宝垄（Semarang）也约 10 天。目前主要订舱船司为 CNC、SITC 和锦江航运。棉兰（Belawan）、望加锡等其他港口按航次确认。以上航程为参考，具体以船公司当期船期为准。',
+    updatedAt: '2026-10-26',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
     keywords: [
@@ -1977,34 +1993,31 @@ export const contentArticles: ContentArticle[] = [
       'Surabaya shipping',
     ],
     highlights: [
-      '雅加达 Jakarta 有直航方案（SITC 周三直航），航程约 16 天。',
-      '泗水 Surabaya、三宝垄 Semarang 等多经青岛或支线中转，覆盖印尼主要港口。',
-      'SITC、MCC 等船司资源，直航和中转方案可按时效和成本选择。',
+      '连云港到雅加达（Jakarta）有直航船，正常约 10 天。',
+      '泗水（Surabaya）、三宝垄（Semarang）约 10 天；棉兰、望加锡等港口按航次确认。',
+      '主要订舱船司为 CNC、SITC 和锦江航运，可按船期和舱位选择。',
     ],
     sections: [
       {
-        heading: '1. 印尼主要港口和走法',
-        body:
-          '印尼出口主要涉及雅加达（Jakarta）、泗水（Surabaya）、三宝垄（Semarang）和棉兰（Belawan）等港口。雅加达是主力市场，有直航方案；其他港口多经青岛或支线中转。具体走法要结合收货人所在区域、时效要求和成本。',
+        heading: '1. 印尼主要港口和航程',
+        body: '印尼出口主要涉及雅加达（Jakarta）、泗水（Surabaya）、三宝垄（Semarang）和棉兰（Belawan）等港口。连云港到雅加达有直航船，泗水、三宝垄航程也在 10 天左右，具体走法要结合收货人所在区域、时效要求和成本。',
         bullets: [
-          '雅加达 Jakarta：SITC 周三直航，航程约 16 天。',
-          '泗水 Surabaya：青岛中转或支线中转，约 19 天。',
-          '三宝垄 Semarang：青岛中转，约 24 天。',
+          '雅加达 Jakarta：直航，正常约 10 天。',
+          '泗水 Surabaya、三宝垄 Semarang：约 10 天，直航或中转按航次确认。',
+          '主要船司：CNC、SITC、锦江航运。',
         ],
       },
       {
         heading: '2. 其他港口和覆盖',
-        body:
-          '除主力港口外，印尼还覆盖棉兰（Belawan）、打拉根（Tarakan）、望加锡（Makassar）、巴淡（Batam）等港口，多经青岛或支线中转，部分港口舱位需单独确认。港口覆盖较广，可根据收货人所在岛屿和区域选择。',
+        body: '除主力港口外，印尼还覆盖棉兰（Belawan）、打拉根（Tarakan）、望加锡（Makassar）、巴淡（Batam）等港口，多经支线中转，航程和舱位按航次单独确认。可根据收货人所在岛屿和区域选择。',
         bullets: [
-          '棉兰 Belawan：青岛中转，约 28 天。',
-          '打拉根、望加锡、巴淡：经支线中转，部分舱位单独确认。',
+          '棉兰 Belawan、望加锡 Makassar：按航次确认航线和航程。',
+          '打拉根、巴淡：经支线中转，舱位单独确认。',
         ],
       },
       {
-        heading: '3. 直航还是中转怎么选',
-        body:
-          '雅加达有直航班次，时效较稳定，适合对时间敏感的货物；泗水、三宝垄等港口经青岛或支线中转，班次选择多、覆盖广。SITC、MCC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
+        heading: '3. 怎么选船期和船司',
+        body: '雅加达有直航船，时效稳定，适合对时间敏感的货物；其他港口按航次确认直航或中转。CNC、SITC、锦江航运都可以安排，建议根据出货时间、目的港和舱位情况确认最合适的方案。',
       },
       {
         heading: '4. 目的港费用和滞箱期',
@@ -2022,47 +2035,44 @@ export const contentArticles: ContentArticle[] = [
     faqs: [
       {
         question: '连云港到雅加达有直航吗？',
-        answer:
-          '有，雅加达有直航方案（例如 SITC 周三直航），航程约 16 天，具体以实际船期为准。',
+        answer: '有，连云港到雅加达有直航船，正常约 10 天，主要船司为 CNC、SITC 和锦江航运，具体以当期船期为准。',
       },
       {
-        question: '泗水、三宝垄怎么走？',
-        answer:
-          '泗水多经青岛或支线中转约 19 天，三宝垄经青岛中转约 24 天。SITC、MCC 等船司都可以安排，可根据出货时间选择合适班次。',
+        question: '泗水、三宝垄要多久？',
+        answer: '泗水、三宝垄正常也在 10 天左右，直航或中转按航次确认，CNC、SITC、锦江航运都可以安排。',
       },
     ],
     title_en: 'Lianyungang to Indonesia Ocean Freight: Jakarta, Surabaya & Semarang, Direct and Transshipment',
+    metaTitle_en: 'Lianyungang to Indonesia Shipping: Direct to Jakarta, ~10 Days',
     description_en:
       'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Jakarta, Surabaya, Semarang and more in Indonesia.',
+    quickAnswer_en: 'Lianyungang has direct sailings to Jakarta, normally about 10 days; Surabaya and Semarang also take about 10 days. We mainly book with CNC, SITC and Jinjiang Shipping. Belawan, Makassar and other ports are confirmed per sailing. Transit times are references; each sailing is confirmed with the carrier.',
     highlights_en: [
-      'Jakarta has a direct option (SITC Wednesday direct) with about 16 days transit.',
-      'Surabaya, Semarang and others go via Qingdao or feeder transshipment, covering main Indonesian ports.',
-      'SITC, MCC and other carrier resources — direct or transshipment chosen by timing and cost.',
+      'Lianyungang has direct sailings to Jakarta, normally about 10 days.',
+      'Surabaya and Semarang take about 10 days; Belawan, Makassar and other ports are confirmed per sailing.',
+      'We mainly book with CNC, SITC and Jinjiang Shipping, chosen by schedule and space.',
     ],
     sections_en: [
       {
-        heading: '1. Main Indonesia ports and routing',
-        body:
-          'Indonesia exports mainly involve Jakarta, Surabaya, Semarang and Belawan. Jakarta is the main market with a direct option; other ports mostly go via Qingdao or feeder transshipment. The routing depends on the consignee area, timing and cost.',
+        heading: '1. Main Indonesia ports and transit times',
+        body: 'Indonesia exports mainly involve Jakarta, Surabaya, Semarang and Belawan. Lianyungang has direct sailings to Jakarta, and Surabaya and Semarang also take about 10 days. The routing depends on the consignee area, timing and cost.',
         bullets: [
-          'Jakarta: SITC Wednesday direct, about 16 days.',
-          'Surabaya: Qingdao or feeder transshipment, about 19 days.',
-          'Semarang: Qingdao transshipment, about 24 days.',
+          'Jakarta: direct, normally about 10 days.',
+          'Surabaya and Semarang: about 10 days; direct or transshipment confirmed per sailing.',
+          'Main carriers: CNC, SITC and Jinjiang Shipping.',
         ],
       },
       {
         heading: '2. Other ports and coverage',
-        body:
-          'Beyond the main ports, Indonesia also covers Belawan, Tarakan, Makassar and Batam, mostly via Qingdao or feeder transshipment, with some ports needing separate space confirmation. Wide port coverage — choose based on the consignee island and region.',
+        body: 'Beyond the main ports, Indonesia also covers Belawan, Tarakan, Makassar and Batam, mostly via feeder transshipment, with routing and space confirmed per sailing. Choose based on the consignee island and region.',
         bullets: [
-          'Belawan: Qingdao transshipment, about 28 days.',
-          'Tarakan, Makassar, Batam: via feeder transshipment, some space confirmed separately.',
+          'Belawan and Makassar: routing and transit confirmed per sailing.',
+          'Tarakan and Batam: via feeder transshipment, space confirmed separately.',
         ],
       },
       {
-        heading: '3. Direct or transshipment — how to choose',
-        body:
-          'Jakarta has direct sailings with more stable transit, suitable for time-sensitive cargo; Surabaya, Semarang and others go via Qingdao or feeder transshipment with wider schedule choice. SITC, MCC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
+        heading: '3. Choosing the sailing and carrier',
+        body: 'Jakarta has direct sailings with stable transit, suitable for time-sensitive cargo; other ports are confirmed per sailing as direct or transshipment. CNC, SITC and Jinjiang Shipping can all be arranged; confirm the best option by ready date, destination and space.',
       },
       {
         heading: '4. Destination charges and free time',
@@ -2080,13 +2090,11 @@ export const contentArticles: ContentArticle[] = [
     faqs_en: [
       {
         question: 'Is there a direct service from Lianyungang to Jakarta?',
-        answer:
-          'Yes, Jakarta has a direct option (for example SITC Wednesday direct) with about 16 days transit; actual sailings may vary.',
+        answer: 'Yes. Lianyungang has direct sailings to Jakarta, normally about 10 days, mainly with CNC, SITC and Jinjiang Shipping; actual sailings may vary.',
       },
       {
-        question: 'How do Surabaya and Semarang route?',
-        answer:
-          'Surabaya is mostly via Qingdao or feeder transshipment about 19 days; Semarang via Qingdao transshipment about 24 days. SITC, MCC and other carriers can arrange it.',
+        question: 'How long do Surabaya and Semarang take?',
+        answer: 'Surabaya and Semarang normally also take about 10 days, with direct or transshipment confirmed per sailing; CNC, SITC and Jinjiang Shipping can all arrange it.',
       },
     ],
   },
@@ -2162,6 +2170,7 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'Lianyungang to Malaysia Ocean Freight: Port Klang, Pasir Gudang & Kuantan, via Transshipment',
+    metaTitle_en: 'Lianyungang to Malaysia Ocean Freight: Port Klang & Pasir Gudang',
     description_en:
       'Transshipment options, transit times, carriers and destination notes for Lianyungang exports to Port Klang, Pasir Gudang, Kuantan and more in Malaysia.',
     highlights_en: [
@@ -2345,6 +2354,7 @@ export const contentArticles: ContentArticle[] = [
       { question: '这页会写具体运价吗？', answer: '不会。运价变化快，且因港口、箱型和货物而异，请提供具体信息单独询价。' },
     ],
     title_en: 'China Export Freight Market Notes: Space Trends for Southeast Asia, India-Pakistan, Middle East & South America',
+    metaTitle_en: 'China Export Freight Market Notes: Space & Schedule Trends',
     description_en: 'Regularly updated notes on space and timing for exports from Lianyungang and Qingdao to Southeast Asia, India-Pakistan, the Middle East and South America. No freight rates.',
     highlights_en: [
       'This page is a regularly updated market note covering space and timing only, with no freight rates; prices depend on the current quotation.',
@@ -2443,6 +2453,9 @@ export function getArticleCopy(article: ContentArticle, lang: ArticleLang): Arti
       title: article.title_en?.trim()
         ? article.title_en
         : legacyEnglishCopy?.title ?? article.title,
+      metaTitle: article.metaTitle_en?.trim()
+        ? article.metaTitle_en
+        : legacyEnglishCopy?.metaTitle,
       description: article.description_en?.trim()
         ? article.description_en
         : legacyEnglishCopy?.description ?? article.description,
@@ -2466,6 +2479,7 @@ export function getArticleCopy(article: ContentArticle, lang: ArticleLang): Arti
 
   return {
     title: article.title,
+    metaTitle: article.metaTitle,
     description: article.description,
     quickAnswer: article.quickAnswer,
     highlights: article.highlights,

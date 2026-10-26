@@ -3,10 +3,12 @@ import { notFound } from 'next/navigation';
 import {
   contentArticles,
   getArticle,
+  getArticleCopy,
   getArticlePath,
   getSection,
 } from '../../../../content-data';
 import { getRelatedArticles } from '../../../../article-related';
+import { formatPageTitle } from '../../../../metadata-title';
 import { absoluteUrl, articleLanguageAlternates } from '../../../../seo';
 import ArticlePageClient from './ArticlePageClient';
 
@@ -33,15 +35,17 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     return {};
   }
 
+  const { metaTitle } = getArticleCopy(article, 'zh');
+  const seoTitle = metaTitle?.trim() ? metaTitle : article.title;
   const url = absoluteUrl(getArticlePath(article));
 
   return {
-    title: article.title,
+    title: { absolute: formatPageTitle(seoTitle) },
     description: article.description,
     keywords: article.keywords,
     alternates: articleLanguageAlternates(article, 'zh'),
     openGraph: {
-      title: `${article.title} | Bryce Logistics`,
+      title: metaTitle?.trim() ? seoTitle : `${article.title} | Bryce Logistics`,
       description: article.description,
       url,
       type: 'article',
@@ -58,7 +62,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
+      title: seoTitle,
       description: article.description,
       images: [article.image],
     },
