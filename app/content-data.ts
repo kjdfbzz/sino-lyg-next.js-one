@@ -85,7 +85,7 @@ export const contentSections: ContentSection[] = [
       label: 'Shipping Requirements',
       title: 'China Export Shipping Requirements',
       description:
-        'Practical FCL, LCL, customs and documentation checklists for China export shipments.',
+        'Practical checklists for China export shipments: FCL booking data, LCL warehouse rules, customs documents, certificates of origin and DG paperwork.',
       intro:
         'Many shipment problems start before sailing: booking, cut-off, trucking, customs and document checks. These guides help you prepare the key details before asking for a rate.',
     },
@@ -119,7 +119,7 @@ export const contentSections: ContentSection[] = [
       label: 'Freight Guides',
       title: 'Freight Cost and Operation Guides',
       description:
-        'Break down ocean freight, surcharges, trucking, customs and destination charges so clients can compare quotes clearly.',
+        'Understand China export ocean freight quotes: ocean freight, surcharges, trucking, customs, destination charges and current market notes for major lanes.',
       intro:
         'A single all-in number can hide the real risk. Breaking the cost structure apart shows what is controllable and what needs confirmation before booking.',
     },
@@ -792,7 +792,7 @@ export const contentArticles: ContentArticle[] = [
       },
       {
         question: '连云港到卡拉奇有直航吗，多久到？',
-        answer: '是否有符合货好日期和指定码头的直航或中转方案，要按当前航次查询。请提供货好日期、港区、箱型和可接受到港时间，再比较起运至到港的完整计划。',
+        answer: '连云港出运通常经青岛中转，海上约 30 天；青岛直接出运约 25 天，主要订舱船司为长荣（EMC）和 KMTC。实际方案取决于货好日期、指定码头和当期船期，请提供货好日期、港区、箱型和最晚可接受到港时间，以便比较完整方案。',
       },
     ],
     en: {
@@ -872,7 +872,7 @@ export const contentArticles: ContentArticle[] = [
         },
         {
           question: 'Is there a direct Lianyungang service and how long does it take?',
-          answer: 'Check available direct or transshipment options for the actual ready date and required terminal. Supply equipment and arrival requirements so the complete origin-to-arrival plan can be compared.',
+          answer: 'Lianyungang cargo usually connects via Qingdao, with about 30 days at sea; direct loading from Qingdao takes about 25 days. We mainly book with EMC (Evergreen) and KMTC. The actual plan depends on your ready date, required terminal and the current sailing schedule, so send the ready date, port area, equipment and latest acceptable arrival date to compare options.',
         },
       ],
     },
