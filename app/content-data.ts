@@ -888,6 +888,8 @@ export const contentArticles: ContentArticle[] = [
     title: '青岛、连云港到中东海运：迪拜 Jebel Ali、Dammam 与 Jeddah',
     metaTitle_en: 'China to Middle East Shipping: Jebel Ali, Dammam & Jeddah',
     description: '青岛与连云港出口中东海运指南：比较 Jebel Ali、Dammam、Jeddah 目的港，核对订舱、直航与中转、单证、免费期、目的港费用和到门范围。',
+    quickAnswer: '青岛到迪拜（Jebel Ali）目前主要走 MSC、CMA 和 ASCL，经豪尔费坎（Khor Fakkan）中转，航程约 30–40 天；连云港出运有嘉华航运直达豪尔费坎再转迪拜，约 30 天。达曼（Dammam）、吉达（Jeddah）按航次确认。中东航线订舱前，请与收货人确认地区局势相关的附加费和条款。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'From Qingdao to Dubai (Jebel Ali), sailings currently run mainly with MSC, CMA and ASCL, transshipping at Khor Fakkan, with about 30–40 days transit. From Lianyungang, a direct service to Khor Fakkan with on-carriage to Dubai takes about 30 days. Dammam and Jeddah are confirmed per sailing. Before booking, agree with the consignee on any surcharges or terms related to the regional situation. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-10-14',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
@@ -1979,7 +1981,7 @@ export const contentArticles: ContentArticle[] = [
     section: 'routes',
     title: '连云港到印尼海运：雅加达、泗水、三宝垄，含直航与中转方案',
     description:
-      '连云港出口到印尼雅加达 Jakarta、泗水 Surabaya、三宝垄 Semarang、棉兰等港口的直航与中转方案、航程、船司和目的港要点。',
+      '连云港出口到印尼海运：雅加达有直航，正常约 10 天，泗水、三宝垄约 10 天，主要船司为 CNC、SITC 和锦江航运。本文整理雅加达、泗水、三宝垄、棉兰等港口的走法、船期选择、目的港费用和免箱期要点，按票询价。',
     quickAnswer: '连云港到雅加达（Jakarta）有直航船，正常约 10 天；泗水（Surabaya）、三宝垄（Semarang）也约 10 天。目前主要订舱船司为 CNC、SITC 和锦江航运。棉兰（Belawan）、望加锡等其他港口按航次确认。以上航程为参考，具体以船公司当期船期为准。',
     updatedAt: '2026-10-26',
     readTime: '5 min read',
@@ -2234,6 +2236,8 @@ export const contentArticles: ContentArticle[] = [
     title: '海运费由哪些部分组成？中国出口报价怎么看',
     description:
       '拆解中国出口海运报价中的海运费、附加费、拖车、报关、文件和目的港费用，帮助客户看懂总成本。',
+    quickAnswer: '中国出口海运报价通常由四部分组成：海运费及船司附加费；起运港本地费用，如订舱、码头操作、文件和封条费；拖车和出口报关；目的港费用，如换单、码头、仓储、清关和内陆运输。比较报价时，先确认每家报价包含哪些项目、按贸易条款由谁承担，只比较海运费往往会低估总成本。',
+    quickAnswer_en: 'A China export ocean freight quote usually has four parts: ocean freight and carrier surcharges; origin local charges such as booking, terminal handling, documentation and seal fees; trucking and export customs; and destination charges such as delivery order, terminal, storage, clearance and inland delivery. When comparing quotes, check what each one includes and who pays what under the Incoterm; comparing ocean freight alone often understates the total cost.',
     updatedAt: '2026-07-05',
     readTime: '6 min read',
     image: '/bryce-hero-port.webp',

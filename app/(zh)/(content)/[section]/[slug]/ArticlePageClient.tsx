@@ -87,7 +87,7 @@ export default function ArticlePageClient({
       <section className="relative isolate overflow-hidden px-6 py-10 sm:px-10 lg:px-16">
         <Image
           src={article.image}
-          alt=""
+          alt={articleCopy.title}
           fill
           sizes="100vw"
           className="absolute inset-0 -z-20 h-full w-full object-cover opacity-48"

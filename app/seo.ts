@@ -66,7 +66,7 @@ export function homeMetadata(lang: Lang): Metadata {
   const copy = {
     ...homepageCopy[lang],
     description: lang === 'zh'
-      ? '李经理 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、东南亚、中东和拉美航线的单证、费用与操作要求。'
+      ? '港威国际物流连云港分公司销售经理李经理（Bryce Lee），为连云港、青岛出口客户提供整柜、拼箱、空运、拖车和报关服务，重点航线覆盖印度、巴基斯坦、中东、东南亚和拉美，拉美有青岛自有合约舱位。整理各航线单证、费用和操作要求，按票询价，可用中文、英文和西班牙语沟通。'
       : 'China export freight from Lianyungang and Qingdao to India, Southeast Asia, the Middle East and Latin America. Plan FCL, LCL, trucking and documents with Bryce Lee.',
   };
 
