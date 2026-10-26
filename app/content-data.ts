@@ -20,6 +20,7 @@ export type ArticleFaq = {
 export type ArticleCopy = {
   title: string;
   description: string;
+  quickAnswer?: string;
   keywords?: string[];
   highlights: string[];
   sections: ArticleBlock[];
@@ -52,6 +53,7 @@ export type ContentArticle = ArticleCopy & {
   keywords: string[];
   title_en?: string;
   description_en?: string;
+  quickAnswer_en?: string;
   highlights_en?: string[];
   sections_en?: Array<{
     heading: string;
@@ -698,6 +700,8 @@ export const contentArticles: ContentArticle[] = [
     section: 'routes',
     title: '连云港、青岛到卡拉奇海运：Karachi Port、Port Qasim 与订舱要点',
     description: '区分 Karachi Port 的 KICT、KGTL、SAPT，Port Qasim 的 QICT 与 AICT 港外堆场，整理连云港、青岛出口巴基斯坦的码头、船期、费用和询价资料。',
+    quickAnswer: '青岛到卡拉奇海运约 25 天；连云港出运经青岛中转，约 30 天。目前主要订舱船司为长荣（EMC）和 KMTC。卡拉奇的集装箱在卡拉奇港（KICT、KGTL、SAPT）和卡西姆港（QICT）作业，AICT 为场外堆场，订舱前请先确认收货人指定的码头。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Ocean transit from Qingdao to Karachi is about 25 days; from Lianyungang, cargo connects via Qingdao and takes about 30 days. We mainly book with EMC (Evergreen) and KMTC. Containers in Karachi are handled at Karachi Port terminals (KICT, KGTL, SAPT) and at Port Qasim (QICT), with AICT as an off-dock facility, so confirm the consignee\'s required terminal before booking. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-10-14',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
@@ -2442,6 +2446,9 @@ export function getArticleCopy(article: ContentArticle, lang: ArticleLang): Arti
       description: article.description_en?.trim()
         ? article.description_en
         : legacyEnglishCopy?.description ?? article.description,
+      quickAnswer: article.quickAnswer_en?.trim()
+        ? article.quickAnswer_en
+        : legacyEnglishCopy?.quickAnswer,
       highlights: article.highlights_en?.length
         ? article.highlights_en
         : legacyEnglishCopy?.highlights ?? article.highlights,
@@ -2460,6 +2467,7 @@ export function getArticleCopy(article: ContentArticle, lang: ArticleLang): Arti
   return {
     title: article.title,
     description: article.description,
+    quickAnswer: article.quickAnswer,
     highlights: article.highlights,
     sections: article.sections,
     checklist: article.checklist,

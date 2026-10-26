@@ -61,7 +61,11 @@ export default function ArticlePageClient({
     ? related.filter((item) => item.es)
     : related;
   const guideLang = (item: ContentArticle): ArticleLang => isEs && !item.es ? 'en' : lang;
+  const quickAnswer = articleCopy.quickAnswer;
+  const hasQuickAnswer = typeof quickAnswer === 'string' && quickAnswer.trim().length > 0;
+  const quickAnswerLabel = isEs ? 'Respuesta rápida' : isZh ? '快速回答' : 'Quick answer';
   const contents = [
+    ...(hasQuickAnswer ? [{ id: 'quick-answer', label: quickAnswerLabel }] : []),
     ...(articleCopy.highlights.length > 0
       ? [{ id: 'key-points', label: isEs ? 'Puntos clave' : isZh ? '重点提示' : 'Key Points' }]
       : []),
@@ -178,6 +182,14 @@ export default function ArticlePageClient({
       <article className="px-6 py-16 sm:px-10 lg:px-16">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,760px)_minmax(280px,1fr)]">
           <div>
+            {hasQuickAnswer && (
+              <section id="quick-answer" className="mb-8 scroll-mt-8 border border-amber-300/60 bg-amber-300/[0.08] p-6 sm:p-8">
+                <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
+                  {quickAnswerLabel}
+                </h2>
+                <p className="mt-4 text-base leading-8 text-white/85">{quickAnswer}</p>
+              </section>
+            )}
             <nav aria-label={isEs ? 'Índice del artículo' : isZh ? '文章目录' : 'Table of contents'} className="mb-8 border-b border-white/12 pb-8">
               <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
                 {isEs ? 'En esta página' : isZh ? '文章目录' : 'On this page'}
