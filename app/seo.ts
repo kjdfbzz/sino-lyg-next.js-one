@@ -149,16 +149,17 @@ export function homePageJsonLd(lang: Lang) {
   };
 }
 
-export const siteJsonLd = {
+export const siteJsonLd = (lang: ArticleLang) => ({
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'Organization',
       '@id': absoluteUrl('/#organization'),
-      name: companyProfile.branchName.zh,
+      name: lang === 'zh' ? companyProfile.branchName.zh : companyProfile.branchName.en,
       legalName: companyProfile.branchName.zh,
-      alternateName: companyProfile.branchName.en,
-      url: companyProfile.corporateWebsite,
+      alternateName: ['Global View Logistics Lianyungang', 'GWL Lianyungang', '港威国际物流连云港分公司'],
+      url: siteUrl,
+      sameAs: ['https://cargolinked.com/directory/qingdao-global-view-logistics-co-ltd-lianyungang-branch-gwl-336b16e1'],
       parentOrganization: { '@id': absoluteUrl('/#parent-organization') },
       email: contactEmail,
       telephone: `+86${contactPhone}`,
@@ -207,7 +208,7 @@ export const siteJsonLd = {
       '@id': absoluteUrl('/#person'),
       name: companyProfile.personName.en,
       alternateName: companyProfile.personName.zh,
-      url: absoluteUrl('/about'),
+      url: absoluteUrl(localizePath('/about', lang === 'es' ? 'en' : lang)),
       jobTitle: companyProfile.role.en,
       worksFor: { '@id': absoluteUrl('/#organization') },
       email: contactEmail,
@@ -224,7 +225,7 @@ export const siteJsonLd = {
       about: { '@id': absoluteUrl('/#organization') },
     },
   ],
-};
+});
 
 const aboutCopy = {
   zh: {

@@ -8,7 +8,7 @@ export default function ChineseRootLayout({ children }: { children: React.ReactN
   return (
     <html lang="zh-CN">
       <body>
-        <SiteLayout>{children}</SiteLayout>
+        <SiteLayout lang="zh">{children}</SiteLayout>
       </body>
     </html>
   );

@@ -8,7 +8,7 @@ export default function EnglishRootLayout({ children }: { children: React.ReactN
   return (
     <html lang="en">
       <body>
-        <SiteLayout>{children}</SiteLayout>
+        <SiteLayout lang="en">{children}</SiteLayout>
       </body>
     </html>
   );
