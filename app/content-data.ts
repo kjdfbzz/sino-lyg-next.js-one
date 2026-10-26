@@ -67,6 +67,7 @@ export type ContentArticle = ArticleCopy & {
     keywords?: string[];
   };
   es?: ArticleCopy;
+  relatedSlugs?: string[];
 };
 
 export const contentSections: ContentSection[] = [
@@ -1325,6 +1326,12 @@ export const contentArticles: ContentArticle[] = [
   },
   {
     slug: 'china-to-mexico-chile-peru-shipping',
+    relatedSlugs: [
+      'china-to-central-america-caribbean-shipping',
+      'china-to-mexico-chile-peru-shipping',
+      'china-to-south-america-shipping',
+      'china-to-brazil-argentina-shipping',
+    ],
     section: 'routes',
     title: '中国到墨西哥、智利、秘鲁海运：南美西航线，青岛自有舱位',
     description:
@@ -1511,6 +1518,83 @@ export const contentArticles: ContentArticle[] = [
           question: '¿Puedo escribirles en español?',
           answer: 'Sí. Envíenos el puerto de destino, la mercancía, el peso, el volumen y la fecha de carga, en español o en inglés, y le responderemos con las opciones disponibles.',
         },
+      ],
+    },
+  },
+  {
+    slug: 'china-to-central-america-caribbean-shipping',
+    relatedSlugs: [
+      'china-to-central-america-caribbean-shipping',
+      'china-to-mexico-chile-peru-shipping',
+      'china-to-south-america-shipping',
+      'china-to-brazil-argentina-shipping',
+    ],
+    section: 'routes',
+    title: '中国到中美洲和加勒比海运：巴拿马、危地马拉、哥斯达黎加、牙买加、多米尼加',
+    description: '青岛、连云港出口到中美洲太平洋岸和加勒比的走法、中转港、航程参考、船司和订舱注意事项，覆盖巴拿马、危地马拉、洪都拉斯、哥斯达黎加、牙买加、多米尼加等。',
+    updatedAt: '2026-10-26',
+    readTime: '6 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: ['中国到中美洲海运', '中国到加勒比海运', '青岛到巴拿马', '中国到牙买加海运', '中国到多米尼加海运', 'Central America shipping'],
+    highlights: [
+      '中美洲分太平洋岸和加勒比岸，同一个国家两边港口走法不同，订舱前先确认收货人要到哪一边。',
+      '太平洋岸以中转为主，航程约 30–40 天，以船公司确认为准。',
+      '加勒比方向有 MSC、CMA、COSCO、ONE、EMC、YML、OOCL 等多家船司可选，经巴拿马运河或枢纽港中转。',
+    ],
+    sections: [
+      { heading: '1. 两条海岸，走法不同', body: '中美洲分太平洋岸和加勒比（大西洋）岸，同一个国家两边的港口走法完全不同。比如危地马拉有太平洋的 Puerto Quetzal，也有加勒比的 Santo Tomás de Castilla 和 Puerto Barrios；哥斯达黎加有太平洋的 Caldera，也有加勒比的 Moín。订舱前先确认收货人要到哪一边的港口，再选船司和航线。' },
+      { heading: '2. 太平洋岸：危地马拉、萨尔瓦多、尼加拉瓜、哥斯达黎加、巴拿马', body: '太平洋岸港口以中转为主：CMA 经墨西哥 Lázaro Cárdenas 或哥伦比亚 Buenaventura 接区域支线，Maersk 经巴拿马 Balboa 中转。整体航程约 30–40 天，具体以船公司当期船期为准。', bullets: ['Puerto Quetzal（危地马拉）、Acajutla（萨尔瓦多）：常见经 Lázaro Cárdenas 中转。', 'Corinto（尼加拉瓜）、Caldera（哥斯达黎加）：常见经 Buenaventura 或 Balboa 中转。', 'Balboa、Rodman（巴拿马）：可安排直达或中转。'] },
+      { heading: '3. 加勒比和中美洲大西洋岸', body: '加勒比方向经巴拿马运河，或在 Colón、Cartagena、Kingston、Caucedo 等枢纽港中转。MSC、CMA、COSCO、ONE、EMC、YML、OOCL 等船司都可以安排，覆盖港口很多，航程按航次和中转港确认。', bullets: ['巴拿马 Colón / Cristóbal / Manzanillo，哥伦比亚 Cartagena、Barranquilla、Santa Marta。', '牙买加 Kingston，多米尼加 Caucedo、Río Haina，海地 Port-au-Prince，波多黎各 San Juan。', '洪都拉斯 Puerto Cortés，危地马拉 Santo Tomás / Puerto Barrios，哥斯达黎加 Moín，伯利兹 Belize City。', '特立尼达 Port of Spain / Point Lisas，巴巴多斯 Bridgetown，库拉索、阿鲁巴，圭亚那 Georgetown，苏里南 Paramaribo。', '墨西哥湾 Veracruz、Altamira、Progreso，委内瑞拉 Puerto Cabello、La Guaira。'] },
+      { heading: '4. 订舱时容易漏的几点', body: '中美洲和加勒比航线船期变动较多，几个细节最好在询价阶段就说清楚。', bullets: ['小柜重货：部分船司对重的 20 尺柜收超重附加费，个别航次还有限重，订舱前请提供准确毛重。', '波多黎各 San Juan 属美国关境，需要提前申报 AMS。', '加勒比部分航次常有延误和舱位紧张，旺季建议提早订舱。', '危险品、化工品需要提前确认船司是否接受，并准备 MSDS、UN 号和危规等级。'] },
+      { heading: '5. 目的港费用和免费期', body: '总成本不只是海运费。目的港费用、免堆免柜天数、清关和内陆运输，在不同港口和代理之间差别很大。询价时请确认报价包含哪些项目，以及按贸易条款由谁承担。' },
+    ],
+    checklist: ['目的港和最终收货城市，太平洋岸还是加勒比岸', '箱型、箱量、毛重（小柜请写准确毛重）和体积', '品名，是否为危险品、化工品或特殊货', '预计出货时间和贸易条款', '是否需要拖车、报关或目的港服务'],
+    faqs: [
+      { question: '中国到中美洲太平洋岸要多久？', answer: '大多需要中转，整体约 30–40 天，具体以船公司当期船期为准。' },
+      { question: '加勒比哪些港口可以走？', answer: '常见有 Colón、Cartagena、Kingston、Caucedo、Río Haina、Puerto Cortés、Santo Tomás、Moín、San Juan、Port of Spain 等，覆盖面较广，具体港口可以单独询价确认。' },
+      { question: '可以用西班牙语联系吗？', answer: '可以，用西班牙语或英文发送目的港、货物、重量、体积和出货时间即可。' },
+    ],
+    title_en: 'China to Central America & Caribbean Ocean Freight: Panama, Guatemala, Costa Rica, Jamaica & Dominican Republic',
+    description_en: 'Routing, transshipment hubs, transit references, carriers and booking notes for exports from Qingdao and Lianyungang to Central America and the Caribbean.',
+    highlights_en: [
+      'Central America has a Pacific coast and a Caribbean coast, and the routing differs by side, so confirm which port the consignee needs before booking.',
+      'Pacific-coast ports are mostly transshipment, about 30–40 days, subject to the carrier schedule.',
+      'For the Caribbean, MSC, CMA, COSCO, ONE, EMC, YML and OOCL are all available, via the Panama Canal or transshipment hubs.',
+    ],
+    sections_en: [
+      { heading: '1. Two coasts, two different routings', body: 'Central America has a Pacific coast and a Caribbean (Atlantic) coast, and ports on each side of the same country are served very differently. Guatemala has Puerto Quetzal on the Pacific and Santo Tomás de Castilla and Puerto Barrios on the Caribbean; Costa Rica has Caldera on the Pacific and Moín on the Caribbean. Confirm which side the consignee needs before choosing the carrier and routing.' },
+      { heading: '2. Pacific coast: Guatemala, El Salvador, Nicaragua, Costa Rica, Panama', body: 'Pacific-coast ports are mostly served by transshipment: CMA connects via Lázaro Cárdenas in Mexico or Buenaventura in Colombia to regional feeders, and Maersk transships at Balboa, Panama. Overall transit is about 30–40 days, subject to the current carrier schedule.', bullets: ['Puerto Quetzal (Guatemala), Acajutla (El Salvador): commonly via Lázaro Cárdenas.', 'Corinto (Nicaragua), Caldera (Costa Rica): commonly via Buenaventura or Balboa.', 'Balboa and Rodman (Panama): direct or transshipment.'] },
+      { heading: '3. Caribbean and the Atlantic side of Central America', body: 'Caribbean cargo moves through the Panama Canal or transships at hubs such as Colón, Cartagena, Kingston and Caucedo. MSC, CMA, COSCO, ONE, EMC, YML and OOCL can all be arranged, with wide port coverage; transit is confirmed per sailing and transshipment hub.', bullets: ['Panama: Colón / Cristóbal / Manzanillo; Colombia: Cartagena, Barranquilla, Santa Marta.', 'Jamaica: Kingston; Dominican Republic: Caucedo, Río Haina; Haiti: Port-au-Prince; Puerto Rico: San Juan.', 'Honduras: Puerto Cortés; Guatemala: Santo Tomás / Puerto Barrios; Costa Rica: Moín; Belize City.', 'Trinidad: Port of Spain / Point Lisas; Barbados: Bridgetown; Curaçao, Aruba; Guyana: Georgetown; Suriname: Paramaribo.', 'Gulf of Mexico: Veracruz, Altamira, Progreso; Venezuela: Puerto Cabello, La Guaira.'] },
+      { heading: '4. Details that are easy to miss when booking', body: 'Schedules on Central America and Caribbean lanes change often, so settle these details at the quotation stage.', bullets: ['Heavy small containers: some carriers charge an overweight surcharge on heavy 20-foot containers and some sailings have weight limits, so give the exact gross weight before booking.', 'San Juan, Puerto Rico is US customs territory and requires an AMS filing in advance.', 'Some Caribbean sailings are often delayed or tight on space, so book early in peak season.', 'Dangerous goods and chemicals need carrier acceptance confirmed in advance, with the SDS/MSDS, UN number and class.'] },
+      { heading: '5. Destination charges and free time', body: 'Total cost is more than ocean freight. Destination charges, free time, customs clearance and inland delivery vary widely by port and agent. When requesting a quote, confirm what is included and who pays what under the agreed Incoterm.' },
+    ],
+    checklist_en: ['Destination port and final delivery city, Pacific or Caribbean side', 'Container type and quantity, gross weight (exact for 20-foot containers) and volume', 'Commodity, and whether it is dangerous, chemical or special cargo', 'Expected ready date and Incoterm', 'Whether trucking, customs or destination services are needed'],
+    faqs_en: [
+      { question: 'How long does shipping from China to the Pacific coast of Central America take?', answer: 'Most routings involve transshipment, about 30–40 days overall, subject to the current carrier schedule.' },
+      { question: 'Which Caribbean ports can you serve?', answer: 'Common ports include Colón, Cartagena, Kingston, Caucedo, Río Haina, Puerto Cortés, Santo Tomás, Moín, San Juan and Port of Spain. Coverage is wide; send your port for a quote.' },
+      { question: 'Can I contact you in Spanish?', answer: 'Yes. Send the destination port, cargo, weight, volume and ready date in Spanish or English.' },
+    ],
+    es: {
+      title: 'Flete marítimo de China a Centroamérica y el Caribe: Panamá, Guatemala, Costa Rica, Jamaica y República Dominicana',
+      description: 'Rutas, puertos de transbordo, tiempos de tránsito de referencia, navieras y recomendaciones de reserva para envíos desde Qingdao y Lianyungang a Centroamérica y el Caribe.',
+      keywords: ['flete marítimo China Centroamérica', 'flete marítimo China Caribe', 'importar de China a Guatemala', 'flete China Panamá', 'contenedor China República Dominicana', 'flete marítimo China Costa Rica'],
+      highlights: [
+        'Centroamérica tiene costa del Pacífico y costa del Caribe, y la ruta cambia según el lado; confirme a qué puerto necesita llegar el consignatario antes de reservar.',
+        'Los puertos del Pacífico se atienden sobre todo con transbordo, en unos 30–40 días, según el itinerario vigente de la naviera.',
+        'Para el Caribe trabajamos con MSC, CMA, COSCO, ONE, EMC, YML y OOCL, vía el Canal de Panamá o puertos de transbordo.',
+      ],
+      sections: [
+        { heading: '1. Dos costas, dos rutas distintas', body: 'Centroamérica tiene costa del Pacífico y costa del Caribe (Atlántico), y los puertos de cada lado de un mismo país se atienden de forma muy distinta. Guatemala tiene Puerto Quetzal en el Pacífico y Santo Tomás de Castilla y Puerto Barrios en el Caribe; Costa Rica tiene Caldera en el Pacífico y Moín en el Caribe. Confirme a qué lado necesita llegar el consignatario antes de elegir naviera y ruta.' },
+        { heading: '2. Costa del Pacífico: Guatemala, El Salvador, Nicaragua, Costa Rica y Panamá', body: 'Los puertos del Pacífico se atienden principalmente con transbordo: CMA conecta vía Lázaro Cárdenas (México) o Buenaventura (Colombia) con servicios regionales, y Maersk transborda en Balboa, Panamá. El tránsito total es de unos 30–40 días, sujeto al itinerario vigente de la naviera.', bullets: ['Puerto Quetzal (Guatemala) y Acajutla (El Salvador): normalmente vía Lázaro Cárdenas.', 'Corinto (Nicaragua) y Caldera (Costa Rica): normalmente vía Buenaventura o Balboa.', 'Balboa y Rodman (Panamá): servicio directo o con transbordo.'] },
+        { heading: '3. El Caribe y la costa atlántica de Centroamérica', body: 'La carga al Caribe pasa por el Canal de Panamá o se transborda en puertos como Colón, Cartagena, Kingston y Caucedo. Podemos reservar con MSC, CMA, COSCO, ONE, EMC, YML y OOCL, con amplia cobertura de puertos; el tránsito se confirma según la salida y el puerto de transbordo.', bullets: ['Panamá: Colón / Cristóbal / Manzanillo; Colombia: Cartagena, Barranquilla y Santa Marta.', 'Jamaica: Kingston; República Dominicana: Caucedo y Río Haina; Haití: Puerto Príncipe; Puerto Rico: San Juan.', 'Honduras: Puerto Cortés; Guatemala: Santo Tomás / Puerto Barrios; Costa Rica: Moín; Belice: Belize City.', 'Trinidad y Tobago: Port of Spain / Point Lisas; Barbados: Bridgetown; Curazao, Aruba; Guyana: Georgetown; Surinam: Paramaribo.', 'Golfo de México: Veracruz, Altamira y Progreso; Venezuela: Puerto Cabello y La Guaira.'] },
+        { heading: '4. Detalles que conviene aclarar al reservar', body: 'Los itinerarios hacia Centroamérica y el Caribe cambian con frecuencia, así que es mejor aclarar estos puntos al cotizar.', bullets: ['Contenedores de 20 pies pesados: algunas navieras cobran recargo por sobrepeso y ciertas salidas tienen límite de peso; indique el peso bruto exacto antes de reservar.', 'San Juan, Puerto Rico, es territorio aduanero de EE. UU. y requiere declaración AMS anticipada.', 'Algunas salidas al Caribe suelen retrasarse o ir con poco espacio; en temporada alta reserve con anticipación.', 'Para mercancía peligrosa o químicos, la aceptación de la naviera se confirma antes de reservar, con la hoja de seguridad (SDS/MSDS), el número UN y la clase.'] },
+        { heading: '5. Cargos en destino y tiempo libre', body: 'El costo total no es solo el flete. Los cargos en destino, el tiempo libre de contenedor, el despacho aduanal y el transporte terrestre varían mucho según el puerto y el agente. Al pedir una cotización, confirme qué incluye y qué paga cada parte según el Incoterm acordado.' },
+      ],
+      checklist: ['Puerto de destino y ciudad de entrega final, lado Pacífico o Caribe', 'Tipo y cantidad de contenedores, peso bruto (exacto en contenedores de 20 pies) y volumen', 'Descripción de la mercancía y si es peligrosa, química o especial', 'Fecha estimada de carga lista e Incoterm', 'Si necesita transporte, despacho aduanal o servicios en destino'],
+      faqs: [
+        { question: '¿Cuánto tarda un envío de China a la costa del Pacífico de Centroamérica?', answer: 'La mayoría de las rutas llevan transbordo; el tránsito total es de unos 30–40 días, según el itinerario vigente de la naviera.' },
+        { question: '¿A qué puertos del Caribe pueden enviar?', answer: 'Entre los más comunes están Colón, Cartagena, Kingston, Caucedo, Río Haina, Puerto Cortés, Santo Tomás, Moín, San Juan y Port of Spain. La cobertura es amplia; envíenos su puerto para cotizar.' },
+        { question: '¿Puedo escribirles en español?', answer: 'Sí. Envíenos el puerto de destino, la mercancía, el peso, el volumen y la fecha de carga, en español o en inglés.' },
       ],
     },
   },

@@ -5,10 +5,10 @@ import {
   getArticle,
   getArticleCopy,
   getArticlePath,
-  getArticlesBySection,
   getSection,
   getSectionCopy,
 } from '../../../content-data';
+import { getRelatedArticles } from '../../../article-related';
 import { absoluteUrl, articleLanguageAlternates } from '../../../seo';
 import ArticlePageClient from '../../../(zh)/(content)/[section]/[slug]/ArticlePageClient';
 
@@ -81,9 +81,7 @@ export default async function EnglishArticlePage({ params }: EnglishArticlePageP
   const articleTitle = articleCopy.title;
   const articleDescription = articleCopy.description;
   const sectionCopy = getSectionCopy(section, 'en');
-  const related = getArticlesBySection(article.section)
-    .filter((item) => item.slug !== article.slug)
-    .slice(0, 3);
+  const related = getRelatedArticles(article, 'en');
   const articleUrl = absoluteUrl(`/en${getArticlePath(article)}`);
   const articleJsonLd = {
     '@context': 'https://schema.org',

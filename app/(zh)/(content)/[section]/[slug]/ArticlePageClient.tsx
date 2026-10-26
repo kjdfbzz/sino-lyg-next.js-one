@@ -57,7 +57,7 @@ export default function ArticlePageClient({
   const displayedSupportingGuides = isEs && supportingGuides.some((item) => item.es)
     ? supportingGuides.filter((item) => item.es)
     : supportingGuides;
-  const displayedRelated = isEs && related.some((item) => item.es)
+  const displayedRelated = isEs && !article.relatedSlugs && related.some((item) => item.es)
     ? related.filter((item) => item.es)
     : related;
   const guideLang = (item: ContentArticle): ArticleLang => isEs && !item.es ? 'en' : lang;

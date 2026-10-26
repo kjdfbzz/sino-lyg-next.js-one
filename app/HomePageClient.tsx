@@ -152,6 +152,7 @@ const routes = [
     links: [
       { href: '/routes/china-to-mexico-chile-peru-shipping', linkLabel: '墨西哥、智利与秘鲁航线指南' },
       { href: '/routes/china-to-brazil-argentina-shipping', linkLabel: '巴西与阿根廷航线指南' },
+      { href: '/routes/china-to-central-america-caribbean-shipping', linkLabel: '中美洲与加勒比航线指南' },
     ],
   },
   {

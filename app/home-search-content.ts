@@ -95,6 +95,10 @@ export const homeSearchContentEn: HomeSearchContent = {
           href: '/en/routes/china-to-brazil-argentina-shipping',
           linkLabel: 'Read the Brazil & Argentina guide',
         },
+        {
+          href: '/en/routes/china-to-central-america-caribbean-shipping',
+          linkLabel: 'Read the Central America & Caribbean guide',
+        },
       ],
     },
     {
