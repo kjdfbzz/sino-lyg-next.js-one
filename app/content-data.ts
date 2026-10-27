@@ -403,6 +403,8 @@ export const contentArticles: ContentArticle[] = [
     title: '中国到印度海运：Kolkata、Nhava Sheva、Mundra 出口要点',
     description:
       '中国出口到印度常见港口的船期、目的港费用、清关习惯和旺季舱位注意事项。',
+    quickAnswer: '青岛到印度主要港口都有直航：Nhava Sheva 约 20–21 天（EMC、KMTC），Mundra 约 22–28 天（EMC、KMTC），Chennai 约 18–23 天（EMC、KMTC）。Kolkata 需中转：SITC 经霍尔迪亚（Haldia）约 20 天，是青岛最快的方案，可申请 21 天免柜期；MSC 经科伦坡约 30 天，成本较低，可接铅酸电池。连云港出运经上海或青岛中转。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'From Qingdao, the main Indian ports have direct services: Nhava Sheva about 20–21 days (EMC, KMTC), Mundra about 22–28 days (EMC, KMTC) and Chennai about 18–23 days (EMC, KMTC). Kolkata requires transshipment: SITC via Haldia takes about 20 days and is the fastest option from Qingdao, with 21 days free time available; MSC via Colombo takes about 30 days at a lower cost and can accept lead-acid batteries. Cargo from Lianyungang connects via Shanghai or Qingdao. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-05',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
@@ -509,7 +511,9 @@ export const contentArticles: ContentArticle[] = [
     section: 'routes',
     title: '连云港到印度整柜海运：上海接驳、目的港与订舱清单',
     metaTitle_en: 'Lianyungang to India FCL Shipping: Routes & Booking Checklist',
-    description: '连云港出口印度 FCL 整柜方案，说明上海接驳、Nhava Sheva、Mundra、Chennai、Kolkata 港口选择，以及船期、免费期、单证和报价确认。',
+    description: '连云港出口印度 FCL 整柜方案，说明上海或青岛接驳、Nhava Sheva、Mundra、Chennai、Kolkata 港口选择，以及船期、免费期、单证和报价确认。',
+    quickAnswer: '连云港到印度以中转为主：Nhava Sheva 走 EMC 经上海中转，每周两班，约 20 天；Mundra 走 EMC 经上海中转，约 25 天；Chennai 走 EMC 经上海中转，约 15 天；Kolkata 走 MSC，经青岛和科伦坡两次中转，约 35 天。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Lianyungang to India is mainly via transshipment: Nhava Sheva with EMC via Shanghai, twice weekly, about 20 days; Mundra with EMC via Shanghai, about 25 days; Chennai with EMC via Shanghai, about 15 days; Kolkata with MSC via Qingdao and Colombo, about 35 days. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-10-14',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
@@ -525,7 +529,7 @@ export const contentArticles: ContentArticle[] = [
       'Kolkata',
     ],
     highlights: [
-      '从工厂货好时间倒推连云港接货、上海接驳和大船截关，询价时一并核对两段运输。',
+      '从工厂货好时间倒推连云港接货、上海或青岛接驳和大船截关，询价时一并核对两段运输。',
       'Nhava Sheva、Mundra、Chennai、Kolkata 应结合买家提货地点和指定港口比较。',
       '班期、舱位、航程和免费期按具体船司、航次、箱型及本票确认，不统一承诺固定天数。',
       '电池、化工品和特殊设备先审核运输分类与资料，再确定可接受的柜型和船期。',
@@ -533,7 +537,7 @@ export const contentArticles: ContentArticle[] = [
     sections: [
       {
         heading: '1. 连云港接货与上海接驳怎么安排',
-        body: '江苏及周边工厂询价时，先提供装货地址、货好日期、箱型箱量和目的港，再比较连云港接货、驳船至上海和印度主线的整体安排。ONE、EMC 等船司可以纳入方案比较，实际可订航次、接驳日期和船司接受条件由本票订舱确认。',
+        body: '江苏及周边工厂询价时，先提供装货地址、货好日期、箱型箱量和目的港，再比较连云港接货、上海或青岛接驳和印度主线的整体安排。Nhava Sheva、Mundra、Chennai 走 EMC 经上海中转，Kolkata 走 MSC 经青岛和科伦坡两次中转，实际可订航次、接驳日期和船司接受条件由本票订舱确认。',
         bullets: [
           '核对驳船开航与上海主线截关之间的时间衔接。',
           '把拖车、装柜、还重箱、报关、截单和 VGM 截止时间列在同一张计划中。',
@@ -594,7 +598,7 @@ export const contentArticles: ContentArticle[] = [
     faqs: [
       {
         question: '连云港到印度一定要经上海吗？',
-        answer: '本页说明的是上海接驳方案。是否采用该方案，应结合当前可订航次、工厂交货时间、目的港和整体费用比较；询价时也可以提出其他起运或接驳要求。',
+        answer: 'Nhava Sheva、Mundra、Chennai 经上海中转，Kolkata 经青岛和科伦坡中转。是否采用该方案，应结合当前可订航次、工厂交货时间、目的港和整体费用比较；询价时也可以提出其他起运或接驳要求。',
       },
       {
         question: '印度目的港统一有 14 天免费期吗？',
@@ -611,9 +615,9 @@ export const contentArticles: ContentArticle[] = [
     ],
     en: {
       title: 'Lianyungang to India FCL Shipping: Shanghai Connections & Booking Checklist',
-      description: 'Plan India-bound FCL from Lianyungang via Shanghai: destination ports, feeder connections, booking deadlines, free-time terms, consignee details and quote scope.',
+      description: 'Plan India-bound FCL from Lianyungang via Shanghai or Qingdao: destination ports, feeder connections, booking deadlines, free-time terms, consignee details and quote scope.',
       highlights: [
-        'Plan factory pickup, the Shanghai connection and mainline deadlines from the cargo ready date.',
+        'Plan factory pickup, the Shanghai or Qingdao connection and mainline deadlines from the cargo ready date.',
         'Compare Nhava Sheva, Mundra, Chennai and Kolkata against the buyer’s delivery location.',
         'Confirm schedules, space, transit and free time for the specific carrier, voyage, equipment and booking.',
         'Review batteries, chemicals and special equipment before choosing the shipping plan.',
@@ -621,7 +625,7 @@ export const contentArticles: ContentArticle[] = [
       sections: [
         {
           heading: '1. Plan Lianyungang pickup and the Shanghai connection',
-          body: 'Send the factory address, ready date, equipment, container count and destination before comparing local pickup, the feeder to Shanghai and the India mainline connection. ONE and Evergreen (EMC) may be considered when comparing options; available voyages, connection dates and cargo acceptance need booking-specific confirmation.',
+          body: 'Send the factory address, ready date, equipment, container count and destination before comparing local pickup, the Shanghai or Qingdao connection and the India mainline service. Nhava Sheva, Mundra and Chennai use EMC via Shanghai; Kolkata uses MSC via Qingdao and Colombo; available voyages, connection dates and cargo acceptance need booking-specific confirmation.',
           bullets: [
             'Check the feeder arrival against the mainline cargo cut-off.',
             'Put trucking, loading, laden return, customs, SI and VGM deadlines on one plan.',
@@ -682,7 +686,7 @@ export const contentArticles: ContentArticle[] = [
       faqs: [
         {
           question: 'Must Lianyungang to India cargo connect via Shanghai?',
-          answer: 'This guide describes a Shanghai connection option. Compare it against available voyages, factory readiness, destination and total cost; include any alternative origin or connection preference in the request.',
+          answer: 'Nhava Sheva, Mundra and Chennai connect via Shanghai; Kolkata connects via Qingdao and Colombo. Compare it against available voyages, factory readiness, destination and total cost; include any alternative origin or connection preference in the request.',
         },
         {
           question: 'Is 14 days of free time standard for every Indian shipment?',
@@ -1078,6 +1082,8 @@ export const contentArticles: ContentArticle[] = [
     title: '中国到南美海运：青岛自有合约，覆盖巴西、阿根廷、墨西哥等东西两岸',
     description:
       '青岛港南美东、南美西自有合约与订舱窗口，覆盖巴西、阿根廷、墨西哥、智利、秘鲁等主要港口，含航程、船司和特殊货物操作要点。',
+    quickAnswer: '青岛到拉美主要港口的参考航程：墨西哥 Manzanillo 约 22–26 天（KMTC、MSK），Lázaro Cárdenas 约 25 天（ONE）；秘鲁 Callao 约 35 天，智利 San Antonio 约 40 天；巴西 Santos 约 40 天，阿根廷 Buenos Aires 约 45 天（CMA）。以上均为直航，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Reference transit times from Qingdao to main Latin American ports: Manzanillo, Mexico about 22–26 days (KMTC, MSK) and Lázaro Cárdenas about 25 days (ONE); Callao, Peru about 35 days and San Antonio, Chile about 40 days; Santos, Brazil about 40 days and Buenos Aires, Argentina about 45 days (CMA). All are direct services; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-13',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
@@ -1105,8 +1111,8 @@ export const contentArticles: ContentArticle[] = [
         body:
           '南美东有 CMA、MSC、COSCO、ONE、PIL、YML、EMC、HMM、ZIM、MSK 等多家船司的直达和中转资源，覆盖 Santos、Paranagua、Navegantes、Itapoa、Rio de Janeiro、Buenos Aires、Montevideo 等主要港口，并可覆盖 Asuncion（巴拉圭）等内陆点。',
         bullets: [
-          '巴西 Santos：MSC 直达约 45 天，ONE 约 50 天。',
-          '阿根廷 Buenos Aires：约 50 天。',
+          '巴西 Santos：CMA 直航约 40 天。',
+          '阿根廷 Buenos Aires：CMA 直航约 45 天。',
           '覆盖巴西南北部、阿根廷、乌拉圭主要港口及巴拉圭内陆点。',
         ],
       },
@@ -1115,8 +1121,8 @@ export const contentArticles: ContentArticle[] = [
         body:
           '南美西以 CMA、MSK、KMTC 等自有舱位为主，覆盖 Manzanillo、Lazaro、Ensenada、Callao、San Antonio、Valparaiso、Guayaquil、Buenaventura 等港口。其中墨西哥航程较快，是南美西的重点市场。',
         bullets: [
-          '墨西哥 Manzanillo：约 20 天，南美西最快。',
-          '智利 San Antonio、秘鲁 Callao：约 30 天。',
+          '墨西哥 Manzanillo：KMTC 直航约 22 天、MSK 直航约 26 天，南美西最快。',
+          '智利 San Antonio：直航约 40 天；秘鲁 Callao：直航约 35 天。',
           '覆盖墨西哥、智利、秘鲁、厄瓜多尔、哥伦比亚等主要港口。',
         ],
       },
@@ -1142,7 +1148,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '南美航程大概多久？',
         answer:
-          '南美西较快，墨西哥 Manzanillo 约 20 天，智利、秘鲁约 30 天；南美东较长，巴西 Santos 直达约 45 天，阿根廷约 50 天。具体以实际船期为准。',
+          '南美西较快，墨西哥 Manzanillo 走 KMTC 直航约 22 天、MSK 直航约 26 天，智利 San Antonio 直航约 40 天、秘鲁 Callao 直航约 35 天；南美东较长，巴西 Santos 走 CMA 直航约 40 天，阿根廷 Buenos Aires 走 CMA 直航约 45 天。具体以实际船期为准。',
       },
     ],
     title_en: 'China to South America Ocean Freight: Qingdao Contracted Space to Brazil, Argentina, Mexico & More',
@@ -1165,8 +1171,8 @@ export const contentArticles: ContentArticle[] = [
         body:
           'The east coast has direct and transshipment resources from many carriers — CMA, MSC, COSCO, ONE, PIL, YML, EMC, HMM, ZIM, MSK — covering Santos, Paranagua, Navegantes, Itapoa, Rio de Janeiro, Buenos Aires, Montevideo and more, plus inland points such as Asuncion (Paraguay).',
         bullets: [
-          'Brazil Santos: MSC direct about 45 days, ONE about 50 days.',
-          'Argentina Buenos Aires: about 50 days.',
+          'Brazil Santos: CMA direct about 40 days.',
+          'Argentina Buenos Aires: CMA direct about 45 days.',
           'Covers major ports in north and south Brazil, Argentina, Uruguay and inland Paraguay.',
         ],
       },
@@ -1175,8 +1181,8 @@ export const contentArticles: ContentArticle[] = [
         body:
           'The west coast is mainly our own space with CMA, MSK and KMTC, covering Manzanillo, Lazaro, Ensenada, Callao, San Antonio, Valparaiso, Guayaquil, Buenaventura and more. Mexico has a faster transit and is a key west-coast market.',
         bullets: [
-          'Mexico Manzanillo: about 20 days, fastest on the west coast.',
-          'Chile San Antonio, Peru Callao: about 30 days.',
+          'Mexico Manzanillo: KMTC direct about 22 days or MSK direct about 26 days, fastest on the west coast.',
+          'Chile San Antonio: direct about 40 days; Peru Callao: direct about 35 days.',
           'Covers major ports in Mexico, Chile, Peru, Ecuador and Colombia.',
         ],
       },
@@ -1202,7 +1208,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'How long is the transit to South America?',
         answer:
-          'The west coast is faster: Mexico Manzanillo about 20 days, Chile and Peru about 30 days. The east coast is longer: Brazil Santos direct about 45 days, Argentina about 50 days. Actual sailings may vary.',
+          'The west coast is faster: Mexico Manzanillo is direct with KMTC in about 22 days or MSK in about 26 days, Chile San Antonio direct about 40 days and Peru Callao direct about 35 days. On the east coast, Brazil Santos is direct with CMA in about 40 days and Argentina Buenos Aires with CMA in about 45 days. Actual sailings may vary.',
       },
     ],
   },
@@ -1212,6 +1218,8 @@ export const contentArticles: ContentArticle[] = [
     title: '中国到巴西、阿根廷海运：南美东航线，青岛自有合约',
     description:
       '青岛出口到巴西 Santos、阿根廷 Buenos Aires 等南美东港口的自有合约、船司、航程和目的港操作要点。',
+    quickAnswer: '青岛到巴西 Santos 走 CMA 直航，约 40 天；到阿根廷 Buenos Aires 走 CMA 直航，约 45 天。其他南美东港口按航次确认。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'From Qingdao, Santos, Brazil is direct with CMA in about 40 days, and Buenos Aires, Argentina is direct with CMA in about 45 days. Other east coast ports are confirmed per sailing. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-13',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
@@ -1239,7 +1247,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           '巴西是南美东最主要的市场，覆盖 Santos、Paranagua、Navegantes、Itapoa、Rio de Janeiro、Itaguai、Suape、Salvador、Pecem、Manaus 等港口，直达和中转方案都有。',
         bullets: [
-          '巴西 Santos：MSC 直达约 45 天，ONE 约 50 天。',
+          '巴西 Santos：CMA 直航约 40 天。',
           '覆盖巴西南部（Santos、Paranagua、Navegantes）和北部（Suape、Salvador、Pecem、Manaus）。',
           '直达船和中转方案可根据货物和时效选择。',
         ],
@@ -1249,7 +1257,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           '除巴西外，南美东还覆盖阿根廷 Buenos Aires、La Plata、Rosario、Zarate，乌拉圭 Montevideo，以及巴拉圭 Asuncion 等内陆点。',
         bullets: [
-          '阿根廷 Buenos Aires：约 50 天。',
+          '阿根廷 Buenos Aires：CMA 直航约 45 天。',
           '可覆盖 Montevideo（乌拉圭）、Asuncion（巴拉圭内陆点）。',
         ],
       },
@@ -1270,7 +1278,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '巴西 Santos 航程多久？',
         answer:
-          'MSC 直达约 45 天，ONE 约 50 天，具体以实际船期为准。可根据时效选择直达或中转方案。',
+          'CMA 直航约 40 天，具体以实际船期为准。',
       },
       {
         question: '南美东是自有合约吗？',
@@ -1298,7 +1306,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           'Brazil is the main east-coast market, covering Santos, Paranagua, Navegantes, Itapoa, Rio de Janeiro, Itaguai, Suape, Salvador, Pecem and Manaus, with both direct and transshipment options.',
         bullets: [
-          'Brazil Santos: MSC direct about 45 days, ONE about 50 days.',
+          'Brazil Santos: CMA direct about 40 days.',
           'Covers south Brazil (Santos, Paranagua, Navegantes) and north Brazil (Suape, Salvador, Pecem, Manaus).',
           'Direct and transshipment options based on cargo and timing.',
         ],
@@ -1308,7 +1316,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           'Beyond Brazil, the east coast covers Argentina Buenos Aires, La Plata, Rosario, Zarate, Uruguay Montevideo, and inland points like Asuncion in Paraguay.',
         bullets: [
-          'Argentina Buenos Aires: about 50 days.',
+          'Argentina Buenos Aires: CMA direct about 45 days.',
           'Covers Montevideo (Uruguay) and Asuncion (inland Paraguay).',
         ],
       },
@@ -1329,7 +1337,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'How long is transit to Brazil Santos?',
         answer:
-          'MSC direct is about 45 days, ONE about 50 days; actual sailings may vary. Direct or transshipment options can be chosen by timing.',
+          'CMA direct is about 40 days; actual sailings may vary.',
       },
       {
         question: 'Is the east coast your own contract?',
@@ -1350,6 +1358,8 @@ export const contentArticles: ContentArticle[] = [
     title: '中国到墨西哥、智利、秘鲁海运：南美西航线，青岛自有舱位',
     description:
       '青岛出口到墨西哥 Manzanillo、智利 San Antonio、秘鲁 Callao 等南美西港口的自有舱位、船司、航程和操作要点。',
+    quickAnswer: '青岛到墨西哥有直航：Manzanillo 走 KMTC 约 22 天、走 MSK 约 26 天，Lázaro Cárdenas 走 ONE 约 25 天。青岛到智利 San Antonio 直航约 40 天（CMA、COSCO、EMC、OOCL、万海），到秘鲁 Callao 直航约 35 天（HMM、ONE、阳明）。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'From Qingdao there are direct services to Mexico: Manzanillo with KMTC in about 22 days or MSK in about 26 days, and Lázaro Cárdenas with ONE in about 25 days. San Antonio, Chile is about 40 days direct (CMA, COSCO, EMC, OOCL, Wan Hai) and Callao, Peru about 35 days direct (HMM, ONE, Yang Ming). Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-13',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
@@ -1363,7 +1373,7 @@ export const contentArticles: ContentArticle[] = [
     ],
     highlights: [
       '青岛港南美西以 CMA、MSK、KMTC 等自有舱位为主，直接订舱更有保障。',
-      '墨西哥 Manzanillo 约 20 天，是南美西航程最快、最主力的市场。',
+      '墨西哥 Manzanillo 走 KMTC 约 22 天、MSK 约 26 天，是南美西航程最快、最主力的市场。',
       '覆盖墨西哥、智利、秘鲁、厄瓜多尔、哥伦比亚等主要港口。',
     ],
     sections: [
@@ -1377,7 +1387,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           '墨西哥覆盖 Manzanillo、Lazaro、Ensenada 等主要港口。Manzanillo 是太平洋侧最主要的门户港，航程较快。',
         bullets: [
-          '墨西哥 Manzanillo：约 20 天，南美西最快。',
+          '墨西哥 Manzanillo：KMTC 直航约 22 天、MSK 直航约 26 天，南美西最快。',
           '覆盖 Manzanillo、Lazaro、Ensenada 等港口。',
         ],
       },
@@ -1386,7 +1396,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           '除墨西哥外，南美西还覆盖智利 San Antonio、Valparaiso、Iquique，秘鲁 Callao、Paita，厄瓜多尔 Guayaquil，哥伦比亚 Buenaventura 等港口。',
         bullets: [
-          '智利 San Antonio、秘鲁 Callao：约 30 天。',
+          '智利 San Antonio：直航约 40 天；秘鲁 Callao：直航约 35 天。',
           '覆盖智利、秘鲁、厄瓜多尔、哥伦比亚主要港口。',
         ],
       },
@@ -1407,7 +1417,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '墨西哥 Manzanillo 航程多久？',
         answer:
-          '约 20 天，是南美西航程最快的市场之一，具体以实际船期为准。',
+          'KMTC 直航约 22 天、MSK 直航约 26 天，是南美西航程最快的市场之一，具体以实际船期为准。',
       },
       {
         question: '南美西是自有舱位吗？',
@@ -1421,7 +1431,7 @@ export const contentArticles: ContentArticle[] = [
       'Qingdao own space, carriers, transit times and notes for South America West ports like Manzanillo, San Antonio and Callao.',
     highlights_en: [
       'The South America West coast is mainly our own space at Qingdao with CMA, MSK and KMTC — direct booking for better security.',
-      'Mexico Manzanillo is about 20 days — the fastest and leading west-coast market.',
+      'Mexico Manzanillo is about 22 days with KMTC or 26 days with MSK — the fastest and leading west-coast market.',
       'Covers major ports in Mexico, Chile, Peru, Ecuador and Colombia.',
     ],
     sections_en: [
@@ -1435,7 +1445,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           'Mexico covers Manzanillo, Lazaro and Ensenada. Manzanillo is the main Pacific-side gateway port with a faster transit.',
         bullets: [
-          'Mexico Manzanillo: about 20 days, fastest on the west coast.',
+          'Mexico Manzanillo: KMTC direct about 22 days or MSK direct about 26 days, fastest on the west coast.',
           'Covers Manzanillo, Lazaro and Ensenada.',
         ],
       },
@@ -1444,7 +1454,7 @@ export const contentArticles: ContentArticle[] = [
         body:
           'Beyond Mexico, the west coast covers Chile San Antonio, Valparaiso, Iquique, Peru Callao, Paita, Ecuador Guayaquil and Colombia Buenaventura.',
         bullets: [
-          'Chile San Antonio, Peru Callao: about 30 days.',
+          'Chile San Antonio: direct about 40 days; Peru Callao: direct about 35 days.',
           'Covers major ports in Chile, Peru, Ecuador and Colombia.',
         ],
       },
@@ -1465,7 +1475,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'How long is transit to Mexico Manzanillo?',
         answer:
-          'About 20 days, one of the fastest west-coast markets; actual sailings may vary.',
+          'KMTC direct is about 22 days, or MSK direct about 26 days, one of the fastest west-coast markets; actual sailings may vary.',
       },
       {
         question: 'Is the west coast your own space?',
@@ -1477,10 +1487,11 @@ export const contentArticles: ContentArticle[] = [
       title: 'Flete marítimo de China a México, Chile y Perú: Manzanillo, San Antonio y Callao',
       metaTitle: 'Flete marítimo de China a México, Chile y Perú desde Qingdao',
       description: 'Envíos FCL desde Qingdao a México, Chile y Perú con espacio propio en CMA, MSK y KMTC: puertos, tiempos de tránsito, documentos y cargos en destino.',
+      quickAnswer: 'Desde Qingdao hay servicios directos a México: Manzanillo con KMTC en unos 22 días o con MSK en unos 26 días, y Lázaro Cárdenas con ONE en unos 25 días. San Antonio (Chile) tiene servicio directo en unos 40 días (CMA, COSCO, EMC, OOCL, Wan Hai) y Callao (Perú) en unos 35 días (HMM, ONE, Yang Ming). Los tiempos son referencias; cada salida se confirma con la naviera.',
       keywords: ['flete marítimo China México', 'importar de China a México', 'Qingdao a Manzanillo', 'flete marítimo China Chile', 'flete marítimo China Perú', 'contenedor China Manzanillo'],
       highlights: [
         'Salidas desde Qingdao con espacio propio contratado en CMA, MSK y KMTC; también podemos coordinar carga con origen en Lianyungang.',
-        'Manzanillo es la ruta más rápida de la costa oeste: unos 20 días de tránsito.',
+        'Manzanillo es la ruta más rápida de la costa oeste: unos 22 días con KMTC o 26 días con MSK, en servicio directo.',
         'Cobertura en México, Centroamérica y la costa oeste de Sudamérica: Chile, Perú, Ecuador y Colombia.',
       ],
       sections: [
@@ -1492,7 +1503,7 @@ export const contentArticles: ContentArticle[] = [
           heading: '2. México: Manzanillo, Lázaro Cárdenas y Ensenada',
           body: 'Manzanillo es el principal puerto del Pacífico mexicano y la opción más usada para carga con destino a Ciudad de México, Guadalajara y el Bajío. Lázaro Cárdenas es una alternativa para el centro del país, y Ensenada atiende el noroeste.',
           bullets: [
-            'Manzanillo: unos 20 días de tránsito desde Qingdao.',
+            'Manzanillo: servicio directo desde Qingdao, unos 22 días con KMTC o 26 días con MSK.',
             'Lázaro Cárdenas y Ensenada: según la naviera y la salida disponible.',
             'Confirme con su agente aduanal el puerto de entrada y el destino final antes de reservar.',
           ],
@@ -1501,7 +1512,7 @@ export const contentArticles: ContentArticle[] = [
           heading: '3. Chile, Perú y el resto de la costa oeste',
           body: 'Además de México, cubrimos San Antonio y Lirquén en Chile, Callao y Chancay en Perú, Guayaquil y Posorja en Ecuador y Buenaventura en Colombia. Para Centroamérica atendemos Puerto Quetzal, Acajutla, Corinto, Caldera y Balboa.',
           bullets: [
-            'Chile (San Antonio) y Perú (Callao): unos 30 días de tránsito.',
+            'Chile (San Antonio): servicio directo en unos 40 días; Perú (Callao): servicio directo en unos 35 días.',
             'Los tiempos indicados son referencias; cada salida se confirma con la naviera.',
           ],
         },
@@ -1524,7 +1535,7 @@ export const contentArticles: ContentArticle[] = [
       faqs: [
         {
           question: '¿Cuánto tarda un contenedor de China a Manzanillo?',
-          answer: 'Desde Qingdao, unos 20 días de puerto a puerto. Al tiempo total hay que sumar la recolección en fábrica, el despacho aduanal y el transporte terrestre en México. Cada salida se confirma con la naviera.',
+          answer: 'Desde Qingdao, servicio directo en unos 22 días con KMTC o 26 días con MSK, de puerto a puerto. Al tiempo total hay que sumar la recolección en fábrica, el despacho aduanal y el transporte terrestre en México. Cada salida se confirma con la naviera.',
         },
         {
           question: '¿Su espacio es propio o revendido?',
@@ -1622,6 +1633,8 @@ export const contentArticles: ContentArticle[] = [
     title: '连云港到越南海运：胡志明、海防、岘港，含直航与中转方案',
     description:
       '连云港出口到越南胡志明 Ho Chi Minh、海防 Hai Phong、岘港 Da Nang 的直航与中转方案、航程、船司和目的港要点。',
+    quickAnswer: '连云港到越南有直航：海防（Hai Phong）走 COSCO 每周直航，约 13 天；海安集运（Hai An）两周一班直航，约 5 天；胡志明（Ho Chi Minh）走 CNC 每周直航，约 8 天。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Lianyungang has direct services to Vietnam: Hai Phong with COSCO weekly, about 13 days, or with Hai An every two weeks, about 5 days; Ho Chi Minh with CNC weekly, about 8 days. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-20',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
@@ -1635,24 +1648,24 @@ export const contentArticles: ContentArticle[] = [
     ],
     highlights: [
       '海防 Hai Phong 有直航方案，COSCO、海安集运等直航班次，航程较短。',
-      '胡志明 Ho Chi Minh 多经青岛中转，岘港也可安排，覆盖越南南北主要港口。',
-      'SITC、MCC 等船司资源，直航和中转方案可按时效和成本选择。',
+      '胡志明 Ho Chi Minh 走 CNC 每周直航，约 8 天，岘港也可安排，覆盖越南南北主要港口。',
+      'COSCO、海安集运、CNC 等船司资源，直航和中转方案可按时效和成本选择。',
     ],
     sections: [
       {
         heading: '1. 越南主要港口和走法',
         body:
-          '越南出口主要涉及北部海防（Hai Phong）、南部胡志明（Ho Chi Minh）和中部岘港（Da Nang）。北部海防有直航方案，南部胡志明多经青岛或香港中转，具体走法要结合收货人所在区域、时效要求和成本。',
+          '越南出口主要涉及北部海防（Hai Phong）、南部胡志明（Ho Chi Minh）和中部岘港（Da Nang）。北部海防有 COSCO、海安集运直航方案，南部胡志明走 CNC 每周直航约 8 天，具体走法要结合收货人所在区域、时效要求和成本。',
         bullets: [
-          '海防 Hai Phong：有直航，COSCO 约 13 天、海安集运（ECX）约 5 天直航。',
-          '胡志明 Ho Chi Minh：多经青岛中转，航程约 15 天。',
+          '海防 Hai Phong：有直航，COSCO 约 13 天、海安集运（Hai An）约 5 天直航。',
+          '胡志明 Ho Chi Minh：CNC 每周直航，约 8 天。',
           '岘港 Da Nang：可经中转安排。',
         ],
       },
       {
         heading: '2. 直航还是中转怎么选',
         body:
-          '海防有直航班次，时效稳定，适合对时间敏感的货物；胡志明等港口经青岛或香港中转，船期选择多、覆盖广。SITC、MCC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
+          '海防有直航班次，时效稳定，适合对时间敏感的货物；胡志明走 CNC 每周直航约 8 天，其他港口按航次确认。COSCO、海安集运、CNC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
       },
       {
         heading: '3. 目的港费用和滞箱期',
@@ -1676,7 +1689,7 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '胡志明怎么走？',
         answer:
-          '胡志明多经青岛中转，航程约 15 天，SITC、MCC 等船司都可以安排，可根据出货时间选择合适班次。',
+          '胡志明走 CNC 每周直航，约 8 天，可根据出货时间选择合适班次。',
       },
     ],
     title_en: 'Lianyungang to Vietnam Ocean Freight: Ho Chi Minh, Hai Phong & Da Nang, Direct and Transshipment',
@@ -1684,25 +1697,25 @@ export const contentArticles: ContentArticle[] = [
     description_en:
       'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Ho Chi Minh, Hai Phong and Da Nang in Vietnam.',
     highlights_en: [
-      'Hai Phong has direct options with COSCO and ECX, offering shorter transit.',
-      'Ho Chi Minh is mostly via Qingdao transshipment; Da Nang can also be arranged, covering north and south Vietnam.',
-      'SITC, MCC and other carrier resources — direct or transshipment chosen by timing and cost.',
+      'Hai Phong has direct options with COSCO and Hai An, offering shorter transit.',
+      'Ho Chi Minh is direct with CNC weekly, about 8 days; Da Nang can also be arranged, covering north and south Vietnam.',
+      'COSCO, Hai An, CNC and other carrier resources — direct or transshipment chosen by timing and cost.',
     ],
     sections_en: [
       {
         heading: '1. Main Vietnam ports and routing',
         body:
-          'Vietnam exports mainly involve Hai Phong in the north, Ho Chi Minh in the south and Da Nang in the center. Hai Phong has direct options, while Ho Chi Minh is mostly via Qingdao or Hong Kong transshipment. The routing depends on the consignee area, timing and cost.',
+          'Vietnam exports mainly involve Hai Phong in the north, Ho Chi Minh in the south and Da Nang in the center. Hai Phong has direct options with COSCO and Hai An, while Ho Chi Minh is direct with CNC weekly in about 8 days. The routing depends on the consignee area, timing and cost.',
         bullets: [
-          'Hai Phong: direct available, COSCO about 13 days, ECX about 5 days direct.',
-          'Ho Chi Minh: mostly via Qingdao transshipment, about 15 days.',
+          'Hai Phong: direct available, COSCO about 13 days, Hai An about 5 days direct.',
+          'Ho Chi Minh: CNC direct weekly, about 8 days.',
           'Da Nang: can be arranged via transshipment.',
         ],
       },
       {
         heading: '2. Direct or transshipment — how to choose',
         body:
-          'Hai Phong has direct sailings with stable transit, suitable for time-sensitive cargo; Ho Chi Minh and other ports go via Qingdao or Hong Kong transshipment with wider schedule choice. SITC, MCC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
+          'Hai Phong has direct sailings with stable transit, suitable for time-sensitive cargo; Ho Chi Minh is direct with CNC weekly in about 8 days, while other ports are confirmed per sailing. COSCO, Hai An, CNC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
       },
       {
         heading: '3. Destination charges and free time',
@@ -1721,12 +1734,12 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'Is there a direct service from Lianyungang to Hai Phong?',
         answer:
-          'Yes, Hai Phong has direct options, for example COSCO about 13 days and ECX about 5 days direct; actual sailings may vary.',
+          'Yes, Hai Phong has direct options, for example COSCO about 13 days and Hai An about 5 days direct; actual sailings may vary.',
       },
       {
         question: 'How does Ho Chi Minh route?',
         answer:
-          'Ho Chi Minh is mostly via Qingdao transshipment, about 15 days. SITC, MCC and other carriers can arrange it; choose the schedule based on your ready date.',
+          'Ho Chi Minh is direct with CNC weekly, about 8 days; choose the schedule based on your ready date.',
       },
     ],
   },
@@ -1736,6 +1749,8 @@ export const contentArticles: ContentArticle[] = [
     title: '连云港到泰国海运：林查班、曼谷、莱卡邦，含直航与中转方案',
     description:
       '连云港出口到泰国林查班 Laem Chabang、曼谷 Bangkok、莱卡邦 Lat Krabang 的直航与中转方案、航程、船司和目的港要点。',
+    quickAnswer: '连云港到泰国有直航：林查班（Laem Chabang）走锦江/SITC 共舱或 MSK，约 8 天；曼谷（Bangkok）走锦江/SITC 共舱直航，约 9 天。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Lianyungang has direct services to Thailand: Laem Chabang with Jinjiang/SITC (shared vessel) or MSK, about 8 days; Bangkok with Jinjiang/SITC direct, about 9 days. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-20',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
@@ -1748,25 +1763,25 @@ export const contentArticles: ContentArticle[] = [
       'Bangkok shipping',
     ],
     highlights: [
-      '林查班 Laem Chabang 有直航方案，航程约 9 天，时效较快。',
-      '曼谷 Bangkok、莱卡邦 Lat Krabang 可经香港或支线中转，班次选择多。',
-      'SITC、MCC 等船司资源，直航和中转方案可按时效和成本选择。',
+      '林查班 Laem Chabang 有直航方案，航程约 8 天，时效较快。',
+      '曼谷 Bangkok 走锦江/SITC 共舱直航，约 9 天；莱卡邦 Lat Krabang 为曼谷附近的内陆场站，经林查班转运，航程按航次确认。',
+      '林查班可选锦江/SITC 共舱或 MSK，曼谷走锦江/SITC 共舱，可按时效和成本选择。',
     ],
     sections: [
       {
         heading: '1. 泰国主要港口和走法',
         body:
-          '泰国出口主要涉及林查班（Laem Chabang）、曼谷（Bangkok）和莱卡邦（Lat Krabang）。林查班是主力深水港，有直航方案；曼谷和莱卡邦多经香港或支线中转。具体走法要结合收货人所在区域、时效要求和成本。',
+          '泰国出口主要涉及林查班（Laem Chabang）、曼谷（Bangkok）和莱卡邦（Lat Krabang）。林查班是主力深水港，有直航方案；曼谷走锦江/SITC 共舱直航约 9 天。莱卡邦为曼谷附近的内陆场站，经林查班转运，航程按航次确认。具体走法要结合收货人所在区域、时效要求和成本。',
         bullets: [
-          '林查班 Laem Chabang：直航约 9 天，时效较快。',
-          '曼谷 Bangkok：多经香港中转，约 13 天。',
-          '莱卡邦 Lat Krabang：经林查班支线中转，约 11 天。',
+          '林查班 Laem Chabang：直航约 8 天，时效较快。',
+          '曼谷 Bangkok：锦江/SITC 共舱直航，约 9 天。',
+          '莱卡邦 Lat Krabang：曼谷附近的内陆场站，经林查班转运，航程按航次确认。',
         ],
       },
       {
         heading: '2. 直航还是中转怎么选',
         body:
-          '林查班有直航班次，航程较短、时效稳定，适合对时间敏感的货物；曼谷、莱卡邦经香港或支线中转，班次选择多。SITC、MCC 等船司资源都可以安排，建议根据出货时间和目的港确认最合适的方案。',
+          '林查班有直航班次，航程较短、时效稳定，适合对时间敏感的货物；曼谷走锦江/SITC 共舱直航约 9 天。莱卡邦为曼谷附近的内陆场站，经林查班转运，航程按航次确认。林查班可选锦江/SITC 共舱或 MSK，建议根据出货时间和目的港确认最合适的方案。',
       },
       {
         heading: '3. 目的港费用和滞箱期',
@@ -1785,12 +1800,12 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '连云港到林查班有直航吗？',
         answer:
-          '有，林查班有直航方案，航程约 9 天，时效较快，具体以实际船期为准。',
+          '有，林查班有直航方案，航程约 8 天，时效较快，具体以实际船期为准。',
       },
       {
         question: '曼谷和莱卡邦怎么走？',
         answer:
-          '曼谷多经香港中转约 13 天，莱卡邦经林查班支线中转约 11 天。SITC、MCC 等船司都可以安排。',
+          '曼谷走锦江/SITC 共舱直航约 9 天；莱卡邦为曼谷附近的内陆场站，经林查班转运，航程按航次确认。具体以实际船期为准。',
       },
     ],
     title_en: 'Lianyungang to Thailand Ocean Freight: Laem Chabang, Bangkok & Lat Krabang, Direct and Transshipment',
@@ -1798,25 +1813,25 @@ export const contentArticles: ContentArticle[] = [
     description_en:
       'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Laem Chabang, Bangkok and Lat Krabang in Thailand.',
     highlights_en: [
-      'Laem Chabang has a direct option with about 9 days transit — faster timing.',
-      'Bangkok and Lat Krabang can go via Hong Kong or feeder transshipment with wide schedule choice.',
-      'SITC, MCC and other carrier resources — direct or transshipment chosen by timing and cost.',
+      'Laem Chabang has a direct option with about 8 days transit — faster timing.',
+      'Bangkok is direct with Jinjiang/SITC, about 9 days; Lat Krabang is an inland container depot near Bangkok, reached via Laem Chabang, with transit confirmed per sailing.',
+      'Laem Chabang uses Jinjiang/SITC (shared vessel) or MSK, while Bangkok uses Jinjiang/SITC, chosen by timing and cost.',
     ],
     sections_en: [
       {
         heading: '1. Main Thailand ports and routing',
         body:
-          'Thailand exports mainly involve Laem Chabang, Bangkok and Lat Krabang. Laem Chabang is the main deep-water port with a direct option; Bangkok and Lat Krabang mostly go via Hong Kong or feeder transshipment. The routing depends on the consignee area, timing and cost.',
+          'Thailand exports mainly involve Laem Chabang, Bangkok and Lat Krabang. Laem Chabang is the main deep-water port with a direct option; Bangkok is direct with Jinjiang/SITC in about 9 days. Lat Krabang is an inland container depot near Bangkok, reached via Laem Chabang, with transit confirmed per sailing. The routing depends on the consignee area, timing and cost.',
         bullets: [
-          'Laem Chabang: direct about 9 days, faster timing.',
-          'Bangkok: mostly via Hong Kong transshipment, about 13 days.',
-          'Lat Krabang: via Laem Chabang feeder, about 11 days.',
+          'Laem Chabang: direct about 8 days, faster timing.',
+          'Bangkok: Jinjiang/SITC direct, about 9 days.',
+          'Lat Krabang: an inland container depot near Bangkok, reached via Laem Chabang, with transit confirmed per sailing.',
         ],
       },
       {
         heading: '2. Direct or transshipment — how to choose',
         body:
-          'Laem Chabang has direct sailings with shorter, stable transit, suitable for time-sensitive cargo; Bangkok and Lat Krabang go via Hong Kong or feeder transshipment with wider schedule choice. SITC, MCC and other carriers can all be arranged — confirm the best option based on ready date and destination.',
+          'Laem Chabang has direct sailings with shorter, stable transit, suitable for time-sensitive cargo; Bangkok is direct with Jinjiang/SITC in about 9 days. Lat Krabang is an inland container depot near Bangkok, reached via Laem Chabang, with transit confirmed per sailing. Laem Chabang uses Jinjiang/SITC (shared vessel) or MSK — confirm the best option based on ready date and destination.',
       },
       {
         heading: '3. Destination charges and free time',
@@ -1835,12 +1850,12 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'Is there a direct service from Lianyungang to Laem Chabang?',
         answer:
-          'Yes, Laem Chabang has a direct option with about 9 days transit and faster timing; actual sailings may vary.',
+          'Yes, Laem Chabang has a direct option with about 8 days transit and faster timing; actual sailings may vary.',
       },
       {
         question: 'How do Bangkok and Lat Krabang route?',
         answer:
-          'Bangkok is mostly via Hong Kong transshipment about 13 days; Lat Krabang goes via Laem Chabang feeder about 11 days. SITC, MCC and other carriers can arrange it.',
+          'Bangkok is direct with Jinjiang/SITC in about 9 days; Lat Krabang is an inland container depot near Bangkok, reached via Laem Chabang, with transit confirmed per sailing. Actual sailings may vary.',
       },
     ],
   },
@@ -1850,6 +1865,8 @@ export const contentArticles: ContentArticle[] = [
     title: '连云港到菲律宾海运：马尼拉、宿务、达沃等多港覆盖，含中转方案',
     description:
       '连云港出口到菲律宾马尼拉 Manila、宿务 Cebu、达沃 Davao、卡加延、八打雁等港口的中转方案、航程、船司和目的港要点。',
+    quickAnswer: '连云港到菲律宾以中转为主：马尼拉南港（Manila South）走 KMTC 经釜山中转，约 12 天；宿务（Cebu）走万海经高雄中转，约 12 天；达沃（Davao）走万海经高雄中转，约 14 天。马尼拉分南北两个码头，订舱前请确认收货人指定码头。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Lianyungang to the Philippines is mainly via transshipment: Manila South with KMTC via Busan, about 12 days; Cebu with Wan Hai via Kaohsiung, about 12 days; Davao with Wan Hai via Kaohsiung, about 14 days. Manila has North and South terminals, so confirm the consignee\'s terminal before booking. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-20',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
@@ -1864,7 +1881,7 @@ export const contentArticles: ContentArticle[] = [
     highlights: [
       '覆盖马尼拉、宿务、达沃、卡加延、八打雁、苏比克、伊洛伊洛等多个菲律宾港口。',
       '马尼拉分南北两个码头，订舱前需确认收货人指定码头。',
-      '多经青岛或香港中转，SITC 等船司资源，班次选择多。',
+      '马尼拉南港走 KMTC 经釜山中转，宿务、达沃走万海经高雄中转，班次选择多。',
     ],
     sections: [
       {
@@ -1872,24 +1889,24 @@ export const contentArticles: ContentArticle[] = [
         body:
           '马尼拉是菲律宾最主要的市场，分为马尼拉北（Manila North，PHMNN）和马尼拉南（Manila South，PHMNS）两个码头。收货人清关和提货通常绑定具体码头，所以订舱前要先确认收货人要求到北港还是南港，而不是笼统说"到马尼拉"。',
         bullets: [
-          '马尼拉北 PHMNN、马尼拉南 PHMNS：经青岛中转，航程约 15 天。',
+          '马尼拉北 PHMNN：按航次确认；马尼拉南 PHMNS：KMTC 经釜山中转，约 12 天。',
           '收货人指定的码头会影响清关和提货，订舱前先确认。',
         ],
       },
       {
         heading: '2. 其他主要港口和航程',
         body:
-          '除马尼拉外，菲律宾还覆盖宿务、达沃、卡加延、八打雁、苏比克、伊洛伊洛等港口，多经青岛或香港中转。港口较多、覆盖较广，可根据收货人所在区域选择。',
+          '除马尼拉外，菲律宾还覆盖宿务、达沃、卡加延、八打雁、苏比克、伊洛伊洛等港口，其中宿务、达沃走万海经高雄中转。港口较多、覆盖较广，可根据收货人所在区域选择。',
         bullets: [
-          '八打雁 Batangas：经香港中转，约 12 天。',
-          '宿务 Cebu、卡加延 Cagayan de Oro：经香港中转，约 15 天。',
+          '八打雁 Batangas：按航次确认。',
+          '宿务 Cebu：万海经高雄中转，约 12 天；卡加延 Cagayan de Oro：按航次确认。',
           '达沃 Davao、苏比克 Subic、伊洛伊洛 Iloilo：可经中转安排。',
         ],
       },
       {
         heading: '3. 中转班次和时效',
         body:
-          '菲律宾各港口以中转为主，经青岛或香港接驳。SITC 等船司资源班次较多，报价时看到的航程通常是顺利接驳的理想情况，实际要为中转和港口情况留出缓冲。',
+          '菲律宾主要港口以中转为主，马尼拉南港经釜山接驳，宿务、达沃经高雄接驳。KMTC、万海等船司资源班次较多，报价时看到的航程通常是顺利接驳的理想情况，实际要为中转和港口情况留出缓冲。',
       },
       {
         heading: '4. 目的港费用和滞箱期',
@@ -1908,12 +1925,12 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '连云港到马尼拉航程多久？',
         answer:
-          '马尼拉北、南港经青岛中转，航程约 15 天，具体以实际船期为准。订舱前需确认收货人指定的是北港还是南港。',
+          '马尼拉北港按航次确认；南港走 KMTC 经釜山中转约 12 天，具体以实际船期为准。订舱前需确认收货人指定的是北港还是南港。',
       },
       {
         question: '菲律宾港口这么多，怎么选？',
         answer:
-          '主要看收货人所在区域和指定港口。马尼拉是最大市场，分南北两个码头；宿务、达沃、卡加延等港口覆盖其他区域，多经青岛或香港中转。',
+          '主要看收货人所在区域和指定港口。马尼拉是最大市场，分南北两个码头；宿务、达沃、卡加延等港口覆盖其他区域，其中宿务走万海经高雄中转约 12 天，达沃走万海经高雄中转约 14 天。',
       },
     ],
     title_en: 'Lianyungang to Philippines Ocean Freight: Manila, Cebu, Davao & More, via Transshipment',
@@ -1923,7 +1940,7 @@ export const contentArticles: ContentArticle[] = [
     highlights_en: [
       'Covers many Philippine ports — Manila, Cebu, Davao, Cagayan, Batangas, Subic and Iloilo.',
       'Manila has two terminals (North and South) — confirm the consignee terminal before booking.',
-      'Mostly via Qingdao or Hong Kong transshipment, with SITC and other carriers offering wide schedule choice.',
+      'Manila South is with KMTC via Busan; Cebu and Davao are with Wan Hai via Kaohsiung, with wide schedule choice.',
     ],
     sections_en: [
       {
@@ -1931,24 +1948,24 @@ export const contentArticles: ContentArticle[] = [
         body:
           'Manila is the main market in the Philippines, split into Manila North (PHMNN) and Manila South (PHMNS). Consignee clearance and pickup are usually tied to a specific terminal, so before booking, confirm whether the consignee needs North or South rather than just saying "to Manila".',
         bullets: [
-          'Manila North (PHMNN), Manila South (PHMNS): via Qingdao transshipment, about 15 days.',
+          'Manila North (PHMNN): confirmed per sailing; Manila South (PHMNS): KMTC via Busan, about 12 days.',
           'The consignee-designated terminal affects clearance and pickup — confirm before booking.',
         ],
       },
       {
         heading: '2. Other main ports and transit times',
         body:
-          'Beyond Manila, the Philippines covers Cebu, Davao, Cagayan, Batangas, Subic and Iloilo, mostly via Qingdao or Hong Kong transshipment. Wide port coverage — choose based on the consignee area.',
+          'Beyond Manila, the Philippines covers Cebu, Davao, Cagayan, Batangas, Subic and Iloilo, with Cebu and Davao served by Wan Hai via Kaohsiung. Wide port coverage — choose based on the consignee area.',
         bullets: [
-          'Batangas: via Hong Kong transshipment, about 12 days.',
-          'Cebu, Cagayan de Oro: via Hong Kong transshipment, about 15 days.',
+          'Batangas: confirmed per sailing.',
+          'Cebu: Wan Hai via Kaohsiung, about 12 days; Cagayan de Oro: confirmed per sailing.',
           'Davao, Subic, Iloilo: can be arranged via transshipment.',
         ],
       },
       {
         heading: '3. Transshipment schedules and timing',
         body:
-          'Philippine ports are mostly transshipment-based, connecting via Qingdao or Hong Kong. SITC and other carriers offer many sailings; the transit shown in quotes is usually the ideal scenario with smooth connections, so leave buffer for transshipment and port conditions.',
+          'The main Philippine ports are transshipment-based: Manila South connects via Busan, and Cebu and Davao via Kaohsiung. KMTC and Wan Hai offer many sailings; the transit shown in quotes is usually the ideal scenario with smooth connections, so leave buffer for transshipment and port conditions.',
       },
       {
         heading: '4. Destination charges and free time',
@@ -1967,12 +1984,12 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'How long is transit from Lianyungang to Manila?',
         answer:
-          'Manila North and South go via Qingdao transshipment, about 15 days; actual sailings may vary. Confirm whether the consignee needs North or South before booking.',
+          'Manila North is confirmed per sailing; Manila South is with KMTC via Busan in about 12 days; actual sailings may vary. Confirm whether the consignee needs North or South before booking.',
       },
       {
         question: 'With so many Philippine ports, how to choose?',
         answer:
-          'It mainly depends on the consignee area and designated port. Manila is the largest market with two terminals; Cebu, Davao, Cagayan and others cover other regions, mostly via Qingdao or Hong Kong transshipment.',
+          'It mainly depends on the consignee area and designated port. Manila is the largest market with two terminals; Cebu, Davao, Cagayan and others cover other regions, with Cebu served by Wan Hai via Kaohsiung in about 12 days and Davao in about 14 days.',
       },
     ],
   },
@@ -2103,9 +2120,11 @@ export const contentArticles: ContentArticle[] = [
   {
     slug: 'china-to-malaysia-shipping',
     section: 'routes',
-    title: '连云港到马来西亚海运：巴生港、帕西谷当、关丹，含中转方案',
+    title: '连云港到马来西亚海运：巴生港、帕西谷当、关丹，含直航与中转方案',
     description:
-      '连云港出口到马来西亚巴生港 Port Klang、帕西谷当 Pasir Gudang、关丹等港口的中转方案、航程、船司和目的港要点。',
+      '连云港出口到马来西亚巴生港 Port Klang、帕西谷当 Pasir Gudang、关丹等港口的直航与中转方案、航程、船司和目的港要点。',
+    quickAnswer: '连云港到巴生港（Port Klang）走锦江/SITC 共舱直航，约 9 天；帕西谷当（Pasir Gudang）走 EMC 经高雄中转，每周两班，约 16 天。巴生港分北港和西港，订舱前请确认收货人指定码头。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'Lianyungang to Port Klang is direct with Jinjiang/SITC (shared vessel), about 9 days; Pasir Gudang is with EMC via Kaohsiung, twice weekly, about 16 days. Port Klang has North Port and West Port, so confirm the consignee\'s terminal before booking. Transit times are references; each sailing is confirmed with the carrier.',
     updatedAt: '2026-07-20',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
@@ -2119,8 +2138,8 @@ export const contentArticles: ContentArticle[] = [
     ],
     highlights: [
       '巴生港 Port Klang 是马来西亚主力大港，覆盖巴生北、巴生西两个码头。',
-      '帕西谷当 Pasir Gudang、关丹 Kuantan 等港口也可安排，多经青岛中转。',
-      'SITC、MCC 等船司资源，班次选择多，可按时效和成本选择。',
+      '帕西谷当 Pasir Gudang 走 EMC 经高雄中转，每周两班，约 16 天；关丹 Kuantan 等港口也可安排。',
+      '巴生港走锦江/SITC 共舱直航，帕西谷当走 EMC 中转，可按时效和成本选择。',
     ],
     sections: [
       {
@@ -2128,23 +2147,23 @@ export const contentArticles: ContentArticle[] = [
         body:
           '巴生港（Port Klang）是马来西亚最主要的港口，分为巴生北（North Port）和巴生西（West Port）两个码头。收货人清关和提货通常绑定具体码头，所以订舱前要先确认收货人要求到北港还是西港。',
         bullets: [
-          '巴生北 MYPKG、巴生西 MYPKW：经青岛中转，航程约 18 天。',
+          '巴生北 MYPKG、巴生西 MYPKW：锦江/SITC 共舱直航，约 9 天。',
           '收货人指定的码头会影响清关和提货，订舱前先确认。',
         ],
       },
       {
         heading: '2. 帕西谷当和其他港口',
         body:
-          '除巴生港外，马来西亚还覆盖帕西谷当（Pasir Gudang）、关丹（Kuantan）、丹戎帕拉帕斯（Tanjung Pelepas）等港口，多经青岛中转。帕西谷当靠近新山，服务马来南部和新加坡周边。',
+          '除巴生港外，马来西亚还覆盖帕西谷当（Pasir Gudang）、关丹（Kuantan）、丹戎帕拉帕斯（Tanjung Pelepas）等港口；帕西谷当走 EMC 经高雄中转，每周两班，其他港口按航次确认。帕西谷当靠近新山，服务马来南部和新加坡周边。',
         bullets: [
-          '帕西谷当 Pasir Gudang：青岛中转，约 16 天。',
+          '帕西谷当 Pasir Gudang：EMC 经高雄中转，每周两班，约 16 天。',
           '关丹 Kuantan、丹戎帕拉帕斯 Tanjung Pelepas：可经中转安排。',
         ],
       },
       {
-        heading: '3. 中转班次和时效',
+        heading: '3. 直航与中转班次和时效',
         body:
-          '马来西亚各港口以青岛中转为主，SITC、MCC 等船司资源班次较多。报价时看到的航程通常是顺利接驳的理想情况，实际要为中转和港口情况留出缓冲。',
+          '巴生港走锦江/SITC 共舱直航约 9 天，帕西谷当走 EMC 经高雄中转约 16 天、每周两班。报价时看到的航程通常是顺利接驳的理想情况，实际要为中转和港口情况留出缓冲。',
       },
       {
         heading: '4. 目的港费用和滞箱期',
@@ -2163,22 +2182,22 @@ export const contentArticles: ContentArticle[] = [
       {
         question: '连云港到巴生港航程多久？',
         answer:
-          '巴生北、巴生西经青岛中转，航程约 18 天，具体以实际船期为准。订舱前需确认收货人指定的是北港还是西港。',
+          '巴生北、巴生西走锦江/SITC 共舱直航，约 9 天，具体以实际船期为准。订舱前需确认收货人指定的是北港还是西港。',
       },
       {
         question: '帕西谷当怎么走？',
         answer:
-          '帕西谷当经青岛中转，约 16 天，靠近新山、服务马来南部。SITC、MCC 等船司都可以安排。',
+          '帕西谷当走 EMC 经高雄中转，每周两班，约 16 天，靠近新山、服务马来南部。',
       },
     ],
-    title_en: 'Lianyungang to Malaysia Ocean Freight: Port Klang, Pasir Gudang & Kuantan, via Transshipment',
+    title_en: 'Lianyungang to Malaysia Ocean Freight: Port Klang, Pasir Gudang & Kuantan, Direct and Transshipment',
     metaTitle_en: 'Lianyungang to Malaysia Ocean Freight: Port Klang & Pasir Gudang',
     description_en:
-      'Transshipment options, transit times, carriers and destination notes for Lianyungang exports to Port Klang, Pasir Gudang, Kuantan and more in Malaysia.',
+      'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Port Klang, Pasir Gudang, Kuantan and more in Malaysia.',
     highlights_en: [
       'Port Klang is Malaysia\'s main gateway, with North Port and West Port terminals.',
-      'Pasir Gudang, Kuantan and others can also be arranged, mostly via Qingdao transshipment.',
-      'SITC, MCC and other carrier resources with wide schedule choice, by timing and cost.',
+      'Pasir Gudang is with EMC via Kaohsiung, twice weekly, about 16 days; Kuantan and other ports can also be arranged.',
+      'Port Klang is direct with Jinjiang/SITC (shared vessel), while Pasir Gudang is with EMC via transshipment, chosen by timing and cost.',
     ],
     sections_en: [
       {
@@ -2186,23 +2205,23 @@ export const contentArticles: ContentArticle[] = [
         body:
           'Port Klang is Malaysia\'s main port, split into North Port and West Port. Consignee clearance and pickup are usually tied to a specific terminal, so before booking, confirm whether the consignee needs North Port or West Port.',
         bullets: [
-          'North Port (MYPKG), West Port (MYPKW): via Qingdao transshipment, about 18 days.',
+          'North Port (MYPKG), West Port (MYPKW): Jinjiang/SITC (shared vessel) direct, about 9 days.',
           'The consignee-designated terminal affects clearance and pickup — confirm before booking.',
         ],
       },
       {
         heading: '2. Pasir Gudang and other ports',
         body:
-          'Beyond Port Klang, Malaysia also covers Pasir Gudang, Kuantan and Tanjung Pelepas, mostly via Qingdao transshipment. Pasir Gudang is near Johor Bahru, serving southern Malaysia and the Singapore area.',
+          'Beyond Port Klang, Malaysia also covers Pasir Gudang, Kuantan and Tanjung Pelepas; Pasir Gudang uses EMC via Kaohsiung twice weekly, while other ports are confirmed per sailing. Pasir Gudang is near Johor Bahru, serving southern Malaysia and the Singapore area.',
         bullets: [
-          'Pasir Gudang: Qingdao transshipment, about 16 days.',
+          'Pasir Gudang: EMC via Kaohsiung, twice weekly, about 16 days.',
           'Kuantan, Tanjung Pelepas: can be arranged via transshipment.',
         ],
       },
       {
-        heading: '3. Transshipment schedules and timing',
+        heading: '3. Direct and transshipment schedules and timing',
         body:
-          'Malaysian ports are mostly via Qingdao transshipment, with SITC, MCC and other carriers offering many sailings. The transit shown in quotes is usually the ideal scenario with smooth connections, so leave buffer for transshipment and port conditions.',
+          'Port Klang is direct with Jinjiang/SITC (shared vessel) in about 9 days, while Pasir Gudang is with EMC via Kaohsiung in about 16 days, twice weekly. The transit shown in quotes is usually the ideal scenario with smooth connections, so leave buffer for transshipment and port conditions.',
       },
       {
         heading: '4. Destination charges and free time',
@@ -2221,12 +2240,12 @@ export const contentArticles: ContentArticle[] = [
       {
         question: 'How long is transit from Lianyungang to Port Klang?',
         answer:
-          'North Port and West Port go via Qingdao transshipment, about 18 days; actual sailings may vary. Confirm whether the consignee needs North or West Port before booking.',
+          'North Port and West Port are direct with Jinjiang/SITC (shared vessel), about 9 days; actual sailings may vary. Confirm whether the consignee needs North or West Port before booking.',
       },
       {
         question: 'How does Pasir Gudang route?',
         answer:
-          'Pasir Gudang goes via Qingdao transshipment, about 16 days, near Johor Bahru serving southern Malaysia. SITC, MCC and other carriers can arrange it.',
+          'Pasir Gudang is with EMC via Kaohsiung, twice weekly, about 16 days, near Johor Bahru serving southern Malaysia.',
       },
     ],
   },
