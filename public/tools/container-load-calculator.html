@@ -1148,7 +1148,9 @@ function buildPlans(units){
     p.unbal = p.containers.filter(c => { const B = balanceOf(analyzeBoxes(c.boxes, CT[c.type], units), CT[c.type]); return B.lon === 'bad' || B.lat === 'bad'; }).length;
   }
   const ok = plans.filter(p => p.containers.length);
-  if(ok.length) ok.slice().sort((a,b) => (a.leftCartons-b.leftCartons) || (a.unbal-b.unbal) || (a.teu-b.teu) || (a.containers.length-b.containers.length) || (a.rank-b.rank) || (a.hq-b.hq))[0].rec = true;
+  // 按推荐顺序排：推荐方案排第一，其余按“装得下 → TEU 少 → 柜数少”往后排，免得用户把列表第一个当成结果
+  ok.sort((a,b) => (a.leftCartons-b.leftCartons) || (a.unbal-b.unbal) || (a.teu-b.teu) || (a.containers.length-b.containers.length) || (a.rank-b.rank) || (a.hq-b.hq));
+  if(ok.length) ok[0].rec = true;
   return ok;
 }
 
