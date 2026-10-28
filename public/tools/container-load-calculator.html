@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="集装箱装箱计算器：录入纸箱或托盘货，自动计算 20GP/40HQ/开顶/框架/冷柜装柜方案，3D 显示装柜过程，检查偏载、超限和限重。">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="canonical" href="https://www.sinolyg.com/load">
 <title>集装箱装柜计算器 · 免费在线算柜 | Bryce Logistics</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -337,11 +338,17 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 .hstats span{display:block;margin-top:5px;font-size:12px;line-height:1.5;color:rgba(255,255,255,.64)}
 .app{position:relative;margin-top:-60px}
 .sheet.flash{box-shadow:0 0 0 3px var(--accent),var(--shadow);transition:box-shadow .3s}
-.hero.slim{padding-bottom:72px}.hero.slim .hero-in{display:none}
-.hero.slim .hero-bg{background:linear-gradient(90deg,rgba(4,12,26,.97),rgba(4,12,26,.8) 60%,rgba(4,12,26,.6)),url("/bryce-hero-port.webp") 70% 40%/cover no-repeat,var(--navy)}
+.hero.slim{padding-bottom:84px}
+.hero.slim .hero-in{display:block;padding-top:22px}
+.hero.slim .hero-in>div:first-child{display:flex;align-items:center;gap:14px 28px;flex-wrap:wrap}
+.hero.slim .eyebrow,.hero.slim .lede,.hero.slim .hstats{display:none}
+.hero.slim h1{font-size:clamp(22px,2.2vw,30px);margin:0}
+.hero.slim h1 br{display:none}
+.hero.slim .hcta{margin:0 0 0 auto}
+.hero.slim .hbtn{height:42px;font-size:14px;padding:0 18px}
 @media (max-width:1100px){.hero-in{grid-template-columns:minmax(0,1fr)}.hstats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:700px){
-  .hero.slim{padding-bottom:60px}
+  .hero.slim{padding-bottom:64px}.hero.slim .hero-in{padding-top:14px}.hero.slim h1{font-size:20px}.hero.slim .hcta{display:none}
   .hnav{padding-top:12px}.wm-s,.hlinks .site{display:none}.wm-t{font-size:15px}
   .hero{padding-bottom:72px}
   .hero-bg{background:linear-gradient(180deg,rgba(4,12,26,.72) 0%,rgba(4,12,26,.9) 55%,var(--navy) 100%),url("/bryce-hero-port.webp") 62% 30%/cover no-repeat,var(--navy)}
@@ -655,8 +662,8 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
   </div>
 <p class="disclaimer">本工具按理论算法计算装柜方案，结果仅供参考。实际能装多少、能否接受超限货，以现场装柜情况和船公司、码头、车队的要求为准。柜型尺寸来自各船公司官网公布值，具体以箱门铭牌为准。</p>
 </footer>
-<script src="vendor/three.min.js"></script>
-<script src="vendor/OrbitControls.js"></script>
+<script src="/tools/vendor/three.min.js"></script>
+<script src="/tools/vendor/OrbitControls.js"></script>
 <script>
 /* ================= 1. 数据 ================= */
 const PALETTE = ['#E8913A','#3D7FD0','#3FA66A','#8B6BD6','#D9546E','#2AA3A6','#C2A12C','#7A8896','#D86FA8','#5E9E2F'];
