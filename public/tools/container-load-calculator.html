@@ -1,0 +1,2262 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="集装箱装箱计算器：录入纸箱或托盘货，自动计算 20GP/40HQ/开顶/框架/冷柜装柜方案，3D 显示装柜过程，检查偏载、超限和限重。">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>集装箱装箱计算器</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: planner console — left rail (plans, legend), centre (3D yard stage, KPI row, cargo sheet, settings), right rail (checks, weight distribution). Cool concrete greys, container-blue steel, amber action colour. */
+:root{
+  --bg:#E9ECEF; --card:#FFFFFF; --sunk:#F4F6F8; --fg:#18202A; --muted:#66717D; --faint:#9AA4AE; --line:#E0E4E9;
+  --accent:#F29D1F; --accent-ink:#2A1A02; --accent-soft:#FDF0DA;
+  --steel:#2E6A9E; --steel-soft:#E3EEF7;
+  --ok:#1E8A55; --ok-soft:#E0F3E8; --warn:#B26A00; --warn-soft:#FCEFD6; --bad:#D03A2B; --bad-soft:#FCE4E1;
+  --shadow:0 1px 2px rgba(20,30,40,.05),0 6px 18px rgba(20,30,40,.06);
+  --stage-a:#F4F5F6; --stage-b:#D9DDE1;
+  --c-wall:#C9CFD6; --c-paint:#2E6A9E; --c-frame:#24557F; --c-floor:#B8875A; --c-boxedge:#1B232C; --c-ground:#CDD2D7; --c-wood:#B07A45; --c-paledge:#3A2A1A;
+  --f-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1217; --card:#161B22; --sunk:#11161C; --fg:#E6EAEE; --muted:#97A1AB; --faint:#66707A; --line:#252C35;
+  --accent:#F5A93A; --accent-ink:#241602; --accent-soft:#33260F;
+  --steel:#6FA6D6; --steel-soft:#16273A;
+  --ok:#5CCB8F; --ok-soft:#132B1E; --warn:#F0B354; --warn-soft:#30240E; --bad:#F2827A; --bad-soft:#371917;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3);
+  --stage-a:#1D242C; --stage-b:#0F1318;
+  --c-wall:#6A7581; --c-paint:#2F5F8A; --c-frame:#244A6D; --c-floor:#8A6440; --c-boxedge:#05080B; --c-ground:#2A3138; --c-wood:#9A6A3E; --c-paledge:#E8D9C4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1217; --card:#161B22; --sunk:#11161C; --fg:#E6EAEE; --muted:#97A1AB; --faint:#66707A; --line:#252C35;
+  --accent:#F5A93A; --accent-ink:#241602; --accent-soft:#33260F;
+  --steel:#6FA6D6; --steel-soft:#16273A;
+  --ok:#5CCB8F; --ok-soft:#132B1E; --warn:#F0B354; --warn-soft:#30240E; --bad:#F2827A; --bad-soft:#371917;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3);
+  --stage-a:#1D242C; --stage-b:#0F1318;
+  --c-wall:#6A7581; --c-paint:#2F5F8A; --c-frame:#244A6D; --c-floor:#8A6440; --c-boxedge:#05080B; --c-ground:#2A3138; --c-wood:#9A6A3E; --c-paledge:#E8D9C4; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:13.5px;line-height:1.45;
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-block:12px 28px}
+@media (max-width:600px){body{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);gap:12px;max-width:1640px;margin:0 auto}
+@media (max-width:980px){.app{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit;cursor:pointer;color:var(--fg)}
+button:focus-visible,input:focus-visible,select:focus-visible,label.sw:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+svg.i{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- left rail ---------- */
+.side{display:flex;flex-direction:column;gap:16px;padding:16px 12px;align-self:start;position:sticky;top:calc(12px + env(safe-area-inset-top,0px))}
+@media (max-width:980px){.side{position:static;order:2}}
+@media (max-width:700px){.steps{flex-direction:column;gap:4px;flex-basis:100%}.calcstate{flex-basis:100%}}
+.brand{display:flex;align-items:center;gap:10px;padding:0 4px 4px}
+.brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(160deg,var(--c-paint),var(--c-frame));display:grid;place-items:center;flex:none;box-shadow:inset 0 -2px 0 rgba(0,0,0,.18)}
+.brand b{display:block;font-size:14.5px;letter-spacing:.01em}
+.brand small{display:block;color:var(--muted);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.sect{display:grid;gap:3px}
+.sect>h3{font-size:10.5px;font-weight:600;color:var(--faint);letter-spacing:.12em;text-transform:uppercase;margin:0 6px 5px;display:flex;justify-content:space-between}
+.plan{display:grid;grid-template-columns:50px minmax(0,1fr);align-items:center;gap:10px;text-align:left;border:1px solid transparent;background:none;border-radius:10px;padding:8px}
+.plan:hover{background:var(--sunk)}
+.plan[aria-pressed="true"]{background:var(--sunk);border-color:var(--line);box-shadow:var(--shadow)}
+.plan .ico{display:flex;gap:2px;align-items:flex-end;height:24px}
+.plan .t{font-weight:600;font-size:13px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.plan .m{color:var(--muted);font-size:11.5px;display:block}
+.plan .ubar{display:block;height:3px;border-radius:2px;background:var(--line);margin-top:5px;overflow:hidden}
+.plan .ubar i{display:block;height:100%;background:var(--steel)}
+.plan[aria-pressed="true"] .ubar i{background:var(--accent)}
+.pill{font-size:10.5px;font-weight:600;padding:0 6px;border-radius:5px;line-height:17px;white-space:nowrap;letter-spacing:.02em;display:inline-block}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.steel{background:var(--steel-soft);color:var(--steel)}
+.legend{display:grid;gap:1px}
+.legend div{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 6px;font-size:12.5px;border-radius:7px}
+.legend div:hover{background:var(--sunk)}
+.legend span.n{color:var(--muted);font-family:var(--f-mono);font-size:11.5px}
+.dot{width:12px;height:12px;border-radius:3px;display:inline-block;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-size:12px;color:var(--muted)}
+.note b{color:var(--fg)}
+
+/* ---------- main ---------- */
+.main{display:grid;gap:12px;min-width:0}
+.topbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px}
+.chipbox{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:9px;padding:6px 11px;font-size:12.5px;background:var(--card);white-space:nowrap}
+.planpick select{border:none;background:transparent;color:var(--fg);font-family:var(--f-mono);font-size:12.5px;padding:0 2px;max-width:260px}
+.planpick select:focus{outline:none}
+.chipbox .k{color:var(--muted);margin-left:4px}
+.spacer{flex:1}
+.seg{display:flex;background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:2px}
+.seg button{border:none;background:none;padding:5px 10px;border-radius:7px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--fg);box-shadow:var(--shadow);font-weight:600}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:6px 12px;font-size:12.5px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--faint)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600;box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 35%,transparent)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 9px;font-size:12px;font-family:var(--f-mono)}
+.tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+.work{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:12px}
+@media (max-width:1240px){.work{grid-template-columns:minmax(0,1fr)}}
+.stagecard{display:flex;flex-direction:column}
+.stage{position:relative;flex:1;min-height:500px;overflow:hidden;border-radius:var(--r) var(--r) 0 0;background:radial-gradient(130% 100% at 50% 10%,var(--stage-a),var(--stage-b))}
+@media (max-width:700px){.stage{min-height:380px}}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.bays{position:absolute;left:12px;right:12px;top:12px;display:flex;gap:8px;overflow:hidden;pointer-events:none}
+.bay{flex:0 1 190px;min-width:120px;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:11px;padding:8px 10px;box-shadow:var(--shadow)}
+.bay .h{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
+.bay .h .nm{flex:1;min-width:0;margin:0;color:var(--fg)}
+.code{font-family:var(--f-mono);font-size:10.5px;font-weight:600;padding:0 6px;border-radius:4px;color:#fff;line-height:17px;white-space:nowrap;display:inline-block;text-shadow:0 1px 0 rgba(0,0,0,.15)}
+.bay .nm{font-size:12px;font-weight:600}
+.bay .q{font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.prog{height:4px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:2px}
+@media (max-width:700px){.bays{top:8px;left:8px;right:8px;gap:5px;flex-wrap:wrap}.bay{flex:0 0 auto;min-width:0;padding:4px 7px}.bay .nm,.bay .prog{display:none}.bay .h{gap:6px}}
+.stage-foot{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none;flex-wrap:wrap}
+.stage-foot .spec{font-size:11.5px;color:var(--muted);background:color-mix(in srgb,var(--card) 80%,transparent);padding:4px 8px;border-radius:7px}
+.stage-foot .spec b{color:var(--fg);font-weight:600}
+@media (max-width:700px){.stage-foot .spec{display:none}.stage-foot{justify-content:flex-end}}
+.badge{font-family:var(--f-mono);font-size:12px;font-weight:600;padding:4px 10px;border-radius:7px;box-shadow:var(--shadow)}
+.badge.ok{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.badge.bad{background:var(--bad);color:#fff}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-size:11.5px;padding:6px 10px;border-radius:8px;white-space:nowrap;box-shadow:var(--shadow);transform:translate(-50%,-135%)}
+.msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);text-align:center;padding:24px}
+.seqbar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
+.seqbar input{flex:1;min-width:120px;accent-color:var(--accent)}
+.seqbar span{font-size:11.5px;color:var(--muted);white-space:nowrap}
+
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(6,minmax(0,1fr))}.kpi{grid-column:span 2}.kpi:nth-child(n+4){grid-column:span 3}}
+@media (max-width:600px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi,.kpi:nth-child(n+4){grid-column:auto}.kpi:last-child{grid-column:1/-1}}
+.kpi{padding:13px 14px}
+.kpi .l{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}
+.kpi .l .ic{width:24px;height:24px;border-radius:7px;background:var(--sunk);border:1px solid var(--line);display:grid;place-items:center;color:var(--fg)}
+.kpi .v{font-family:var(--f-mono);font-size:25px;font-weight:500;margin-top:8px;letter-spacing:-.01em;white-space:nowrap}
+.kpi .v small{font-size:12.5px;color:var(--muted);margin-left:2px;font-weight:400}
+.kpi .s{font-size:11.5px;color:var(--muted);margin-top:3px}
+.kpi .s b{color:var(--fg);font-weight:600}
+.kpi .s.bad{color:var(--bad)}
+.kpi .mm{display:flex;gap:4px;margin-top:8px}
+.kpi .mm span{flex:1;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.kpi .mm i{display:block;height:100%}
+
+.rail{display:grid;gap:12px;align-content:start}
+.panel{padding:13px 14px}
+.panel h4{margin:0 0 11px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.panel h4 .tt{display:flex;align-items:center;gap:7px}
+.checks{display:grid;gap:10px}
+.check{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:12.5px}
+.check .sub{grid-column:1/-1;color:var(--muted);font-size:11.5px}
+.meter{grid-column:1/-1;height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex}
+.meter i{display:block;height:100%}
+.lr{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:11.5px;color:var(--muted);grid-column:1/-1}
+.lr .meter{grid-column:auto}
+#chart svg{width:100%;height:auto;display:block}
+.chart .cap{font-size:11.5px;color:var(--muted);margin-top:6px}
+.chart .cap b{color:var(--fg)}
+
+/* ---------- settings ---------- */
+.settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.settings>section:last-child{grid-column:1/-1;border-left:none;border-top:1px solid var(--line)}
+@media (max-width:1100px){.settings{grid-template-columns:minmax(0,1fr)}}
+.settings>section{padding:13px 16px;border-left:1px solid var(--line);min-width:0}
+.settings>section:first-child{border-left:none}
+@media (max-width:1100px){.settings>section{border-left:none;border-top:1px solid var(--line)}.settings>section:first-child{border-top:none}}
+.settings h5{margin:0 0 10px;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.settings h5 span.d{font-weight:400;color:var(--muted);font-size:11.5px}
+.fgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fgrid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fld{display:grid;gap:3px;font-size:11px;color:var(--muted);min-width:0}
+.fld input,.fld select{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:7px;padding:5px 7px;background:var(--card);color:var(--fg);width:100%;min-width:0}
+.fld select{font-family:var(--f-body)}
+.span3{grid-column:1/-1}
+label.sw{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;cursor:pointer;padding:3px 0;position:relative}
+label.sw small{display:block;color:var(--muted);font-size:11px}
+label.sw input{position:absolute;opacity:0;width:1px;height:1px}
+label.sw .tg{flex:none;width:32px;height:18px;border-radius:9px;background:var(--line);position:relative;transition:background .15s}
+label.sw .tg::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+label.sw input:checked+.tg{background:var(--accent)}
+label.sw input:checked+.tg::after{transform:translateX(14px)}
+.ctrow{display:grid;grid-template-columns:40px repeat(4,minmax(0,1fr)) minmax(0,1.5fr) minmax(0,1.3fr);gap:5px;align-items:center;font-size:11px;color:var(--muted)}
+.ctrow b{font-family:var(--f-mono);font-size:11.5px;color:var(--fg)}
+.ctrow input{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;background:var(--card);color:var(--fg);width:100%;min-width:0}
+.cts{display:grid;gap:5px}
+.hint{color:var(--muted);font-size:11.5px;margin:8px 0 0}
+.linkbtn{background:none;border:none;color:var(--muted);font-size:11.5px;text-decoration:underline;padding:0}
+
+/* ---------- cargo table ---------- */
+.sheet .head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 13px;border-bottom:1px solid var(--line)}
+.sheet .head h4{margin:0 6px 0 2px;font-size:13.5px;display:flex;align-items:center;gap:7px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+table.cargo{min-width:1000px}
+table.cargo th{font-size:11.5px;font-weight:500;color:var(--muted);text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--sunk)}
+table.cargo td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.cargo tbody tr:hover td{background:var(--sunk)}
+table.cargo tfoot td{font-weight:600;padding:10px 6px;border-bottom:none}
+table.cargo input,table.cargo select{font:inherit;font-size:12.5px;color:var(--fg);background:transparent;border:1px solid transparent;border-radius:7px;padding:5px 6px;width:100%}
+table.cargo input:hover,table.cargo select:hover{border-color:var(--line)}
+table.cargo input:focus,table.cargo select:focus{background:var(--card);border-color:var(--accent);outline:none}
+table.cargo input[type=number]{font-family:var(--f-mono);font-size:12px;text-align:right}
+td.c-name{min-width:120px}
+td.c-num{width:64px}
+td.c-num input{min-width:52px}
+td.c-sel{width:100px}
+td.c-sel select{min-width:92px}
+td.c-stat{min-width:190px}
+.r{text-align:right;font-family:var(--f-mono);font-size:12px;white-space:nowrap}
+.stat{display:grid;gap:3px;font-size:11.5px;color:var(--muted)}
+.stat .ln{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.del{border:none;background:none;color:var(--faint);font-size:17px;line-height:1;padding:2px 6px;border-radius:6px}
+.del:hover{color:var(--bad);background:var(--bad-soft)}
+.empty{color:var(--muted);padding:24px;text-align:center}
+.btn.big{padding:8px 16px;font-size:13.5px}
+.calcstate{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.calcstate i{width:7px;height:7px;border-radius:50%;background:var(--ok);display:inline-block}
+.calcstate.dirty i{background:var(--warn)}
+.stage.flash{box-shadow:inset 0 0 0 3px var(--accent);transition:box-shadow .2s}
+.importer{padding:14px;border-bottom:1px solid var(--line);background:var(--sunk);display:grid;gap:10px}
+.imp-head{display:grid;gap:3px;font-size:12.5px}
+.imp-head span{color:var(--muted);font-size:12px}
+.importer textarea{width:100%;font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--card);color:var(--fg);resize:vertical;min-width:0}
+.imp-opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:700px){.imp-opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.imp-preview{font-size:12px;color:var(--muted);overflow-x:auto}
+.imp-preview table{font-size:12px;min-width:520px}
+.imp-preview td,.imp-preview th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.imp-preview td:first-child,.imp-preview th:first-child{text-align:left}
+.imp-actions{display:flex;gap:8px;justify-content:flex-end}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.subbar{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--sunk)}
+.steps{display:flex;gap:6px 18px;flex-wrap:wrap;margin:0;padding:0;list-style:none;font-size:12.5px;color:var(--muted);flex:1;min-width:0}
+.steps li{display:flex;align-items:center;gap:6px}
+.steps b{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-size:11px;font-family:var(--f-mono)}
+.setsum{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.setsum .tag{border:1px solid var(--line);border-radius:6px;padding:1px 7px;background:var(--card);color:var(--fg);white-space:nowrap}
+.setsum button{background:none;border:none;color:var(--steel);text-decoration:underline;font-size:12px;padding:0}
+.btn[aria-expanded="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+input.miss{border-color:var(--bad)!important;background:var(--bad-soft)!important}
+.hintbtn{border:1px solid var(--warn);background:var(--warn-soft);color:var(--warn);border-radius:6px;font-size:11px;padding:1px 7px}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--fg);color:var(--bg);border-radius:10px;padding:9px 12px 9px 16px;display:flex;gap:12px;align-items:center;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100vw - 32px)}
+.toast button{background:var(--accent);color:var(--accent-ink);border:none;border-radius:7px;padding:4px 12px;font-weight:600}
+.busy{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--stage-a) 70%,transparent);font-size:14px;color:var(--fg);z-index:5}
+.msg .acts{display:flex;gap:8px;justify-content:center;margin-top:12px;pointer-events:auto}
+.ctrls{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:grid;gap:6px;z-index:3}
+.ctrls button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 92%,transparent);display:grid;place-items:center;box-shadow:var(--shadow);color:var(--fg)}
+.ctrls button:hover{border-color:var(--faint)}
+.wheelhint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:9px;font-size:13px;pointer-events:none;z-index:4;opacity:.92}
+.stage.live{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--accent) 55%,transparent)}
+.viewer{display:grid;gap:12px;min-width:0}
+.viewer:fullscreen,.viewer.fs{background:var(--bg);display:flex;flex-direction:column;gap:10px;height:100%;
+  padding-block:calc(10px + env(safe-area-inset-top,0px)) calc(10px + env(safe-area-inset-bottom,0px));
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));overflow:hidden}
+.viewer.fs{position:fixed;inset:0;z-index:60}
+.viewer:fullscreen .work,.viewer.fs .work{flex:1;min-height:0;grid-template-rows:minmax(0,1fr)}
+.viewer:fullscreen .stagecard,.viewer.fs .stagecard{min-height:0}
+.viewer:fullscreen .stage,.viewer.fs .stage{min-height:0}
+.viewer:fullscreen .rail,.viewer.fs .rail{overflow:auto;min-height:0}
+@media (max-width:1240px){.viewer:fullscreen .rail,.viewer.fs .rail{display:none}}
+body.fsopen{overflow:hidden}
+.viewer:fullscreen #calc2,.viewer.fs #calc2{display:none}
+.typepick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.typepick label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card);color:var(--fg);cursor:pointer;font-family:var(--f-mono);font-size:12px}
+.typepick label small{font-family:var(--f-body);color:var(--muted);font-size:11px}
+.typepick input{accent-color:var(--accent);margin:0}
+.typepick label.on{border-color:var(--accent);background:var(--accent-soft)}
+table.cttable{font-size:11.5px;min-width:760px}
+table.cttable th{font-weight:500;color:var(--muted);text-align:left;padding:4px;white-space:nowrap}
+table.cttable td{padding:3px 4px;white-space:nowrap}
+table.cttable td b{font-family:var(--f-mono);font-size:11.5px}
+table.cttable input{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:6px;padding:3px 4px;background:var(--card);color:var(--fg);width:64px}
+table.cttable .na{color:var(--faint);text-align:center}
+table.cttable .src{font-size:10.5px;color:var(--muted)}
+.disclaimer{max-width:1640px;margin:14px auto 0;color:var(--muted);font-size:11.5px;text-align:center;padding:0 12px}
+.foot-hint{color:var(--muted);font-size:12px;padding:10px 14px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-box" viewBox="0 0 16 16"><path d="M2 5l6-3 6 3v6l-6 3-6-3z"/><path d="M2 5l6 3 6-3M8 8v6"/></symbol>
+  <symbol id="i-weight" viewBox="0 0 16 16"><path d="M5 5h6l2 9H3z"/><circle cx="8" cy="3.5" r="1.5"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 16 16"><path d="M2.5 11a5.5 5.5 0 1 1 11 0"/><path d="M8 11l3-4"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 16 16"><path d="M8 2l6 3-6 3-6-3z"/><path d="M2 8l6 3 6-3M2 11l6 3 6-3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M5.5 8l1.8 1.8L10.8 6.3"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 16 16"><path d="M2 13h12"/><path d="M3 11l3-4 3 2 4-5"/></symbol>
+  <symbol id="i-pallet" viewBox="0 0 16 16"><path d="M1.5 11h13M1.5 14h13M3 11v3M8 11v3M13 11v3"/><rect x="3" y="4" width="10" height="6" rx=".5"/></symbol>
+  <symbol id="i-rule" viewBox="0 0 16 16"><path d="M3 3h10v10H3z"/><path d="M6 3v3M9 3v2M12 3v3M3 6h2M3 9h3M3 12h2"/></symbol>
+  <symbol id="i-ct" viewBox="0 0 16 16"><rect x="1.5" y="4" width="13" height="8" rx="1"/><path d="M4.5 6v4M7 6v4M9.5 6v4M12 6v4"/></symbol>
+  <symbol id="i-cube" viewBox="0 0 16 16"><path d="M8 1.5l5.5 3v7L8 14.5l-5.5-3v-7z"/><path d="M2.5 4.5L8 7.5l5.5-3M8 7.5v7"/></symbol>
+  <symbol id="i-side" viewBox="0 0 16 16"><rect x="1.5" y="5" width="13" height="6" rx="1"/></symbol>
+  <symbol id="i-top" viewBox="0 0 16 16"><rect x="3" y="1.5" width="10" height="13" rx="1"/><path d="M3 5h10"/></symbol>
+  <symbol id="i-door" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M8 2v12M6.5 7v2M9.5 7v2"/></symbol>
+  <symbol id="i-full" viewBox="0 0 16 16"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></symbol>
+  <symbol id="i-exit" viewBox="0 0 16 16"><path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 16 16"><path d="M3 8h10"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 0 1.5-3.5"/><path d="M3 2.5V5h2.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 16 16"><path d="M5 4h9M5 8h9M5 12h9M2 4h.5M2 8h.5M2 12h.5"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="side card">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20"><rect x="2" y="5" width="16" height="10" rx="1.2" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M5.5 7.5v5M8.5 7.5v5M11.5 7.5v5M14.5 7.5v5" stroke="#F5B54A" stroke-width="1.4"/></svg>
+      </div>
+      <div><b>集装箱装箱计算器</b><small>Load planner</small></div>
+    </div>
+    <div class="sect">
+      <h3><span>装柜方案</span><span id="plancount"></span></h3>
+      <div id="planlist" class="sect"></div>
+    </div>
+    <div class="sect">
+      <h3><span>本柜货物</span><span>箱</span></h3>
+      <div id="legend" class="legend"></div>
+    </div>
+    <div class="note" id="sidenote"></div>
+  </aside>
+
+  <div class="main">
+    <div class="card sheet">
+      <div class="head">
+        <h4><svg class="i"><use href="#i-list"/></svg>货物明细</h4>
+        <span class="pill steel" id="samplebadge" hidden>示例数据，直接改成你的货就行</span>
+        <div class="spacer"></div>
+        <button type="button" class="btn" id="imp-open"><svg class="i"><use href="#i-list"/></svg>从 Excel 粘贴</button>
+        <button type="button" class="btn" id="sample">载入示例</button>
+        <button type="button" class="btn" id="clear">清空</button>
+        <button type="button" class="btn" id="add">＋ 添加货物</button>
+        <button type="button" class="btn" id="set-open" aria-expanded="false"><svg class="i"><use href="#i-rule"/></svg>装柜设置</button>
+        <button type="button" class="btn primary big" id="calc"><svg class="i"><use href="#i-cube"/></svg>计算装柜</button>
+      </div>
+      <div class="subbar">
+        <ol class="steps"><li><b>1</b>录入货物，或从 Excel 粘贴</li><li><b>2</b>点“计算装柜”</li><li><b>3</b>在下面看方案和装柜图</li></ol>
+        <span class="calcstate" id="calcstate"></span>
+      </div>
+      <div class="typepick" id="typepick"></div>
+      <div class="setsum" id="setsum"></div>
+      <div class="importer" id="importer" hidden>
+        <div class="imp-head"><b>从 Excel 粘贴装箱单</b><span>在 Excel 里选中这几列复制（Ctrl+C），粘贴到下面：<b>品名 · 长 · 宽 · 高 · 毛重 · 箱数</b>。长宽高写在一格也可以，比如 60*40*35。表头行会自动跳过。</span></div>
+        <textarea id="imp-text" rows="6" placeholder="电动工具套装	60	40	35	18	300&#10;陶瓷花盆	45*45*50	12	120"></textarea>
+        <div class="imp-opts">
+          <label class="fld">尺寸单位<select id="imp-unit"><option value="cm">cm</option><option value="mm">mm</option></select></label>
+          <label class="fld">毛重是<select id="imp-w"><option value="each">每箱毛重</option><option value="total">这一行合计毛重</option></select></label>
+          <label class="fld">包装<select id="imp-pal"><option value="loose">散箱</option><option value="pallet">打托</option></select></label>
+          <label class="fld">导入方式<select id="imp-mode"><option value="append">加在现有货物后面</option><option value="replace">替换现有货物</option></select></label>
+        </div>
+        <div id="imp-preview" class="imp-preview"></div>
+        <div class="imp-actions"><button type="button" class="btn" id="imp-cancel">取消</button><button type="button" class="btn primary" id="imp-ok" disabled>导入</button></div>
+      </div>
+      <div class="tablewrap">
+        <table class="cargo">
+          <thead><tr>
+            <th>编号</th><th>品名</th><th>长 cm</th><th>宽 cm</th><th>高 cm</th><th>单箱毛重 kg</th><th>箱数</th><th>摆放</th><th>最多堆几层</th><th>包装</th><th class="r">体积 m³</th><th class="r">总重 kg</th><th>装柜情况</th><th></th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+          <tfoot><tr><td></td><td>合计</td><td colspan="4"></td><td class="r" id="t-qty">0</td><td colspan="3"></td><td class="r" id="t-vol">0</td><td class="r" id="t-kg">0</td><td colspan="2"></td></tr></tfoot>
+        </table>
+      </div>
+      <div class="foot-hint">按回车跳到下一行，最后一行按回车自动加一行。尺寸填纸箱外尺寸。大部分纸箱有向上标志，默认“只能正放”（可以水平转向）；确认能侧放、倒放的才选“任意翻转”。“最多堆几层”不填为不限，填 1 表示上面不能压货。选“打托”的货按“装柜设置”里的托盘规格先码托再装柜。</div>
+    </div>
+
+    <div class="card settings" id="settings" hidden>
+      <section>
+        <h5><svg class="i"><use href="#i-pallet"/></svg>托盘规格 <span class="d">选“打托”的货使用</span></h5>
+        <div class="fgrid">
+          <label class="fld span3">常用规格
+            <select id="pal-preset">
+              <option value="120x100">1200 × 1000（国内常用）</option>
+              <option value="120x80">1200 × 800（欧标）</option>
+              <option value="110x110">1100 × 1100（日韩）</option>
+              <option value="114x114">1140 × 1140</option>
+              <option value="custom">自定义</option>
+            </select>
+          </label>
+          <label class="fld">长 cm<input type="number" id="pal-L" data-p="L"></label>
+          <label class="fld">宽 cm<input type="number" id="pal-W" data-p="W"></label>
+          <label class="fld">托盘高 cm<input type="number" id="pal-h" data-p="h"></label>
+          <label class="fld">托盘自重 kg<input type="number" id="pal-kg" data-p="kg"></label>
+          <label class="fld">码货后最高 cm<input type="number" id="pal-maxH" data-p="maxH"></label>
+          <label class="fld">每托最重 kg<input type="number" id="pal-maxKg" data-p="maxKg"></label>
+          <label class="fld">托盘间留缝 cm<input type="number" id="pal-gap" data-p="gap"></label>
+          <label class="fld span3">进叉方式（叉车只能从柜门进）
+            <select id="pal-fork" data-p="fork">
+              <option value="four">四面进叉：托盘可以转向再叉进去</option>
+              <option value="forkW">两面进叉，叉口在宽边：长边顺着柜子放</option>
+              <option value="forkL">两面进叉，叉口在长边：宽边顺着柜子放</option>
+            </select>
+          </label>
+          <label class="sw span3"><span>托盘可以叠放<small>两托上下叠在一起装柜</small></span><input type="checkbox" id="pal-stack" data-p="stack"><span class="tg"></span></label>
+        </div>
+      </section>
+      <section>
+        <h5><svg class="i"><use href="#i-rule"/></svg>装柜规则</h5>
+        <label class="sw"><span>重货不压轻货<small>单位面积更重的货不放在较轻的货上面</small></span><input type="checkbox" id="r-heavy" data-r="heavy"><span class="tg"></span></label>
+        <label class="sw"><span>散箱可以压在托盘上<small>托盘货上方的空间用散箱补满（托盘之间不叠，除非打开“托盘可以叠放”）</small></span><input type="checkbox" id="r-lop" data-r="looseOnPallet"><span class="tg"></span></label>
+        <div class="fgrid two" style="margin-top:8px">
+          <label class="fld">柜门处预留 cm<input type="number" id="r-gapL" data-r="gapL"></label>
+          <label class="fld">顶部预留 cm<input type="number" id="r-gapH" data-r="gapH"></label>
+        </div>
+        <p class="hint">实际装柜时纸箱会鼓，还要留出手和叉车的操作空间，算出的利用率要比理论值留余量。柜门处预留也方便关门和加固。</p>
+      </section>
+      <section>
+        <h5><svg class="i"><use href="#i-ct"/></svg>柜型参数 <span class="d">选船公司自动带出官方公布的尺寸，也可以手动改</span></h5>
+        <div class="fgrid" style="grid-template-columns:minmax(0,260px) 1fr;align-items:end;margin-bottom:10px">
+          <label class="fld">船公司<select id="ct-carrier"></select></label>
+          <div id="ct-src" class="hint" style="margin:0"></div>
+        </div>
+        <div class="tablewrap"><table class="cttable" id="ctgrid"></table></div>
+        <div class="fgrid" style="margin-top:10px">
+          <label class="sw"><span>开顶柜从顶部吊装<small>不受门高限制</small></span><input type="checkbox" id="r-ottop" data-r="otTop"><span class="tg"></span></label>
+          <label class="sw"><span>冷柜陆运挂机<small>发电机组约 820 kg，算进拖车总重</small></span><input type="checkbox" id="r-genset" data-r="genset"><span class="tg"></span></label>
+          <label class="fld">冷柜门口留空 cm<input type="number" id="r-rfGap" data-r="rfGap"></label>
+        </div>
+        <p class="hint">尺寸来自各船公司官网公布值，同一船公司不同批次的箱子也会差几厘米，以箱门铭牌为准。限重是箱子本身的最大载重，重柜还受拖车和道路限重影响，装重货前请先和船公司、车队确认。<button type="button" class="linkbtn" id="ctreset">恢复这家船公司的默认值</button></p>
+      </section>
+    </div>
+
+    <div class="viewer" id="viewer">
+    <div class="topbar card">
+      <label class="chipbox planpick"><svg class="i"><use href="#i-ct"/></svg><span id="tb-plan" hidden>—</span><select id="tb-sel" aria-label="切换装柜方案"></select></label>
+      <div class="chipbox mono" id="tb-dims" hidden>—</div>
+      <div class="tabs" id="ctabs"></div>
+      <div class="spacer"></div>
+      <div class="seg" role="group" aria-label="视角">
+        <button type="button" data-view="3d" aria-pressed="true"><svg class="i"><use href="#i-cube"/></svg>3D</button>
+        <button type="button" data-view="side" aria-pressed="false"><svg class="i"><use href="#i-side"/></svg>侧视</button>
+        <button type="button" data-view="top" aria-pressed="false"><svg class="i"><use href="#i-top"/></svg>俯视</button>
+        <button type="button" data-view="door" aria-pressed="false"><svg class="i"><use href="#i-door"/></svg>柜门</button>
+      </div>
+      <button type="button" class="btn" id="calc2"><svg class="i"><use href="#i-cube"/></svg>计算装柜</button>
+      <button type="button" class="btn" id="fs-btn" aria-pressed="false"><svg class="i"><use href="#i-full"/></svg><span>全屏</span></button>
+      <button type="button" class="btn primary" id="play">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg><span>播放装柜</span>
+      </button>
+    </div>
+
+    <div class="work">
+      <div class="card stagecard">
+        <div class="stage" id="stage">
+          <canvas id="cv" aria-label="集装箱 3D 装载图"></canvas>
+          <div class="bays" id="bays"></div>
+          <div class="tip" id="tip" hidden></div>
+          <div class="ctrls" role="group" aria-label="缩放">
+            <button type="button" id="z-in" aria-label="放大" title="放大"><svg class="i"><use href="#i-plus"/></svg></button>
+            <button type="button" id="z-out" aria-label="缩小" title="缩小"><svg class="i"><use href="#i-minus"/></svg></button>
+            <button type="button" id="z-reset" aria-label="复位视角" title="复位视角"><svg class="i"><use href="#i-reset"/></svg></button>
+            <button type="button" id="z-fs" aria-label="全屏" title="全屏"><svg class="i"><use href="#i-full"/></svg></button>
+          </div>
+          <div class="wheelhint" id="wheelhint" hidden>先点一下画面，再用滚轮缩放</div>
+          <div class="stage-foot">
+            <div class="spec" id="stagespec"></div>
+            <div class="badge ok" id="wbadge" hidden></div>
+          </div>
+          <div class="msg" id="stagemsg" hidden></div>
+        </div>
+        <div class="seqbar">
+          <span>装柜顺序</span>
+          <input type="range" id="seq" min="0" max="0" value="0" aria-label="装柜顺序">
+          <span class="mono" id="seqv"></span>
+        </div>
+      </div>
+
+      <div class="rail">
+        <div class="card panel">
+          <h4><span class="tt"><svg class="i"><use href="#i-check"/></svg>装载检查</span><span id="chk-pill"></span></h4>
+          <div class="checks" id="checks"></div>
+        </div>
+        <div class="card panel chart">
+          <h4><span class="tt"><svg class="i"><use href="#i-chart"/></svg>重量分布</span><span style="font-weight:400;color:var(--muted);font-size:11.5px">沿柜长 · kg/m</span></h4>
+          <div id="chart"></div>
+          <div class="cap" id="chartcap"></div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <div class="kpis" id="kpis"></div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden role="status"><span id="toast-msg"></span><button type="button" id="toast-undo">撤销</button></div>
+<p class="disclaimer">本工具按理论算法计算装柜方案，结果仅供参考。实际能装多少、能否接受超限货，以现场装柜情况和船公司、码头、车队的要求为准。柜型尺寸来自各船公司官网公布值，具体以箱门铭牌为准。</p>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/OrbitControls.js"></script>
+<script>
+/* ================= 1. 数据 ================= */
+const PALETTE = ['#E8913A','#3D7FD0','#3FA66A','#8B6BD6','#D9546E','#2AA3A6','#C2A12C','#7A8896','#D86FA8','#5E9E2F'];
+/* 柜型：cls = dry 普柜 / ot 开顶 / fr 框架 / rf 冷柜（运转） / nor 冷柜当干货用（冷机不开） */
+const ALL_TYPES = ['20GP','40HQ','40OT','40FR','40RH','40NOR'];
+const TYPE_INFO = {
+  '20GP': {cls:'dry', name:'20GP 普柜',   teu:1, rank:0},
+  '40HQ': {cls:'dry', name:'40HQ 高柜',   teu:2, rank:0},
+  '40OT': {cls:'ot',  name:'40OT 开顶柜', teu:2, rank:2},
+  '40FR': {cls:'fr',  name:'40FR 框架柜', teu:2, rank:4},
+  '40RH': {cls:'rf',  name:'40RH 冷柜',   teu:2, rank:3},
+  '40NOR':{cls:'nor', name:'40NOR 冷代干', teu:2, rank:1},
+};
+/* 尺寸 cm、重量 kg。L/W/H = 内长/内宽/内高（框架柜：端板之间长度/底板宽/端板高）；
+   DW/DH = 门宽/门高；Hnb = 开顶柜拆掉顶梁后的高度；loadH = 冷柜装货线（红线）高度；kg = 最大载重；tare = 箱皮 */
+const SPEC_GENERIC = {
+  '20GP': {L:589,  W:235, H:239, DW:234, DH:228, kg:28200, tare:2200, exp:28},
+  '40HQ': {L:1203, W:235, H:269, DW:234, DH:258, kg:28600, tare:3900, exp:68},
+  '40OT': {L:1203, W:235, H:234, Hnb:242, DW:234, DH:227, roofL:1155, roofW:223, kg:26600, tare:3900, exp:58},
+  '40FR': {L:1165, W:220, H:195, extW:243.8, kg:38800, tare:6200},
+  '40RH': {L:1158, W:229, H:255, loadH:239, DW:229, DH:256, kg:29260, tare:4740, exp:58},
+  '40NOR':{L:1158, W:229, H:255, loadH:239, DW:229, DH:256, kg:29260, tare:4740, exp:60},
+};
+const CARRIERS = {
+  generic: {name:'通用（常见值）', src:'', spec:{}},
+  hapag: {name:'Hapag-Lloyd 赫伯罗特', src:'https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container.html', spec:{
+    '40HQ': {L:1203.2, W:235, H:270, DW:234, DH:259.7, kg:28600, tare:3900},
+    '40OT': {L:1202.9, W:235, H:234.4, Hnb:242, DW:234, DH:227.6, roofL:1155.2, roofW:223, kg:28450, tare:4050},
+    '40FR': {L:1165.2, W:224.5, H:226.5, kg:49100, tare:5900},
+    '40RH': {L:1159.9, W:229, H:242.5, loadH:242.5, DW:229, DH:255.7, kg:29580, tare:4420},
+    '40NOR':{L:1159.9, W:229, H:242.5, loadH:242.5, DW:229, DH:255.7, kg:29580, tare:4420}}},
+  one: {name:'ONE 海洋网联', src:'https://www.one-line.com/en/standard-page/dry-containers', spec:{
+    '20GP': {L:589.8, W:235, H:239, DW:234, DH:228, kg:28330, tare:2150},
+    '40HQ': {L:1203.2, W:235, H:269.5, DW:234, DH:258.5, kg:28800, tare:3700},
+    '40OT': {L:1202, W:234, H:234, Hnb:242, DW:233, DH:224, roofL:1189, roofW:218, kg:26600, tare:3880},
+    '40FR': {L:1165, W:220, H:195, kg:38800, tare:6200},
+    '40RH': {L:1159, W:228.4, H:254.4, loadH:238, DW:229, DH:250.2, kg:29510, tare:4490},
+    '40NOR':{L:1159, W:228.4, H:254.4, loadH:238, DW:229, DH:250.2, kg:29510, tare:4490}}},
+  maersk: {name:'Maersk 马士基', src:'https://www.maersk.com/~/media_sc9/maersk/local-information/files/africa/south-africa/important-information/container-type-and-sizes/dry-equipment-specifications-updated.pdf', spec:{
+    '20GP': {L:589.6, W:235, H:239.3, DW:235, DH:227.4, kg:28200, tare:2280},
+    '40HQ': {L:1203.2, W:235, H:269.7, DW:234, DH:257.7, kg:28620, tare:3880}}},
+  cma: {name:'CMA CGM 达飞', src:'https://www.cmacgm-group.com/en/activities/shipping-everything/reefer/technical-specifications', spec:{
+    '40RH': {L:1158.4, W:229.4, H:255.7, loadH:239.4, DW:229, DH:256.9, kg:29260, tare:4740},
+    '40NOR':{L:1158.4, W:229.4, H:255.7, loadH:239.4, DW:229, DH:256.9, kg:29260, tare:4740}}},
+};
+function presetCT(carrier){
+  const out = {}, cs = (CARRIERS[carrier] || CARRIERS.generic).spec;
+  for(const t of ALL_TYPES){ out[t] = Object.assign({}, SPEC_GENERIC[t], cs[t] || {}); out[t].src = cs[t] ? carrier : 'generic'; }
+  return out;
+}
+const CT_DEFAULT = presetCT('generic');
+let TYPES = ['20GP','40HQ'];
+const clsOf = t => TYPE_INFO[t].cls;
+const PAL_DEFAULT = {preset:'120x100', L:120, W:100, h:15, kg:25, maxH:150, maxKg:1000, stack:false, gap:2, fork:'four'};
+const RULES_DEFAULT = {heavy:true, gapL:2, gapH:3, looseOnPallet:true, types:['20GP','40HQ'], carrier:'generic', genset:false, otTop:true, rfGap:10};
+const clone = o => JSON.parse(JSON.stringify(o));
+let CT = clone(CT_DEFAULT), PAL = clone(PAL_DEFAULT), RULES = clone(RULES_DEFAULT);
+let items = [], nextId = 1;
+
+const SAMPLE = [
+  {name:'电动工具套装', l:60, w:40, h:35, kg:18, qty:300, rot:'upright', layers:'', pal:'loose'},
+  {name:'陶瓷花盆',     l:45, w:45, h:50, kg:12, qty:120, rot:'upright', layers:3,  pal:'loose'},
+  {name:'不锈钢水槽',   l:85, w:50, h:25, kg:9,  qty:150, rot:'upright', layers:'', pal:'loose'},
+  {name:'LED 灯具',     l:52, w:38, h:30, kg:7,  qty:240, rot:'upright', layers:'', pal:'pallet'},
+];
+
+function newItem(p){
+  const it = Object.assign({name:'',l:'',w:'',h:'',kg:'',qty:'',rot:'upright',layers:'',pal:'loose'}, p||{});
+  delete it.id; delete it.color;
+  it.id = nextId++;
+  it.color = PALETTE[(it.id-1) % PALETTE.length];
+  return it;
+}
+const num = v => { const n = parseFloat(v); return isFinite(n) ? n : 0; };
+const codeOf = id => 'C-' + String(id).padStart(2,'0');
+function save(){ try{ localStorage.setItem('ccalc.v5', JSON.stringify({items, CT, PAL, RULES, isSample})); }catch(e){} }
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem('ccalc.v5') || localStorage.getItem('ccalc.v4') || localStorage.getItem('ccalc.v3') || 'null');
+    if(!s) return false;
+    if(s.RULES && s.RULES.carrier) CT = presetCT(s.RULES.carrier);
+    if(s.CT) for(const t of ALL_TYPES) if(s.CT[t]) CT[t] = Object.assign({}, CT[t], s.CT[t]);
+    if(s.PAL) PAL = Object.assign({}, PAL, s.PAL);
+    if(s.RULES) RULES = Object.assign({}, RULES, s.RULES);
+    if(!Array.isArray(RULES.types)) RULES.types = ['20GP','40HQ'];
+    if(!CARRIERS[RULES.carrier]) RULES.carrier = 'generic';
+    TYPES = ALL_TYPES.filter(t => RULES.types.includes(t)); if(!TYPES.length) TYPES = ['40HQ'];
+    if(Array.isArray(s.items) && s.items.length){ items = s.items.map(x => newItem(x)); isSample = !!s.isSample; return true; }
+  }catch(e){}
+  return false;
+}
+const OOG_CAP = {ow:300, oh:400, ol:300};   // 超出这个范围程序不再排（散杂船/滚装的范围）
+function eff(t, units){
+  const c = CT[t], cls = clsOf(t);
+  if(cls === 'dry' || cls === 'nor') return {L:c.L - RULES.gapL, W:c.W, H:c.H - RULES.gapH, kg:c.kg, DH:c.DH};
+  if(cls === 'rf') return {L:c.L - Math.max(RULES.gapL, RULES.rfGap), W:c.W, H:Math.min(c.H - RULES.gapH, c.loadH || c.H), kg:c.kg, DH:c.DH};
+  // 开顶 / 框架：普通货只能放在箱子范围（gauge）内，超限的大件可以伸出去
+  const L = cls === 'ot' ? c.L - RULES.gapL : c.L, W = c.W, H = cls === 'ot' ? c.H - RULES.gapH : c.H;
+  const oog = new Set(); let VL = L, VW = W, VH = H;
+  for(const u of (units || [])){
+    const os = orients(u);
+    const inG = os.some(([a,b,h]) => a <= L && b <= W && h <= H);
+    if(inG) continue;
+    let best = null;
+    for(const [a,b,h] of os){
+      if(cls === 'ot' && (a > L || b > W || h > (c.Hnb || H) + OOG_CAP.oh)) continue;
+      if(cls === 'fr' && (a > L + 2*OOG_CAP.ol || b > (c.extW || 243.8) + 2*OOG_CAP.ow || h > H + OOG_CAP.oh)) continue;
+      const over = Math.max(0, a - L) + Math.max(0, b - W) + Math.max(0, h - H);
+      if(!best || over < best.over) best = {a, b, h, over};
+    }
+    if(!best) continue;
+    oog.add(u.id); VL = Math.max(VL, best.a); VW = Math.max(VW, best.b); VH = Math.max(VH, best.h);
+  }
+  const gauge = {x0:(VL - L)/2, x1:(VL - L)/2 + L, y0:(VW - W)/2, y1:(VW - W)/2 + W, h:H};
+  return {L:VL, W:VW, H:VH, kg:c.kg, DH: (cls === 'fr' || RULES.otTop) ? Infinity : c.DH, gauge, oog};
+}
+
+/* ================= 2. 码托 =================
+   一层怎么摆：试横放、竖放，以及“一部分横放 + 一部分竖放”的组合，取一层箱数最多的。
+   层数受 码货后最高、每托最重、最多堆几层 三个条件限制。 */
+function layerPattern(PL, PW, a, b){
+  let best = {n:0, rects:[]};
+  const grid = (x0, y0, L, W, p, q) => { const r = []; const nx = Math.floor(L/p), ny = Math.floor(W/q); for(let i=0;i<nx;i++) for(let j=0;j<ny;j++) r.push({x:x0+i*p, y:y0+j*q, l:p, w:q}); return r; };
+  const tryR = rects => { if(rects.length > best.n) best = {n:rects.length, rects}; };
+  tryR(grid(0,0,PL,PW,a,b)); tryR(grid(0,0,PL,PW,b,a));
+  for(let k=1; k*a < PL; k++) tryR([...grid(0,0,k*a,PW,a,b), ...grid(k*a,0,PL-k*a,PW,b,a)]);
+  for(let k=1; k*b < PL; k++) tryR([...grid(0,0,k*b,PW,b,a), ...grid(k*b,0,PL-k*b,PW,a,b)]);
+  for(let k=1; k*b < PW; k++) tryR([...grid(0,0,PL,k*b,a,b), ...grid(0,k*b,PL,PW-k*b,b,a)]);
+  for(let k=1; k*a < PW; k++) tryR([...grid(0,0,PL,k*a,b,a), ...grid(0,k*a,PL,PW-k*a,a,b)]);
+  if(best.n){
+    const mx = Math.max(...best.rects.map(r => r.x+r.l)), my = Math.max(...best.rects.map(r => r.y+r.w));
+    const ox = (PL-mx)/2, oy = (PW-my)/2;
+    best.rects = best.rects.map(r => ({x:r.x+ox, y:r.y+oy, l:r.l, w:r.w}));
+  }
+  return best;
+}
+function palletize(it){
+  const faces = it.rot === 'upright' ? [[it.l,it.w,it.h]] : [[it.l,it.w,it.h],[it.l,it.h,it.w],[it.w,it.h,it.l]];
+  let best = null;
+  for(const [a,b,ch] of faces){
+    const pat = layerPattern(PAL.L, PAL.W, a, b);
+    if(!pat.n) continue;
+    let ly = Math.floor((PAL.maxH - PAL.h)/ch);
+    if(it.kg > 0) ly = Math.min(ly, Math.floor((PAL.maxKg)/(pat.n*it.kg)));
+    if(it.layers > 0) ly = Math.min(ly, it.layers);
+    if(ly <= 0) continue;
+    const per = pat.n*ly;
+    if(!best || per > best.per) best = {rects:pat.rects, n:pat.n, ch, layers:ly, per};
+  }
+  return best;
+}
+
+/* 把货物变成装柜单元：散箱一个单元就是一箱；打托的一个单元是一整托（另加尾托） */
+function buildUnits(src){
+  const units = [];
+  for(const it of src){
+    it.pz = null;
+    if(it.pal === 'pallet'){
+      const pz = palletize(it);
+      if(pz){
+        it.pz = pz;
+        const full = Math.floor(it.qty/pz.per), rem = it.qty % pz.per;
+        const mk = (id, q, cartons) => {
+          const ly = Math.ceil(cartons/pz.n);
+          return {id, src:it, kind:'pallet', l:PAL.L + PAL.gap, w:PAL.W + PAL.gap, h:PAL.h + ly*pz.ch, kg:PAL.kg + cartons*it.kg, qty:q, rot: PAL.fork === 'four' ? 'upright' : PAL.fork, layers:PAL.stack?2:1, cartons, pz};
+        };
+        if(full) units.push(mk('p'+it.id, full, pz.per));
+        if(rem) units.push(mk('q'+it.id, 1, rem));
+        continue;
+      }
+    }
+    units.push({id:'c'+it.id, src:it, kind:'carton', l:it.l, w:it.w, h:it.h, kg:it.kg, qty:it.qty, rot:it.rot, layers:it.layers, cartons:1});
+  }
+  return units;
+}
+
+/* ================= 3. 装柜算法 =================
+   块状装箱 + 空间切分：每次取最靠里、最低的空闲空间，
+   挑一种单元和方向摆成整块，剩余空间切成 前方 / 侧边 / 上方。
+   上方空间只在整块货正上方（完整支撑），并记住下面货的承压，用来做“重货不压轻货”。 */
+function orients(u){
+  const {l,w,h} = u;
+  // 托盘只能从柜门方向叉进去：两面进叉的托盘叉口必须朝柜门（柜长方向），不能转向
+  const list = u.rot === 'forkW' ? [[l,w,h]]          // 叉口在宽边：叉齿沿托盘长边插入，长边顺着柜长
+             : u.rot === 'forkL' ? [[w,l,h]]          // 叉口在长边：叉齿沿托盘宽边插入，宽边顺着柜长
+             : u.rot === 'upright' ? [[l,w,h],[w,l,h]] : [[l,w,h],[w,l,h],[l,h,w],[h,l,w],[w,h,l],[h,w,l]];
+  const seen = new Set();
+  return list.filter(o => { const k = o.join('x'); if(seen.has(k)) return false; seen.add(k); return true; });
+}
+function packOne(c, units, remainIn, strat){
+  const remain = Object.assign({}, remainIn);
+  const boxes = [];
+  let usedKg = 0, usedVol = 0, mz = 0;
+  let spaces = [{x:0,y:0,z:0,l:c.L,w:c.W,h:c.H,cap:Infinity}];
+  let guard = 0;
+  while(spaces.length && guard++ < 60000){
+    let md = Infinity;
+    for(const u of units) if(remain[u.id] > 0) md = Math.min(md, u.l, u.w, u.h);
+    if(md === Infinity) break;
+    spaces = spaces.filter(s => s.l >= md && s.w >= md && s.h >= md);
+    if(!spaces.length) break;
+    spaces.sort((a,b) => (a.x-b.x) || (a.z-b.z) || (a.y-b.y));
+    let s = spaces.shift();
+    let best = null;
+    for(const u of units){
+      const r = remain[u.id];
+      if(!(r > 0)) continue;
+      if(s.onlyLoose && u.kind !== 'carton') continue;
+      const capW = u.kg > 0 ? Math.floor((c.kg - usedKg)/u.kg + 1e-9) : r;
+      const q = Math.min(r, capW);
+      if(q <= 0) continue;
+      const dens = u.kg/(u.l*u.w*u.h);
+      let SL = s.l, SW = s.w, SH = s.h, sp = null;
+      if(c.gauge && !c.oog.has(u.id)){
+        const g = c.gauge, ox = Math.max(s.x, g.x0), oy = Math.max(s.y, g.y0);
+        if(ox >= Math.min(s.x + s.l, g.x1) - 1e-6 || oy >= Math.min(s.y + s.w, g.y1) - 1e-6 || s.z >= g.h - 1e-6) continue;
+        SL = Math.min(s.x + s.l, g.x1) - ox; SW = Math.min(s.y + s.w, g.y1) - oy; SH = Math.min(s.h, g.h - s.z);
+        if(ox > s.x + 1e-6 || oy > s.y + 1e-6) sp = {x:ox, y:oy, z:s.z, l:s.x + s.l - ox, w:s.y + s.w - oy, h:s.h, cap:s.cap, onlyLoose:s.onlyLoose};
+      }
+      for(const [ol,ow,oh] of orients(u)){
+        if(ol > SL || ow > SW || oh > SH || oh > c.DH) continue;
+        const pr = u.kg/(ol*ow);
+        if(RULES.heavy && pr > s.cap*1.001) continue;
+        const fx = Math.floor(SL/ol), fy = Math.floor(SW/ow);
+        let fz = Math.floor(SH/oh);
+        if(u.layers > 0) fz = Math.min(fz, u.layers);
+        const nz = Math.min(fz, q), ny = Math.min(fy, Math.floor(q/nz)), nx = Math.min(fx, Math.floor(q/(nz*ny)));
+        const n = nx*ny*nz;
+        if(n <= 0) continue;
+        const vol = n*ol*ow*oh;
+        let score = strat.wall ? vol*(0.5 + 0.5*(ny*ow*nz*oh)/(s.w*s.h)) : vol;
+        if(strat.look){
+          // 往前多看一步：这样摆之后，旁边和前面剩下的条形空间还能放多少同样的货（可以换方向）
+          const fit = (a, b2, h2) => { let m = 0; for(const [pl,pw,ph] of orients(u)){ if(pl <= a && pw <= b2 && ph <= h2 && ph <= c.DH){ let z2 = Math.floor(h2/ph); if(u.layers > 0) z2 = Math.min(z2, u.layers); m = Math.max(m, Math.floor(a/pl)*Math.floor(b2/pw)*z2); } } return m; };
+          const bl = nx*ol, bw = ny*ow;
+          const extra = strat.split === 'A' ? fit(bl, s.w-bw, s.h) + fit(s.l-bl, s.w, s.h) : fit(s.l, s.w-bw, s.h) + fit(s.l-bl, bw, s.h);
+          score = (n + Math.min(q - n, extra)) * ol*ow*oh + vol*1e-3;
+        }
+        if(strat.heavy) score *= s.z === 0 ? (1 + dens*2e4) : 1/(1 + dens*2e4);
+        // 托盘先铺地：叉车先把整托放下去，散箱再补到托盘上面
+        if(strat.palFirst && u.kind === 'pallet') score *= 1e3;
+        if(!best || score > best.score) best = {u,ol,ow,oh,nx,ny,nz,n,score,pr,sp};
+      }
+    }
+    if(!best) continue;
+    const {u,ol,ow,oh,nx,ny,nz,n,pr} = best;
+    if(best.sp) s = best.sp;
+    for(let i=0;i<nx;i++) for(let j=0;j<ny;j++) for(let k=0;k<nz;k++){
+      boxes.push({u:u.id, x:s.x+i*ol, y:s.y+j*ow, z:s.z+k*oh, l:ol, w:ow, h:oh});
+      mz += u.kg*(s.z + k*oh + oh/2);
+    }
+    remain[u.id] -= n; usedKg += n*u.kg; usedVol += n*ol*ow*oh;
+    const bl = nx*ol, bw = ny*ow, bh = nz*oh;
+    const add = sp => { if(sp.l > 0 && sp.w > 0 && sp.h > 0) spaces.push(sp); };
+    if(strat.split === 'A'){
+      add({x:s.x+bl, y:s.y, z:s.z, l:s.l-bl, w:s.w, h:s.h, cap:s.cap, onlyLoose:s.onlyLoose});
+      add({x:s.x, y:s.y+bw, z:s.z, l:bl, w:s.w-bw, h:s.h, cap:s.cap, onlyLoose:s.onlyLoose});
+    } else {
+      add({x:s.x, y:s.y+bw, z:s.z, l:s.l, w:s.w-bw, h:s.h, cap:s.cap, onlyLoose:s.onlyLoose});
+      add({x:s.x+bl, y:s.y, z:s.z, l:s.l-bl, w:bw, h:s.h, cap:s.cap, onlyLoose:s.onlyLoose});
+    }
+    if(!(u.layers > 0)) add({x:s.x, y:s.y, z:s.z+bh, l:bl, w:bw, h:s.h-bh, cap:Math.min(s.cap, pr), onlyLoose:s.onlyLoose});
+    else if(u.kind === 'pallet' && RULES.looseOnPallet) add({x:s.x, y:s.y, z:s.z+bh, l:bl, w:bw, h:s.h-bh, cap:Math.min(s.cap, pr), onlyLoose:true});
+  }
+  return {boxes, usedKg, usedVol, remain, cgz: usedKg ? mz/usedKg : 0};
+}
+const STRATS = [];
+for(const split of ['A','B']) for(const wall of [false,true]) for(const heavy of [false,true]) STRATS.push({split,wall,heavy});
+for(const split of ['A','B']) STRATS.push({split, look:true});
+for(const split of ['A','B']) for(const look of [false,true]) STRATS.push({split, look, palFirst:true});
+const STRATS_PF = STRATS.filter(st => st.palFirst);
+function bestPack(c, units, remain, set=STRATS){
+  const rs = set.map(st => packOne(c, units, remain, st));
+  const maxV = Math.max(...rs.map(r => r.usedVol));
+  const good = rs.filter(r => r.usedVol >= maxV*0.997);
+  good.sort((a,b) => a.cgz - b.cgz);
+  return good[0];
+}
+const sumRemain = r => Object.values(r).reduce((a,b) => a + (b>0?b:0), 0);
+function runSeq(units, typeFn, maxN, set=STRATS){
+  let remain = {};
+  for(const u of units) remain[u.id] = u.qty;
+  const containers = [];
+  for(let k=0; k<maxN; k++){
+    if(sumRemain(remain) === 0) break;
+    const t = typeFn(k);
+    const e = eff(t, units);
+    let r = bestPack(e, units, remain, set);
+    if(!r.boxes.length) break;
+    // 柜子没装满：试着降低码放高度把货铺开，货铺满柜长，重心自然靠中间、也更低
+    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88){
+      const loaded = {};
+      for(const u of units) loaded[u.id] = (remain[u.id]||0) - (r.remain[u.id]||0);
+      for(const k of [0.35, 0.5, 0.65, 0.8]){
+        const r2 = bestPack(Object.assign({}, e, {H: Math.floor(e.H*k)}), units, loaded, set);
+        if(r2.boxes.length && sumRemain(r2.remain) === 0){ r = Object.assign({}, r2, {remain: r.remain}); break; }
+      }
+    }
+    let bal = balanceLoad(r.boxes, e, units, CT[t].L);
+    // 调整后仍然偏载：换其他装法重新装这个柜，在装载量不少于 90% 的装法里挑不偏载的
+    const isBad = bx => { const B = balanceOf(analyzeBoxes(bx, CT[t], units), CT[t]); return B.lon === 'bad' || B.lat === 'bad'; };
+    if(isBad(bal.boxes)){
+      const loaded = {};
+      for(const u of units) loaded[u.id] = (remain[u.id]||0) - (r.remain[u.id]||0);
+      const alts = STRATS.map(st => packOne(e, units, remain, st)).filter(a => a.usedVol >= r.usedVol*0.9).sort((a,b) => b.usedVol - a.usedVol);
+      for(const a of alts){
+        const b2 = balanceLoad(a.boxes, e, units, CT[t].L);
+        if(!isBad(b2.boxes)){ r = a; bal = b2; break; }
+      }
+    }
+    containers.push({type:t, boxes:loadOrder(bal.boxes), usedKg:r.usedKg, usedVol:r.usedVol, voidBack:bal.back, voidFront: e.gauge ? 0 : bal.front + (clsOf(t) === 'rf' ? Math.max(RULES.gapL, RULES.rfGap) : RULES.gapL)});
+    remain = r.remain;
+  }
+  return {containers, remain, leftCount: sumRemain(remain)};
+}
+/* 防偏载调整（按 CTU Code：前后重心偏离柜中点尽量不超过半柜长的 5%）
+   1. 把货按柜长方向切成互不交叉的“段”（每段从地板到顶自成一体，整段挪动不影响支撑）；
+   2. 左右：整段左右镜像，让左右重量抵消；
+   3. 前后：调整各段的先后顺序，重的段往中间放；还偏柜底就把整批货往柜门方向挪，柜底留出空当（需要加固）。 */
+function balanceLoad(boxes, e, units, Lfull){
+  const U = {}; for(const u of units) U[u.id] = u;
+  if(boxes.length < 1) return {boxes, back:0, front:0};
+  const order = boxes.map((b,i) => i).sort((a,b) => (boxes[a].x - boxes[b].x) || (a - b));
+  const sl = []; let cur = null;
+  for(const i of order){
+    const b = boxes[i];
+    if(!cur || b.x >= cur.x1 - 1e-6){ cur = {x0:b.x, x1:b.x+b.l, items:[i]}; sl.push(cur); }
+    else { cur.items.push(i); cur.x1 = Math.max(cur.x1, b.x+b.l); }
+  }
+  for(const g of sl){
+    g.len = g.x1 - g.x0; g.w = 0; let mx = 0, my = 0; g.minY = Infinity; g.maxY = -Infinity;
+    for(const i of g.items){ const b = boxes[i], kg = U[b.u].kg; g.w += kg; mx += kg*(b.x + b.l/2 - g.x0); my += kg*(b.y + b.w/2); g.minY = Math.min(g.minY, b.y); g.maxY = Math.max(g.maxY, b.y + b.w); }
+    g.cl = g.w ? mx/g.w : g.len/2;
+    g.cy = g.w ? my/g.w : e.W/2;
+    g.items.sort((a,b) => a - b);
+    g.xf = false; g.flip = false; g.dy = 0;
+  }
+  // 左右：先整段镜像，再在剩余宽度里整段平移，把左右力矩抵消掉
+  const Wt = sl.reduce((a,g) => a + g.w, 0);
+  let tot = 0;
+  [...sl].sort((a,b) => b.w*Math.abs(b.cy - e.W/2) - a.w*Math.abs(a.cy - e.W/2)).forEach(g => {
+    const m = g.w*(g.cy - e.W/2);
+    g.flip = (tot > 1e-9 && m > 0) || (tot < -1e-9 && m < 0);
+    tot += g.flip ? -m : m;
+  });
+  for(const g of [...sl].sort((a,b) => b.w - a.w)){
+    if(e.gauge) break;
+    if(Math.abs(tot) < 1e-6 || !g.w) continue;
+    const lo = -(g.flip ? e.W - g.maxY : g.minY), hi = g.flip ? g.minY : e.W - g.maxY;
+    const want = Math.max(lo, Math.min(hi, -tot/g.w));
+    g.dy = want; tot += g.w*want;
+  }
+  // 前后：调段的先后顺序、整段前后掉头，最后整批往柜门方向挪
+  const T = sl.reduce((a,g) => a + g.len, 0), F = Wt > 0 ? Math.max(0, e.L - T) : 0;
+  const target = Lfull/2, tol = 0.05*Lfull/2, aim = target - tol*0.4;
+  const evalOrd = ord => {
+    let pos = 0, M = 0; for(const g of ord){ M += g.w*(pos + (g.xf ? g.len - g.cl : g.cl)); pos += g.len; }
+    const cg = Wt ? M/Wt : T/2;
+    const d = cg < aim ? Math.min(F, aim - cg) : 0;
+    return {dev: Math.abs(cg + d - target), d};
+  };
+  const better = (a, b) => a.dev < b.dev - 0.5 || (Math.abs(a.dev - b.dev) <= 0.5 && a.d < b.d - 0.5);
+  const snap = ord => ({ord: [...ord], xf: ord.map(g => g.xf)});
+  const restore = st => { st.ord.forEach((g,i) => g.xf = st.xf[i]); return st.ord; };
+  let best = evalOrd(sl), bestSt = snap(sl);
+  if(e.gauge) best = {dev:0, d:0};
+  if(!e.gauge && !(best.dev <= tol*0.6 && best.d === 0)){
+    const byDen = [...sl].sort((a,b) => b.w/b.len - a.w/a.len), mid = [];
+    byDen.forEach((g,i) => i % 2 ? mid.push(g) : mid.unshift(g));
+    for(const cand of [[...sl].reverse(), mid]){ const r = evalOrd(cand); if(better(r, best)){ best = r; bestSt = snap(cand); } }
+    let ord = restore(bestSt);
+    const n = ord.length;
+    for(let pass = 0; pass < 3 && n <= 150; pass++){
+      let improved = false;
+      for(let i = 0; i < n; i++){
+        ord[i].xf = !ord[i].xf;
+        const r = evalOrd(ord);
+        if(better(r, best)){ best = r; bestSt = snap(ord); improved = true; } else ord[i].xf = !ord[i].xf;
+      }
+      if(n <= 120) for(let i = 0; i < n; i++) for(let j = i+1; j < n; j++){
+        [ord[i], ord[j]] = [ord[j], ord[i]];
+        const r = evalOrd(ord);
+        if(better(r, best)){ best = r; bestSt = snap(ord); improved = true; } else [ord[i], ord[j]] = [ord[j], ord[i]];
+      }
+      if(!improved) break;
+    }
+  }
+  const ordF = restore(bestSt);
+  const out = []; let pos = best.d;
+  for(const g of ordF){
+    for(const i of g.items){
+      const b = boxes[i];
+      const x = g.xf ? pos + (g.x1 - (b.x + b.l)) : pos + (b.x - g.x0);
+      const y = (g.flip ? e.W - b.y - b.w : b.y) + g.dy;
+      out.push(Object.assign({}, b, {x, y}));
+    }
+    pos += g.len;
+  }
+  if(e.gauge){
+    // 开顶 / 框架：整批货挪到底板正中（大件居中摆放），普通货不能挪出箱体，超限件不超过可排范围
+    const g = e.gauge;
+    let M = 0, Wt2 = 0, MY = 0, lo = -Infinity, hi = Infinity, loY = -Infinity, hiY = Infinity;
+    for(const b of out){
+      const kg = U[b.u].kg; Wt2 += kg; M += kg*(b.x + b.l/2); MY += kg*(b.y + b.w/2);
+      const ig = !e.oog.has(b.u);
+      lo = Math.max(lo, (ig ? g.x0 : 0) - b.x); hi = Math.min(hi, (ig ? g.x1 : e.L) - (b.x + b.l));
+      loY = Math.max(loY, (ig ? g.y0 : 0) - b.y); hiY = Math.min(hiY, (ig ? g.y1 : e.W) - (b.y + b.w));
+    }
+    const dx = Wt2 ? Math.max(lo, Math.min(hi, e.L/2 - M/Wt2)) : 0, dy = Wt2 ? Math.max(loY, Math.min(hiY, e.W/2 - MY/Wt2)) : 0;
+    return {boxes: out.map(b => Object.assign(b, {x: b.x + (isFinite(dx) ? dx : 0) - g.x0, y: b.y + (isFinite(dy) ? dy : 0) - g.y0})), back:0, front:0};
+  }
+  return {boxes: out, back: best.d, front: Math.max(0, e.L - pos)};
+}
+/* 实际装柜顺序：从柜底往柜门一排一排装；同一排从下往上、从一侧到另一侧；
+   每件货都要等托着它的货先放好（拓扑排序 + 按 柜底→柜门、下→上、左→右 的优先级取货） */
+function loadOrder(boxes){
+  const n = boxes.length; if(n < 2) return boxes;
+  const key = v => Math.round(v*10);
+  const byTop = new Map();
+  boxes.forEach((b,i) => { const k = key(b.z + b.h); if(!byTop.has(k)) byTop.set(k, []); byTop.get(k).push(i); });
+  const need = new Array(n).fill(0), next = Array.from({length:n}, () => []);
+  boxes.forEach((a,i) => {
+    if(a.z < 1e-6) return;
+    const list = byTop.get(key(a.z)); if(!list) return;
+    for(const j of list){
+      const b = boxes[j];
+      if(Math.min(a.x+a.l, b.x+b.l) - Math.max(a.x, b.x) > 1e-6 && Math.min(a.y+a.w, b.y+b.w) - Math.max(a.y, b.y) > 1e-6){ need[i]++; next[j].push(i); }
+    }
+  });
+  const pri = i => { const b = boxes[i]; return [Math.round(b.x), Math.round(b.z), Math.round(b.y)]; };
+  const P = boxes.map((b,i) => pri(i));
+  const less = (i,j) => P[i][0] - P[j][0] || P[i][1] - P[j][1] || P[i][2] - P[j][2] || i - j;
+  const heap = [];
+  const push = i => { heap.push(i); let c = heap.length-1; while(c > 0){ const p = (c-1) >> 1; if(less(heap[c], heap[p]) < 0){ [heap[c], heap[p]] = [heap[p], heap[c]]; c = p; } else break; } };
+  const pop = () => { const top = heap[0], last = heap.pop(); if(heap.length){ heap[0] = last; let c = 0; for(;;){ const l = 2*c+1, r = l+1; let m = c; if(l < heap.length && less(heap[l], heap[m]) < 0) m = l; if(r < heap.length && less(heap[r], heap[m]) < 0) m = r; if(m === c) break; [heap[c], heap[m]] = [heap[m], heap[c]]; c = m; } } return top; };
+  for(let i=0;i<n;i++) if(!need[i]) push(i);
+  const out = [];
+  while(heap.length){ const i = pop(); out.push(boxes[i]); for(const k of next[i]) if(--need[k] === 0) push(k); }
+  return out.length === n ? out : boxes;
+}
+
+/* 判定偏载：前后 ≤5% 合格，≤10% 或满足 60/40 需告知承运人，超过为偏载；左右同样按半柜宽的 5% / 10% */
+function balanceOf(A, spec){
+  const half = spec.L/2, dev = A.cgx - half, t5 = 0.05*half, t10 = 0.10*half;
+  const lon = Math.abs(dev) <= t5 ? 'ok' : (Math.abs(dev) <= t10 || A.maxHalf <= 0.6) ? 'warn' : 'bad';
+  const hw = spec.W/2, dy = A.cgy - hw, y5 = 0.05*hw, y10 = 0.10*hw;
+  const lat = Math.abs(dy) <= y5 ? 'ok' : Math.abs(dy) <= y10 ? 'warn' : 'bad';
+  return {dev, t5, t10, lon, dy, y5, y10, lat};
+}
+
+/* 整票比较：每个柜都挑最满的装法，不一定整票最省柜。有托盘又有散箱时，
+   再按“每个柜都先铺托盘、散箱补在上面”算一遍，两种整票结果里取用柜少的。 */
+function seqBest(units, typeFn, maxN){
+  const a = runSeq(units, typeFn, maxN);
+  const mixed = RULES.looseOnPallet && units.some(u => u.kind === 'pallet') && units.some(u => u.kind === 'carton');
+  if(!mixed) return a;
+  const b = runSeq(units, typeFn, maxN, STRATS_PF);
+  const key = r => [r.leftCount, r.containers.length];
+  const ka = key(a), kb = key(b);
+  return (kb[0] < ka[0] || (kb[0] === ka[0] && kb[1] < ka[1])) ? b : a;
+}
+function describe(cs){
+  const m = {};
+  for(const c of cs) m[c.type] = (m[c.type]||0) + 1;
+  return ['40HQ','40NOR','40RH','40OT','40FR','20GP'].filter(t => m[t]).map(t => `${m[t]}×${t}`).join(' + ') || '—';
+}
+const MAXN = 60;
+function buildPlans(units){
+  const plans = TYPES.map(t => Object.assign({key:t}, seqBest(units, () => t, MAXN)));
+  // 混装：前面用大柜，最后一个柜换成小柜，看能不能装下尾货
+  const mixes = TYPES.includes('40HQ') && TYPES.includes('20GP') ? [['40HQ','20GP']] : [];
+  for(const [big, small] of mixes){
+    const base = plans[TYPES.indexOf(big)], n = base.containers.length;
+    if(n < 2 || base.leftCount) continue;
+    const m = seqBest(units, k => k < n-1 ? big : small, n);
+    if(m.leftCount === 0 && m.containers.length === n) plans.push(Object.assign({key:'mix'+big+small}, m));
+  }
+  for(const p of plans){
+    p.label = describe(p.containers);
+    p.teu = p.containers.reduce((a,c) => a + TYPE_INFO[c.type].teu, 0);
+    p.rank = p.containers.reduce((a,c) => a + TYPE_INFO[c.type].rank, 0);
+    p.hq = p.containers.filter(c => c.type === '40HQ').length;
+    p.capVol = p.containers.reduce((a,c) => a + CT[c.type].L*CT[c.type].W*CT[c.type].H, 0);
+    p.vol = p.containers.reduce((a,c) => a + c.usedVol, 0);
+    p.kg = p.containers.reduce((a,c) => a + c.usedKg, 0);
+    p.util = p.capVol ? p.vol/p.capVol : 0;
+    p.capped = p.containers.length >= MAXN && p.leftCount > 0;
+    p.leftCartons = units.reduce((a,u) => a + (p.remain[u.id]||0)*u.cartons, 0);
+    p.unbal = p.containers.filter(c => { const B = balanceOf(analyzeBoxes(c.boxes, CT[c.type], units), CT[c.type]); return B.lon === 'bad' || B.lat === 'bad'; }).length;
+  }
+  const ok = plans.filter(p => p.containers.length);
+  if(ok.length) ok.slice().sort((a,b) => (a.leftCartons-b.leftCartons) || (a.unbal-b.unbal) || (a.teu-b.teu) || (a.containers.length-b.containers.length) || (a.rank-b.rank) || (a.hq-b.hq))[0].rec = true;
+  return ok;
+}
+
+/* 装不下的原因 */
+function fitsIn(u, t, door=true){
+  const cls = clsOf(t), c = CT[t];
+  if(cls === 'ot'){ const L = c.L - RULES.gapL; return orients(u).some(([a,b,h]) => a <= L && b <= c.W && h <= (c.Hnb || c.H) + OOG_CAP.oh && (RULES.otTop || !door || h <= c.DH)); }
+  if(cls === 'fr') return orients(u).some(([a,b,h]) => a <= c.L + 2*OOG_CAP.ol && b <= (c.extW || 243.8) + 2*OOG_CAP.ow && h <= c.H + OOG_CAP.oh);
+  const e = eff(t); return orients(u).some(([a,b,h]) => a <= e.L && b <= e.W && h <= e.H && (!door || h <= e.DH));
+}
+function whyLeft(u, p){
+  const types = p ? [...new Set(p.containers.map(c => c.type))] : [];
+  const isP = u.kind === 'pallet';
+  if(!TYPES.some(t => fitsIn(u, t))){
+    const alt = ['40OT','40FR'].filter(t => !TYPES.includes(t) && fitsIn(u, t));
+    const tip = alt.length ? `。可以在“参与计算的柜型”里勾选 ${alt.map(t => TYPE_INFO[t].name).join(' 或 ')}` : (!['40OT','40FR'].some(t => fitsIn(u, t)) ? '。超出框架柜也能装的范围，要走散杂船或滚装船' : '');
+    const msg = whyLeft0(u, p);
+    return msg + tip;
+  }
+  return whyLeft0(u, p);
+}
+function whyLeft0(u, p){
+  const types = p ? [...new Set(p.containers.map(c => c.type))] : [];
+  const isP = u.kind === 'pallet';
+  if(!TYPES.some(t => fitsIn(u, t))){
+    if(TYPES.some(t => fitsIn(u, t, false))) return `${isP?'整托':'单件'}高 ${u.h} cm，超过柜门高度（20GP ${CT['20GP'].DH} / 40HQ ${CT['40HQ'].DH} cm），进不了柜门${isP?'，请调低“码货后最高”':''}`;
+    return `单件 ${u.l}×${u.w}×${u.h} cm，超出所选柜型的装货尺寸`;
+  }
+  if(types.length && !types.some(t => fitsIn(u, t))){
+    const ok = TYPES.filter(t => fitsIn(u, t)).join(' / ');
+    return `${types.join('、')} 放不下${isP?'这种托盘':'这种货'}（${ok} 可以）`;
+  }
+  if(TYPES.every(t => u.kg > CT[t].kg)) return `单件 ${fmt(u.kg,0)} kg，超过所选柜型的限重` + (!TYPES.includes('40FR') && u.kg <= CT['40FR'].kg ? `，可以勾选 40FR 框架柜（限重 ${fmt(CT['40FR'].kg,0)} kg）` : '');
+  if(p && p.capped) return `超过 ${MAXN} 个柜的计算上限`;
+  return RULES.heavy ? '剩余空间放不下（受“重货不压轻货”限制）' : '剩余空间放不下';
+}
+
+/* 开顶 / 框架的超限情况。超高：开顶从拆顶梁后的柜顶量、框架从端板顶量；超宽：框架从箱体外宽 243.8 cm 量；超长：伸出框架底板两端 */
+function oogOf(c){
+  const cls = clsOf(c.type), sp = CT[c.type];
+  if(cls !== 'ot' && cls !== 'fr') return null;
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity, maxZ = 0;
+  for(const b of c.boxes){ minX = Math.min(minX, b.x); maxX = Math.max(maxX, b.x + b.l); minY = Math.min(minY, b.y); maxY = Math.max(maxY, b.y + b.w); maxZ = Math.max(maxZ, b.z + b.h); }
+  const r1 = v => Math.round(v);
+  if(cls === 'ot'){ const top = sp.Hnb || sp.H; return {cls, top, oh: r1(Math.max(0, maxZ - top)), owL:0, owR:0, olB:0, olF:0, maxZ, len: maxX - minX}; }
+  const ew = sp.extW || 243.8, y0 = (sp.W - ew)/2, y1 = (sp.W + ew)/2;
+  return {cls, top: sp.H, oh: r1(Math.max(0, maxZ - sp.H)), owL: r1(Math.max(0, y0 - minY)), owR: r1(Math.max(0, maxY - y1)), olB: r1(Math.max(0, -minX)), olF: r1(Math.max(0, maxX - sp.L)), maxZ, len: maxX - minX};
+}
+function oogLabel(o){
+  if(!o) return null;
+  const parts = [];
+  if(o.oh > 0) parts.push('超高');
+  if(o.owL > 0 || o.owR > 0) parts.push('超宽');
+  if(o.olB > 0 || o.olF > 0) parts.push('超长');
+  return {parts, text: parts.length ? ['','单超','双超','三超'][parts.length] + '（' + parts.join('+') + '）' : '不超限（在箱内）'};
+}
+
+/* 单柜分析：重量分布、重心、左右平衡 */
+function analyze(c){ return analyzeBoxes(c.boxes, CT[c.type], null); }
+function analyzeBoxes(boxesIn, spec, unitsList){
+  const UB = unitsList ? Object.fromEntries(unitsList.map(u => [u.id, u])) : unitById;
+  const step = 50, n = Math.ceil(spec.L/step);
+  const slices = new Array(n).fill(0);
+  let mx = 0, my = 0, mz = 0, kg = 0, left = 0, back = 0;
+  for(const b of boxesIn){
+    const u = UB[b.u]; if(!u) continue;
+    const w = u.kg;
+    kg += w; mx += w*(b.x+b.l/2); my += w*(b.y+b.w/2); mz += w*(b.z+b.h/2);
+    left += w * Math.max(0, Math.min(1, (spec.W/2 - b.y)/b.w));
+    back += w * Math.max(0, Math.min(1, (spec.L/2 - b.x)/b.l));
+    for(let s = Math.floor(b.x/step); s <= Math.min(n-1, Math.floor((b.x+b.l-1e-6)/step)); s++){
+      const ov = Math.min(b.x+b.l, (s+1)*step) - Math.max(b.x, s*step);
+      if(ov > 0) slices[s] += w*ov/b.l;
+    }
+  }
+  const bs = kg ? back/kg : 0.5;
+  return {slices: slices.map(v => v/(step/100)), step, cgx: kg?mx/kg:spec.L/2, cgy: kg?my/kg:spec.W/2, cgz: kg?mz/kg:0, kg, leftShare: kg?left/kg:0.5, backShare: bs, maxHalf: Math.max(bs, 1-bs)};
+}
+function countBySrc(c){
+  const m = {};
+  for(const b of c.boxes){
+    const u = unitById[b.u], id = u.src.id;
+    m[id] = m[id] || {cartons:0, pallets:0, kg:0};
+    m[id].cartons += u.cartons; m[id].kg += u.kg; if(u.kind === 'pallet') m[id].pallets++;
+  }
+  return m;
+}
+
+/* ================= 4. 表格与设置 ================= */
+const $ = id => document.getElementById(id);
+const fmt = (v,d=2) => v.toLocaleString('zh-CN',{minimumFractionDigits:d,maximumFractionDigits:d});
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let srcById = {}, unitById = {}, units = [];
+
+function rowHTML(it){
+  const f = (k,ph,lab) => `<td class="c-num"><input type="number" min="0" step="any" inputmode="decimal" id="f-${it.id}-${k}" data-id="${it.id}" data-k="${k}" value="${esc(it[k])}" placeholder="${ph}" aria-label="${lab}"></td>`;
+  const sel = (k, opts, lab) => `<td class="c-sel"><select id="f-${it.id}-${k}" data-id="${it.id}" data-k="${k}" aria-label="${lab}">${opts.map(([v,t]) => `<option value="${v}"${it[k]===v?' selected':''}>${t}</option>`).join('')}</select></td>`;
+  return `<tr>
+    <td><span class="code" style="background:${it.color}">${codeOf(it.id)}</span></td>
+    <td class="c-name"><input type="text" id="f-${it.id}-name" data-id="${it.id}" data-k="name" value="${esc(it.name)}" placeholder="品名" aria-label="品名"></td>
+    ${f('l','','长')}${f('w','','宽')}${f('h','','高')}${f('kg','','单箱毛重')}${f('qty','','箱数')}
+    ${sel('rot', [['upright','只能正放'],['all','任意翻转']], '摆放')}
+    ${f('layers','不限','最多堆几层')}
+    ${sel('pal', [['loose','散箱'],['pallet','打托']], '包装')}
+    <td class="r" id="v-${it.id}"></td>
+    <td class="r" id="w-${it.id}"></td>
+    <td class="c-stat" id="s-${it.id}"></td>
+    <td><button class="del" type="button" data-del="${it.id}" aria-label="删除这一行">×</button></td>
+  </tr>`;
+}
+function renderRows(){
+  $('rows').innerHTML = items.length ? items.map(rowHTML).join('')
+    : `<tr><td colspan="14"><div class="empty">还没有货物。点“添加货物”一行行录入；已经有 Excel 装箱单的，点“从 Excel 粘贴”一次导进来。</div></td></tr>`;
+  updateTotals();
+}
+function updateTotals(){
+  let q=0, v=0, k=0;
+  for(const it of items){
+    const qty = Math.floor(num(it.qty));
+    const vol = num(it.l)*num(it.w)*num(it.h)*qty/1e6, kg = num(it.kg)*qty;
+    q += qty; v += vol; k += kg;
+    const touched = ['name','l','w','h','kg','qty'].some(k => String(it[k]).trim() !== '');
+    for(const k of ['l','w','h','qty']){ const el = $(`f-${it.id}-${k}`); if(el) el.classList.toggle('miss', touched && !(num(it[k]) > 0)); }
+    const cv = $('v-'+it.id), cw = $('w-'+it.id);
+    if(cv) cv.textContent = vol ? fmt(vol,2) : '—';
+    if(cw) cw.textContent = kg ? fmt(kg,0) : '—';
+  }
+  $('t-qty').textContent = q.toLocaleString('zh-CN') + ' 箱';
+  $('t-vol').textContent = fmt(v,2);
+  $('t-kg').textContent = fmt(k,0);
+}
+function validItems(){
+  return items.map((it,i) => ({
+    id: it.id, color: it.color, code: codeOf(it.id), name: it.name.trim() || `货物 ${i+1}`,
+    l: num(it.l), w: num(it.w), h: num(it.h), kg: num(it.kg),
+    qty: Math.floor(num(it.qty)), rot: it.rot, layers: Math.floor(num(it.layers)), pal: it.pal,
+  })).filter(x => x.l>0 && x.w>0 && x.h>0 && x.qty>0);
+}
+$('rows').addEventListener('input', e => {
+  const t = e.target, it = items.find(x => x.id === +t.dataset.id);
+  if(!it || !t.dataset.k) return;
+  it[t.dataset.k] = t.value; if(isSample) setSample(false); updateTotals(); schedule(t.tagName === 'SELECT' ? 0 : 350);
+});
+$('rows').addEventListener('keydown', e => {
+  if(e.key !== 'Enter' || e.isComposing) return;
+  const t = e.target; if(!t.dataset || !t.dataset.k) return;
+  e.preventDefault();
+  const idx = items.findIndex(x => x.id === +t.dataset.id);
+  if(idx < items.length - 1){ const el = $(`f-${items[idx+1].id}-${t.dataset.k}`); if(el){ el.focus(); el.select && el.select(); } }
+  else { items.push(newItem()); renderRows(); renderStatusCol(); const el = $(`f-${items[items.length-1].id}-name`); if(el) el.focus(); }
+});
+$('rows').addEventListener('click', e => {
+  if(e.target.closest('[data-openset]')){ toggleSettings(true); return; }
+  const fx = e.target.closest('[data-fix]');
+  if(fx){
+    const it = items.find(x => x.id === +fx.dataset.id); if(!it) return;
+    if(fx.dataset.fix === 'mm'){ for(const k of ['l','w','h']) it[k] = +(num(it[k])/10).toFixed(1); }
+    if(fx.dataset.fix === 'total'){ const q = Math.floor(num(it.qty)); if(q > 0) it.kg = +(num(it.kg)/q).toFixed(2); }
+    renderRows(); schedule(0); return;
+  }
+  const d = e.target.closest('[data-del]'); if(!d) return;
+  const gone = items.find(x => x.id === +d.dataset.del);
+  keepUndo(`已删除“${(gone && gone.name) || '这一行'}”`);
+  items = items.filter(x => x.id !== +d.dataset.del); renderRows(); schedule(0);
+});
+let undoSnap = null, toastTimer = null;
+function keepUndo(label){
+  undoSnap = {items: clone(items), nextId, isSample};
+  const t = $('toast'); t.hidden = false; $('toast-msg').textContent = label;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 6000);
+}
+function doUndo(){
+  if(!undoSnap) return;
+  items = undoSnap.items; nextId = undoSnap.nextId; isSample = undoSnap.isSample; undoSnap = null;
+  $('toast').hidden = true; renderRows(); schedule(0);
+}
+let isSample = false;
+function setSample(v){ isSample = v; $('samplebadge').hidden = !v || !items.length; }
+$('add').onclick = () => { items.push(newItem()); renderRows(); const el = $(`f-${items[items.length-1].id}-name`); if(el) el.focus(); };
+$('sample').onclick = () => { if(items.length && !isSample) keepUndo('已换成示例数据'); nextId = 1; items = SAMPLE.map(s => newItem(s)); setSample(true); renderRows(); schedule(0); };
+$('clear').onclick = () => { if(!items.length) return; keepUndo(`已清空 ${items.length} 种货物`); items = []; setSample(false); renderRows(); schedule(0); };
+$('calc').onclick = calcNow;
+$('toast-undo').onclick = doUndo;
+/* 从 Excel 粘贴 */
+function parseImport(text, unit, wmode){
+  const out = [], skipped = [];
+  const numRe = /^-?[\d.,，]+\s*[a-zA-Z\u4e00-\u9fa5]*$/;
+  const dimRe = /(\d+(?:\.\d+)?)\s*[x×X*＊]\s*(\d+(?:\.\d+)?)\s*[x×X*＊]\s*(\d+(?:\.\d+)?)/;
+  for(const raw of text.split(/\r?\n/)){
+    const line = raw.trim(); if(!line) continue;
+    const cells = (raw.includes('\t') ? raw.split('\t') : line.split(/\s{2,}|\s*[,，;；]\s*|\s+/)).map(c => c.trim()).filter(Boolean);
+    let name = '', dims = null; const nums = [];
+    for(const c of cells){
+      const m = c.match(dimRe);
+      if(m && !dims){ dims = [+m[1], +m[2], +m[3]]; continue; }
+      if(numRe.test(c)){ const n = parseFloat(c.replace(/[,，]/g,'')); if(isFinite(n)){ nums.push(n); continue; } }
+      if(!name) name = c; else name += ' ' + c;
+    }
+    if(!dims){ if(nums.length < 5){ skipped.push(line); continue; } dims = nums.splice(0,3); }
+    if(nums.length < 2){ skipped.push(line); continue; }
+    let [kg, qty] = nums;
+    if(unit === 'mm') dims = dims.map(v => v/10);
+    qty = Math.round(qty);
+    if(wmode === 'total' && qty > 0) kg = kg/qty;
+    if(!(dims[0] > 0 && dims[1] > 0 && dims[2] > 0 && qty > 0)){ skipped.push(line); continue; }
+    out.push({name, l:+dims[0].toFixed(1), w:+dims[1].toFixed(1), h:+dims[2].toFixed(1), kg:+kg.toFixed(2), qty});
+  }
+  return {rows: out, skipped};
+}
+let impRows = [];
+function impPreview(){
+  const r = parseImport($('imp-text').value, $('imp-unit').value, $('imp-w').value);
+  impRows = r.rows;
+  $('imp-ok').disabled = !impRows.length;
+  $('imp-ok').textContent = impRows.length ? `导入 ${impRows.length} 行` : '导入';
+  $('imp-preview').innerHTML = !$('imp-text').value.trim() ? '粘贴后这里会显示识别结果，确认没问题再导入。'
+    : (impRows.length ? `<table><thead><tr><th>品名</th><th>长 cm</th><th>宽 cm</th><th>高 cm</th><th>单箱毛重 kg</th><th>箱数</th><th>体积 m³</th></tr></thead><tbody>${impRows.map(x => `<tr><td>${esc(x.name||'（无品名）')}</td><td>${x.l}</td><td>${x.w}</td><td>${x.h}</td><td>${x.kg}</td><td>${x.qty}</td><td>${fmt(x.l*x.w*x.h*x.qty/1e6,2)}</td></tr>`).join('')}</tbody></table>` : '<span style="color:var(--bad)">没有识别出货物行，请检查列的顺序：品名、长、宽、高、毛重、箱数。</span>')
+      + (r.skipped.length ? `<div style="margin-top:6px">跳过 ${r.skipped.length} 行（表头或缺数字）：${r.skipped.slice(0,3).map(esc).join(' ｜ ')}${r.skipped.length > 3 ? ' …' : ''}</div>` : '');
+}
+function openImporter(text){
+  $('importer').hidden = false;
+  if(typeof text === 'string') $('imp-text').value = text;
+  impPreview(); $('imp-text').focus();
+}
+$('imp-open').onclick = () => openImporter();
+$('imp-cancel').onclick = () => { $('importer').hidden = true; };
+['imp-text','imp-unit','imp-w'].forEach(id => $(id).addEventListener('input', impPreview));
+$('imp-ok').onclick = () => {
+  if(!impRows.length) return;
+  if($('imp-mode').value === 'replace'){ if(items.length && !isSample) keepUndo('已用粘贴的数据替换原来的货物'); items = []; nextId = 1; }
+  setSample(false);
+  for(const r of impRows) items.push(newItem(Object.assign({}, r, {pal: $('imp-pal').value, rot:'upright'})));
+  $('importer').hidden = true; $('imp-text').value = '';
+  renderRows(); calcNow();
+};
+// 直接把 Excel 内容粘贴到表格里，也打开导入面板；在长/宽/高格里粘贴“60*40*35”自动拆成三格
+$('rows').addEventListener('paste', e => {
+  const t = (e.clipboardData || window.clipboardData).getData('text');
+  const k = e.target.dataset && e.target.dataset.k;
+  const m = t && t.trim().match(/^(\d+(?:\.\d+)?)\s*[x×X*＊]\s*(\d+(?:\.\d+)?)\s*[x×X*＊]\s*(\d+(?:\.\d+)?)\s*(mm|cm)?$/i);
+  if(m && ['l','w','h'].includes(k)){
+    e.preventDefault();
+    const it = items.find(x => x.id === +e.target.dataset.id); if(!it) return;
+    const f = (m[4] || '').toLowerCase() === 'mm' ? 0.1 : 1;
+    it.l = +(m[1]*f).toFixed(1); it.w = +(m[2]*f).toFixed(1); it.h = +(m[3]*f).toFixed(1);
+    for(const kk of ['l','w','h']){ const el = $(`f-${it.id}-${kk}`); if(el) el.value = it[kk]; }
+    if(isSample) setSample(false); updateTotals(); schedule(0); return;
+  }
+  if(t && t.includes('\t') && t.trim().includes('\n')){ e.preventDefault(); openImporter(t); }
+});
+$('calc2').onclick = calcNow;
+
+function renderTypePick(){
+  $('typepick').innerHTML = '参与计算的柜型：' + ALL_TYPES.map(t => `<label class="${TYPES.includes(t)?'on':''}"><input type="checkbox" data-type="${t}"${TYPES.includes(t)?' checked':''}>${t}<small>${TYPE_INFO[t].name.split(' ')[1]}</small></label>`).join('');
+}
+$('typepick').addEventListener('change', e => {
+  const t = e.target.dataset.type; if(!t) return;
+  let set = new Set(TYPES); if(e.target.checked) set.add(t); else set.delete(t);
+  if(!set.size){ e.target.checked = true; return; }
+  TYPES = ALL_TYPES.filter(x => set.has(x)); RULES.types = [...TYPES]; selKey = null;
+  renderTypePick(); renderSetSum(); schedule(0);
+});
+function renderSetSum(){
+  const tags = [];
+  tags.push(`托盘 ${PAL.L}×${PAL.W} cm · 码高 ${PAL.maxH} cm · ${PAL.stack ? '可叠托' : '不叠托'} · ${PAL.fork === 'four' ? '四面进叉' : '两面进叉'}`);
+  tags.push(RULES.heavy ? '重货不压轻货' : '允许重货压轻货');
+  tags.push(RULES.looseOnPallet ? '散箱可压托盘' : '散箱不压托盘');
+  tags.push(`柜门留 ${RULES.gapL} cm · 顶部留 ${RULES.gapH} cm`);
+  tags.push(`柜型尺寸：${CARRIERS[RULES.carrier].name}`);
+  $('setsum').innerHTML = `当前设置：${tags.map(t => `<span class="tag">${t}</span>`).join('')}<button type="button" id="set-open2">修改</button>`;
+  $('set-open2').onclick = () => toggleSettings(true);
+}
+function toggleSettings(force){
+  const el = $('settings'), open = typeof force === 'boolean' ? force : el.hidden;
+  el.hidden = !open; $('set-open').setAttribute('aria-expanded', open);
+  if(open) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function renderSettings(){
+  renderSetSum();
+  $('pal-preset').value = PAL.preset;
+  for(const k of ['L','W','h','kg','maxH','maxKg','gap']) $('pal-'+k).value = PAL[k];
+  $('pal-stack').checked = !!PAL.stack; $('pal-fork').value = PAL.fork;
+  $('r-heavy').checked = !!RULES.heavy; $('r-lop').checked = !!RULES.looseOnPallet; $('r-gapL').value = RULES.gapL; $('r-gapH').value = RULES.gapH;
+  $('ct-carrier').innerHTML = Object.entries(CARRIERS).map(([k,v]) => `<option value="${k}"${k===RULES.carrier?' selected':''}>${v.name}</option>`).join('');
+  const cr = CARRIERS[RULES.carrier];
+  $('ct-src').innerHTML = cr.src ? `数据来源：<a href="${cr.src}" target="_blank" rel="noopener">${cr.name} 官网</a>。没有公布的柜型用通用值（表里标“通用”）。` : '通用值取自各船公司公布的常见尺寸。';
+  const cols = [['L','内长'],['W','内宽'],['H','内高'],['DW','门宽'],['DH','门高'],['kg','限重 kg'],['tare','箱皮 kg'],['x','特殊']];
+  const xk = t => ({ot:['Hnb','拆顶梁高'], fr:null, rf:['loadH','红线高'], nor:['loadH','红线高']})[clsOf(t)];
+  const lab = (t,k) => clsOf(t) === 'fr' ? ({L:'底板长', W:'底板宽', H:'端板高'})[k] : null;
+  $('ctgrid').innerHTML = `<thead><tr><th>柜型</th>${cols.map(c => `<th>${c[1]}</th>`).join('')}<th></th></tr></thead><tbody>` +
+    ALL_TYPES.map(t => {
+      const c = CT[t];
+      const cell = k => {
+        if(k === 'x'){ const x = xk(t); return x ? `<td><input type="number" id="ct-${t}-${x[0]}" data-t="${t}" data-k="${x[0]}" value="${c[x[0]]}" title="${x[1]}" aria-label="${t} ${x[1]}"> <span class="src">${x[1]}</span></td>` : '<td class="na">—</td>'; }
+        if(clsOf(t) === 'fr' && (k === 'DW' || k === 'DH')) return '<td class="na">无门</td>';
+        const l = lab(t,k);
+        return `<td><input type="number" id="ct-${t}-${k}" data-t="${t}" data-k="${k}" value="${c[k]}" aria-label="${t} ${l || k}"${l ? ` title="${l}"` : ''}></td>`;
+      };
+      return `<tr><td><b>${t}</b> <span class="src">${TYPE_INFO[t].name.split(' ')[1]}</span></td>${cols.map(cc => cell(cc[0])).join('')}<td class="src">${c.src === 'generic' && RULES.carrier !== 'generic' ? '通用' : ''}</td></tr>`;
+    }).join('') + '</tbody>';
+  $('r-ottop').checked = !!RULES.otTop; $('r-genset').checked = !!RULES.genset; $('r-rfGap').value = RULES.rfGap;
+  renderTypePick();
+}
+document.querySelector('.settings').addEventListener('input', e => {
+  const t = e.target;
+  if(t.id === 'pal-preset'){
+    PAL.preset = t.value;
+    if(t.value !== 'custom'){ const [a,b] = t.value.split('x').map(Number); PAL.L = a; PAL.W = b; $('pal-L').value = a; $('pal-W').value = b; }
+    schedule(0); return;
+  }
+  if(t.id === 'pal-fork'){ PAL.fork = t.value; schedule(0); return; }
+  if(t.dataset.p){
+    if(t.type === 'checkbox') PAL.stack = t.checked;
+    else { const v = num(t.value); if(!(v > 0) && !(t.dataset.p === 'gap' && v === 0)) return; PAL[t.dataset.p] = v; if(t.dataset.p === 'L' || t.dataset.p === 'W'){ PAL.preset = 'custom'; $('pal-preset').value = 'custom'; } }
+    schedule(t.type === 'checkbox' ? 0 : 400); return;
+  }
+  if(t.dataset.r){
+    if(t.type === 'checkbox') RULES[t.dataset.r] = t.checked;
+    else { const v = num(t.value); if(!(v >= 0 && v < 100)) return; RULES[t.dataset.r] = v; }
+    schedule(t.type === 'checkbox' ? 0 : 400); return;
+  }
+  if(t.id === 'ct-carrier'){ RULES.carrier = t.value; CT = presetCT(t.value); renderSettings(); schedule(0); return; }
+  if(t.dataset.t){ const v = num(t.value); if(v > 0){ CT[t.dataset.t][t.dataset.k] = v; schedule(400); } }
+});
+$('set-open').onclick = () => toggleSettings();
+document.querySelector('.settings').addEventListener('input', () => renderSetSum());
+$('ctreset').onclick = () => { CT = presetCT(RULES.carrier); renderSettings(); schedule(0); };
+
+/* ================= 5. 计算与界面 ================= */
+let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null;
+function setCalcState(dirty){ const el = $('calcstate'); if(!el) return; el.className = 'calcstate' + (dirty ? ' dirty' : ''); el.innerHTML = dirty ? '<i></i>正在重新计算…' : '<i></i>已按当前数据算好，改数字会自动重算'; }
+const bigJob = () => items.reduce((a,it) => a + Math.floor(num(it.qty)), 0) > 8000;
+function computeSoon(){
+  if(!bigJob()){ compute(); return; }
+  const b = document.createElement('div'); b.className = 'busy'; b.textContent = '货物较多，正在计算…'; $('stage').appendChild(b);
+  setTimeout(() => { try{ compute(); } finally { b.remove(); } }, 40);
+}
+function schedule(ms=350){ clearTimeout(timer); setCalcState(true); timer = setTimeout(computeSoon, bigJob() ? Math.max(ms, 900) : ms); save(); }
+function calcNow(){
+  clearTimeout(timer); computeSoon();
+  const st = $('stage'); st.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center'});
+  st.classList.add('flash'); setTimeout(() => st.classList.remove('flash'), 900);
+}
+
+function compute(){
+  try{ compute0(); }
+  catch(err){
+    console.error(err);
+    const el = $('calcstate'); el.className = 'calcstate dirty'; el.innerHTML = '<i></i>这组数据计算出错了，请检查尺寸、重量和箱数是否填对';
+    showStageMsg('计算出错：请检查货物数据，或点“清空”后重新录入');
+  }
+}
+function compute0(){
+  save(); setCalcState(false);
+  srcs = validItems();
+  srcById = {}; for(const s of srcs) srcById[s.id] = s;
+  units = buildUnits(srcs);
+  unitById = {}; for(const u of units) unitById[u.id] = u;
+  plans = units.length ? buildPlans(units) : [];
+  const rec = plans.find(p => p.rec) || plans[0], sel = plans.find(p => p.key === selKey);
+  // 选中的方案已经不存在，或者比推荐方案装得少，就切回推荐方案
+  if(!sel || (rec && sel.leftCartons > rec.leftCartons)){ selKey = rec ? rec.key : null; selIdx = 0; }
+  renderPlans(); renderStatusCol(); renderContainer(false);
+}
+
+function icoHTML(cs){
+  return cs.slice(0,4).map(c => {
+    const w = c.type.startsWith('20') ? 10 : 20, h = ['40HQ','40RH','40NOR'].includes(c.type) ? 17 : c.type === '40FR' ? 8 : 14;
+    return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect x=".75" y=".75" width="${w-1.5}" height="${h-1.5}" rx="1.5" fill="var(--steel-soft)" stroke="var(--steel)" stroke-width="1.3"/>${Array.from({length:Math.floor(w/4)},(_,i)=>`<path d="M${3+i*4} 3.5V${h-3.5}" stroke="var(--steel)" stroke-width=".8" opacity=".6"/>`).join('')}</svg>`;
+  }).join('') + (cs.length > 4 ? `<span style="font-size:10px;color:var(--muted)">+${cs.length-4}</span>` : '');
+}
+function renderPlans(){
+  $('plancount').textContent = plans.length ? plans.length + ' 个' : '';
+  if(!plans.length){
+    $('planlist').innerHTML = `<div class="note">${srcs.length ? '这些货物超出柜子尺寸、柜门高度或限重，任何柜型都装不进去。原因见货物明细。' : '在货物明细里录入货物后，这里显示各柜型方案。'}</div>`;
+    $('sidenote').innerHTML = '推荐规则：先保证全部装下，再选 TEU 最少，再选柜数少的。';
+    return;
+  }
+  $('planlist').innerHTML = plans.map(p => `
+    <button type="button" class="plan" data-plan="${p.key}" aria-pressed="${p.key===selKey}">
+      <span class="ico">${icoHTML(p.containers)}</span>
+      <span style="min-width:0">
+        <span class="t"><span class="mono">${p.label}</span>${p.rec?'<span class="pill ok">推荐</span>':''}${p.leftCartons?'<span class="pill bad">装不下</span>':''}${p.unbal?'<span class="pill bad">偏载</span>':''}</span>
+        <span class="m">${p.teu} TEU · 平均利用率 ${(p.util*100).toFixed(0)}%</span>
+        <span class="ubar"><i style="width:${Math.min(100,p.util*100).toFixed(1)}%"></i></span>
+      </span>
+    </button>`).join('');
+  const rec = plans.find(p => p.rec);
+  const lastC = rec.containers[rec.containers.length-1], lastFill = lastC ? lastC.usedVol/(CT[lastC.type].L*CT[lastC.type].W*CT[lastC.type].H) : 1;
+  const tail = rec.containers.length > 1 && lastFill < 0.25 ? `<br><b style="color:var(--warn)">最后一个柜只用了 ${(lastFill*100).toFixed(0)}%</b>，少发一点或尾货走拼箱可以省一个柜` : '';
+  $('sidenote').innerHTML = `推荐 <b>${rec.label}</b>${rec.leftCartons ? `，仍有 ${rec.leftCartons} 箱装不下` : '，全部装下'}${tail}。规则：先保证装下，再选 TEU 最少，再选柜数少的。实际以运费报价为准。`;
+}
+$('tb-sel').addEventListener('change', e => { selKey = e.target.value; selIdx = 0; renderPlans(); renderStatusCol(); renderContainer(true); });
+$('planlist').addEventListener('click', e => {
+  const b = e.target.closest('[data-plan]'); if(!b) return;
+  selKey = b.dataset.plan; selIdx = 0; renderPlans(); renderStatusCol(); renderContainer(true);
+});
+
+function renderStatusCol(){
+  const p = plans.find(x => x.key === selKey);
+  const per = p ? p.containers.map(countBySrc) : [];
+  for(const it of items){
+    const cell = $('s-'+it.id); if(!cell) continue;
+    const v = srcById[it.id];
+    if(!v){
+      const touched = ['name','l','w','h','kg','qty'].some(k => String(it[k]).trim() !== '');
+      cell.innerHTML = `<span style="color:${touched ? 'var(--bad)' : 'var(--faint)'};font-size:11.5px">${touched ? '还差红框里的数字，这一行暂不计算' : '填好尺寸和箱数后计算'}</span>`; continue;
+    }
+    const lines = [];
+    const cartonM3 = v.l*v.w*v.h/1e6, dens = cartonM3 ? v.kg/cartonM3 : 0;
+    // 按 cm 理解时体积很大、但每立方米才几公斤 —— 多半是把 mm 当成了 cm（大机器本身很重，不会误报）
+    if(cartonM3 > 3 && Math.max(v.l, v.w, v.h) > 250 && (v.qty >= 10 || (v.kg > 0 ? dens < 15 : Math.min(v.l, v.w, v.h) > 100))) lines.push(`<span class="ln"><span class="pill warn">尺寸偏大</span>一箱 ${fmt(cartonM3,1)} m³，是不是填成了 mm？<button type="button" class="hintbtn" data-fix="mm" data-id="${it.id}">按 mm 换算</button></span>`);
+    if(dens > 8000 && v.qty > 1) lines.push(`<span class="ln"><span class="pill warn">毛重偏大</span>比钢还重，是不是填成了合计毛重？<button type="button" class="hintbtn" data-fix="total" data-id="${it.id}">按合计换算</button></span>`);
+    if(!(v.kg > 0)) lines.push(`<span class="ln"><span class="pill warn">没填毛重</span>按 0 kg 计算，重量和偏载结果不准</span>`);
+    if(v.pal === 'pallet'){
+      if(v.pz){
+        const full = Math.floor(v.qty/v.pz.per), rem = v.qty % v.pz.per;
+        lines.push(`<span class="ln"><span class="pill steel">每托 ${v.pz.per} 箱</span>每层 ${v.pz.n} 箱 × ${v.pz.layers} 层 · 共 ${full + (rem?1:0)} 托${rem?`（尾托 ${rem} 箱）`:''} <button type="button" class="linkbtn" data-openset="1">托盘规格</button></span>`);
+      } else lines.push(`<span class="ln"><span class="pill warn">放不上托盘</span>纸箱比托盘大，或超过码货高度、每托限重，已按散箱计算</span>`);
+    }
+    const loaded = per.reduce((a,m) => a + (m[it.id] ? m[it.id].cartons : 0), 0);
+    if(p && loaded >= v.qty){
+      lines.push(`<span class="ln"><span class="pill ok">已装</span>${per.map((m,i) => m[it.id] ? `柜${i+1}` : '').filter(Boolean).join('、')}</span>`);
+    } else {
+      const u = units.find(u => u.src.id === it.id && (!p || (p.remain[u.id]||0) > 0));
+      lines.push(`<span class="ln"><span class="pill bad">缺 ${v.qty - loaded} 箱</span>${u ? whyLeft(u, p) : ''}</span>`);
+    }
+    cell.innerHTML = `<div class="stat">${lines.join('')}</div>`;
+  }
+}
+
+function renderContainer(resetCam){
+  stopPlay();
+  const p = plans.find(x => x.key === selKey);
+  if(!p){
+    ['ctabs','bays','legend','chart','chartcap','kpis','stagespec','chk-pill'].forEach(id => $(id).innerHTML = '');
+    $('checks').innerHTML = '<div class="note">算出方案后，这里会检查重量、体积、前后左右偏载和重心高度。</div>';
+    $('tb-plan').textContent = '—'; $('tb-sel').innerHTML = '<option>还没有方案</option>'; $('tb-dims').textContent = '—'; $('wbadge').hidden = true;
+    $('seq').max = 0; $('seq').value = 0; $('seqv').textContent = '';
+    $('stagespec').hidden = true;
+    showStageMsg(srcs.length ? '这些货物装不进任何柜型，原因见货物明细' : '还没有货物。先录入货物，这里会显示装柜图', !srcs.length); clear3d(); cur = null; return;
+  }
+  if(selIdx >= p.containers.length) selIdx = 0;
+  const c = p.containers[selIdx], spec = CT[c.type], cap = spec.L*spec.W*spec.H;
+  const A = analyze(c), cnt = countBySrc(c);
+  const inThis = srcs.filter(s => cnt[s.id]);
+
+  $('tb-plan').innerHTML = `<span class="mono">${p.label}</span><span class="k">· ${p.containers.length} 个柜</span>`;
+  $('tb-sel').innerHTML = plans.map(q => `<option value="${q.key}"${q.key===selKey?' selected':''}>${q.label}（${q.containers.length} 个柜）${q.rec?' · 推荐':''}${q.leftCartons?' · 装不下':''}${q.unbal?' · 偏载':''}</option>`).join('');
+  $('tb-dims').textContent = `${c.type}  ${(spec.L/100).toFixed(2)} × ${(spec.W/100).toFixed(2)} × ${(spec.H/100).toFixed(2)} m`;
+  $('ctabs').innerHTML = p.containers.length > 1 ? p.containers.map((cc,i) =>
+    `<button type="button" data-ci="${i}" aria-pressed="${i===selIdx}">柜${i+1} · ${cc.type}</button>`).join('') : '';
+
+  $('bays').innerHTML = inThis.map(s => {
+    const m = cnt[s.id], pct = m.cartons/s.qty*100;
+    return `<div class="bay"><div class="h"><span class="code" style="background:${s.color}">${s.code}</span><span class="nm ell">${esc(s.name)}</span><span class="mono">${m.cartons}/${s.qty}${m.pallets?` · ${m.pallets}托`:''}</span></div>
+      <div class="prog"><i style="width:${Math.min(100,pct)}%;background:${s.color}"></i></div></div>`;
+  }).join('');
+  $('legend').innerHTML = inThis.map(s => `<div><span class="dot" style="background:${s.color}"></span><span class="ell">${esc(s.name)}${cnt[s.id].pallets?' <span class="pill steel">托</span>':''}</span><span class="n">${cnt[s.id].cartons}</span></div>`).join('');
+
+  const vu = c.usedVol/cap, wu = c.usedKg/spec.kg;
+  $('stagespec').hidden = false;
+  const cl3 = clsOf(c.type);
+  $('stagespec').innerHTML = cl3 === 'fr' ? `<b>${TYPE_INFO[c.type].name}</b> · 底板 ${spec.L}×${spec.W} cm · 端板高 ${spec.H} cm · 虚线框是箱体轮廓，伸出去的就是超限`
+    : `<b>${TYPE_INFO[c.type].name}</b> · 内尺寸 ${spec.L}×${spec.W}×${spec.H} cm · 门 ${spec.DW}×${spec.DH} cm${cl3 === 'rf' ? ` · 红线 ${spec.loadH} cm` : ''}${cl3 === 'ot' ? ` · 拆顶梁高 ${spec.Hnb} cm` : ''} · ${cl3 === 'rf' || cl3 === 'nor' ? '左边冷机端' : '左边柜底'}先装，右边柜门后装`;
+  $('wbadge').hidden = false;
+  $('wbadge').className = 'badge ' + (wu > 1 ? 'bad' : 'ok');
+  $('wbadge').textContent = `${fmt(c.usedKg/1000,2)} t / ${fmt(spec.kg/1000,1)} t`;
+
+  const totalC = srcs.reduce((a,b) => a+b.qty, 0);
+  const pallets = Object.values(cnt).reduce((a,m) => a+m.pallets, 0);
+  const cartons = Object.values(cnt).reduce((a,m) => a+m.cartons, 0);
+  const meter = (v,col) => `<span><i style="width:${Math.min(100,v*100)}%;background:${col}"></i></span>`;
+  $('kpis').innerHTML = [
+    ['i-weight','本柜货重', `${fmt(c.usedKg/1000,2)}<small>t</small>`, `占限重 <b>${(wu*100).toFixed(0)}%</b>（${fmt(spec.kg/1000,1)} t）`, '', `<div class="mm">${meter(wu, wu>0.95?'var(--warn)':'var(--steel)')}</div>`],
+    ['i-gauge','剩余载重', `${fmt(Math.max(0,spec.kg-c.usedKg)/1000,2)}<small>t</small>`,
+      wu >= 0.9 && wu >= vu ? '<b>重量</b>快到上限，再加货会超重' : vu >= 0.85 ? '<b>空间</b>快满了，重量还有余量' : '空间和重量都有余量，<b>可加货</b>', '', ''],
+    ['i-cube','体积 · 重量利用率', `${(vu*100).toFixed(0)}<small>%</small> · ${(wu*100).toFixed(0)}<small>%</small>`, `${fmt(c.usedVol/1e6,2)} / ${fmt(cap/1e6,1)} m³`, '', `<div class="mm">${meter(vu,'var(--accent)')}${meter(wu,'var(--steel)')}</div>`],
+    ['i-box','本柜装载', `${cartons.toLocaleString('zh-CN')}<small>箱</small>`, `${inThis.length} 种货${pallets?` · 其中 <b>${pallets}</b> 托`:''}`, '', ''],
+    ['i-layers','已装 / 总箱数', `${(totalC - p.leftCartons).toLocaleString('zh-CN')}<small>/ ${totalC.toLocaleString('zh-CN')} 箱</small>`, p.leftCartons ? `还有 ${p.leftCartons} 箱装不下` : `用 <b>${p.containers.length}</b> 个柜 · ${p.teu} TEU`, p.leftCartons ? 'bad' : '', ''],
+  ].map(([ic,l,v,s,cls,extra]) => `<div class="card kpi"><div class="l"><span class="ic"><svg class="i"><use href="#${ic}"/></svg></span>${l}</div><div class="v">${v}</div><div class="s ${cls}">${s}</div>${extra}</div>`).join('');
+
+  renderChecks(p, c, A, spec);
+  renderChart(A, spec);
+  const seq = $('seq'); seq.max = c.boxes.length; seq.value = c.boxes.length;
+  hideStageMsg();
+  draw3d(c, resetCam);
+  updateSeqLabel();
+}
+$('ctabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-ci]'); if(!b) return;
+  selIdx = +b.dataset.ci; renderContainer(true);
+});
+
+function renderChecks(p, c, A, spec){
+  const wu = c.usedKg/spec.kg, lr = A.leftShare, hz = A.cgz/spec.H, cbm = c.usedVol/1e6, B = balanceOf(A, spec);
+  const pillB = (lv, warnTxt, badTxt) => lv === 'ok' ? '<span class="pill ok">正常</span>' : lv === 'warn' ? `<span class="pill warn">${warnTxt}</span>` : `<span class="pill bad">${badTxt}</span>`;
+  const st = (ok, warnTxt) => ok ? '<span class="pill ok">正常</span>' : `<span class="pill warn">${warnTxt}</span>`;
+  const rows = [];
+  if(p.leftCartons){
+    const lst = units.filter(u => (p.remain[u.id]||0) > 0).map(u => `<b style="color:var(--fg)">${esc(u.src.name)}</b> ${p.remain[u.id]*u.cartons} 箱${u.kind==='pallet'?`（${p.remain[u.id]} 托）`:''}：${whyLeft(u, p)}`).join('<br>');
+    rows.push(`<div class="check"><span>未装下</span><span class="pill bad">${p.leftCartons} 箱</span><span class="sub">${lst}</span></div>`);
+  }
+  const isLast = selIdx === p.containers.length - 1;
+  const cap = spec.L*spec.W*spec.H, fill = c.usedVol/cap;
+  if(isLast && p.containers.length > 1 && fill < 0.25 && !p.leftCartons){
+    const n = Object.values(countBySrc(c)).reduce((a,m) => a + m.cartons, 0);
+    const opts = [`少发这 <b style="color:var(--fg)">${n} 箱</b>就能少用一个柜`, '这部分走拼箱（LCL）'];
+    if(c.type !== '20GP' && !TYPES.includes('20GP')) opts.push('在“参与计算的柜型”里勾选 20GP，用小柜装尾货');
+    rows.push(`<div class="check"><span>尾柜很空</span><span class="pill warn">利用率 ${(fill*100).toFixed(0)}%</span>
+      <span class="sub">最后一个柜只装了 ${n} 箱（${fmt(c.usedVol/1e6,1)} m³）。可以考虑：${opts.join('；')}。</span></div>`);
+  }
+  if(isLast && !p.leftCartons && fill < 0.97 && c.usedKg < spec.kg*0.98){
+    rows.push(`<div class="check"><span>还能再装多少</span><button type="button" class="btn" id="addmore" style="padding:3px 10px;font-size:12px">算一算</button>
+      <span class="sub" id="addmore-out">这个柜还有空间，点“算一算”按每种货分别算还能加几箱（要算几秒）。</span></div>`);
+  }
+  rows.push(`<div class="check"><span>重量</span>${wu>1?'<span class="pill bad">超重</span>':st(wu<=0.95,'接近上限')}
+    <div class="meter"><i style="width:${Math.min(100,wu*100)}%;background:${wu>1?'var(--bad)':wu>0.95?'var(--warn)':'var(--ok)'}"></i></div>
+    <span class="sub"><span class="mono">${fmt(c.usedKg,0)} / ${fmt(spec.kg,0)} kg</span>。VGM 约 <b class="mono" style="color:var(--fg)">${fmt(c.usedKg + spec.tare,0)} kg</b>（货重 + 箱皮 ${fmt(spec.tare,0)} kg，以实际过磅为准）</span></div>`);
+  if(spec.exp) rows.push(`<div class="check"><span>体积</span>${st(cbm <= spec.exp, '超过常规装载量')}
+    <div class="meter"><i style="width:${Math.min(100,cbm/spec.exp*100)}%;background:${cbm>spec.exp?'var(--warn)':'var(--ok)'}"></i></div>
+    <span class="sub"><span class="mono">${fmt(cbm,2)} m³</span>，${c.type} 一般按 <span class="mono">${spec.exp} m³</span> 左右报${cbm>spec.exp?'。算法按理想摆法计算，实际装柜可能装不下，建议给客户留余量':''}</span></div>`);
+  const dirL = B.dev < 0 ? '偏柜底' : '偏柜门', dirY = B.dy < 0 ? '偏左' : '偏右';
+  rows.push(`<div class="check"><span>前后偏载</span>${pillB(B.lon, dirL + '，需告知承运人', '偏载')}
+    <div class="lr"><span class="mono">柜底 ${(A.backShare*100).toFixed(0)}%</span><div class="meter"><i style="width:${A.backShare*100}%;background:var(--steel)"></i><i style="width:${(1-A.backShare)*100}%;background:var(--faint)"></i></div><span class="mono">柜门 ${((1-A.backShare)*100).toFixed(0)}%</span></div>
+    <span class="sub">重心${Math.abs(B.dev) < 0.5 ? '在柜长中点' : `${dirL} <b class="mono" style="color:var(--fg)">${Math.abs(B.dev).toFixed(0)} cm</b>`}。要求 ±${B.t5.toFixed(0)} cm 以内，特殊情况最多 ±${B.t10.toFixed(0)} cm（CTU Code）${B.lon==='bad'?'。超出范围，码头吊装、拖车都可能拒收，需要重新调整装法':''}</span></div>`);
+  rows.push(`<div class="check"><span>左右偏载</span>${pillB(B.lat, dirY, '偏载')}
+    <div class="lr"><span class="mono">左 ${(lr*100).toFixed(0)}%</span><div class="meter"><i style="width:${lr*100}%;background:var(--accent)"></i><i style="width:${(1-lr)*100}%;background:var(--faint)"></i></div><span class="mono">右 ${((1-lr)*100).toFixed(0)}%</span></div>
+    <span class="sub">重心${Math.abs(B.dy) < 0.5 ? '在中线上' : `${dirY} <b class="mono" style="color:var(--fg)">${Math.abs(B.dy).toFixed(1)} cm</b>`}，要求 ±${B.y5.toFixed(0)} cm 以内</span></div>`);
+  const vb = c.voidBack || 0, vf = c.voidFront || 0;
+  if(vb > 15 || vf > 30) rows.push(`<div class="check"><span>空当加固</span><span class="pill warn">需要加固</span>
+    <span class="sub">${vb > 15 ? `为防偏载，货已往中间挪，<b style="color:var(--fg)">柜底空 ${Math.round(vb)} cm</b>；` : ''}${vf > 30 ? `<b style="color:var(--fg)">柜门处空 ${Math.round(vf)} cm</b>；` : ''}空当要用气袋、木方或挡板顶住，防止运输中货物滑动。</span></div>`);
+  const palB = c.boxes.filter(b => unitById[b.u].kind === 'pallet');
+  if(palB.length){
+    const topFree = palB.reduce((a,b) => a + (spec.H - (b.z + b.h)), 0) / palB.length;
+    const single = palB.every(b => b.z === 0) && palB.length === c.boxes.length;
+    if(single && topFree > 60) rows.push(`<div class="check"><span>托盘上方空间</span><span class="pill warn">空 ${Math.round(topFree)} cm</span>
+      <span class="sub">托盘上面平均还有 <span class="mono">${Math.round(topFree)} cm</span> 空着。货物承压允许的话，可以打开“托盘可以叠放”${RULES.looseOnPallet ? '，或把部分货改成散箱，程序会自动补在托盘上面' : '，或打开“散箱可以压在托盘上”'}。</span></div>`);
+  }
+  const cls = clsOf(c.type), O = oogOf(c), OL = oogLabel(O);
+  if(O){
+    // 参考 CMA CGM 特种箱指引：超高原则上不超过 170 cm（开顶同样适用）、超宽每边不超过 120 cm、40 尺框架货长不超过 11.2 m、载重 38 吨、重心低于 1.95 m
+    const lim = {oh:170, ow:120, len:1120};
+    const over = [];
+    if(O.oh > lim.oh) over.push(`超高 ${O.oh} cm 超过 ${lim.oh} cm`);
+    if(O.owL > lim.ow || O.owR > lim.ow) over.push(`超宽超过每边 ${lim.ow} cm`);
+    if(cls === 'fr' && O.len > lim.len) over.push(`货长 ${(O.len/100).toFixed(2)} m 超过 11.2 m`);
+    const det = [];
+    if(O.oh > 0) det.push(`超高 <b class="mono" style="color:var(--fg)">${O.oh} cm</b>（货物最高 ${Math.round(O.maxZ)} cm，${cls === 'ot' ? '柜顶' : '端板'} ${O.top} cm）`);
+    if(O.owL > 0 || O.owR > 0) det.push(`超宽 左 <b class="mono" style="color:var(--fg)">${O.owL} cm</b> / 右 <b class="mono" style="color:var(--fg)">${O.owR} cm</b>（按箱体外宽 243.8 cm 量）`);
+    if(O.olB > 0 || O.olF > 0) det.push(`超长 前 <b class="mono" style="color:var(--fg)">${O.olB} cm</b> / 后 <b class="mono" style="color:var(--fg)">${O.olF} cm</b>`);
+    rows.unshift(`<div class="check"><span>超限情况</span>${!OL.parts.length ? '<span class="pill ok">不超限</span>' : over.length ? `<span class="pill bad">${OL.text}</span>` : `<span class="pill warn">${OL.text}</span>`}
+      <span class="sub">${det.length ? det.join('；') + '。' : '货物都在箱体范围内，可以按普通特种柜订舱。'}${OL.parts.length ? (over.length ? `<br><b style="color:var(--bad)">${over.join('；')}，超出船公司常规可接范围</b>，要单独找船公司特批，可能要改散杂船或滚装船。` : '<br>在船公司常规可接范围内（超高 ≤170 cm、超宽每边 ≤120 cm），订舱时提供货物尺寸、重量、图片和绑扎方案，一般要提前约两周申请。') : ''}${O.owL > 0 || O.owR > 0 ? '超宽会占用相邻舱位，运费一般按损失箱位加收。' : ''}${cls === 'ot' && O.oh > 0 ? '超高后篷布盖不严，按超高开顶柜申报。' : ''}</span></div>`);
+    if(cls === 'fr'){
+      rows.push(`<div class="check"><span>框架柜重心高度</span>${A.cgz <= 195 ? '<span class="pill ok">正常</span>' : '<span class="pill bad">过高</span>'}
+        <span class="sub">重心离底板 <span class="mono">${(A.cgz/100).toFixed(2)} m</span>，框架柜要求低于 1.95 m${c.usedKg > 38000 ? `；货重 ${fmt(c.usedKg/1000,1)} 吨，超过 38 吨要船公司单独确认` : ''}</span></div>`);
+    }
+  }
+  if(cls === 'rf' || cls === 'nor'){
+    const sp2 = CT[c.type];
+    const maxZ = c.boxes.reduce((a,b) => Math.max(a, b.z + b.h), 0);
+    if(cls === 'rf') rows.push(`<div class="check"><span>冷柜装货线</span>${maxZ <= (sp2.loadH || sp2.H) + 0.01 ? '<span class="pill ok">正常</span>' : '<span class="pill bad">超红线</span>'}
+      <span class="sub">货物最高 <span class="mono">${Math.round(maxZ)} cm</span>，红线 <span class="mono">${sp2.loadH} cm</span>（内高 ${sp2.H} cm）。柜门处留 ${Math.max(RULES.gapL, RULES.rfGap)} cm 不顶门，冷风才回得来；地板要铺满，箱与箱之间、箱与柜壁之间不要留缝。</span></div>`);
+    else rows.push(`<div class="check"><span>冷柜代干货</span><span class="pill steel">提示</span>
+      <span class="sub">冷机不开，按干货柜用。柜内比 40HQ 窄 ${Math.round(CT['40HQ'].W - sp2.W)} cm、短 ${Math.round(CT['40HQ'].L - sp2.L)} cm（冷机占位），门宽只有 ${sp2.DW} cm；箱皮更重，限重以箱门铭牌为准。</span></div>`);
+    if(cls === 'rf') rows.push(`<div class="check"><span>挂机（发电机组）</span>${RULES.genset ? '<span class="pill warn">陆运挂机</span>' : '<span class="pill steel">未挂机</span>'}
+      <span class="sub">${RULES.genset ? `陆运挂机约 820 kg，拖车上的柜子加挂机约 <b class="mono" style="color:var(--fg)">${fmt(c.usedKg + sp2.tare + 820, 0)} kg</b>，注意道路限重。挂机重量不算进 VGM。` : '拖车、铁路途中需要冷机持续供电的，在“装柜设置”里打开“冷柜陆运挂机”，会把挂机重量算进拖车总重。'}</span></div>`);
+  }
+  if(cls !== 'fr') rows.push(`<div class="check"><span>重心高度</span>${st(hz<=0.5,'偏高')}
+    <span class="sub">离地 <span class="mono">${(A.cgz/100).toFixed(2)} m</span>（柜高 ${(spec.H/100).toFixed(2)} m）</span></div>`);
+  $('checks').innerHTML = rows.join('');
+  const bad = wu > 1 || p.leftCartons || B.lon === 'bad' || B.lat === 'bad' || rows.some(r => r.includes('pill bad'));
+  const warn = rows.some(r => r.includes('托盘上方空间') || r.includes('空当加固') || r.includes('pill warn')) || B.lon !== 'ok' || B.lat !== 'ok' || (cls !== 'fr' && hz > 0.5) || wu > 0.95 || cbm > spec.exp;
+  $('chk-pill').innerHTML = bad ? '<span class="pill bad">有问题</span>' : warn ? '<span class="pill warn">注意</span>' : '<span class="pill ok">全部通过</span>';
+}
+
+/* 还能再装多少：在最后一个柜现有货物的基础上，每种货单独往里加，找出最多还能加几箱（打托的按整托加） */
+function addMoreFor(p, ci){
+  const c = p.containers[ci], t = c.type, e = eff(t, units);
+  const base = {}; for(const u of units) base[u.id] = 0;
+  for(const b of c.boxes) base[b.u]++;
+  const fast = [STRATS[1], STRATS[3], STRATS[8], STRATS[9]].filter(Boolean);
+  const fits = extra => { const r = bestPack(e, units, extra, fast); return sumRemain(r.remain) === 0; };
+  const out = [];
+  for(const sv of srcs){
+    const u = units.find(x => x.src.id === sv.id && x.kind === 'carton') || units.find(x => x.src.id === sv.id && x.id.startsWith('p'));
+    if(!u) continue;
+    const per = u.cartons;
+    const freeVol = e.L*e.W*e.H - c.usedVol, freeKg = e.kg - c.usedKg;
+    let hiCap = Math.floor(Math.min(freeVol/(u.l*u.w*u.h), u.kg > 0 ? freeKg/u.kg : Infinity));
+    if(!(hiCap > 0)){ out.push({sv, n:0, per}); continue; }
+    hiCap = Math.min(hiCap, 5000);
+    const test = n => { const r = Object.assign({}, base); r[u.id] = (r[u.id]||0) + n; return fits(r); };
+    let lo = 0, hi = 1;
+    while(hi <= hiCap && test(hi)){ lo = hi; hi *= 2; }
+    hi = Math.min(hi, hiCap + 1);
+    while(hi - lo > 1){ const m = (lo + hi) >> 1; if(test(m)) lo = m; else hi = m; }
+    out.push({sv, n: lo, per, pallet: u.kind === 'pallet'});
+  }
+  return out;
+}
+document.addEventListener('click', e => {
+  if(e.target.id !== 'addmore') return;
+  const p = plans.find(x => x.key === selKey); if(!p) return;
+  const outEl = $('addmore-out'); outEl.textContent = '正在算…'; e.target.disabled = true;
+  setTimeout(() => {
+    try{
+      const r = addMoreFor(p, selIdx);
+      outEl.innerHTML = r.map(x => `<b style="color:var(--fg)">${esc(x.sv.name)}</b> ${x.n ? (x.pallet ? `还能加 ${x.n} 托（${x.n*x.per} 箱）` : `还能加 ${x.n} 箱`) : '加不进去了'}`).join('；') + '。每种货是单独算的，不能叠加；实际装柜会比理论值少一些。';
+    }catch(err){ console.error(err); outEl.textContent = '没算出来，请稍后再试。'; }
+    e.target.disabled = false;
+  }, 30);
+});
+
+function renderChart(A, spec){
+  const Wd = 300, Ht = 150, ml = 36, mr = 8, mt = 14, mb = 24, iw = Wd-ml-mr, ih = Ht-mt-mb;
+  const mxv = Math.max(1, ...A.slices);
+  const mag = Math.pow(10, Math.floor(Math.log10(mxv))), r = mxv/mag;
+  const top = (r <= 1 ? 1 : r <= 2 ? 2 : r <= 5 ? 5 : 10) * mag;
+  const X = cm => ml + cm/spec.L*iw, Y = v => mt + ih - v/top*ih;
+  let d = `M${X(0)},${Y(0)}`;
+  A.slices.forEach((v,i) => { const x0 = i*A.step, x1 = Math.min(spec.L,(i+1)*A.step); d += ` L${X(x0).toFixed(1)},${Y(v).toFixed(1)} L${X(x1).toFixed(1)},${Y(v).toFixed(1)}`; });
+  d += ` L${X(spec.L)},${Y(0)} Z`;
+  const g = [0, top/2, top].map(v => `<line x1="${ml}" x2="${Wd-mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${ml-5}" y="${Y(v)+3.5}" text-anchor="end" font-size="9.5" fill="var(--muted)" font-family="IBM Plex Mono,monospace">${Math.round(v).toLocaleString('zh-CN')}</text>`).join('');
+  const xt = [0, spec.L/2, spec.L].map(v => `<text x="${X(v)}" y="${Ht-8}" text-anchor="${v===0?'start':v===spec.L?'end':'middle'}" font-size="9.5" fill="var(--muted)" font-family="IBM Plex Mono,monospace">${(v/100).toFixed(1)} m</text>`).join('');
+  const B = balanceOf(A, spec);
+  const lo = X(spec.L/2 - B.t5), hi = X(spec.L/2 + B.t5), lo2 = X(spec.L/2 - B.t10), hi2 = X(spec.L/2 + B.t10);
+  $('chart').innerHTML = `<svg viewBox="0 0 ${Wd} ${Ht}" role="img" aria-label="沿柜长的重量分布">
+    <rect x="${lo2}" y="${mt}" width="${hi2-lo2}" height="${ih}" fill="var(--warn-soft)"/>
+    <rect x="${lo}" y="${mt}" width="${hi-lo}" height="${ih}" fill="var(--ok-soft)"/>${g}
+    <path d="${d}" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-width="1.4" stroke-linejoin="round"/>
+    <line x1="${X(spec.L/2)}" x2="${X(spec.L/2)}" y1="${mt}" y2="${mt+ih}" stroke="var(--muted)" stroke-dasharray="3 3"/>
+    <line x1="${X(A.cgx)}" x2="${X(A.cgx)}" y1="${mt}" y2="${mt+ih}" stroke="var(--bad)" stroke-width="1.5"/>
+    <circle cx="${X(A.cgx)}" cy="${mt+4}" r="4" fill="var(--bad)" stroke="var(--card)" stroke-width="1.5"/>
+    <text x="${X(0)}" y="${mt-4}" font-size="9" fill="var(--muted)">柜底</text>
+    <text x="${X(spec.L)}" y="${mt-4}" font-size="9" fill="var(--muted)" text-anchor="end">柜门</text>${xt}
+  </svg>`;
+  $('chartcap').innerHTML = `红线是重心（距柜底 <b class="mono">${(A.cgx/100).toFixed(2)} m</b>），虚线是柜长中点。重心要落在绿色区（±${B.t5.toFixed(0)} cm）；黄色区（±${B.t10.toFixed(0)} cm）需告知承运人；再往外就是偏载。`;
+}
+
+/* ================= 6. 3D 场景 ================= */
+let cut = null, fork = null, lastType = null, palLines = null;
+let dirty3d = true; const req3d = () => { dirty3d = true; };
+let instByGi = [], sliding = [];
+function sizeLabel(sp){ const k = Math.max(0.55, Math.min(1, (Cam && Cam.aspect) || 1)); sp.scale.set(0.085*k, 0.032*k, 1); }
+let R, S, Cam, Ctl, G, has3d = false, cur = null, boxMeshes = [], edgeLines = null, edgeCum = [0], curN = 0, sun = null;
+function showStageMsg(t, acts){
+  const m = $('stagemsg'); m.hidden = false;
+  m.innerHTML = `<div><div>${esc(t)}</div>${acts ? `<div class="acts"><button type="button" class="btn primary" data-go="add">＋ 添加货物</button><button type="button" class="btn" data-go="imp">从 Excel 粘贴</button><button type="button" class="btn" data-go="sample">看示例</button></div>` : ''}</div>`;
+}
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-go]'); if(!g) return;
+  document.querySelector('.sheet').scrollIntoView({behavior:'smooth', block:'start'});
+  if(g.dataset.go === 'add') $('add').click(); else if(g.dataset.go === 'imp') openImporter(); else $('sample').click();
+});
+function hideStageMsg(){ if(has3d) $('stagemsg').hidden = true; }
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888888';
+const lin = hex => new THREE.Color(hex).convertSRGBToLinear();
+const tok = n => lin(cssv(n));
+
+function canvasTex(w, h, paint){ const c = document.createElement('canvas'); c.width = w; c.height = h; paint(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.anisotropy = 4; t.encoding = THREE.sRGBEncoding; return t; }
+let TEX = {};
+function makeTextures(){
+  TEX.carton = canvasTex(128,128,(g,w,h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0,0,w,h);
+    for(let i=0;i<260;i++){ g.fillStyle = `rgba(0,0,0,${Math.random()*0.03})`; g.fillRect(Math.random()*w, Math.random()*h, 2, 2); }
+    g.fillStyle = 'rgba(150,110,50,.18)'; g.fillRect(w/2-8, 0, 16, h);
+    g.strokeStyle = 'rgba(0,0,0,.14)'; g.lineWidth = 4; g.strokeRect(2,2,w-4,h-4);
+    g.fillStyle = 'rgba(255,255,255,.92)'; g.fillRect(14, h-36, 32, 22);
+    g.fillStyle = 'rgba(0,0,0,.28)'; for(let i=0;i<4;i++) g.fillRect(17, h-32+i*4.5, 24-i*4, 1.6);
+    g.strokeStyle = 'rgba(0,0,0,.32)'; g.lineWidth = 2; g.beginPath(); g.moveTo(w-30,24); g.lineTo(w-22,14); g.lineTo(w-14,24); g.moveTo(w-22,14); g.lineTo(w-22,34); g.stroke();
+  });
+  TEX.floor = canvasTex(512,128,(g,w,h) => {
+    g.fillStyle = cssv('--c-floor'); g.fillRect(0,0,w,h);
+    const rows = 8;
+    for(let r=0;r<rows;r++){
+      const y = r*h/rows; let x = -(r*61 % 180);
+      while(x < w){ const len = 140 + (r*37 + Math.abs(x)) % 120;
+        g.fillStyle = `rgba(${r%2?0:255},${r%2?0:230},${r%2?0:200},${0.04 + ((r*13+Math.abs(x))%7)/100})`; g.fillRect(x, y, len, h/rows);
+        g.fillStyle = 'rgba(0,0,0,.22)'; g.fillRect(x, y, 1.5, h/rows); x += len; }
+      g.fillStyle = 'rgba(0,0,0,.28)'; g.fillRect(0, y, w, 1.5);
+    }
+  });
+  TEX.floor.wrapS = THREE.RepeatWrapping;
+  TEX.wood = canvasTex(128,128,(g,w,h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0,0,w,h);
+    for(let i=0;i<40;i++){ g.strokeStyle = `rgba(90,55,20,${0.06+Math.random()*0.1})`; g.lineWidth = 1 + Math.random()*1.5; g.beginPath(); const y = Math.random()*h; g.moveTo(0,y); g.bezierCurveTo(w*.3,y+Math.random()*6-3,w*.7,y+Math.random()*6-3,w,y+Math.random()*4-2); g.stroke(); }
+    g.strokeStyle = 'rgba(60,35,10,.35)'; g.lineWidth = 3; g.strokeRect(1.5,1.5,w-3,h-3);
+  });
+  TEX.reefer = canvasTex(256,256,(g,w,h) => {
+    g.fillStyle = '#C9D0D6'; g.fillRect(0,0,w,h);
+    g.fillStyle = '#2B3138'; for(let y=24; y<h-20; y+=10) g.fillRect(24, y, w-48, 5);
+    g.strokeStyle = '#6b747d'; g.lineWidth = 6; for(const cx of [80,176]){ g.beginPath(); g.arc(cx, 90, 34, 0, Math.PI*2); g.stroke(); }
+    g.fillStyle = '#1e5aa8'; g.fillRect(28, h-56, 90, 30); g.fillStyle = '#fff'; g.font = '600 18px sans-serif'; g.fillText('REEFER', 36, h-34);
+  });
+  TEX.doorRF = canvasTex(256,512,(g,w,h) => {
+    g.fillStyle = '#E9EDF0'; g.fillRect(0,0,w,h);
+    for(let x=10; x<w; x+=24){ g.fillStyle = 'rgba(0,0,0,.06)'; g.fillRect(x,0,8,h); }
+    g.fillStyle = 'rgba(30,40,52,.9)'; g.font = '600 30px "IBM Plex Mono",monospace'; g.fillText('LYGU 530217 6', 22, 70);
+    g.font = '600 24px "IBM Plex Mono",monospace'; g.fillText('45R1', 22, 104);
+    g.font = '500 15px "IBM Plex Mono",monospace'; ['MAX.GR  34,000 KG','TARE     4,740 KG','NET     29,260 KG'].forEach((t,i) => g.fillText(t, 22, 150 + i*22));
+  });
+  TEX.ground = canvasTex(512,512,(g,w,h) => {
+    g.fillStyle = cssv('--c-ground'); g.fillRect(0,0,w,h);
+    for(let i=0;i<5000;i++){ g.fillStyle = Math.random() > .5 ? `rgba(255,255,255,${Math.random()*0.05})` : `rgba(0,0,0,${Math.random()*0.05})`; g.fillRect(Math.random()*w, Math.random()*h, 2, 2); }
+    g.strokeStyle = 'rgba(0,0,0,.07)'; g.lineWidth = 2; g.strokeRect(0,0,w,h);
+  });
+  TEX.ground.wrapS = TEX.ground.wrapT = THREE.RepeatWrapping;
+  TEX.hatch = canvasTex(256,64,(g,w,h) => {
+    g.fillStyle = '#F2B632'; g.fillRect(0,0,w,h);
+    g.fillStyle = '#20242a'; for(let x=-h; x<w; x+=36){ g.beginPath(); g.moveTo(x,h); g.lineTo(x+18,h); g.lineTo(x+18+h,0); g.lineTo(x+h,0); g.fill(); }
+  });
+  TEX.hatch.wrapS = THREE.RepeatWrapping;
+  TEX.door = canvasTex(256,512,(g,w,h) => {
+    g.fillStyle = cssv('--c-paint'); g.fillRect(0,0,w,h);
+    for(let x=10; x<w; x+=24){ g.fillStyle = 'rgba(0,0,0,.12)'; g.fillRect(x,0,8,h); g.fillStyle = 'rgba(255,255,255,.06)'; g.fillRect(x+8,0,3,h); }
+    g.fillStyle = 'rgba(255,255,255,.92)'; g.font = '600 30px "IBM Plex Mono",monospace'; g.fillText('LYGU 208813 4', 22, 70);
+    g.font = '600 24px "IBM Plex Mono",monospace'; g.fillText('45G1', 22, 104);
+    g.font = '500 15px "IBM Plex Mono",monospace'; g.globalAlpha = .8;
+    ['MAX.GR  30,480 KG','TARE     3,880 KG','NET     26,600 KG','CU.CAP   76.3 CU.M'].forEach((t,i) => g.fillText(t, 22, 150 + i*22));
+    g.globalAlpha = 1;
+  });
+}
+
+function init3d(){
+  if(typeof THREE === 'undefined'){ showStageMsg('3D 组件没有加载成功，请检查网络后刷新。方案和数字不受影响。'); return; }
+  const cv = $('cv');
+  R = new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:true});
+  R.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  R.outputEncoding = THREE.sRGBEncoding;
+  R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.05;
+  R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
+  S = new THREE.Scene();
+  Cam = new THREE.PerspectiveCamera(30, 1, 5, 80000);
+  if(THREE.OrbitControls){
+    Ctl = new THREE.OrbitControls(Cam, cv);
+    Ctl.enableDamping = true; Ctl.dampingFactor = 0.1; Ctl.rotateSpeed = 0.8;
+    Ctl.maxPolarAngle = Math.PI*0.48; Ctl.minDistance = 60; Ctl.maxDistance = 9000;
+    Ctl.addEventListener('start', () => { fly = null; $('tip').hidden = true; });
+    Ctl.addEventListener('change', req3d);
+    Ctl.zoomSpeed = 1.1; Ctl.enableZoom = false;
+  }
+  S.add(new THREE.HemisphereLight(0xf4f7fb, 0x7d8894, 0.85));
+  sun = new THREE.DirectionalLight(0xfff6ea, 1.25);
+  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0003; sun.shadow.normalBias = 0.5; sun.shadow.radius = 5;
+  S.add(sun); S.add(sun.target);
+  const fill = new THREE.DirectionalLight(0xdde8ff, 0.35); fill.position.set(-900, 600, -800); S.add(fill);
+  G = new THREE.Group(); S.add(G);
+  makeTextures();
+  has3d = true;
+  const resize = () => {
+    const r = $('stage').getBoundingClientRect(); if(!r.width || !r.height) return;
+    R.setSize(r.width, r.height, false); Cam.aspect = r.width/r.height;
+    const off = r.width < 700 ? 0 : Math.min(28, r.height*0.06);
+    Cam.setViewOffset(r.width, r.height, 0, -off, r.width, r.height); Cam.updateProjectionMatrix(); if(G) G.children.forEach(o => { if(o.userData && o.userData.isLabel) sizeLabel(o); }); req3d();
+  };
+  new ResizeObserver(resize).observe($('stage')); resize();
+  // 只在画面有变化时才重画：拖动、播放、切换视角或数据改变；静止时不占用电脑资源
+  (function loop(t){ requestAnimationFrame(loop); const busy = fly || play; tick(t||0); const moved = Ctl ? Ctl.update() : false; if(moved || busy || dirty3d){ R.render(S, Cam); dirty3d = false; } })();
+  cv.addEventListener('pointermove', onHover);
+  let down = null;
+  cv.addEventListener('pointerdown', e => { down = {x:e.clientX, y:e.clientY}; });
+  cv.addEventListener('pointerup', e => {
+    if(e.pointerType !== 'mouse' && down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 8){
+      onHover(e, true); clearTimeout(cv._tt); cv._tt = setTimeout(() => { $('tip').hidden = true; }, 2500);
+    }
+    down = null;
+  });
+  cv.addEventListener('pointerleave', () => { $('tip').hidden = true; });
+}
+function clear3d(){
+  if(!has3d) return;
+  G.traverse(o => { if(o.geometry) o.geometry.dispose(); if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { if(m.map && m.map.ownLabel) m.map.dispose(); if(m.dispose) m.dispose(); }); } });
+  while(G.children.length) G.remove(G.children[0]);
+  boxMeshes = []; edgeLines = null; cut = null; fork = null; edgeCum = [0]; sliding = []; instByGi = []; req3d();
+}
+function addBox(parent, w, h, d, x, y, z, mat, cast=true){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.castShadow = cast; m.receiveShadow = true; parent.add(m); return m;
+}
+const STD = (hex, rough=.6, metal=0, extra={}) => new THREE.MeshStandardMaterial(Object.assign({color: lin(hex), roughness:rough, metalness:metal}, extra));
+
+/* 仓库地面：水泥地、黄色安全线、柜门口警示线、防撞柱 */
+function buildYard(spec){
+  const {L, W} = spec;
+  TEX.ground.repeat.set(12, 12); TEX.ground.needsUpdate = true;
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(9000, 9000), new THREE.MeshStandardMaterial({map:TEX.ground, roughness:.95}));
+  ground.rotation.x = -Math.PI/2; ground.position.y = -16; ground.receiveShadow = true; G.add(ground);
+  const yellow = STD('#E9B12E', .7);
+  const strip = (len, wid, x, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(len, wid), yellow); m.rotation.x = -Math.PI/2; m.position.set(x, -15.4, z); m.receiveShadow = true; G.add(m); };
+  for(const sz of [-1,1]) strip(L + 900, 10, 300, sz*(W/2 + 70));
+  strip(10, W + 150, -L/2 - 80, 0);
+  TEX.hatch.repeat.set((W+150)/120, 1); TEX.hatch.needsUpdate = true;
+  const hz = new THREE.Mesh(new THREE.PlaneGeometry(W + 150, 46), new THREE.MeshStandardMaterial({map:TEX.hatch, roughness:.7}));
+  hz.rotation.x = -Math.PI/2; hz.rotation.z = Math.PI/2; hz.position.set(L/2 + 330, -15.3, 0); hz.receiveShadow = true; G.add(hz);
+  const boll = STD('#E9B12E', .5, .1), band = STD('#1f2328', .6);
+  for(const [x,z] of [[L/2 + 330, W/2 + 120], [L/2 + 330, -W/2 - 120], [-L/2 - 120, W/2 + 120]]){
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(9, 9, 100, 20), boll); c.position.set(x, 34, z); c.castShadow = true; G.add(c);
+    const b2 = new THREE.Mesh(new THREE.CylinderGeometry(9.3, 9.3, 12, 20), band); b2.position.set(x, 62, z); G.add(b2);
+    const cap = new THREE.Mesh(new THREE.SphereGeometry(9, 16, 8, 0, Math.PI*2, 0, Math.PI/2), boll); cap.position.set(x, 84, z); G.add(cap);
+  }
+}
+
+/* 叉车：基本形体拼成，播放装柜时在柜门口来回 */
+function buildForklift(){
+  const g = new THREE.Group();
+  const body = STD(cssv('--accent'), .45, .15), dark = STD('#2A2F36', .6, .3), steel = STD('#9AA3AD', .35, .7), tire = STD('#16181b', .9);
+  addBox(g, 150, 70, 104, 30, 55, 0, body);
+  addBox(g, 60, 85, 104, 95, 62, 0, dark);
+  addBox(g, 70, 18, 80, 40, 99, 0, dark);
+  addBox(g, 40, 50, 10, 60, 125, 0, dark);
+  for(const [x,z] of [[-30,45],[-30,-45],[85,45],[85,-45]]) addBox(g, 5, 120, 5, x, 160, z, dark);
+  addBox(g, 125, 5, 100, 28, 220, 0, dark);
+  for(const z of [-38,38]) addBox(g, 9, 240, 9, -52, 125, z, steel);
+  addBox(g, 9, 9, 84, -52, 242, 0, steel);
+  const carriage = new THREE.Group(); g.add(carriage);
+  addBox(carriage, 6, 60, 96, -60, 40, 0, steel);
+  for(const z of [-28,28]) addBox(carriage, 115, 5, 12, -118, 12, z, steel);
+  const load = new THREE.Mesh(new THREE.BoxGeometry(100, 70, 90), new THREE.MeshStandardMaterial({color: lin('#E8913A'), map:TEX.carton, roughness:.8}));
+  load.position.set(-118, 50, 0); load.castShadow = true; carriage.add(load);
+  for(const [x,z,r] of [[-25,52,27],[-25,-52,27],[95,50,22],[95,-50,22]]){
+    const w = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 22, 24), tire); w.rotation.x = Math.PI/2; w.position.set(x, r-16, z); g.add(w);
+  }
+  g.traverse(o => { if(o.isMesh) o.castShadow = true; });
+  g.userData = {carriage, load};
+  return g;
+}
+
+function buildContainer(spec, type){
+  const {L, W, H} = spec, T = 4, cls = clsOf(type);
+  if(cls === 'fr') return buildFlatRack(spec, type);
+  const isRF = cls === 'rf' || cls === 'nor';
+  const inner = STD(isRF ? '#DDE3E8' : cssv('--c-wall'), .55, .2, {side:THREE.DoubleSide});
+  const paint = STD(isRF ? '#E9EDF0' : cssv('--c-paint'), .45, .3);
+  const frame = STD(isRF ? '#AEB8C2' : cssv('--c-frame'), .45, .35);
+  buildYard(spec);
+  TEX.floor.repeat.set(L/300, 1); TEX.floor.needsUpdate = true;
+  const floorM = new THREE.MeshStandardMaterial({map: TEX.floor, roughness:.85});
+  addBox(G, L, 6, W, 0, -3, 0, [frame, frame, floorM, frame, frame, frame], false);
+  addBox(G, L+12, 10, W+12, 0, -11, 0, frame, true);
+  const pitch = 28, m4 = new THREE.Matrix4();
+  cut = {W, L, pos:new THREE.Group(), neg:new THREE.Group(), end:new THREE.Group()};
+  for(const [grp, sz] of [[cut.neg,-1],[cut.pos,1]]){
+    const mats = sz < 0 ? [paint,paint,paint,paint,inner,paint] : [paint,paint,paint,paint,paint,inner];
+    addBox(grp, L, H, T, 0, H/2, sz*(W/2 + T/2), mats, true);
+    const nr = Math.floor(L/pitch);
+    const ribs = new THREE.InstancedMesh(new THREE.BoxGeometry(14, H-6, 4), paint, nr);
+    for(let i=0;i<nr;i++){ m4.makeTranslation(-L/2 + pitch/2 + i*pitch, H/2, sz*(W/2 + T + 2)); ribs.setMatrixAt(i, m4); }
+    ribs.castShadow = true; grp.add(ribs); G.add(grp);
+  }
+  addBox(cut.end, T, H, W, -L/2 - T/2, H/2, 0, [paint,inner,paint,paint,paint,paint], true);
+  const ne = Math.floor(W/pitch);
+  const er = new THREE.InstancedMesh(new THREE.BoxGeometry(4, H-6, 14), paint, ne);
+  for(let i=0;i<ne;i++){ m4.makeTranslation(-L/2 - T - 2, H/2, -W/2 + pitch/2 + i*pitch); er.setMatrixAt(i, m4); }
+  cut.end.add(er); G.add(cut.end);
+  const P = 13, casting = STD('#3b4148', .5, .4);
+  for(const sx of [-1,1]) for(const sz of [-1,1]){
+    addBox(G, P, H+P+10, P, sx*(L/2+P/2-2), (H+P+10)/2 - P/2 - 10, sz*(W/2+P/2-2), frame);
+    for(const y of [-10, H+P/2]) addBox(G, P+3, P, P+3, sx*(L/2+P/2-2), y, sz*(W/2+P/2-2), casting);
+  }
+  for(const sz of [-1,1]){ addBox(G, L, 10, 10, 0, H+5, sz*(W/2+3), frame); addBox(G, L, 14, 10, 0, 4, sz*(W/2+3), frame, false); }
+  if(cls === 'ot'){
+    // 开顶柜：可拆的顶梁
+    const bowM = STD('#9aa3ad', .4, .6);
+    for(let x = -L/2 + 100; x < L/2 - 50; x += 115){ const bw = addBox(G, 4, 4, W, x, H + 8, 0, bowM, false); bw.userData.bow = true; }
+  }
+  if(isRF){
+    // 冷机（在柜底端）
+    const unitM = new THREE.MeshStandardMaterial({map: TEX.reefer, roughness:.6, metalness:.3});
+    addBox(G, 30, H, W, -L/2 - T - 17, H/2, 0, [unitM, unitM, frame, frame, unitM, unitM], true);
+    if(cls === 'rf'){
+      // 红线（装货线）
+      const y = spec.loadH, pts = [-L/2, y, -W/2+1, L/2, y, -W/2+1, -L/2, y, W/2-1, L/2, y, W/2-1, -L/2+1, y, -W/2, -L/2+1, y, W/2];
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+      const ln = new THREE.LineSegments(g, new THREE.LineBasicMaterial({color: lin('#E0392B'), transparent:true, opacity:.9}));
+      G.add(ln);
+      if(RULES.genset){ const gs = addBox(G, 55, 80, W*0.75, -L/2 - T - 60, H*0.55, 0, STD('#E9B12E', .5, .2), true); }
+    }
+  }
+  addBox(G, 10, 10, W, -L/2-3, H+5, 0, frame);
+  addBox(G, 12, 18, W+12, L/2+4, H+9, 0, frame);
+  const doorFace = new THREE.MeshStandardMaterial({map: isRF ? TEX.doorRF : TEX.door, roughness:.5, metalness:.25});
+  const barM = STD('#c3cad1', .3, .8);
+  for(const side of [1,-1]){
+    const pivot = new THREE.Group(); pivot.position.set(L/2 + 8, 0, side*(W/2 + 6)); G.add(pivot);
+    const dw = W/2 + 4, door = new THREE.Group(); pivot.add(door);
+    addBox(door, 4, H+6, dw, 0, H/2, -side*dw/2, [doorFace, inner, paint, paint, paint, paint], true);
+    for(let k=0;k<2;k++){
+      const r = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.4, H, 12), barM);
+      r.position.set(5, H/2, -side*(dw*(0.3 + k*0.4))); r.castShadow = true; door.add(r);
+      for(const y of [H*0.35, H*0.6]) addBox(door, 6, 4, 14, 6, y, -side*(dw*(0.3 + k*0.4) - 5), barM, false);
+    }
+    pivot.rotation.y = side * -1.95;
+  }
+  const label = (txt, x, y, z) => makeLabel(txt, x, y, z);
+  label(isRF ? '冷机端' : '柜底', -L/2 + 20, H + 70, 0);
+  label('柜门', L/2 + 10, H + 70, 0);
+  addSceneLight(L, H, W);
+  addForklift(L, W);
+}
+function addSceneLight(L, H, W){
+  sun.position.set(L*0.3, 1400 + L*0.4, 900 + L*0.35);
+  sun.target.position.set(0, 0, 0);
+  const sc = sun.shadow.camera, ext = L*0.75 + 500;
+  sc.left = -ext; sc.right = ext; sc.top = ext; sc.bottom = -ext; sc.near = 10; sc.far = L*4 + 6000; sc.updateProjectionMatrix();
+}
+function addForklift(L, W){
+  fork = buildForklift();
+  fork.position.set(L/2 + 390, -16, -W*0.35); fork.rotation.y = -0.25;
+  fork.userData.park = fork.position.clone(); fork.userData.parkRot = fork.rotation.y;
+  G.add(fork);
+}
+/* 框架柜：底板 + 两头端板，没有侧板和顶；虚线框是箱体外轮廓（宽 243.8 cm，高到端板顶），伸出去就是超限 */
+function buildFlatRack(spec){
+  const {L, W, H} = spec, ew = spec.extW || 243.8;
+  const frame = STD('#7C3B2A', .5, .35), deckM = new THREE.MeshStandardMaterial({map: TEX.floor, roughness:.85});
+  buildYard(spec);
+  TEX.floor.repeat.set(L/300, 1); TEX.floor.needsUpdate = true;
+  addBox(G, L, 6, W, 0, -3, 0, [frame, frame, deckM, frame, frame, frame], false);
+  addBox(G, L + 40, 22, ew, 0, -17, 0, frame, true);
+  for(const sz of [-1,1]) addBox(G, L + 40, 26, 10, 0, -14, sz*(ew/2 - 5), frame, true);
+  cut = {W, L, pos:new THREE.Group(), neg:new THREE.Group(), end:new THREE.Group()};
+  G.add(cut.pos); G.add(cut.neg); G.add(cut.end);
+  const P = 18;
+  for(const sx of [-1,1]){
+    const grp = sx < 0 ? cut.end : G;
+    for(const sz of [-1,1]) addBox(grp, P, H + 20, P, sx*(L/2 + P/2), (H+20)/2 - 20, sz*(ew/2 - P/2), frame);
+    addBox(grp, 8, H, ew - 2*P, sx*(L/2 + 4), H/2, 0, frame);
+    for(let k = 0; k < 4; k++) addBox(grp, 10, 6, ew - 2*P, sx*(L/2 + 9), H*(0.2 + k*0.22), 0, STD('#5f2b1e', .5, .3), false);
+  }
+  // 箱体轮廓虚线（判断超限用）
+  const bx = new THREE.EdgesGeometry(new THREE.BoxGeometry(L + 2*P, H, ew));
+  const dl = new THREE.LineSegments(bx, new THREE.LineDashedMaterial({color: lin('#3D7FD0'), dashSize:18, gapSize:12, transparent:true, opacity:.8}));
+  dl.computeLineDistances(); dl.position.set(0, H/2, 0); G.add(dl);
+  makeLabel('端板', -L/2 - 10, H + 60, 0);
+  makeLabel('端板', L/2 + 10, H + 60, 0);
+  addSceneLight(L, H, W);
+  addForklift(L, W);
+}
+function makeLabel(txt, x, y, z){
+    const c = document.createElement('canvas'); c.width = 256; c.height = 96;
+    const g = c.getContext('2d');
+    g.fillStyle = 'rgba(24,32,42,.82)'; const r = 22;
+    g.beginPath(); g.moveTo(r,8); g.lineTo(256-r,8); g.quadraticCurveTo(248,8,248,30); g.lineTo(248,66); g.quadraticCurveTo(248,88,256-r,88); g.lineTo(r,88); g.quadraticCurveTo(8,88,8,66); g.lineTo(8,30); g.quadraticCurveTo(8,8,r,8); g.fill();
+    g.fillStyle = '#fff'; g.font = '600 40px "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, 128, 50);
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.ownLabel = true;
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:t, depthTest:false, transparent:true, sizeAttenuation:false}));
+    sp.userData.isLabel = true; sizeLabel(sp); sp.position.set(x, y, z); sp.renderOrder = 30; G.add(sp);
+}
+
+function draw3d(c, resetCam){
+  if(c.type !== lastType){ resetCam = true; lastType = c.type; }
+  cur = c;
+  if(!has3d) return;
+  clear3d();
+  const spec = CT[c.type], {L, W} = spec, ox = -L/2, oz = -W/2;
+  buildContainer(spec, c.type);
+  // 按装柜顺序收集：纸箱实例、托盘木板实例
+  const groups = {}, wood = {recs:[], gidx:[]}, edges = [];
+  edgeCum = [0];
+  const pushCarton = (srcId, gi, x, y, z, l, w, h, rec) => {
+    (groups[srcId] = groups[srcId] || {recs:[], gidx:[]});
+    groups[srcId].recs.push(Object.assign({x,y,z,l,w,h}, rec)); groups[srcId].gidx.push(gi);
+    edges.push([x,y,z,l,w,h]);
+  };
+  const film = {recs:[], gidx:[]}, palEdges = [], palCum = [0];
+  let palIdx = 0;
+  c.boxes.forEach((b, gi) => {
+    const u = unitById[b.u];
+    if(u.kind === 'carton'){
+      pushCarton(u.src.id, gi, b.x, b.y, b.z, b.l, b.w, b.h, {gi, u, b, tint:1});
+    } else {
+      // 托盘：九墩木托（面板、纵梁、墩、底板），四周各收 0.8 cm，相邻两托之间看得出缝
+      const rotd = Math.abs(b.l - u.l) > 0.01, ph = PAL.h, g2 = PAL.gap/2, ins = g2 + 0.4;
+      const X = b.x + ins, Y = b.y + ins, Lb = b.l - 2*ins, Wb = b.w - 2*ins, bt = Math.min(2.2, ph/6);
+      const wrec = (x,y,z,l,w,h) => { wood.recs.push({x,y,z,l,w,h,gi,u,b}); wood.gidx.push(gi); };
+      const bw7 = Lb*0.1;
+      for(let i=0;i<7;i++) wrec(X + i*(Lb-bw7)/6, Y, b.z+ph-bt, bw7, Wb, bt);
+      const sw = Math.min(14, Wb*0.13), ys = [Y, Y + (Wb-sw)/2, Y + Wb - sw];
+      const blk = Math.min(14, Lb*0.11), xs = [X, X + (Lb-blk)/2, X + Lb - blk];
+      for(const y of ys){
+        wrec(X, y, b.z+ph-2*bt, Lb, sw, bt);
+        wrec(X, y, b.z, Lb, sw, bt);
+        for(const x of xs) wrec(x, y, b.z+bt, blk, sw, ph-3*bt);
+      }
+      const tint = palIdx++ % 2 ? 1.08 : 0.92;
+      const {rects, ch} = u.pz;
+      let mnx = Infinity, mny = Infinity, mxx = -Infinity, mxy = -Infinity, topZ = b.z + ph;
+      for(let k=0, placed=0; placed < u.cartons; k++){
+        for(const r of rects){
+          if(placed >= u.cartons) break;
+          const rx = rotd ? r.y : r.x, ry = rotd ? r.x : r.y, rl = rotd ? r.w : r.l, rww = rotd ? r.l : r.w;
+          const cx = b.x+g2+rx, cy = b.y+g2+ry, cz = b.z+ph+k*ch;
+          pushCarton(u.src.id, gi, cx, cy, cz, rl, rww, ch, {gi, u, b, tint});
+          mnx = Math.min(mnx, cx); mny = Math.min(mny, cy); mxx = Math.max(mxx, cx+rl); mxy = Math.max(mxy, cy+rww); topZ = Math.max(topZ, cz+ch);
+          placed++;
+        }
+      }
+      // 缠绕膜：包住整托纸箱的半透明外壳
+      const e = 0.6;
+      film.recs.push({x:mnx-e, y:mny-e, z:b.z+ph-1, l:mxx-mnx+2*e, w:mxy-mny+2*e, h:topZ-(b.z+ph)+1+e, gi, u, b}); film.gidx.push(gi);
+      palEdges.push([X, Y, b.z, Lb, Wb, topZ - b.z + e]);
+    }
+    edgeCum.push(edges.length); palCum.push(palEdges.length);
+  });
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), pos = new THREE.Vector3(), sc = new THREE.Vector3();
+  const gap = 0.7, unit = new THREE.BoxGeometry(1,1,1);
+  const tmpC = new THREE.Color();
+  instByGi = [];
+  const mkInst = (recs, gidx, mat, g, base) => {
+    const mesh = new THREE.InstancedMesh(unit, mat, recs.length);
+    recs.forEach((r,i) => {
+      pos.set(ox + r.x + r.l/2, r.z + r.h/2, oz + r.y + r.w/2);
+      sc.set(Math.max(0.5,r.l-g), Math.max(0.5,r.h-g), Math.max(0.5,r.w-g));
+      m4.compose(pos, q, sc); mesh.setMatrixAt(i, m4);
+      (instByGi[gidx[i]] = instByGi[gidx[i]] || []).push({mesh, i, px:pos.x, py:pos.y, pz:pos.z, sx:sc.x, sy:sc.y, sz:sc.z});
+      if(base){ tmpC.copy(base).multiplyScalar(r.tint || 1); mesh.setColorAt(i, tmpC); }
+    });
+    if(base && mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    mesh.instanceMatrix.needsUpdate = true; mesh.castShadow = true; mesh.receiveShadow = true;
+    mesh.userData = {recs, gidx}; G.add(mesh); boxMeshes.push(mesh); return mesh;
+  };
+  for(const id in groups){
+    const s = srcById[id];
+    const col = new THREE.Color(s ? s.color : '#888888').lerp(new THREE.Color('#efe3cf'), 0.12).convertSRGBToLinear();
+    mkInst(groups[id].recs, groups[id].gidx, new THREE.MeshStandardMaterial({color: 0xffffff, map: TEX.carton, roughness:.8}), gap, col);
+  }
+  if(wood.recs.length) mkInst(wood.recs, wood.gidx, new THREE.MeshStandardMaterial({color: tok('--c-wood'), map: TEX.wood, roughness:.9}), 0.3);
+  if(film.recs.length){
+    const fm = mkInst(film.recs, film.gidx, new THREE.MeshStandardMaterial({color: 0xffffff, transparent:true, opacity:.22, roughness:.15, metalness:0, depthWrite:false}), 0);
+    fm.castShadow = false; fm.renderOrder = 2; fm.userData.isFilm = true;
+  }
+  palLines = null;
+  if(palEdges.length){
+    const v = new Float32Array(palEdges.length*24*3); let p = 0;
+    const E = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+    for(const [x,y,z,l,w,h] of palEdges){
+      const x0 = ox+x, x1 = ox+x+l, y0 = z, y1 = z+h, z0 = oz+y, z1 = oz+y+w;
+      const C = [[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]];
+      for(const [a,bb] of E){ v.set(C[a], p); p += 3; v.set(C[bb], p); p += 3; }
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(v, 3));
+    palLines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({color: tok('--c-paledge'), transparent:true, opacity:0.75}));
+    palLines.userData.cum = palCum;
+    G.add(palLines);
+  }
+  if(edges.length){
+    const v = new Float32Array(edges.length*24*3); let p = 0;
+    const E = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+    for(const [x,y,z,l,w,h] of edges){
+      const x0 = ox+x+gap/2, x1 = ox+x+l-gap/2, y0 = z+gap/2, y1 = z+h-gap/2, z0 = oz+y+gap/2, z1 = oz+y+w-gap/2;
+      const C = [[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]];
+      for(const [a,bb] of E){ v.set(C[a], p); p += 3; v.set(C[bb], p); p += 3; }
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(v, 3));
+    edgeLines = new THREE.LineSegments(g, new THREE.LineBasicMaterial({color: tok('--c-boxedge'), transparent:true, opacity:0.16}));
+    G.add(edgeLines);
+  }
+  // 柜顶上方的重心标记：绿色是允许范围，红色箭头是实际重心，红线垂到地板
+  const A3 = analyze(c), B3 = balanceOf(A3, spec), Hh = spec.H;
+  const hud = (geo, color, op) => { const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color: lin(color), transparent:true, opacity:op, depthTest:false, depthWrite:false})); m.renderOrder = 20; G.add(m); return m; };
+  const zone = hud(new THREE.BoxGeometry(2*B3.t5, 3, spec.W), '#3FA66A', .55); zone.position.set(0, Hh + 32, 0);
+  const zone2 = hud(new THREE.BoxGeometry(2*B3.t10, 2, spec.W), '#E9B12E', .35); zone2.position.set(0, Hh + 31, 0);
+  const bcol = (B3.lon === 'bad' || B3.lat === 'bad') ? '#D03A2B' : (B3.lon === 'warn' || B3.lat === 'warn') ? '#E9B12E' : '#D03A2B';
+  const cone = hud(new THREE.ConeGeometry(9, 22, 20), bcol, .95); cone.rotation.x = Math.PI; cone.position.set(ox + A3.cgx, Hh + 46, oz + A3.cgy);
+  const pin = hud(new THREE.CylinderGeometry(1.2, 1.2, Hh + 34, 8), bcol, .45); pin.position.set(ox + A3.cgx, (Hh + 34)/2, oz + A3.cgy);
+  setN(+$('seq').value);
+  if(resetCam) setView(curView, true);
+}
+function setN(N){
+  curN = N;
+  for(const m of boxMeshes){
+    const g = m.userData.gidx; let lo = 0, hi = g.length;
+    while(lo < hi){ const mid = (lo+hi)>>1; if(g[mid] < N) lo = mid+1; else hi = mid; }
+    m.count = lo;
+  }
+  if(edgeLines) edgeLines.geometry.setDrawRange(0, (edgeCum[Math.min(N, edgeCum.length-1)]||0)*24);
+  if(palLines){ const pc = palLines.userData.cum; palLines.geometry.setDrawRange(0, (pc[Math.min(N, pc.length-1)]||0)*24); }
+  req3d();
+}
+
+/* 视角 */
+let curView = '3d', fly = null;
+function viewPose(v){
+  const spec = CT[cur.type], {L, W, H} = spec;
+  const asp = Cam.aspect || 2;
+  const fit = Math.max(L, W*asp) / Math.min(asp, 2.4);
+  switch(v){
+    case 'side': return {p:[0, H*0.45, fit*2.3 + 260], t:[0, H*0.45, 0]};
+    case 'top':  return {p:[0, fit*2.2 + 300, 1], t:[0, 0, 0]};
+    case 'door': return {p:[L*0.5 + Math.max(620, W*3.4), H*0.8, W*0.3], t:[0, H*0.45, 0]};
+    default: {
+      const dist = (Math.max(L, 900)*1.75 + 350) / Math.min(1.2, Math.max(asp < 1 ? 0.42 : 0.85, asp/1.6));
+      const d = new THREE.Vector3(0.62, 0.5, 0.8).normalize().multiplyScalar(dist);
+      return {p:[d.x, d.y + H*0.45, d.z], t:[L*0.06, H*0.45, 0]};
+    }
+  }
+}
+function setView(v, instant){
+  if(!has3d || !cur) return;
+  curView = v;
+  document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v));
+  const pose = viewPose(v);
+  if(instant || matchMedia('(prefers-reduced-motion: reduce)').matches){
+    Cam.position.set(...pose.p); if(Ctl){ Ctl.target.set(...pose.t); Ctl.update(); } else Cam.lookAt(...pose.t);
+    fly = null; req3d(); return;
+  }
+  fly = {t0: performance.now(), dur: 750, fp: Cam.position.clone(), ft: Ctl ? Ctl.target.clone() : new THREE.Vector3(), tp: new THREE.Vector3(...pose.p), tt: new THREE.Vector3(...pose.t)};
+}
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+
+/* 放大、缩小、复位 */
+function zoomBy(f){
+  if(!has3d || !cur || !Ctl) return;
+  const v = Cam.position.clone().sub(Ctl.target);
+  const len = Math.max(Ctl.minDistance, Math.min(Ctl.maxDistance, v.length()*f));
+  v.setLength(len);
+  fly = {t0: performance.now(), dur: 260, fp: Cam.position.clone(), ft: Ctl.target.clone(), tp: Ctl.target.clone().add(v), tt: Ctl.target.clone()};
+  req3d();
+}
+$('z-in').onclick = () => zoomBy(0.75);
+$('z-out').onclick = () => zoomBy(1.33);
+$('z-reset').onclick = () => setView(curView === 'top' || curView === 'side' || curView === 'door' ? curView : '3d');
+
+/* 滚轮：没点画面前，滚轮照常滚动页面；点过画面（或全屏时）才用来缩放 */
+let live = false, hintT = null;
+function setLive(v){ live = v; if(Ctl) Ctl.enableZoom = v || isFS(); $('stage').classList.toggle('live', v && !isFS()); }
+$('stage').addEventListener('pointerdown', () => { setLive(true); $('wheelhint').hidden = true; });
+$('stage').addEventListener('pointerleave', () => setLive(false));
+$('stage').addEventListener('wheel', () => {
+  if(live || isFS()) return;
+  $('wheelhint').hidden = false; clearTimeout(hintT); hintT = setTimeout(() => { $('wheelhint').hidden = true; }, 1400);
+}, {passive:true});
+
+/* 全屏：先用浏览器全屏，不支持（比如部分手机、内嵌窗口）就铺满当前窗口 */
+const isFS = () => document.fullscreenElement === $('viewer') || $('viewer').classList.contains('fs');
+function fsUI(){
+  const on = isFS();
+  document.body.classList.toggle('fsopen', $('viewer').classList.contains('fs'));
+  $('fs-btn').setAttribute('aria-pressed', on);
+  $('fs-btn').querySelector('span').textContent = on ? '退出全屏' : '全屏';
+  $('fs-btn').querySelector('use').setAttribute('href', on ? '#i-exit' : '#i-full');
+  $('z-fs').querySelector('use').setAttribute('href', on ? '#i-exit' : '#i-full');
+  $('z-fs').setAttribute('aria-label', on ? '退出全屏' : '全屏'); $('z-fs').title = on ? '退出全屏' : '全屏';
+  setLive(live);
+  req3d();
+  setTimeout(() => setView(curView, true), 80);
+}
+function toggleFS(){
+  const v = $('viewer');
+  if(isFS()){
+    if(document.fullscreenElement){ document.exitFullscreen().catch(() => {}); }
+    v.classList.remove('fs'); fsUI(); return;
+  }
+  const fallback = () => { v.classList.add('fs'); fsUI(); };
+  try{
+    if(v.requestFullscreen) v.requestFullscreen().then(fsUI).catch(fallback);
+    else fallback();
+  }catch(e){ fallback(); }
+}
+$('fs-btn').onclick = toggleFS;
+$('z-fs').onclick = toggleFS;
+document.addEventListener('fullscreenchange', fsUI);
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('viewer').classList.contains('fs')){ $('viewer').classList.remove('fs'); fsUI(); } });
+
+/* 动画 */
+let play = null;
+function tick(now){
+  if(cut){
+    const cp = Cam.position;
+    cut.pos.visible = cp.z < cut.W/2 + 30;
+    cut.neg.visible = cp.z > -cut.W/2 - 30;
+    cut.end.visible = cp.x > -cut.L/2 - 30;
+  }
+  if(fly){
+    let k = Math.min(1, (now - fly.t0)/fly.dur); k = k<.5 ? 4*k*k*k : 1 - Math.pow(-2*k+2,3)/2;
+    Cam.position.lerpVectors(fly.fp, fly.tp, k);
+    if(Ctl) Ctl.target.lerpVectors(fly.ft, fly.tt, k);
+    if(k >= 1) fly = null;
+  }
+  if(fork && cut){
+    const ud = fork.userData, L = cut.L;
+    if(play){
+      const ph = ((now - play.t0) % 1600)/1600, s = 0.5 - 0.5*Math.cos(ph*Math.PI*2);
+      fork.position.set(L/2 + 190 + (1-s)*200, -16, -(1-s)*cut.W*0.35);
+      fork.rotation.y = -(1-s)*0.25;
+      ud.carriage.position.y = s*30;
+      ud.load.visible = ph < 0.5;
+      const b = cur && cur.boxes[Math.min(curN, cur.boxes.length-1)];
+      const u = b ? unitById[b.u] : null;
+      if(u && srcById[u.src.id]) ud.load.material.color.copy(lin(srcById[u.src.id].color));
+    } else {
+      fork.position.copy(ud.park); fork.rotation.y = ud.parkRot; ud.carriage.position.y = 0; ud.load.visible = true;
+    }
+  }
+  if(play && cur){
+    const total = cur.boxes.length, k = Math.min(1, (now - play.t0)/play.dur), N = Math.round(k*total);
+    if(N !== curN){
+      const from = curN; setN(N); $('seq').value = N; updateSeqLabel();
+      // 新装进去的货：从柜门方向、稍高一点的位置滑进去落到位
+      if(N > from && N - from <= 40) for(let gi = from; gi < N; gi++) sliding.push({gi, t0: now});
+    }
+    if(k >= 1) stopPlay();
+  }
+  if(sliding.length){
+    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(), dur = 260, touched = new Set();
+    sliding = sliding.filter(sv => {
+      const k = Math.min(1, (now - sv.t0)/dur), e = 1 - Math.pow(1 - k, 3);
+      for(const r of (instByGi[sv.gi] || [])){
+        v.set(r.px + (1-e)*140, r.py + (1-e)*35, r.pz); sc.set(r.sx, r.sy, r.sz);
+        m4.compose(v, q, sc); r.mesh.setMatrixAt(r.i, m4); touched.add(r.mesh);
+      }
+      return k < 1;
+    });
+    touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
+    // 正在滑动的货先不画轮廓线，落到位再画
+    const minGi = sliding.length ? Math.min(...sliding.map(sv => sv.gi)) : curN;
+    if(edgeLines) edgeLines.geometry.setDrawRange(0, (edgeCum[Math.min(minGi, edgeCum.length-1)]||0)*24);
+    if(palLines){ const pc = palLines.userData.cum; palLines.geometry.setDrawRange(0, (pc[Math.min(minGi, pc.length-1)]||0)*24); }
+    req3d();
+  }
+}
+function stopPlay(){ play = null; if(sliding && sliding.length){ settleSliding(); } req3d(); $('play').querySelector('span').textContent = '播放装柜'; }
+$('play').onclick = () => {
+  if(!cur) return;
+  if(play){ stopPlay(); return; }
+  play = {t0: performance.now(), dur: Math.min(10000, Math.max(3000, cur.boxes.length*12))};
+  $('play').querySelector('span').textContent = '停止';
+  setN(0);
+};
+function settleSliding(){
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(), touched = new Set();
+  for(const sv of sliding) for(const r of (instByGi[sv.gi] || [])){ v.set(r.px, r.py, r.pz); sc.set(r.sx, r.sy, r.sz); m4.compose(v, q, sc); r.mesh.setMatrixAt(r.i, m4); touched.add(r.mesh); }
+  touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
+  sliding = [];
+}
+function updateSeqLabel(){
+  const s = $('seq'), anyP = cur && cur.boxes.some(b => unitById[b.u] && unitById[b.u].kind === 'pallet');
+  $('seqv').textContent = `${(+s.value).toLocaleString('zh-CN')} / ${(+s.max).toLocaleString('zh-CN')} ${anyP ? '件/托' : '件'}`;
+}
+$('seq').addEventListener('input', () => { stopPlay(); updateSeqLabel(); setN(+$('seq').value); });
+
+/* 悬停提示 */
+const ray = typeof THREE !== 'undefined' ? new THREE.Raycaster() : null;
+const ndc = typeof THREE !== 'undefined' ? new THREE.Vector2() : null;
+function onHover(e, force){
+  if(!boxMeshes.length) return;
+  if(e.buttons && !force){ $('tip').hidden = true; return; }
+  const r = e.currentTarget.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left)/r.width)*2 - 1, -((e.clientY - r.top)/r.height)*2 + 1);
+  ray.setFromCamera(ndc, Cam);
+  const hit = ray.intersectObjects(boxMeshes.filter(m => !m.userData.isFilm), false)[0], tip = $('tip');
+  if(!hit || hit.instanceId == null){ tip.hidden = true; return; }
+  const rec = hit.object.userData.recs[hit.instanceId], u = rec.u, b = rec.b;
+  tip.textContent = u.kind === 'pallet'
+    ? `${u.src.name} · 托盘 ${b.l}×${b.w}×${b.h} cm · ${u.cartons} 箱 · ${fmt(u.kg,0)} kg · 第 ${rec.gi+1} 个装入`
+    : `${u.src.name} · ${b.l}×${b.w}×${b.h} cm · ${u.kg} kg · 第 ${rec.gi+1} 件装入`;
+  tip.style.left = (e.clientX - r.left) + 'px'; tip.style.top = (e.clientY - r.top) + 'px';
+  tip.hidden = false;
+}
+
+const retheme = () => { if(has3d){ makeTextures(); if(cur) draw3d(cur, false); } };
+try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', retheme); }catch(e){}
+new MutationObserver(retheme).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+/* ================= 启动 ================= */
+init3d();
+if(!load()){ items = SAMPLE.map(s => newItem(s)); isSample = true; }
+setSample(isSample);
+renderRows(); renderSettings(); compute();
+</script>
+
+</body>
+</html>
