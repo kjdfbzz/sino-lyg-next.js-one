@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="集装箱装箱计算器：录入纸箱或托盘货，自动计算 20GP/40HQ/开顶/框架/冷柜装柜方案，3D 显示装柜过程，检查偏载、超限和限重。">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>集装箱装箱计算器</title>
+<title>集装箱装柜计算器 · 免费在线算柜 | Bryce Logistics</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: planner console — left rail (plans, legend), centre (3D yard stage, KPI row, cargo sheet, settings), right rail (checks, weight distribution). Cool concrete greys, container-blue steel, amber action colour. */
 :root{
   --bg:#E9ECEF; --card:#FFFFFF; --sunk:#F4F6F8; --fg:#18202A; --muted:#66717D; --faint:#9AA4AE; --line:#E0E4E9;
-  --accent:#F29D1F; --accent-ink:#2A1A02; --accent-soft:#FDF0DA;
+  --accent:#F2BE22; --accent-ink:#1C1500; --accent-soft:#FDF4D4;
   --steel:#2E6A9E; --steel-soft:#E3EEF7;
   --ok:#1E8A55; --ok-soft:#E0F3E8; --warn:#B26A00; --warn-soft:#FCEFD6; --bad:#D03A2B; --bad-soft:#FCE4E1;
   --shadow:0 1px 2px rgba(20,30,40,.05),0 6px 18px rgba(20,30,40,.06);
@@ -23,7 +23,7 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0E1217; --card:#161B22; --sunk:#11161C; --fg:#E6EAEE; --muted:#97A1AB; --faint:#66707A; --line:#252C35;
-  --accent:#F5A93A; --accent-ink:#241602; --accent-soft:#33260F;
+  --accent:#F5C842; --accent-ink:#1C1500; --accent-soft:#332A0E;
   --steel:#6FA6D6; --steel-soft:#16273A;
   --ok:#5CCB8F; --ok-soft:#132B1E; --warn:#F0B354; --warn-soft:#30240E; --bad:#F2827A; --bad-soft:#371917;
   --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3);
@@ -31,7 +31,7 @@
   --c-wall:#6A7581; --c-paint:#2F5F8A; --c-frame:#244A6D; --c-floor:#8A6440; --c-boxedge:#05080B; --c-ground:#2A3138; --c-wood:#9A6A3E; --c-paledge:#E8D9C4; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0E1217; --card:#161B22; --sunk:#11161C; --fg:#E6EAEE; --muted:#97A1AB; --faint:#66707A; --line:#252C35;
-  --accent:#F5A93A; --accent-ink:#241602; --accent-soft:#33260F;
+  --accent:#F5C842; --accent-ink:#1C1500; --accent-soft:#332A0E;
   --steel:#6FA6D6; --steel-soft:#16273A;
   --ok:#5CCB8F; --ok-soft:#132B1E; --warn:#F0B354; --warn-soft:#30240E; --bad:#F2827A; --bad-soft:#371917;
   --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3);
@@ -108,9 +108,10 @@ svg.i{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .stage{position:relative;flex:1;min-height:500px;overflow:hidden;border-radius:var(--r) var(--r) 0 0;background:radial-gradient(130% 100% at 50% 10%,var(--stage-a),var(--stage-b))}
 @media (max-width:700px){.stage{min-height:380px}}
 .stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+@media (pointer: coarse){.stage canvas{touch-action:pan-y}}
 .stage canvas:active{cursor:grabbing}
 .bays{position:absolute;left:12px;right:12px;top:12px;display:flex;gap:8px;overflow:hidden;pointer-events:none}
-.bay{flex:0 1 190px;min-width:120px;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:11px;padding:8px 10px;box-shadow:var(--shadow)}
+.bay{flex:0 1 190px;min-width:120px;background:var(--card);background:color-mix(in srgb,var(--card) 96%,transparent);border:1px solid var(--line);border-radius:11px;padding:8px 10px;box-shadow:var(--shadow)}
 .bay .h{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
 .bay .h .nm{flex:1;min-width:0;margin:0;color:var(--fg)}
 .code{font-family:var(--f-mono);font-size:10.5px;font-weight:600;padding:0 6px;border-radius:4px;color:#fff;line-height:17px;white-space:nowrap;display:inline-block;text-shadow:0 1px 0 rgba(0,0,0,.15)}
@@ -120,14 +121,14 @@ svg.i{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .prog i{display:block;height:100%;border-radius:2px}
 @media (max-width:700px){.bays{top:8px;left:8px;right:8px;gap:5px;flex-wrap:wrap}.bay{flex:0 0 auto;min-width:0;padding:4px 7px}.bay .nm,.bay .prog{display:none}.bay .h{gap:6px}}
 .stage-foot{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none;flex-wrap:wrap}
-.stage-foot .spec{font-size:11.5px;color:var(--muted);background:color-mix(in srgb,var(--card) 80%,transparent);padding:4px 8px;border-radius:7px}
+.stage-foot .spec{font-size:11.5px;color:var(--muted);background:var(--card);background:color-mix(in srgb,var(--card) 80%,transparent);padding:4px 8px;border-radius:7px}
 .stage-foot .spec b{color:var(--fg);font-weight:600}
 @media (max-width:700px){.stage-foot .spec{display:none}.stage-foot{justify-content:flex-end}}
 .badge{font-family:var(--f-mono);font-size:12px;font-weight:600;padding:4px 10px;border-radius:7px;box-shadow:var(--shadow)}
 .badge.ok{background:var(--card);color:var(--fg);border:1px solid var(--line)}
 .badge.bad{background:var(--bad);color:#fff}
 .tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-size:11.5px;padding:6px 10px;border-radius:8px;white-space:nowrap;box-shadow:var(--shadow);transform:translate(-50%,-135%)}
-.msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);text-align:center;padding:24px}
+.msg{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;color:var(--muted);text-align:center;padding:24px}
 .seqbar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
 .seqbar input{flex:1;min-width:120px;accent-color:var(--accent)}
 .seqbar span{font-size:11.5px;color:var(--muted);white-space:nowrap}
@@ -248,10 +249,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--fg);color:var(--bg);border-radius:10px;padding:9px 12px 9px 16px;display:flex;gap:12px;align-items:center;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100vw - 32px)}
 .toast button{background:var(--accent);color:var(--accent-ink);border:none;border-radius:7px;padding:4px 12px;font-weight:600}
-.busy{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--stage-a) 70%,transparent);font-size:14px;color:var(--fg);z-index:5}
+.busy{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;background:var(--stage-a);background:color-mix(in srgb,var(--stage-a) 70%,transparent);font-size:14px;color:var(--fg);z-index:5}
 .msg .acts{display:flex;gap:8px;justify-content:center;margin-top:12px;pointer-events:auto}
 .ctrls{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:grid;gap:6px;z-index:3}
-.ctrls button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 92%,transparent);display:grid;place-items:center;box-shadow:var(--shadow);color:var(--fg)}
+.ctrls button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);background:color-mix(in srgb,var(--card) 92%,transparent);display:grid;place-items:center;box-shadow:var(--shadow);color:var(--fg)}
 .ctrls button:hover{border-color:var(--faint)}
 .wheelhint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:9px;font-size:13px;pointer-events:none;z-index:4;opacity:.92}
 .stage.live{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--accent) 55%,transparent)}
@@ -259,7 +260,7 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .viewer:fullscreen,.viewer.fs{background:var(--bg);display:flex;flex-direction:column;gap:10px;height:100%;
   padding-block:calc(10px + env(safe-area-inset-top,0px)) calc(10px + env(safe-area-inset-bottom,0px));
   padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));overflow:hidden}
-.viewer.fs{position:fixed;inset:0;z-index:60}
+.viewer.fs{position:fixed;top:0;right:0;bottom:0;left:0;z-index:60}
 .viewer:fullscreen .work,.viewer.fs .work{flex:1;min-height:0;grid-template-rows:minmax(0,1fr)}
 .viewer:fullscreen .stagecard,.viewer.fs .stagecard{min-height:0}
 .viewer:fullscreen .stage,.viewer.fs .stage{min-height:0}
@@ -280,7 +281,107 @@ table.cttable input{font-family:var(--f-mono);font-size:11px;border:1px solid va
 table.cttable .na{color:var(--faint);text-align:center}
 table.cttable .src{font-size:10.5px;color:var(--muted)}
 .disclaimer{max-width:1640px;margin:14px auto 0;color:var(--muted);font-size:11.5px;text-align:center;padding:0 12px}
+.pbtns{display:flex;gap:4px}
+.pbtns button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--fg)}
+.pbtns button.main{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pbtns button:hover{border-color:var(--faint)}
+@media (max-width:560px){.seqbar{flex-wrap:wrap;gap:8px 10px}.seqbar input{order:5;flex-basis:100%}.seqbar #seqv{margin-left:auto}}
+#pb-speed{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:5px 6px;background:var(--card);color:var(--fg)}
+.caption .pt{white-space:nowrap;display:inline-block}
+.caption{position:absolute;left:50%;bottom:50px;transform:translateX(-50%);max-width:calc(100% - 140px);background:#1B232C;background:rgba(22,29,38,.9);color:#F2F4F6;font-size:13px;line-height:1.45;padding:7px 14px;border-radius:10px;box-shadow:var(--shadow);pointer-events:none;text-align:center;z-index:3}
+.caption b{color:#F8D651}
+.caption .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+@media (max-width:700px){.caption{font-size:12px;bottom:44px;max-width:calc(100% - 70px);padding:6px 10px}}
 .foot-hint{color:var(--muted);font-size:12px;padding:10px 14px;border-top:1px solid var(--line)}
+/* ---------- 首屏 / 品牌 ---------- */
+:root{--brand:#F8D651;--navy:#06142A}
+body{margin:0}
+.side .brand{display:none}
+body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-area-inset-right,0px))}
+@media (max-width:600px){body{--padl:max(16px,env(safe-area-inset-left,0px));--padr:max(16px,env(safe-area-inset-right,0px))}}
+.hero{position:relative;margin:-12px calc(-1*var(--padr)) 0 calc(-1*var(--padl));padding:0 calc(var(--padr) + 8px) 92px calc(var(--padl) + 8px);color:#fff;background:var(--navy);overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;top:0;right:0;bottom:0;left:0;z-index:-1;background:
+  linear-gradient(90deg,rgba(4,12,26,.97) 0%,rgba(4,12,26,.86) 36%,rgba(4,12,26,.42) 68%,rgba(4,12,26,.62) 100%),
+  linear-gradient(180deg,rgba(6,20,42,0) 50%,var(--navy) 100%),
+  url("/bryce-hero-port.webp") 70% 42%/cover no-repeat,var(--navy)}
+.hero-bg::after{content:"";position:absolute;top:auto;right:0;bottom:0;left:0;height:1px;background:linear-gradient(90deg,transparent,rgba(248,214,81,.35),transparent)}
+.hnav{max-width:1640px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:16px 0 0}
+.wm{display:flex;align-items:center;gap:14px;color:#fff;text-decoration:none}
+.wm-t{font-weight:800;letter-spacing:.07em;font-size:17px;line-height:1;position:relative;padding-bottom:7px;white-space:nowrap}
+.wm-t::after{content:"";position:absolute;left:0;bottom:0;width:48%;height:3px;background:var(--brand);border-radius:2px}
+.wm-s{font-size:12px;color:rgba(255,255,255,.66);border-left:1px solid rgba(255,255,255,.22);padding-left:14px;line-height:1.35;white-space:nowrap}
+.wm-s b{display:block;color:#fff;font-weight:600;font-size:13px}
+.hlinks{margin-left:auto;display:flex;align-items:center;gap:4px}
+.hlinks a,.hlinks button{color:rgba(255,255,255,.82);text-decoration:none;font-size:13px;padding:8px 13px;border-radius:999px;border:1px solid transparent;background:none;white-space:nowrap}
+.hlinks a:hover,.hlinks button:hover{color:#fff;background:rgba(255,255,255,.08)}
+.hlinks .cta{border-color:rgba(248,214,81,.6);color:var(--brand);font-weight:600}
+.hlinks .cta:hover{background:rgba(248,214,81,.12);color:var(--brand)}
+.hero-in{max-width:1640px;margin:0 auto;padding:40px 0 0;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px 56px;align-items:end}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.16em;color:var(--brand);font-weight:600}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--brand)}
+.hero h1{font-size:clamp(30px,3.9vw,52px);line-height:1.14;margin:14px 0;font-weight:800;letter-spacing:.005em}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.lede{font-size:clamp(14px,1.2vw,16px);line-height:1.75;color:rgba(255,255,255,.76);max-width:34em;margin:0}
+.hcta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.hbtn{display:inline-flex;align-items:center;gap:9px;height:48px;padding:0 24px;border-radius:12px;font-size:15px;font-weight:700;border:1px solid transparent;transition:transform .15s,filter .15s,background .15s}
+.hbtn:hover{transform:translateY(-1px)}
+.hbtn.pri{background:var(--brand);color:#1A1400;box-shadow:0 10px 28px rgba(248,214,81,.22)}
+.hbtn.pri:hover{filter:brightness(1.06)}
+.hbtn.sec{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28);color:#fff;}
+.hbtn.sec:hover{background:rgba(255,255,255,.13)}
+.hbtn svg{width:16px;height:16px}
+.hstats{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;margin:0}
+.hstats li{padding:14px 16px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(12,28,52,.78);}
+.hstats b{display:block;font-family:var(--f-mono);font-size:24px;color:#fff;font-weight:600;line-height:1.1}
+.hstats b small{font-size:13px;color:var(--brand);margin-left:4px;font-family:var(--f-body);font-weight:600}
+.hstats span{display:block;margin-top:5px;font-size:12px;line-height:1.5;color:rgba(255,255,255,.64)}
+.app{position:relative;margin-top:-60px}
+.sheet.flash{box-shadow:0 0 0 3px var(--accent),var(--shadow);transition:box-shadow .3s}
+.hero.slim{padding-bottom:72px}.hero.slim .hero-in{display:none}
+.hero.slim .hero-bg{background:linear-gradient(90deg,rgba(4,12,26,.97),rgba(4,12,26,.8) 60%,rgba(4,12,26,.6)),url("/bryce-hero-port.webp") 70% 40%/cover no-repeat,var(--navy)}
+@media (max-width:1100px){.hero-in{grid-template-columns:minmax(0,1fr)}.hstats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){
+  .hero.slim{padding-bottom:60px}
+  .hnav{padding-top:12px}.wm-s,.hlinks .site{display:none}.wm-t{font-size:15px}
+  .hero{padding-bottom:72px}
+  .hero-bg{background:linear-gradient(180deg,rgba(4,12,26,.72) 0%,rgba(4,12,26,.9) 55%,var(--navy) 100%),url("/bryce-hero-port.webp") 62% 30%/cover no-repeat,var(--navy)}
+  .hero-in{padding-top:26px;gap:22px}
+  .hero h1{font-size:29px}
+  .hbtn{flex:1 1 0;justify-content:center;padding:0 12px;height:46px;font-size:14.5px}
+  .lede{font-size:14px;line-height:1.7}
+  .hstats{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.hstats li{padding:9px 6px;text-align:center;border-radius:12px}.hstats b{font-size:18px}.hstats b small{display:block;margin:4px 0 0;font-size:11px}.hstats span{display:none}
+  .app{margin-top:-48px}
+}
+/* 联系卡片 */
+.cmodal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(4,10,20,.55);}
+.cbox{position:relative;width:min(460px,100%);background:var(--card);color:var(--fg);border-radius:18px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.35);border-top:4px solid var(--brand)}
+.cbox h3{margin:0 0 6px;font-size:18px}
+.cbox>p{margin:0 0 16px;color:var(--muted);line-height:1.6}
+.cx{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:10px;border:none;background:var(--sunk);font-size:18px;line-height:1;color:var(--muted)}
+.cgrid{display:grid;grid-template-columns:132px minmax(0,1fr);gap:16px;align-items:center}
+.cgrid figure{margin:0;text-align:center}
+.cgrid .qr{width:132px;height:132px;border-radius:10px;border:1px solid var(--line);background-color:#fff;background-repeat:no-repeat;background-size:117.8% auto;background-position:50% 57.9%}
+.cgrid figcaption{font-size:11.5px;color:var(--muted);margin-top:6px}
+.clist{display:grid;gap:8px;min-width:0}
+.clist a{display:block;padding:9px 12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--fg);min-width:0}
+.clist a:hover{border-color:var(--accent);background:var(--accent-soft)}
+.clist b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.clist span{display:block;font-family:var(--f-mono);font-size:13px;overflow-wrap:anywhere}
+@media (max-width:420px){.cgrid{grid-template-columns:minmax(0,1fr)}.cgrid figure{justify-self:center}}
+/* 页脚 */
+.bfoot{max-width:1640px;margin:22px auto 0;padding:18px 4px 0;border-top:1px solid var(--line)}
+.bf-in{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap}
+.bf-brand{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12.5px}
+.bf-brand .wm-t{color:var(--fg);font-size:14px}
+.bf-links{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px}
+.bf-links a,.bf-links button{color:var(--steel);text-decoration:none;background:none;border:none;padding:0;font-size:12.5px}
+.bf-links a:hover,.bf-links button:hover{text-decoration:underline}
+.bfoot .disclaimer{margin:12px 0 0;text-align:left;padding:0}
+@media (pointer: coarse){
+  input,select,textarea{font-size:16px!important}
+  .pbtns button{width:40px;height:40px}
+  #pb-speed{padding:8px}
+}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -305,8 +406,43 @@ table.cttable .src{font-size:10.5px;color:var(--muted)}
   <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
   <symbol id="i-minus" viewBox="0 0 16 16"><path d="M3 8h10"/></symbol>
   <symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 0 1.5-3.5"/><path d="M3 2.5V5h2.5"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 16 16"><path d="M4 3v10M13 3L6 8l7 5z"/></symbol>
+  <symbol id="i-next" viewBox="0 0 16 16"><path d="M12 3v10M3 3l7 5-7 5z"/></symbol>
+  <symbol id="i-playi" viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 16 16"><path d="M5 3v10M11 3v10" stroke-width="2.4"/></symbol>
   <symbol id="i-list" viewBox="0 0 16 16"><path d="M5 4h9M5 8h9M5 12h9M2 4h.5M2 8h.5M2 12h.5"/></symbol>
 </svg>
+
+<header class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <nav class="hnav" aria-label="网站导航">
+    <a class="wm" href="https://www.sinolyg.com/" target="_blank" rel="noopener">
+      <span class="wm-t">BRYCE LOGISTICS</span>
+      <span class="wm-s"><b>集装箱装柜计算器</b>Container Load Planner</span>
+    </a>
+    <div class="hlinks">
+      <a class="site" href="https://www.sinolyg.com/" target="_blank" rel="noopener">官网</a>
+      <button type="button" class="cta" data-contact>联系 Bryce</button>
+    </div>
+  </nav>
+  <div class="hero-in">
+    <div>
+      <div class="eyebrow">免费在线工具 · 不用注册</div>
+      <h1>30 秒算出你的货<br><em>装几个柜、怎么装</em></h1>
+      <p class="lede">纸箱、托盘、混装都能算。按船公司公布的箱型尺寸计算，自动检查限重和前后左右偏载，3D 演示从柜底到柜门的装柜顺序。</p>
+      <div class="hcta">
+        <button type="button" class="hbtn pri" id="h-start">开始计算<svg class="i" viewBox="0 0 16 16"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="hbtn sec" id="h-demo"><svg viewBox="0 0 12 12"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>看装柜演示</button>
+      </div>
+    </div>
+    <ul class="hstats" aria-label="工具特点">
+      <li><b>6<small>种箱型</small></b><span>20GP · 40HQ · 开顶 · 框架 · 冷柜 · 冷代干</span></li>
+      <li><b>4<small>家船公司</small></b><span>马士基 · 赫伯罗特 · ONE · 达飞 官方尺寸</span></li>
+      <li><b>CTU<small>规范</small></b><span>重心前后左右偏载检查，不压轻货</span></li>
+      <li><b>3D<small>演示</small></b><span>叉车装托盘、逐步字幕，一步步看</span></li>
+    </ul>
+  </div>
+</header>
 
 <div class="app">
   <aside class="side card">
@@ -462,11 +598,17 @@ table.cttable .src{font-size:10.5px;color:var(--muted)}
             <div class="spec" id="stagespec"></div>
             <div class="badge ok" id="wbadge" hidden></div>
           </div>
+          <div class="caption" id="caption" hidden></div>
           <div class="msg" id="stagemsg" hidden></div>
         </div>
         <div class="seqbar">
-          <span>装柜顺序</span>
-          <input type="range" id="seq" min="0" max="0" value="0" aria-label="装柜顺序">
+          <div class="pbtns" role="group" aria-label="播放控制">
+            <button type="button" id="pb-prev" title="上一步" aria-label="上一步"><svg class="i"><use href="#i-prev"/></svg></button>
+            <button type="button" id="pb-play" class="main" title="播放" aria-label="播放"><svg class="i"><use href="#i-playi"/></svg></button>
+            <button type="button" id="pb-next" title="下一步" aria-label="下一步"><svg class="i"><use href="#i-next"/></svg></button>
+          </div>
+          <select id="pb-speed" aria-label="播放速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
+          <input type="range" id="seq" min="0" max="0" value="0" aria-label="装柜进度">
           <span class="mono" id="seqv"></span>
         </div>
       </div>
@@ -491,7 +633,28 @@ table.cttable .src{font-size:10.5px;color:var(--muted)}
 </div>
 
 <div class="toast" id="toast" hidden role="status"><span id="toast-msg"></span><button type="button" id="toast-undo">撤销</button></div>
+<div class="cmodal" id="contact" hidden role="dialog" aria-modal="true" aria-labelledby="ct-h">
+  <div class="cbox">
+    <button type="button" class="cx" id="contact-x" aria-label="关闭">×</button>
+    <h3 id="ct-h">联系 Bryce</h3>
+    <p>装柜方案拿不准、要订舱或问海运价，直接找我。连云港、青岛出口整柜、拼箱、拖车、报关。</p>
+    <div class="cgrid">
+      <figure><div id="wxqr" class="qr" role="img" aria-label="微信二维码"></div><figcaption>微信扫码，备注“装柜”</figcaption></figure>
+      <div class="clist">
+        <a href="https://wa.me/8618360639913" target="_blank" rel="noopener"><b>WhatsApp</b><span>+86 183 6063 9913</span></a>
+        <a href="mailto:Bryce.Lee@gwl-lianyungang.com"><b>邮箱</b><span>Bryce.Lee@gwl-lianyungang.com</span></a>
+        <a href="https://www.sinolyg.com/" target="_blank" rel="noopener"><b>官网</b><span>www.sinolyg.com</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="bfoot">
+  <div class="bf-in">
+    <div class="bf-brand"><span class="wm-t">BRYCE LOGISTICS</span><span>GWL 连云港分公司 · 连云港 / 青岛出口整柜、拼箱、拖车、报关</span></div>
+    <div class="bf-links"><a href="https://www.sinolyg.com/" target="_blank" rel="noopener">www.sinolyg.com</a><a href="https://wa.me/8618360639913" target="_blank" rel="noopener">WhatsApp</a><button type="button" data-contact>微信</button></div>
+  </div>
 <p class="disclaimer">本工具按理论算法计算装柜方案，结果仅供参考。实际能装多少、能否接受超限货，以现场装柜情况和船公司、码头、车队的要求为准。柜型尺寸来自各船公司官网公布值，具体以箱门铭牌为准。</p>
+</footer>
 <script src="vendor/three.min.js"></script>
 <script src="vendor/OrbitControls.js"></script>
 <script>
@@ -1425,7 +1588,7 @@ function renderContainer(resetCam){
     $('checks').innerHTML = '<div class="note">算出方案后，这里会检查重量、体积、前后左右偏载和重心高度。</div>';
     $('tb-plan').textContent = '—'; $('tb-sel').innerHTML = '<option>还没有方案</option>'; $('tb-dims').textContent = '—'; $('wbadge').hidden = true;
     $('seq').max = 0; $('seq').value = 0; $('seqv').textContent = '';
-    $('stagespec').hidden = true;
+    $('stagespec').hidden = true; $('caption').hidden = true;
     showStageMsg(srcs.length ? '这些货物装不进任何柜型，原因见货物明细' : '还没有货物。先录入货物，这里会显示装柜图', !srcs.length); clear3d(); cur = null; return;
   }
   if(selIdx >= p.containers.length) selIdx = 0;
@@ -1629,7 +1792,8 @@ function renderChart(A, spec){
 /* ================= 6. 3D 场景 ================= */
 let cut = null, fork = null, lastType = null, palLines = null;
 let dirty3d = true; const req3d = () => { dirty3d = true; };
-let instByGi = [], sliding = [];
+let stageOn = true;
+let instByGi = [];
 function sizeLabel(sp){ const k = Math.max(0.55, Math.min(1, (Cam && Cam.aspect) || 1)); sp.scale.set(0.085*k, 0.032*k, 1); }
 let R, S, Cam, Ctl, G, has3d = false, cur = null, boxMeshes = [], edgeLines = null, edgeCum = [0], curN = 0, sun = null;
 function showStageMsg(t, acts){
@@ -1744,8 +1908,31 @@ function init3d(){
   };
   new ResizeObserver(resize).observe($('stage')); resize();
   // 只在画面有变化时才重画：拖动、播放、切换视角或数据改变；静止时不占用电脑资源
-  (function loop(t){ requestAnimationFrame(loop); const busy = fly || play; tick(t||0); const moved = Ctl ? Ctl.update() : false; if(moved || busy || dirty3d){ R.render(S, Cam); dirty3d = false; } })();
-  cv.addEventListener('pointermove', onHover);
+  (function loop(t){ requestAnimationFrame(loop); const busy = fly || play; tick(t||0); const moved = Ctl ? Ctl.update() : false; if((moved || busy || dirty3d) && stageOn){ R.render(S, Cam); dirty3d = false; } })();
+  cv.addEventListener('pointermove', e => { if(hoverQ) { hoverQ = e; return; } hoverQ = e; requestAnimationFrame(() => { const ev = hoverQ; hoverQ = null; onHover(ev); }); });
+  // 手机单指：横着滑转 3D，竖着滑交给浏览器滚动页面；两指照旧交给 OrbitControls（缩放、平移）
+  if(Ctl && matchMedia('(pointer: coarse)').matches){
+    let t1 = null; const st = $('stage'), up = new THREE.Vector3(0, 1, 0), off = new THREE.Vector3();
+    st.addEventListener('touchstart', e => {
+      if(e.touches.length !== 1 || e.target !== cv){ t1 = null; return; }
+      e.stopPropagation();
+      t1 = {x: e.touches[0].clientX, y: e.touches[0].clientY, mode: null};
+    }, {capture: true, passive: true});
+    st.addEventListener('touchmove', e => {
+      if(!t1 || e.touches.length !== 1) return;
+      e.stopPropagation();
+      const x = e.touches[0].clientX, y = e.touches[0].clientY, dx = x - t1.x, dy = y - t1.y;
+      if(!t1.mode){ if(Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)*1.2) t1.mode = 'rot'; else if(Math.abs(dy) > 8) t1.mode = 'scroll'; else return;
+        if(t1.mode === 'rot' && !st.dataset.hinted){ st.dataset.hinted = 1; const h = $('wheelhint'); h.textContent = '左右滑动转动 · 两指缩放 · 上下滑动翻页'; h.hidden = false; clearTimeout(hintT); hintT = setTimeout(() => { h.hidden = true; }, 2000); } }
+      if(t1.mode !== 'rot') return;
+      if(e.cancelable) e.preventDefault();
+      fly = null; $('tip').hidden = true;
+      off.copy(Cam.position).sub(Ctl.target).applyAxisAngle(up, -dx*0.006);
+      Cam.position.copy(Ctl.target).add(off); Cam.lookAt(Ctl.target); Ctl.update(); req3d();
+      t1.x = x; t1.y = y;
+    }, {capture: true, passive: false});
+    st.addEventListener('touchend', e => { if(t1 && e.touches.length === 0){ t1 = null; e.stopPropagation(); } }, {capture: true});
+  }
   let down = null;
   cv.addEventListener('pointerdown', e => { down = {x:e.clientX, y:e.clientY}; });
   cv.addEventListener('pointerup', e => {
@@ -1760,7 +1947,7 @@ function clear3d(){
   if(!has3d) return;
   G.traverse(o => { if(o.geometry) o.geometry.dispose(); if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { if(m.map && m.map.ownLabel) m.map.dispose(); if(m.dispose) m.dispose(); }); } });
   while(G.children.length) G.remove(G.children[0]);
-  boxMeshes = []; edgeLines = null; cut = null; fork = null; edgeCum = [0]; sliding = []; instByGi = []; req3d();
+  boxMeshes = []; edgeLines = null; cut = null; fork = null; edgeCum = [0]; instByGi = []; PB.anim.clear(); req3d();
 }
 function addBox(parent, w, h, d, x, y, z, mat, cast=true){
   const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
@@ -2052,7 +2239,11 @@ function draw3d(c, resetCam){
   const bcol = (B3.lon === 'bad' || B3.lat === 'bad') ? '#D03A2B' : (B3.lon === 'warn' || B3.lat === 'warn') ? '#E9B12E' : '#D03A2B';
   const cone = hud(new THREE.ConeGeometry(9, 22, 20), bcol, .95); cone.rotation.x = Math.PI; cone.position.set(ox + A3.cgx, Hh + 46, oz + A3.cgy);
   const pin = hud(new THREE.CylinderGeometry(1.2, 1.2, Hh + 34, 8), bcol, .45); pin.position.set(ox + A3.cgx, (Hh + 34)/2, oz + A3.cgy);
+  PB.tl = buildTimeline(c); PB.steps = computeSteps(c); PB.anim.clear();
   setN(+$('seq').value);
+  PB.t = curN ? PB.tl.start[curN-1] + PB.tl.dur[curN-1] : 0;
+  if(fork) fork.userData.load.visible = true;
+  renderCaption(); playUI();
   if(resetCam) setView(curView, true);
 }
 function setN(N){
@@ -2113,7 +2304,7 @@ $('z-reset').onclick = () => setView(curView === 'top' || curView === 'side' || 
 /* 滚轮：没点画面前，滚轮照常滚动页面；点过画面（或全屏时）才用来缩放 */
 let live = false, hintT = null;
 function setLive(v){ live = v; if(Ctl) Ctl.enableZoom = v || isFS(); $('stage').classList.toggle('live', v && !isFS()); }
-$('stage').addEventListener('pointerdown', () => { setLive(true); $('wheelhint').hidden = true; });
+$('stage').addEventListener('pointerdown', e => { setLive(true); if(e.pointerType === 'mouse') $('wheelhint').hidden = true; });
 $('stage').addEventListener('pointerleave', () => setLive(false));
 $('stage').addEventListener('wheel', () => {
   if(live || isFS()) return;
@@ -2152,7 +2343,153 @@ document.addEventListener('fullscreenchange', fsUI);
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('viewer').classList.contains('fs')){ $('viewer').classList.remove('fs'); fsUI(); } });
 
 /* 动画 */
-let play = null;
+/* ================= 装柜播放 =================
+   时间线：散箱是人工搬进去的，一箱一下很快；整托货留出时间，让叉车叉着开进柜子、放下、倒出来。
+   步骤：同一种货、相邻约 1.2 米的一段算一步，字幕和“上一步 / 下一步”都按步走。 */
+let play = null;                       // 正在播放时不为空
+const PB = {t:0, speed:1, last:0, tl:null, steps:[], anim:new Set()};
+function buildTimeline(c){
+  const n = c.boxes.length, isP = c.boxes.map(b => unitById[b.u] && unitById[b.u].kind === 'pallet');
+  const L = CT[c.type].L, parkX = fork ? fork.userData.park.x : L/2 + 390;
+  const np = isP.filter(Boolean).length, nc = n - np;
+  const wc = nc ? Math.min(0.7, Math.max(Math.min(0.04, 14/nc), 6/nc)) : 0, CDUR = Math.max(0.45, Math.min(1.1, wc*1.6));
+  const cl = clsOf(c.type), craneAll = cl === 'fr' || (cl === 'ot' && RULES.otTop), crane = new Uint8Array(n);
+  const start = new Float64Array(n), dur = new Float64Array(n), tIn = new Float64Array(n), tLow = new Float64Array(n);
+  let sumP = 0;
+  for(let gi = 0; gi < n; gi++){
+    if(!isP[gi]){ dur[gi] = CDUR; if(craneAll){ crane[gi] = 1; dur[gi] = Math.max(CDUR, Math.min(1.4, 0.5 + wc*2)); } continue; }
+    const b = c.boxes[gi], d = Math.abs(parkX - (-L/2 + b.x + b.l/2 + 118));
+    tIn[gi] = 0.6 + d/420; tLow[gi] = 0.4; dur[gi] = tIn[gi] + tLow[gi] + 0.5 + d/520;
+    sumP += dur[gi];
+  }
+  const k = sumP > 30 ? Math.min(2.5, sumP/30) : 1;      // 托盘很多时整体快一点，最多快 2.5 倍
+  if(k > 1) for(let gi = 0; gi < n; gi++) if(isP[gi]){ const lo = Math.max(0.3, tLow[gi]/k); dur[gi] = (dur[gi] - tLow[gi])/k + lo; tIn[gi] /= k; tLow[gi] = lo; }
+  let t = 0, forkFree = 0, maxDur = CDUR;
+  for(let gi = 0; gi < n; gi++){
+    if(isP[gi]){
+      start[gi] = Math.max(t, forkFree);                  // 只有一台叉车：上一托倒出来才能叉下一托
+      forkFree = start[gi] + dur[gi];
+      t = start[gi] + tIn[gi] + tLow[gi];                 // 放下以后，人工码散箱可以同时开始
+      maxDur = Math.max(maxDur, dur[gi]);
+    } else { start[gi] = t; t += wc; }
+  }
+  let endAll = t; for(let gi = 0; gi < n; gi++) endAll = Math.max(endAll, start[gi] + dur[gi]);
+  for(let gi = 0; gi < n; gi++) maxDur = Math.max(maxDur, dur[gi]);
+  return {start, dur, tIn, tLow, isP, crane, craneH: CT[c.type].H + 160, total: t, endAll, maxDur};
+}
+function computeSteps(c){
+  // 按柜长方向分段：每段约 1.1 米算一步，列出这一段里装的每种货
+  const steps = [], B = c.boxes, W = CT[c.type].W;
+  let cur = null;
+  B.forEach((b, gi) => {
+    const u = unitById[b.u]; if(!u) return;
+    if(!cur || b.x >= cur.sx + 110){ cur = {from: gi, to: gi, sx: b.x, x0: b.x, x1: b.x + b.l, parts: new Map(), pallets: 0}; steps.push(cur); }
+    cur.to = gi + 1; cur.x0 = Math.min(cur.x0, b.x); cur.x1 = Math.max(cur.x1, b.x + b.l);
+    const key = u.src.id + ':' + u.kind;
+    let pt = cur.parts.get(key);
+    if(!pt){ pt = {name: u.src.name, color: (srcById[u.src.id] || {}).color, kind: u.kind, cartons: 0, units: 0, ys: new Set(), zs: new Set(), y0: Infinity, y1: -Infinity, zmin: Infinity}; cur.parts.set(key, pt); }
+    pt.cartons += u.cartons; pt.units++; pt.ys.add(Math.round(b.y)); pt.zs.add(Math.round(b.z));
+    pt.y0 = Math.min(pt.y0, b.y); pt.y1 = Math.max(pt.y1, b.y + b.w); pt.zmin = Math.min(pt.zmin, b.z);
+    if(u.kind === 'pallet') cur.pallets++;
+  });
+  for(const st of steps){
+    st.list = [...st.parts.values()].map(pt => {
+      const span = pt.y1 - pt.y0, mid = (pt.y0 + pt.y1)/2;
+      const side = span > W*0.8 ? '整排' : mid < W*0.4 ? '靠右' : mid > W*0.6 ? '靠左' : '居中';   // 左右按“站在柜门往里看”
+      const qty = pt.kind === 'pallet' ? `${pt.units} 托` : `${pt.cartons} 箱`;
+      const lay = pt.kind === 'pallet' ? (pt.zs.size > 1 ? `叠 ${pt.zs.size} 层` : '') : `码 ${pt.zs.size} 层`;
+      const top = pt.zmin > 0 ? '，压在下面的货上' : '';
+      return `<span class="pt"><span class="dot" style="background:${pt.color || '#888'}"></span>${esc(pt.name)} ${qty}（${[side, lay].filter(Boolean).join('，')}${top}）</span>`;
+    });
+  }
+  return steps;
+}
+function stepIndexAt(N){ const st = PB.steps; for(let i = 0; i < st.length; i++) if(N <= st[i].to && N > st[i].from) return i; return N <= 0 ? -1 : st.length - 1; }
+function renderCaption(){
+  const el = $('caption'); if(!cur || !PB.tl){ el.hidden = true; return; }
+  const N = curN, total = cur.boxes.length, st = PB.steps;
+  if(!total){ el.hidden = true; return; }
+  if(N >= total && !play){ el.hidden = false; el.innerHTML = `装完了：共 <b>${st.length}</b> 步。点 ⏮ ⏭ 可以一步步看`; return; }
+  if(N <= 0){ el.hidden = false; el.innerHTML = `准备装柜：共 <b>${st.length}</b> 步，从${clsOf(cur.type) === 'rf' || clsOf(cur.type) === 'nor' ? '冷机端' : '柜底'}开始往柜门装`; return; }
+  const i = stepIndexAt(N), x = st[i]; if(!x){ el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = `第 <b>${i+1}</b>/${st.length} 步 · 距柜底 ${(Math.max(0,x.x0)/100).toFixed(1)}–${(x.x1/100).toFixed(1)} m<br>${x.list.join('　')}${PB.tl && PB.tl.crane[x.from] ? '<br>用吊机从上方吊进去' : x.pallets ? '<br>托盘用叉车从柜门叉进去，散箱人工码放' : ''}`;
+}
+function upper(arr, t){ let lo = 0, hi = arr.length; while(lo < hi){ const m = (lo + hi) >> 1; if(arr[m] <= t + 1e-9) lo = m + 1; else hi = m; } return lo; }
+/* 把正在动的货（和叉车）放回到当前时间点该在的位置 */
+const _m4 = typeof THREE !== 'undefined' ? new THREE.Matrix4() : null, _q = typeof THREE !== 'undefined' ? new THREE.Quaternion() : null, _v = typeof THREE !== 'undefined' ? new THREE.Vector3() : null, _s = typeof THREE !== 'undefined' ? new THREE.Vector3() : null;
+function placeGi(gi, dx, dy, dz, touched, rot, pvx, pvz){
+  const c = rot ? Math.cos(rot) : 1, sn = rot ? Math.sin(rot) : 0;
+  if(rot) _q.setFromAxisAngle(_up, rot); else _q.set(0, 0, 0, 1);
+  for(const r of (instByGi[gi] || [])){
+    let x = r.px + dx, z = r.pz + dz;
+    if(rot){ const rx = x - pvx, rz = z - pvz; x = pvx + rx*c + rz*sn; z = pvz - rx*sn + rz*c; }
+    _v.set(x, r.py + dy, z); _s.set(r.sx, r.sy, r.sz); _m4.compose(_v, _q, _s); r.mesh.setMatrixAt(r.i, _m4); touched.add(r.mesh);
+  }
+  _q.set(0, 0, 0, 1);
+}
+const _up = typeof THREE !== 'undefined' ? new THREE.Vector3(0, 1, 0) : null;
+const ease = k => k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2)/2;
+const smooth = x => { x = Math.max(0, Math.min(1, x)); return x*x*(3 - 2*x); };
+// 匀加速 → 匀速 → 匀减速，最高速度只比平均快 1/3，看着像真车在开
+const trap = (u, a = 0.25) => { u = Math.max(0, Math.min(1, u)); const m = 2*a*(1 - a); return u < a ? u*u/m : u > 1 - a ? 1 - (1 - u)*(1 - u)/m : (u - a/2)/(1 - a); };
+function animateFrame(){
+  if(!cur || !PB.tl || !has3d) return;
+  const tl = PB.tl, t = PB.t, touched = new Set(), spec = CT[cur.type], L = spec.L, W = spec.W, ox = -L/2, oz = -W/2;
+  let minGi = curN, forkBusy = false;
+  const seen = new Set();
+  for(let gi = curN - 1; gi >= 0; gi--){
+    if(tl.start[gi] + tl.maxDur < t) break;
+    seen.add(gi);
+    const tt = t - tl.start[gi], k = tt / tl.dur[gi];
+    if(k >= 1){ if(PB.anim.has(gi)){ placeGi(gi, 0, 0, 0, touched); PB.anim.delete(gi); } continue; }
+    PB.anim.add(gi);
+    if(!tl.isP[gi]){
+      // 散箱：从门口方向、稍高一点的位置轻轻滑到位
+      minGi = Math.min(minGi, gi);
+      if(tl.crane[gi]){ const e = smooth(k); placeGi(gi, 0, (1-e)*tl.craneH, 0, touched); }
+      else { const e = 1 - Math.pow(1 - Math.max(0, k), 2); placeGi(gi, (1-e)*90, (1-e)*30, 0, touched); }
+    } else if(fork){
+      const b = cur.boxes[gi], cx = ox + b.x + b.l/2, cz = oz + b.y + b.w/2;
+      const ud = fork.userData, P = ud.park, a = tl.tIn[gi], lo = tl.tLow[gi], out = tl.dur[gi] - a - lo;
+      const fx1 = cx + 118, lift = 10, cyCarry = b.z + lift + 3;
+      let fx, fz, rot, cy, carry;
+      if(tt < a){                                   // 转正、对准、开进去
+        const u = tt/a, w = smooth(u/0.3);
+        fx = P.x + (fx1 - P.x)*trap(u); fz = P.z + (cz - P.z)*w; rot = ud.parkRot*(1 - w); cy = cyCarry*w; carry = true;
+      } else if(tt < a + lo){                       // 放下
+        const v = smooth((tt - a)/lo);
+        fx = fx1; fz = cz; rot = 0; cy = cyCarry - lift*v; carry = true;
+      } else {                                      // 倒车出柜，回到停车位
+        const u = (tt - a - lo)/out, w = smooth((u - 0.7)/0.3);
+        fx = fx1 + (P.x - fx1)*trap(u); fz = cz + (P.z - cz)*w; rot = ud.parkRot*w; cy = (b.z + 3)*(1 - smooth(u/0.5)); carry = false;
+      }
+      if(carry){
+        minGi = Math.min(minGi, gi);
+        placeGi(gi, (fx - 118) - cx, cy - 3 - b.z, fz - cz, touched, rot, fx, fz);
+      } else if(PB.anim.has(gi) && tt - a - lo < 0.2) placeGi(gi, 0, 0, 0, touched);
+      forkBusy = true;
+      ud.load.visible = false; fork.rotation.y = rot;
+      fork.position.set(fx, P.y, fz);
+      ud.carriage.position.y = Math.max(0, cy);
+    }
+  }
+  // 掉帧时跳过去的，直接放到位
+  PB.anim.forEach(gi => { if(!seen.has(gi) && (t - tl.start[gi]) >= tl.dur[gi]){ placeGi(gi, 0, 0, 0, touched); PB.anim.delete(gi); } });
+  if(fork && !forkBusy){ const ud = fork.userData; fork.position.copy(ud.park); fork.rotation.y = ud.parkRot; ud.carriage.position.y = 0; ud.load.visible = false; }
+  touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
+  if(edgeLines) edgeLines.geometry.setDrawRange(0, (edgeCum[Math.min(minGi, edgeCum.length-1)]||0)*24);
+  if(palLines){ const pc = palLines.userData.cum; palLines.geometry.setDrawRange(0, (pc[Math.min(minGi, pc.length-1)]||0)*24); }
+  req3d();
+}
+function settleAll(){
+  if(!has3d) return;
+  const touched = new Set();
+  PB.anim.forEach(gi => placeGi(gi, 0, 0, 0, touched)); PB.anim.clear();
+  touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
+  if(fork){ const ud = fork.userData; fork.position.copy(ud.park); fork.rotation.y = ud.parkRot; ud.carriage.position.y = 0; ud.load.visible = true; }
+  setN(curN);
+}
 function tick(now){
   if(cut){
     const cp = Cam.position;
@@ -2166,75 +2503,87 @@ function tick(now){
     if(Ctl) Ctl.target.lerpVectors(fly.ft, fly.tt, k);
     if(k >= 1) fly = null;
   }
-  if(fork && cut){
-    const ud = fork.userData, L = cut.L;
-    if(play){
-      const ph = ((now - play.t0) % 1600)/1600, s = 0.5 - 0.5*Math.cos(ph*Math.PI*2);
-      fork.position.set(L/2 + 190 + (1-s)*200, -16, -(1-s)*cut.W*0.35);
-      fork.rotation.y = -(1-s)*0.25;
-      ud.carriage.position.y = s*30;
-      ud.load.visible = ph < 0.5;
-      const b = cur && cur.boxes[Math.min(curN, cur.boxes.length-1)];
-      const u = b ? unitById[b.u] : null;
-      if(u && srcById[u.src.id]) ud.load.material.color.copy(lin(srcById[u.src.id].color));
-    } else {
-      fork.position.copy(ud.park); fork.rotation.y = ud.parkRot; ud.carriage.position.y = 0; ud.load.visible = true;
-    }
-  }
-  if(play && cur){
-    const total = cur.boxes.length, k = Math.min(1, (now - play.t0)/play.dur), N = Math.round(k*total);
-    if(N !== curN){
-      const from = curN; setN(N); $('seq').value = N; updateSeqLabel();
-      // 新装进去的货：从柜门方向、稍高一点的位置滑进去落到位
-      if(N > from && N - from <= 40) for(let gi = from; gi < N; gi++) sliding.push({gi, t0: now});
-    }
-    if(k >= 1) stopPlay();
-  }
-  if(sliding.length){
-    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(), dur = 260, touched = new Set();
-    sliding = sliding.filter(sv => {
-      const k = Math.min(1, (now - sv.t0)/dur), e = 1 - Math.pow(1 - k, 3);
-      for(const r of (instByGi[sv.gi] || [])){
-        v.set(r.px + (1-e)*140, r.py + (1-e)*35, r.pz); sc.set(r.sx, r.sy, r.sz);
-        m4.compose(v, q, sc); r.mesh.setMatrixAt(r.i, m4); touched.add(r.mesh);
-      }
-      return k < 1;
-    });
-    touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
-    // 正在滑动的货先不画轮廓线，落到位再画
-    const minGi = sliding.length ? Math.min(...sliding.map(sv => sv.gi)) : curN;
-    if(edgeLines) edgeLines.geometry.setDrawRange(0, (edgeCum[Math.min(minGi, edgeCum.length-1)]||0)*24);
-    if(palLines){ const pc = palLines.userData.cum; palLines.geometry.setDrawRange(0, (pc[Math.min(minGi, pc.length-1)]||0)*24); }
-    req3d();
+  const dt = PB.last ? Math.min(0.1, (now - PB.last)/1000) : 0; PB.last = now;
+  if(play && cur && PB.tl){
+    PB.t = Math.min(PB.tl.endAll, PB.t + dt*PB.speed);
+    const N = upper(PB.tl.start, PB.t);
+    if(N !== curN){ setN(N); $('seq').value = N; updateSeqLabel(); const si = stepIndexAt(N); if(si !== PB.capI){ PB.capI = si; renderCaption(); } }
+    perfWatch(dt);
+    animateFrame();
+    if(PB.t >= PB.tl.endAll - 1e-9){ pausePlay(); renderCaption(); }
   }
 }
-function stopPlay(){ play = null; if(sliding && sliding.length){ settleSliding(); } req3d(); $('play').querySelector('span').textContent = '播放装柜'; }
-$('play').onclick = () => {
+function perfWatch(dt){
+  if(!R) return;
+  PB.fc = (PB.fc || 0) + 1;
+  if(PB.fc > 12 && dt > 0){ const ms = dt*1000; PB.ema = PB.ema ? PB.ema*0.92 + ms*0.08 : ms; }
+  PB.acc = (PB.acc || 0) + dt;
+  if(!PB.low && (PB.slow || (PB.fc > 15 && PB.acc > 1.2 && PB.ema > 25))){
+    PB.slow = true; PB.low = {pr: R.getPixelRatio()};
+    if(PB.low.pr > 1) R.setPixelRatio(1);
+    R.shadowMap.autoUpdate = false;
+  }
+  if(PB.low && (PB.fc & 1)) R.shadowMap.needsUpdate = true;
+}
+function restoreQuality(){
+  PB.fc = 0; PB.ema = 0; PB.acc = 0;
+  if(!PB.low || !R) return;
+  R.shadowMap.autoUpdate = true; R.shadowMap.needsUpdate = true;
+  if(PB.low.pr !== R.getPixelRatio()) R.setPixelRatio(PB.low.pr);
+  PB.low = null;
+}
+function playUI(){
+  const on = !!play, done = cur && PB.tl && curN >= cur.boxes.length;
+  $('pb-play').querySelector('use').setAttribute('href', on ? '#i-pause' : '#i-playi');
+  $('pb-play').title = on ? '暂停' : '播放'; $('pb-play').setAttribute('aria-label', on ? '暂停' : '播放');
+  $('play').querySelector('span').textContent = on ? '暂停' : (done || curN === 0 ? '播放装柜' : '继续播放');
+}
+function pausePlay(){ play = null; settleAll(); restoreQuality(); playUI(); req3d(); }
+function stopPlay(){ play = null; if(has3d && PB.anim.size) settleAll(); PB.anim.clear(); restoreQuality(); playUI(); req3d(); }
+function startPlay(){
+  if(!cur || !PB.tl) return;
+  if(curN >= cur.boxes.length){ PB.t = 0; setN(0); $('seq').value = 0; updateSeqLabel(); }
+  else PB.t = curN ? PB.tl.start[curN-1] + 1e-6 : 0;
+  play = {}; PB.last = 0; PB.auto = false; PB.capI = stepIndexAt(curN); playUI(); renderCaption();
+}
+function togglePlay(){ PB.auto = false; if(play) pausePlay(); else startPlay(); }
+$('play').onclick = togglePlay;
+$('pb-play').onclick = togglePlay;
+$('pb-speed').addEventListener('change', e => { PB.speed = +e.target.value || 1; });
+function jumpTo(N){
+  if(!cur || !PB.tl) return;
+  play = null; PB.auto = false; settleAll(); restoreQuality();
+  N = Math.max(0, Math.min(cur.boxes.length, N));
+  PB.t = N ? PB.tl.start[N-1] + PB.tl.dur[N-1] : 0;
+  setN(N); $('seq').value = N; updateSeqLabel(); renderCaption(); playUI();
+}
+$('pb-next').onclick = () => {
   if(!cur) return;
-  if(play){ stopPlay(); return; }
-  play = {t0: performance.now(), dur: Math.min(10000, Math.max(3000, cur.boxes.length*12))};
-  $('play').querySelector('span').textContent = '停止';
-  setN(0);
+  const st = PB.steps; if(!st.length) return;
+  const i = curN <= 0 ? -1 : stepIndexAt(curN);
+  const tgt = curN <= 0 ? 0 : (curN >= st[i].to ? i + 1 : i);
+  jumpTo(tgt >= st.length ? cur.boxes.length : st[Math.min(tgt, st.length-1)].to);
 };
-function settleSliding(){
-  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3(), touched = new Set();
-  for(const sv of sliding) for(const r of (instByGi[sv.gi] || [])){ v.set(r.px, r.py, r.pz); sc.set(r.sx, r.sy, r.sz); m4.compose(v, q, sc); r.mesh.setMatrixAt(r.i, m4); touched.add(r.mesh); }
-  touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
-  sliding = [];
-}
+$('pb-prev').onclick = () => {
+  if(!cur) return;
+  const st = PB.steps; if(!st.length || curN <= 0) return;
+  const i = stepIndexAt(curN);
+  jumpTo(i <= 0 ? 0 : st[i-1].to);
+};
 function updateSeqLabel(){
   const s = $('seq'), anyP = cur && cur.boxes.some(b => unitById[b.u] && unitById[b.u].kind === 'pallet');
   $('seqv').textContent = `${(+s.value).toLocaleString('zh-CN')} / ${(+s.max).toLocaleString('zh-CN')} ${anyP ? '件/托' : '件'}`;
 }
-$('seq').addEventListener('input', () => { stopPlay(); updateSeqLabel(); setN(+$('seq').value); });
+$('seq').addEventListener('input', () => jumpTo(+$('seq').value));
 
 /* 悬停提示 */
+let hoverQ = null;
 const ray = typeof THREE !== 'undefined' ? new THREE.Raycaster() : null;
 const ndc = typeof THREE !== 'undefined' ? new THREE.Vector2() : null;
 function onHover(e, force){
   if(!boxMeshes.length) return;
   if(e.buttons && !force){ $('tip').hidden = true; return; }
-  const r = e.currentTarget.getBoundingClientRect();
+  const r = $('cv').getBoundingClientRect();
   ndc.set(((e.clientX - r.left)/r.width)*2 - 1, -((e.clientY - r.top)/r.height)*2 + 1);
   ray.setFromCamera(ndc, Cam);
   const hit = ray.intersectObjects(boxMeshes.filter(m => !m.userData.isFilm), false)[0], tip = $('tip');
@@ -2256,6 +2605,54 @@ init3d();
 if(!load()){ items = SAMPLE.map(s => newItem(s)); isSample = true; }
 setSample(isSample);
 renderRows(); renderSettings(); compute();
+
+/* ================= 首屏按钮、联系卡片、首次打开自动演示 ================= */
+const smoothOK = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+$('h-start').onclick = () => {
+  document.querySelector('.sheet').scrollIntoView({behavior: smoothOK(), block:'start'});
+  const sh = document.querySelector('.sheet'); sh.classList.add('flash'); setTimeout(() => sh.classList.remove('flash'), 1200);
+  if(matchMedia('(pointer: coarse)').matches) return;
+  setTimeout(() => { const f = document.querySelector('#rows input'); if(f){ f.focus({preventScroll:true}); if(f.select) f.select(); } }, 550);
+};
+function runDemo(){
+  if(!cur || !PB.tl || !cur.boxes.length) return false;
+  jumpTo(0); PB.speed = 2; $('pb-speed').value = '2';
+  setTimeout(startPlay, 350); return true;
+}
+$('h-demo').onclick = () => { $('stage').scrollIntoView({behavior: smoothOK(), block:'center'}); runDemo(); };
+let userTouched = false;
+document.addEventListener('pointerdown', e => { if(e.target.closest && e.target.closest('.viewer, .sheet, .settings, .side')) userTouched = true; }, {capture:true, passive:true});
+document.addEventListener('input', () => { userTouched = true; }, {capture:true, passive:true});
+(function autoDemo(){
+  if(window.__noAutoDemo || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let done = false;
+  const io = new IntersectionObserver(es => {
+    if(done || !es.some(e => e.isIntersecting)) return;
+    done = true; io.disconnect();
+    let tries = 0;
+    (function wait(){
+      if(userTouched || !isSample) return;
+      if(cur && PB.tl && has3d){ if(!play && runDemo()) setTimeout(() => { if(play) PB.auto = true; }, 400); return; }
+      if(++tries < 30) setTimeout(wait, 200);
+    })();
+  }, {threshold: 0.35});
+  io.observe($('stage'));
+})();
+if(!isSample && items.length) $('hero').classList.add('slim');
+if('IntersectionObserver' in window){
+  new IntersectionObserver(es => { for(const e of es){ stageOn = e.isIntersecting || !!document.fullscreenElement || $('viewer').classList.contains('fs'); if(stageOn) req3d(); else if(play && PB.auto){ PB.auto = false; pausePlay(); renderCaption(); } } }, {rootMargin:'120px 0px'}).observe($('stage'));
+  document.addEventListener('fullscreenchange', () => { stageOn = true; req3d(); });
+}
+const QR_SRC = '/wechat-qrcode.jpg';
+function openContact(){
+  const q = $('wxqr'); if(!q.style.backgroundImage) q.style.backgroundImage = `url("${QR_SRC}")`;
+  $('contact').hidden = false; $('contact-x').focus();
+}
+function closeContact(){ $('contact').hidden = true; }
+document.addEventListener('click', e => { if(e.target.closest('[data-contact]')){ e.preventDefault(); openContact(); } });
+$('contact-x').onclick = closeContact;
+$('contact').addEventListener('click', e => { if(e.target.id === 'contact') closeContact(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('contact').hidden) closeContact(); });
 </script>
 
 </body>
