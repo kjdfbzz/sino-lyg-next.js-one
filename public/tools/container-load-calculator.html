@@ -1076,18 +1076,20 @@ function balanceLoad(boxes, e, units, Lfull){
   // 前后：调段的先后顺序、整段前后掉头，最后整批往柜门方向挪
   const T = sl.reduce((a,g) => a + g.len, 0), F = Wt > 0 ? Math.max(0, e.L - T) : 0;
   const BT = balTol(Wt, e.kg, Lfull/2, e.W/2), target = Lfull/2, tol = BT.t5, aim = BT.light ? target - tol*0.9 : target - tol*0.4;   // 货轻时只要重心在允许范围内就不挪，柜底不留空当
+  const okZone = BT.light ? tol*0.9 : tol*0.6;
   const evalOrd = ord => {
     let pos = 0, M = 0; for(const g of ord){ M += g.w*(pos + (g.xf ? g.len - g.cl : g.cl)); pos += g.len; }
     const cg = Wt ? M/Wt : T/2;
     const d = cg < aim ? Math.min(F, aim - cg) : 0;
-    return {dev: Math.abs(cg + d - target), d};
+    // 重心已在合格范围内就算一样好：不为了再靠中一点去调换顺序（否则零头会被换到柜底，柜底留空）
+    return {dev: Math.max(0, Math.abs(cg + d - target) - okZone), d};
   };
   const better = (a, b) => a.dev < b.dev - 0.5 || (Math.abs(a.dev - b.dev) <= 0.5 && a.d < b.d - 0.5);
   const snap = ord => ({ord: [...ord], xf: ord.map(g => g.xf)});
   const restore = st => { st.ord.forEach((g,i) => g.xf = st.xf[i]); return st.ord; };
   let best = evalOrd(sl), bestSt = snap(sl);
   if(e.gauge) best = {dev:0, d:0};
-  if(!e.gauge && !(best.dev <= tol*0.6 && best.d === 0)){
+  if(!e.gauge && !(best.dev === 0 && best.d === 0)){
     const byDen = [...sl].sort((a,b) => b.w/b.len - a.w/a.len), mid = [];
     byDen.forEach((g,i) => i % 2 ? mid.push(g) : mid.unshift(g));
     for(const cand of [[...sl].reverse(), mid]){ const r = evalOrd(cand); if(better(r, best)){ best = r; bestSt = snap(cand); } }
