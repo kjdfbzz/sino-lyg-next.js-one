@@ -53,7 +53,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,label.sw:focus-wit
 svg.i{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- left rail ---------- */
-.side{display:flex;flex-direction:column;gap:16px;padding:16px 12px;align-self:start;position:sticky;top:calc(12px + env(safe-area-inset-top,0px))}
+.side{display:flex;flex-direction:column;gap:16px;padding:16px 12px;align-self:start;position:sticky;top:calc(12px + env(safe-area-inset-top,0px));max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain}
+@media (max-width:980px){.side{max-height:none;overflow:visible}}
 @media (max-width:980px){.side{position:static;order:2}}
 @media (max-width:700px){.steps{flex-direction:column;gap:4px;flex-basis:100%}.calcstate{flex-basis:100%}}
 .brand{display:flex;align-items:center;gap:10px;padding:0 4px 4px}
@@ -118,6 +119,11 @@ svg.i{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .code{font-family:var(--f-mono);font-size:10.5px;font-weight:600;padding:0 6px;border-radius:4px;color:#fff;line-height:17px;white-space:nowrap;display:inline-block;text-shadow:0 1px 0 rgba(0,0,0,.15)}
 .bay .nm{font-size:12px;font-weight:600}
 .bay .q{font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.bays.compact{flex-wrap:wrap;gap:5px}
+.bays.compact .bay{flex:0 0 auto;min-width:0;padding:4px 7px;border-radius:9px}
+.bays.compact .bay .nm,.bays.compact .bay .prog{display:none}
+.bays.compact .bay .h{gap:6px}
+.bay.more{font-size:11.5px;color:var(--muted);display:flex;align-items:center}
 .prog{height:4px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
 .prog i{display:block;height:100%;border-radius:2px}
 @media (max-width:700px){.bays{top:8px;left:8px;right:8px;gap:5px;flex-wrap:wrap}.bay{flex:0 0 auto;min-width:0;padding:4px 7px}.bay .nm,.bay .prog{display:none}.bay .h{gap:6px}}
@@ -198,7 +204,14 @@ label.sw input:checked+.tg::after{transform:translateX(14px)}
 .sheet .head h4{margin:0 6px 0 2px;font-size:13.5px;display:flex;align-items:center;gap:7px}
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
-table.cargo{min-width:1000px}
+table.cargo{min-width:1030px}
+.thx{display:inline-flex;align-items:center;gap:6px}
+table.cargo .thx select{font:inherit;font-size:11px;color:var(--steel);border:1px solid var(--line);border-radius:6px;background:var(--card);padding:2px 4px;width:auto;max-width:none;cursor:pointer}
+table.cargo .c-on{width:40px;text-align:center;padding-left:8px;padding-right:2px}
+table.cargo .c-on input{width:18px;height:18px;margin:0;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
+.onall{display:inline-flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-size:10.5px;color:var(--muted)}
+table.cargo tbody tr.off td:not(.c-on){opacity:.42}
+table.cargo tbody tr.off .code{filter:grayscale(1)}
 table.cargo th{font-size:11.5px;font-weight:500;color:var(--muted);text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--sunk)}
 table.cargo td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 table.cargo tbody tr:hover td{background:var(--sunk)}
@@ -228,7 +241,7 @@ td.c-stat{min-width:190px}
 .imp-head{display:grid;gap:3px;font-size:12.5px}
 .imp-head span{color:var(--muted);font-size:12px}
 .importer textarea{width:100%;font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--card);color:var(--fg);resize:vertical;min-width:0}
-.imp-opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.imp-opts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
 @media (max-width:700px){.imp-opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .imp-preview{font-size:12px;color:var(--muted);overflow-x:auto}
 .imp-preview table{font-size:12px;min-width:520px}
@@ -375,6 +388,19 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 .clist b{display:block;font-size:12px;color:var(--muted);font-weight:500}
 .clist span{display:block;font-family:var(--f-mono);font-size:13px;overflow-wrap:anywhere}
 @media (max-width:420px){.cgrid{grid-template-columns:minmax(0,1fr)}.cgrid figure{justify-self:center}}
+/* 导出 */
+.ebox{width:min(880px,100%);max-height:calc(100vh - 32px);overflow:auto}
+.esub{margin:0 0 14px;color:var(--muted)}
+.eacts{display:flex;gap:8px;flex-wrap:wrap}
+.eacts .btn{height:40px;padding:0 16px}
+.eacts .btn:disabled{opacity:.5;cursor:default}
+.ehint{font-size:12.5px;color:var(--muted);line-height:1.7;margin:12px 0 0}
+.ehint b{color:var(--fg);font-weight:600}
+.ewx{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--accent-soft);font-size:13px;line-height:1.6}
+.eprog{margin:14px 0 10px;font-size:13px;color:var(--steel)}
+.eprev{display:grid;gap:14px}
+.eprev img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);background:#fff}
+@media (max-width:600px){.ebox{padding:20px 16px}.eacts .btn{flex:1 1 100%;justify-content:center}}
 /* 页脚 */
 .bfoot{max-width:1640px;margin:22px auto 0;padding:18px 4px 0;border-top:1px solid var(--line)}
 .bf-in{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap}
@@ -408,6 +434,7 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
   <symbol id="i-side" viewBox="0 0 16 16"><rect x="1.5" y="5" width="13" height="6" rx="1"/></symbol>
   <symbol id="i-top" viewBox="0 0 16 16"><rect x="3" y="1.5" width="10" height="13" rx="1"/><path d="M3 5h10"/></symbol>
   <symbol id="i-door" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M8 2v12M6.5 7v2M9.5 7v2"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 16 16"><path d="M8 2.5v7.5M4.8 7 8 10.2 11.2 7M3 13h10"/></symbol>
   <symbol id="i-full" viewBox="0 0 16 16"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></symbol>
   <symbol id="i-exit" viewBox="0 0 16 16"><path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></symbol>
   <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
@@ -475,6 +502,7 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
       <div class="head">
         <h4><svg class="i"><use href="#i-list"/></svg>货物明细</h4>
         <span class="pill steel" id="samplebadge" hidden>示例数据，直接改成你的货就行</span>
+        <span class="pill warn" id="selinfo" hidden></span>
         <div class="spacer"></div>
         <button type="button" class="btn" id="imp-open"><svg class="i"><use href="#i-list"/></svg>从 Excel 粘贴</button>
         <button type="button" class="btn" id="sample">载入示例</button>
@@ -495,6 +523,7 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
         <div class="imp-opts">
           <label class="fld">尺寸单位<select id="imp-unit"><option value="cm">cm</option><option value="mm">mm</option></select></label>
           <label class="fld">毛重是<select id="imp-w"><option value="each">每箱毛重</option><option value="total">这一行合计毛重</option></select></label>
+          <label class="fld">摆放<select id="imp-rot"><option value="upright">只能正放</option><option value="all">任意翻转</option></select></label>
           <label class="fld">包装<select id="imp-pal"><option value="loose">散箱</option><option value="pallet">打托</option></select></label>
           <label class="fld">导入方式<select id="imp-mode"><option value="append">加在现有货物后面</option><option value="replace">替换现有货物</option></select></label>
         </div>
@@ -504,13 +533,13 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
       <div class="tablewrap">
         <table class="cargo">
           <thead><tr>
-            <th>编号</th><th>品名</th><th>长 cm</th><th>宽 cm</th><th>高 cm</th><th>单箱毛重 kg</th><th>箱数</th><th>摆放</th><th>最多堆几层</th><th>包装</th><th class="r">体积 m³</th><th class="r">总重 kg</th><th>装柜情况</th><th></th>
+            <th class="c-on"><label class="onall" title="全选 / 全不选"><input type="checkbox" id="on-all" aria-label="全部参与装柜"><span>装</span></label></th><th>编号</th><th>品名</th><th>长 cm</th><th>宽 cm</th><th>高 cm</th><th>单箱毛重 kg</th><th>箱数</th><th><span class="thx">摆放<select id="bulk-rot" aria-label="勾选的货全部改成" title="勾选的货全部改成…"><option value="">全部改…</option><option value="upright">只能正放</option><option value="all">任意翻转</option></select></span></th><th>最多堆几层</th><th><span class="thx">包装<select id="bulk-pal" aria-label="勾选的货全部改成" title="勾选的货全部改成…"><option value="">全部改…</option><option value="loose">散箱</option><option value="pallet">打托</option></select></span></th><th class="r">体积 m³</th><th class="r">总重 kg</th><th>装柜情况</th><th></th>
           </tr></thead>
           <tbody id="rows"></tbody>
-          <tfoot><tr><td></td><td>合计</td><td colspan="4"></td><td class="r" id="t-qty">0</td><td colspan="3"></td><td class="r" id="t-vol">0</td><td class="r" id="t-kg">0</td><td colspan="2"></td></tr></tfoot>
+          <tfoot><tr><td></td><td></td><td id="t-lab" style="white-space:nowrap">合计</td><td colspan="4"></td><td class="r" id="t-qty">0</td><td colspan="3"></td><td class="r" id="t-vol">0</td><td class="r" id="t-kg">0</td><td colspan="2"></td></tr></tfoot>
         </table>
       </div>
-      <div class="foot-hint">按回车跳到下一行，最后一行按回车自动加一行。尺寸填纸箱外尺寸。大部分纸箱有向上标志，默认“只能正放”（可以水平转向）；确认能侧放、倒放的才选“任意翻转”。“最多堆几层”不填为不限，填 1 表示上面不能压货。选“打托”的货按“装柜设置”里的托盘规格先码托再装柜。</div>
+      <div class="foot-hint">最左边的勾选框：取消勾选就是这次不装，数据留在表里，下次勾上就行。按回车跳到下一行，最后一行按回车自动加一行。尺寸填纸箱外尺寸。大部分纸箱有向上标志，默认“只能正放”（可以水平转向）；确认能侧放、倒放的才选“任意翻转”。“最多堆几层”不填为不限，填 1 表示上面不能压货。选“打托”的货按“装柜设置”里的托盘规格先码托再装柜。</div>
     </div>
 
     <div class="card settings" id="settings" hidden>
@@ -581,6 +610,7 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
         <button type="button" data-view="top" aria-pressed="false"><svg class="i"><use href="#i-top"/></svg>俯视</button>
         <button type="button" data-view="door" aria-pressed="false"><svg class="i"><use href="#i-door"/></svg>柜门</button>
       </div>
+      <button type="button" class="btn" id="exp-btn"><svg class="i"><use href="#i-dl"/></svg>导出装柜单</button>
       <button type="button" class="btn" id="calc2"><svg class="i"><use href="#i-cube"/></svg>计算装柜</button>
       <button type="button" class="btn" id="fs-btn" aria-pressed="false"><svg class="i"><use href="#i-full"/></svg><span>全屏</span></button>
       <button type="button" class="btn primary" id="play">
@@ -655,6 +685,22 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
     </div>
   </div>
 </div>
+<div class="cmodal" id="expm" hidden role="dialog" aria-modal="true" aria-labelledby="exp-h">
+  <div class="cbox ebox">
+    <button type="button" class="cx" id="exp-x" aria-label="关闭">×</button>
+    <h3 id="exp-h">导出装柜单</h3>
+    <p class="esub" id="exp-sub"></p>
+    <div class="eacts">
+      <button type="button" class="btn primary" id="exp-pdf" disabled><svg class="i"><use href="#i-dl"/></svg>下载 PDF 装柜单</button>
+      <button type="button" class="btn" id="exp-print" disabled>打印</button>
+      <button type="button" class="btn" id="exp-xlsx"><svg class="i"><use href="#i-dl"/></svg>下载 Excel 分柜表</button>
+    </div>
+    <p class="ehint"><b>PDF 装柜单</b>：每个柜一页（步骤多会接续到下一页），有装柜图、装柜步骤、检查结果和货物清单，可以直接打印给仓库照着装。<b>Excel 分柜表</b>：每种货分到哪个柜、各柜汇总和装柜步骤，方便改数字、做装箱单。</p>
+    <div class="ewx" id="exp-wx" hidden>微信里不能直接下载文件：点右上角 <b>···</b> 选 <b>在浏览器打开</b> 再导出；或者 <b>长按下面的装柜单图片</b> 保存、发给同事。</div>
+    <div class="eprog" id="exp-prog"></div>
+    <div class="eprev" id="exp-prev"></div>
+  </div>
+</div>
 <footer class="bfoot">
   <div class="bf-in">
     <div class="bf-brand"><span class="wm-t">BRYCE LOGISTICS</span><span>GWL 连云港分公司 · 连云港 / 青岛出口整柜、拼箱、拖车、报关</span></div>
@@ -666,7 +712,10 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 <script src="/tools/vendor/OrbitControls.js"></script>
 <script>
 /* ================= 1. 数据 ================= */
-const PALETTE = ['#E8913A','#3D7FD0','#3FA66A','#8B6BD6','#D9546E','#2AA3A6','#C2A12C','#7A8896','#D86FA8','#5E9E2F'];
+const PALETTE = ['#E8913A','#3D7FD0','#3FA66A','#8B6BD6','#D9546E','#2AA3A6','#C2A12C','#7A8896','#D86FA8','#5E9E2F',
+  '#A0522D','#5B5FC7','#E45A2B','#2FA88A','#9C4F96','#6C8EBF','#B89A3E','#4E7D5B','#E0708F','#2D6E9E','#8D6E63','#0096B7','#C0392B','#7CB342'];
+const utilTxt = (v, html) => v > 1.005 ? '超限货' : html ? `${(v*100).toFixed(0)}<small>%</small>` : `${(v*100).toFixed(0)}%`;
+const colorOf = id => id <= PALETTE.length ? PALETTE[id-1] : `hsl(${Math.round((id*137.508) % 360)}, 52%, 48%)`;
 /* 柜型：cls = dry 普柜 / ot 开顶 / fr 框架 / rf 冷柜（运转） / nor 冷柜当干货用（冷机不开） */
 const ALL_TYPES = ['20GP','40HQ','40OT','40FR','40RH','40NOR'];
 const TYPE_INFO = {
@@ -731,10 +780,10 @@ const SAMPLE = [
 ];
 
 function newItem(p){
-  const it = Object.assign({name:'',l:'',w:'',h:'',kg:'',qty:'',rot:'upright',layers:'',pal:'loose'}, p||{});
+  const it = Object.assign({name:'',l:'',w:'',h:'',kg:'',qty:'',rot:'upright',layers:'',pal:'loose',on:true}, p||{});
   delete it.id; delete it.color;
   it.id = nextId++;
-  it.color = PALETTE[(it.id-1) % PALETTE.length];
+  it.color = colorOf(it.id);
   return it;
 }
 const num = v => { const n = parseFloat(v); return isFinite(n) ? n : 0; };
@@ -1137,9 +1186,9 @@ function buildPlans(units){
   const mixes = TYPES.includes('40HQ') && TYPES.includes('20GP') ? [['40HQ','20GP']] : [];
   for(const [big, small] of mixes){
     const base = plans[TYPES.indexOf(big)], n = base.containers.length;
-    if(n < 2 || base.leftCount) continue;
+    if(n < 2 || n >= MAXN) continue;
     const m = seqBest(units, k => k < n-1 ? big : small, n);
-    if(m.leftCount === 0 && m.containers.length === n) plans.push(Object.assign({key:'mix'+big+small}, m));
+    if(m.leftCount <= base.leftCount && m.containers.length === n) plans.push(Object.assign({key:'mix'+big+small}, m));
   }
   for(const p of plans){
     p.label = describe(p.containers);
@@ -1255,7 +1304,9 @@ let srcById = {}, unitById = {}, units = [];
 function rowHTML(it){
   const f = (k,ph,lab) => `<td class="c-num"><input type="number" min="0" step="any" inputmode="decimal" id="f-${it.id}-${k}" data-id="${it.id}" data-k="${k}" value="${esc(it[k])}" placeholder="${ph}" aria-label="${lab}"></td>`;
   const sel = (k, opts, lab) => `<td class="c-sel"><select id="f-${it.id}-${k}" data-id="${it.id}" data-k="${k}" aria-label="${lab}">${opts.map(([v,t]) => `<option value="${v}"${it[k]===v?' selected':''}>${t}</option>`).join('')}</select></td>`;
-  return `<tr>
+  const on = it.on !== false;
+  return `<tr class="${on ? '' : 'off'}" id="r-${it.id}">
+    <td class="c-on"><input type="checkbox" data-on="${it.id}" ${on ? 'checked' : ''} aria-label="${esc(it.name || codeOf(it.id))} 参与装柜" title="勾上 = 这票装；取消 = 这次不装（数据保留）"></td>
     <td><span class="code" style="background:${it.color}">${codeOf(it.id)}</span></td>
     <td class="c-name"><input type="text" id="f-${it.id}-name" data-id="${it.id}" data-k="name" value="${esc(it.name)}" placeholder="品名" aria-label="品名"></td>
     ${f('l','','长')}${f('w','','宽')}${f('h','','高')}${f('kg','','单箱毛重')}${f('qty','','箱数')}
@@ -1270,15 +1321,15 @@ function rowHTML(it){
 }
 function renderRows(){
   $('rows').innerHTML = items.length ? items.map(rowHTML).join('')
-    : `<tr><td colspan="14"><div class="empty">还没有货物。点“添加货物”一行行录入；已经有 Excel 装箱单的，点“从 Excel 粘贴”一次导进来。</div></td></tr>`;
+    : `<tr><td colspan="15"><div class="empty">还没有货物。点“添加货物”一行行录入；已经有 Excel 装箱单的，点“从 Excel 粘贴”一次导进来。</div></td></tr>`;
   updateTotals();
 }
 function updateTotals(){
-  let q=0, v=0, k=0;
+  let q=0, v=0, k=0, nOn = 0;
   for(const it of items){
     const qty = Math.floor(num(it.qty));
     const vol = num(it.l)*num(it.w)*num(it.h)*qty/1e6, kg = num(it.kg)*qty;
-    q += qty; v += vol; k += kg;
+    if(it.on !== false){ q += qty; v += vol; k += kg; nOn++; }
     const touched = ['name','l','w','h','kg','qty'].some(k => String(it[k]).trim() !== '');
     for(const k of ['l','w','h','qty']){ const el = $(`f-${it.id}-${k}`); if(el) el.classList.toggle('miss', touched && !(num(it[k]) > 0)); }
     const cv = $('v-'+it.id), cw = $('w-'+it.id);
@@ -1286,6 +1337,10 @@ function updateTotals(){
     if(cw) cw.textContent = kg ? fmt(kg,0) : '—';
   }
   $('t-qty').textContent = q.toLocaleString('zh-CN') + ' 箱';
+  const partial = items.length && nOn < items.length;
+  $('t-lab').textContent = partial ? `合计（已选 ${nOn} 种）` : '合计';
+  $('selinfo').hidden = !partial; $('selinfo').textContent = `这次装 ${nOn} / ${items.length} 种货`;
+  const all = $('on-all'); all.checked = items.length > 0 && nOn === items.length; all.indeterminate = nOn > 0 && nOn < items.length;
   $('t-vol').textContent = fmt(v,2);
   $('t-kg').textContent = fmt(k,0);
 }
@@ -1294,12 +1349,33 @@ function validItems(){
     id: it.id, color: it.color, code: codeOf(it.id), name: it.name.trim() || `货物 ${i+1}`,
     l: num(it.l), w: num(it.w), h: num(it.h), kg: num(it.kg),
     qty: Math.floor(num(it.qty)), rot: it.rot, layers: Math.floor(num(it.layers)), pal: it.pal,
-  })).filter(x => x.l>0 && x.w>0 && x.h>0 && x.qty>0);
+    on: it.on !== false,
+  })).filter(x => x.on && x.l>0 && x.w>0 && x.h>0 && x.qty>0);
 }
 $('rows').addEventListener('input', e => {
   const t = e.target, it = items.find(x => x.id === +t.dataset.id);
   if(!it || !t.dataset.k) return;
   it[t.dataset.k] = t.value; if(isSample) setSample(false); updateTotals(); schedule(t.tagName === 'SELECT' ? 0 : 350);
+});
+$('rows').addEventListener('change', e => {
+  const t = e.target; if(!t.dataset || !t.dataset.on) return;
+  const it = items.find(x => x.id === +t.dataset.on); if(!it) return;
+  it.on = t.checked; const tr = $('r-' + it.id); if(tr) tr.classList.toggle('off', !t.checked);
+  if(isSample) setSample(false); updateTotals(); schedule(450);
+});
+for(const [id, k] of [['bulk-rot','rot'], ['bulk-pal','pal']]){
+  $(id).addEventListener('change', e => {
+    const v = e.target.value; e.target.value = ''; if(!v) return;
+    const sel = items.filter(it => it.on !== false); if(!sel.length) return;
+    keepUndo(`已把 ${sel.length} 种勾选的货改成“${e.target.querySelector(`option[value="${v}"]`).textContent}”`);
+    for(const it of sel) it[k] = v;
+    if(isSample) setSample(false); renderRows(); schedule(0);
+  });
+}
+$('on-all').addEventListener('change', e => {
+  const v = e.target.checked;
+  for(const it of items){ it.on = v; const tr = $('r-' + it.id); if(tr) tr.classList.toggle('off', !v); const cb = document.querySelector(`[data-on="${it.id}"]`); if(cb) cb.checked = v; }
+  if(isSample) setSample(false); updateTotals(); schedule(450);
 });
 $('rows').addEventListener('keydown', e => {
   if(e.key !== 'Enter' || e.isComposing) return;
@@ -1389,7 +1465,7 @@ $('imp-ok').onclick = () => {
   if(!impRows.length) return;
   if($('imp-mode').value === 'replace'){ if(items.length && !isSample) keepUndo('已用粘贴的数据替换原来的货物'); items = []; nextId = 1; }
   setSample(false);
-  for(const r of impRows) items.push(newItem(Object.assign({}, r, {pal: $('imp-pal').value, rot:'upright'})));
+  for(const r of impRows) items.push(newItem(Object.assign({}, r, {pal: $('imp-pal').value, rot: $('imp-rot').value})));
   $('importer').hidden = true; $('imp-text').value = '';
   renderRows(); calcNow();
 };
@@ -1487,7 +1563,7 @@ document.querySelector('.settings').addEventListener('input', () => renderSetSum
 $('ctreset').onclick = () => { CT = presetCT(RULES.carrier); renderSettings(); schedule(0); };
 
 /* ================= 5. 计算与界面 ================= */
-let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null;
+let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null, selManual = false;   // selManual：用户自己点选过方案
 function setCalcState(dirty){ const el = $('calcstate'); if(!el) return; el.className = 'calcstate' + (dirty ? ' dirty' : ''); el.innerHTML = dirty ? '<i></i>正在重新计算…' : '<i></i>已按当前数据算好，改数字会自动重算'; }
 const bigJob = () => items.reduce((a,it) => a + Math.floor(num(it.qty)), 0) > 8000;
 function computeSoon(){
@@ -1518,8 +1594,11 @@ function compute0(){
   unitById = {}; for(const u of units) unitById[u.id] = u;
   plans = units.length ? buildPlans(units) : [];
   const rec = plans.find(p => p.rec) || plans[0], sel = plans.find(p => p.key === selKey);
-  // 选中的方案已经不存在，或者比推荐方案装得少，就切回推荐方案
-  if(!sel || (rec && sel.leftCartons > rec.leftCartons)){ selKey = rec ? rec.key : null; selIdx = 0; }
+  // 用户没自己选过方案就始终显示推荐方案；选过的方案不存在了、或者比推荐方案装得少，也切回推荐方案
+  if(!selManual || !sel || (rec && sel.leftCartons > rec.leftCartons)){
+    const nk = rec ? rec.key : null; if(nk !== selKey) selIdx = 0;
+    selKey = nk; selManual = false;
+  }
   renderPlans(); renderStatusCol(); renderContainer(false);
 }
 
@@ -1532,7 +1611,7 @@ function icoHTML(cs){
 function renderPlans(){
   $('plancount').textContent = plans.length ? plans.length + ' 个' : '';
   if(!plans.length){
-    $('planlist').innerHTML = `<div class="note">${srcs.length ? '这些货物超出柜子尺寸、柜门高度或限重，任何柜型都装不进去。原因见货物明细。' : '在货物明细里录入货物后，这里显示各柜型方案。'}</div>`;
+    $('planlist').innerHTML = `<div class="note">${!srcs.length && items.some(it => it.on === false) ? '货物都取消勾选了：在货物明细最左边勾上这次要装的货。' : srcs.length ? '这些货物超出柜子尺寸、柜门高度或限重，任何柜型都装不进去。原因见货物明细。' : '在货物明细里录入货物后，这里显示各柜型方案。'}</div>`;
     $('sidenote').innerHTML = '推荐规则：先保证全部装下，再选 TEU 最少，再选柜数少的。';
     return;
   }
@@ -1541,7 +1620,7 @@ function renderPlans(){
       <span class="ico">${icoHTML(p.containers)}</span>
       <span style="min-width:0">
         <span class="t"><span class="mono">${p.label}</span>${p.rec?'<span class="pill ok">推荐</span>':''}${p.leftCartons?'<span class="pill bad">装不下</span>':''}${p.unbal?'<span class="pill bad">偏载</span>':''}</span>
-        <span class="m">${p.teu} TEU · 平均利用率 ${(p.util*100).toFixed(0)}%</span>
+        <span class="m">${p.teu} TEU · ${p.util > 1.005 ? '含超限货' : `平均利用率 ${(p.util*100).toFixed(0)}%`}</span>
         <span class="ubar"><i style="width:${Math.min(100,p.util*100).toFixed(1)}%"></i></span>
       </span>
     </button>`).join('');
@@ -1550,10 +1629,10 @@ function renderPlans(){
   const tail = rec.containers.length > 1 && lastFill < 0.25 ? `<br><b style="color:var(--warn)">最后一个柜只用了 ${(lastFill*100).toFixed(0)}%</b>，少发一点或尾货走拼箱可以省一个柜` : '';
   $('sidenote').innerHTML = `推荐 <b>${rec.label}</b>${rec.leftCartons ? `，仍有 ${rec.leftCartons} 箱装不下` : '，全部装下'}${tail}。规则：先保证装下，再选 TEU 最少，再选柜数少的。实际以运费报价为准。`;
 }
-$('tb-sel').addEventListener('change', e => { selKey = e.target.value; selIdx = 0; renderPlans(); renderStatusCol(); renderContainer(true); });
+$('tb-sel').addEventListener('change', e => { selKey = e.target.value; selIdx = 0; selManual = true; renderPlans(); renderStatusCol(); renderContainer(true); });
 $('planlist').addEventListener('click', e => {
   const b = e.target.closest('[data-plan]'); if(!b) return;
-  selKey = b.dataset.plan; selIdx = 0; renderPlans(); renderStatusCol(); renderContainer(true);
+  selKey = b.dataset.plan; selIdx = 0; selManual = true; renderPlans(); renderStatusCol(); renderContainer(true);
 });
 
 function renderStatusCol(){
@@ -1562,6 +1641,7 @@ function renderStatusCol(){
   for(const it of items){
     const cell = $('s-'+it.id); if(!cell) continue;
     const v = srcById[it.id];
+    if(it.on === false){ cell.innerHTML = `<span style="color:var(--muted);font-size:11.5px">这次不装 · 数据保留，勾上就算</span>`; continue; }
     if(!v){
       const touched = ['name','l','w','h','kg','qty'].some(k => String(it[k]).trim() !== '');
       cell.innerHTML = `<span style="color:${touched ? 'var(--bad)' : 'var(--faint)'};font-size:11.5px">${touched ? '还差红框里的数字，这一行暂不计算' : '填好尺寸和箱数后计算'}</span>`; continue;
@@ -1598,7 +1678,8 @@ function renderContainer(resetCam){
     $('tb-plan').textContent = '—'; $('tb-sel').innerHTML = '<option>还没有方案</option>'; $('tb-dims').textContent = '—'; $('wbadge').hidden = true;
     $('seq').max = 0; $('seq').value = 0; $('seqv').textContent = '';
     $('stagespec').hidden = true; $('caption').hidden = true;
-    showStageMsg(srcs.length ? '这些货物装不进任何柜型，原因见货物明细' : '还没有货物。先录入货物，这里会显示装柜图', !srcs.length); clear3d(); cur = null; return;
+    const noneOn = !srcs.length && items.some(it => it.on === false);
+    showStageMsg(noneOn ? '没有勾选要装的货物：在货物明细最左边勾上这次要装的货' : srcs.length ? '这些货物装不进任何柜型，原因见货物明细' : '还没有货物。先录入货物，这里会显示装柜图', !srcs.length && !noneOn); clear3d(); cur = null; return;
   }
   if(selIdx >= p.containers.length) selIdx = 0;
   const c = p.containers[selIdx], spec = CT[c.type], cap = spec.L*spec.W*spec.H;
@@ -1611,11 +1692,13 @@ function renderContainer(resetCam){
   $('ctabs').innerHTML = p.containers.length > 1 ? p.containers.map((cc,i) =>
     `<button type="button" data-ci="${i}" aria-pressed="${i===selIdx}">柜${i+1} · ${cc.type}</button>`).join('') : '';
 
-  $('bays').innerHTML = inThis.map(s => {
+  const many = inThis.length > 6;
+  $('bays').classList.toggle('compact', many);
+  $('bays').innerHTML = (many ? inThis.slice(0, 10) : inThis).map(s => {
     const m = cnt[s.id], pct = m.cartons/s.qty*100;
     return `<div class="bay"><div class="h"><span class="code" style="background:${s.color}">${s.code}</span><span class="nm ell">${esc(s.name)}</span><span class="mono">${m.cartons}/${s.qty}${m.pallets?` · ${m.pallets}托`:''}</span></div>
       <div class="prog"><i style="width:${Math.min(100,pct)}%;background:${s.color}"></i></div></div>`;
-  }).join('');
+  }).join('') + (many && inThis.length > 10 ? `<div class="bay more">+${inThis.length - 10} 种</div>` : '');
   $('legend').innerHTML = inThis.map(s => `<div><span class="dot" style="background:${s.color}"></span><span class="ell">${esc(s.name)}${cnt[s.id].pallets?' <span class="pill steel">托</span>':''}</span><span class="n">${cnt[s.id].cartons}</span></div>`).join('');
 
   const vu = c.usedVol/cap, wu = c.usedKg/spec.kg;
@@ -1635,7 +1718,7 @@ function renderContainer(resetCam){
     ['i-weight','本柜货重', `${fmt(c.usedKg/1000,2)}<small>t</small>`, `占限重 <b>${(wu*100).toFixed(0)}%</b>（${fmt(spec.kg/1000,1)} t）`, '', `<div class="mm">${meter(wu, wu>0.95?'var(--warn)':'var(--steel)')}</div>`],
     ['i-gauge','剩余载重', `${fmt(Math.max(0,spec.kg-c.usedKg)/1000,2)}<small>t</small>`,
       wu >= 0.9 && wu >= vu ? '<b>重量</b>快到上限，再加货会超重' : vu >= 0.85 ? '<b>空间</b>快满了，重量还有余量' : '空间和重量都有余量，<b>可加货</b>', '', ''],
-    ['i-cube','体积 · 重量利用率', `${(vu*100).toFixed(0)}<small>%</small> · ${(wu*100).toFixed(0)}<small>%</small>`, `${fmt(c.usedVol/1e6,2)} / ${fmt(cap/1e6,1)} m³`, '', `<div class="mm">${meter(vu,'var(--accent)')}${meter(wu,'var(--steel)')}</div>`],
+    ['i-cube','体积 · 重量利用率', `${utilTxt(vu, true)} · ${(wu*100).toFixed(0)}<small>%</small>`, `${fmt(c.usedVol/1e6,2)} / ${fmt(cap/1e6,1)} m³`, '', `<div class="mm">${meter(vu,'var(--accent)')}${meter(wu,'var(--steel)')}</div>`],
     ['i-box','本柜装载', `${cartons.toLocaleString('zh-CN')}<small>箱</small>`, `${inThis.length} 种货${pallets?` · 其中 <b>${pallets}</b> 托`:''}`, '', ''],
     ['i-layers','已装 / 总箱数', `${(totalC - p.leftCartons).toLocaleString('zh-CN')}<small>/ ${totalC.toLocaleString('zh-CN')} 箱</small>`, p.leftCartons ? `还有 ${p.leftCartons} 箱装不下` : `用 <b>${p.containers.length}</b> 个柜 · ${p.teu} TEU`, p.leftCartons ? 'bad' : '', ''],
   ].map(([ic,l,v,s,cls,extra]) => `<div class="card kpi"><div class="l"><span class="ic"><svg class="i"><use href="#${ic}"/></svg></span>${l}</div><div class="v">${v}</div><div class="s ${cls}">${s}</div>${extra}</div>`).join('');
@@ -1801,7 +1884,7 @@ function renderChart(A, spec){
 /* ================= 6. 3D 场景 ================= */
 let cut = null, fork = null, lastType = null, palLines = null;
 let dirty3d = true; const req3d = () => { dirty3d = true; };
-let stageOn = true;
+let stageOn = true, resize3d = null;
 let instByGi = [];
 function sizeLabel(sp){ const k = Math.max(0.55, Math.min(1, (Cam && Cam.aspect) || 1)); sp.scale.set(0.085*k, 0.032*k, 1); }
 let R, S, Cam, Ctl, G, has3d = false, cur = null, boxMeshes = [], edgeLines = null, edgeCum = [0], curN = 0, sun = null;
@@ -1915,7 +1998,7 @@ function init3d(){
     const off = r.width < 700 ? 0 : Math.min(28, r.height*0.06);
     Cam.setViewOffset(r.width, r.height, 0, -off, r.width, r.height); Cam.updateProjectionMatrix(); if(G) G.children.forEach(o => { if(o.userData && o.userData.isLabel) sizeLabel(o); }); req3d();
   };
-  new ResizeObserver(resize).observe($('stage')); resize();
+  new ResizeObserver(resize).observe($('stage')); resize(); resize3d = resize;
   // 只在画面有变化时才重画：拖动、播放、切换视角或数据改变；静止时不占用电脑资源
   (function loop(t){ requestAnimationFrame(loop); const busy = fly || play; tick(t||0); const moved = Ctl ? Ctl.update() : false; if((moved || busy || dirty3d) && stageOn){ R.render(S, Cam); dirty3d = false; } })();
   cv.addEventListener('pointermove', e => { if(hoverQ) { hoverQ = e; return; } hoverQ = e; requestAnimationFrame(() => { const ev = hoverQ; hoverQ = null; onHover(ev); }); });
@@ -2402,14 +2485,15 @@ function computeSteps(c){
     if(u.kind === 'pallet') cur.pallets++;
   });
   for(const st of steps){
-    st.list = [...st.parts.values()].map(pt => {
+    st.rows = [...st.parts.values()].map(pt => {
       const span = pt.y1 - pt.y0, mid = (pt.y0 + pt.y1)/2;
       const side = span > W*0.8 ? '整排' : mid < W*0.4 ? '靠右' : mid > W*0.6 ? '靠左' : '居中';   // 左右按“站在柜门往里看”
-      const qty = pt.kind === 'pallet' ? `${pt.units} 托` : `${pt.cartons} 箱`;
       const lay = pt.kind === 'pallet' ? (pt.zs.size > 1 ? `叠 ${pt.zs.size} 层` : '') : `码 ${pt.zs.size} 层`;
       const top = pt.zmin > 0 ? '，压在下面的货上' : '';
-      return `<span class="pt"><span class="dot" style="background:${pt.color || '#888'}"></span>${esc(pt.name)} ${qty}（${[side, lay].filter(Boolean).join('，')}${top}）</span>`;
+      return {name: pt.name, color: pt.color || '#888', qty: pt.kind === 'pallet' ? `${pt.units} 托` : `${pt.cartons} 箱`,
+        qtyFull: pt.kind === 'pallet' ? `${pt.units} 托（${pt.cartons} 箱）` : `${pt.cartons} 箱`, how: [side, lay].filter(Boolean).join('，') + top};
     });
+    st.list = st.rows.map(r => `<span class="pt"><span class="dot" style="background:${r.color}"></span>${esc(r.name)} ${r.qty}（${r.how}）</span>`);
   }
   return steps;
 }
@@ -2422,7 +2506,7 @@ function renderCaption(){
   if(N <= 0){ el.hidden = false; el.innerHTML = `准备装柜：共 <b>${st.length}</b> 步，从${clsOf(cur.type) === 'rf' || clsOf(cur.type) === 'nor' ? '冷机端' : '柜底'}开始往柜门装`; return; }
   const i = stepIndexAt(N), x = st[i]; if(!x){ el.hidden = true; return; }
   el.hidden = false;
-  el.innerHTML = `第 <b>${i+1}</b>/${st.length} 步 · 距柜底 ${(Math.max(0,x.x0)/100).toFixed(1)}–${(x.x1/100).toFixed(1)} m<br>${x.list.join('　')}${PB.tl && PB.tl.crane[x.from] ? '<br>用吊机从上方吊进去' : x.pallets ? '<br>托盘用叉车从柜门叉进去，散箱人工码放' : ''}`;
+  el.innerHTML = `第 <b>${i+1}</b>/${st.length} 步 · 距柜底 ${(Math.max(0,x.x0)/100).toFixed(1)}–${(x.x1/100).toFixed(1)} m<br>${x.list.slice(0, 4).join('　')}${x.list.length > 4 ? `　等 ${x.list.length} 种货` : ''}${PB.tl && PB.tl.crane[x.from] ? '<br>用吊机从上方吊进去' : x.pallets ? '<br>托盘用叉车从柜门叉进去，散箱人工码放' : ''}`;
 }
 function upper(arr, t){ let lo = 0, hi = arr.length; while(lo < hi){ const m = (lo + hi) >> 1; if(arr[m] <= t + 1e-9) lo = m + 1; else hi = m; } return lo; }
 /* 把正在动的货（和叉车）放回到当前时间点该在的位置 */
@@ -2662,6 +2746,362 @@ document.addEventListener('click', e => { if(e.target.closest('[data-contact]'))
 $('contact-x').onclick = closeContact;
 $('contact').addEventListener('click', e => { if(e.target.id === 'contact') closeContact(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('contact').hidden) closeContact(); });
+
+/* ================= 导出：PDF 装柜单（也可打印）、Excel 分柜表 ================= */
+const PW = 1240, PH = 1754, PM = 64, FOOT = 104;   // A4，约 150 dpi
+const PFONT = '-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif';
+const EXP = {urls: [], plan: null, busy: false};
+const isWx = () => /MicroMessenger/i.test(navigator.userAgent);
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+const LV_TXT = {ok:'正常', warn:'需注意', bad:'偏载'}, LV_COL = {ok:'#1E8A55', warn:'#B26A00', bad:'#D03A2B'};
+const worse = (a, b) => ({ok:0, warn:1, bad:2}[a] >= {ok:0, warn:1, bad:2}[b] ? a : b);
+
+function pFont(g, size, weight){ g.font = `${weight || 400} ${size}px ${PFONT}`; }
+function pText(g, s, x, y, size, color, weight, align){ pFont(g, size, weight); g.fillStyle = color || '#18202A'; g.textAlign = align || 'left'; g.fillText(s, x, y); }
+function pWrap(g, s, maxW){
+  const out = [];
+  for(const para of String(s).split('\n')){
+    let line = '';
+    for(const ch of para){ const t = line + ch; if(line && g.measureText(t).width > maxW){ out.push(line); line = ch === ' ' ? '' : ch; } else line = t; }
+    out.push(line);
+  }
+  return out;
+}
+function pRect(g, x, y, w, h, r){ g.beginPath(); g.moveTo(x+r, y); g.arcTo(x+w, y, x+w, y+h, r); g.arcTo(x+w, y+h, x, y+h, r); g.arcTo(x, y+h, x, y, r); g.arcTo(x, y, x+w, y, r); g.closePath(); }
+
+/* 一份文档：一页一页往下排，排满自动换页；换页时把上一页转成图片，省内存 */
+function ExpDoc(title){ this.title = title; this.urls = []; this.cur = null; }
+ExpDoc.prototype.page = function(sub){
+  this.flush();
+  const cv = document.createElement('canvas'); cv.width = PW; cv.height = PH;
+  const g = cv.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, PW, PH); g.textBaseline = 'alphabetic';
+  g.fillStyle = '#06142A'; g.fillRect(0, 0, PW, 128);
+  pText(g, 'BRYCE LOGISTICS', PM, 62, 34, '#fff', 800);
+  g.fillStyle = '#F8D651'; g.fillRect(PM, 78, 150, 5);
+  pText(g, '集装箱装柜计算器 · www.sinolyg.com/load', PM, 110, 17, 'rgba(255,255,255,.72)');
+  pText(g, this.title, PW - PM, 64, 34, '#fff', 700, 'right');
+  pText(g, sub, PW - PM, 104, 19, '#F8D651', 600, 'right');
+  this.cur = {cv, g, y: 170, sub};
+  return this.cur;
+};
+ExpDoc.prototype.flush = function(){
+  if(!this.cur) return;
+  const g = this.cur.g, n = this.urls.length + 1;
+  g.strokeStyle = '#E0E4E9'; g.lineWidth = 1; g.beginPath(); g.moveTo(PM, PH - 80.5); g.lineTo(PW - PM, PH - 80.5); g.stroke();
+  pText(g, 'Bryce Logistics · GWL 连云港分公司 · WhatsApp +86 183 6063 9913 · Bryce.Lee@gwl-lianyungang.com', PM, PH - 50, 15, '#55606B');
+  pText(g, `第 ${n} 页`, PW - PM, PH - 50, 15, '#55606B', 600, 'right');
+  pText(g, '本装柜单按理论算法生成，仅供参考；实际以现场装柜情况和船公司、码头、车队的要求为准。', PM, PH - 24, 13, '#9AA4AE');
+  this.urls.push(this.cur.cv.toDataURL('image/jpeg', 0.88));
+  this.cur.cv.width = 1; this.cur = null;
+};
+ExpDoc.prototype.need = function(h){ if(this.cur.y + h > PH - FOOT){ this.page(this.cur.sub.replace(/（续）$/, '') + '（续）'); return true; } return false; };
+
+function pSection(d, title, note){
+  d.need(80);
+  const g = d.cur.g, y = d.cur.y + 12;
+  g.fillStyle = '#F2BE22'; g.fillRect(PM, y - 22, 6, 28);
+  pText(g, title, PM + 18, y, 25, '#18202A', 700);
+  if(note) pText(g, note, PW - PM, y, 16, '#66717D', 400, 'right');
+  d.cur.y = y + 20;
+}
+function pTable(d, cols, rows){
+  const cp = rows.length > 16, x0 = PM, W = PW - 2*PM, RH = cp ? 31 : 37, FS = cp ? 15 : 17, LH = cp ? 20 : 24;
+  const head = () => {
+    const g = d.cur.g, y = d.cur.y; let x = x0;
+    g.fillStyle = '#EEF1F4'; g.fillRect(x0, y, W, RH);
+    pFont(g, 16, 600); g.fillStyle = '#55606B';
+    for(const c of cols){ g.textAlign = c.align || 'left'; g.fillText(c.t, c.align === 'right' ? x + c.w - 12 : x + 12, y + (cp ? 21 : 24)); x += c.w; }
+    d.cur.y += RH;
+  };
+  d.need(RH*2); head();
+  for(const r of rows){
+    pFont(d.cur.g, FS, 400);
+    const lines = r.cells.map((v, i) => pWrap(d.cur.g, v == null ? '' : String(v), cols[i].w - 24 - (r.dot && i === r.dotCol ? 22 : 0)));
+    const h = Math.max(RH, ...lines.map(l => l.length*LH + (cp ? 11 : 13)));
+    if(d.need(h)) head();
+    const g = d.cur.g, y = d.cur.y;
+    if(r.shade){ g.fillStyle = '#F7F9FB'; g.fillRect(x0, y, W, h); }
+    let x = x0;
+    lines.forEach((ls, i) => {
+      const c = cols[i]; let tx = c.align === 'right' ? x + c.w - 12 : x + 12;
+      if(r.dot && i === r.dotCol && ls[0]){ g.fillStyle = r.dot; pRect(g, tx, y + (cp ? 9 : 11), 13, 13, 3); g.fill(); tx += 21; }
+      pFont(g, FS, r.bold && r.bold[i] ? 700 : 400); g.fillStyle = (r.colors && r.colors[i]) || '#18202A'; g.textAlign = c.align || 'left';
+      ls.forEach((l, k) => g.fillText(l, tx, y + (cp ? 21 : 25) + k*LH));
+      x += c.w;
+    });
+    g.strokeStyle = '#E0E4E9'; g.lineWidth = 1; g.beginPath(); g.moveTo(x0, y + h - .5); g.lineTo(x0 + W, y + h - .5); g.stroke();
+    d.cur.y += h;
+  }
+  d.cur.y += 16;
+}
+function pKpis(d, items){
+  d.need(118);
+  const g = d.cur.g, n = items.length, gap = 12, w = (PW - 2*PM - gap*(n-1))/n, y = d.cur.y;
+  items.forEach((it, i) => {
+    const x = PM + i*(w + gap);
+    g.fillStyle = '#F4F6F8'; pRect(g, x, y, w, 100, 12); g.fill();
+    pText(g, it.l, x + 16, y + 30, 15, '#66717D');
+    pFont(g, 26, 700); let v = it.v; while(g.measureText(v).width > w - 28 && v.length > 2) v = v.slice(0, -1);
+    pText(g, v, x + 16, y + 66, 26, it.c || '#18202A', 700);
+    if(it.s) pText(g, it.s, x + 16, y + 89, 14, '#66717D');
+  });
+  d.cur.y += 120;
+}
+function pImg(g, img, x, y, w, h, label){
+  g.save(); pRect(g, x, y, w, h, 14); g.clip();
+  const gr = g.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, '#F4F5F6'); gr.addColorStop(1, '#D9DDE1');
+  g.fillStyle = gr; g.fillRect(x, y, w, h);
+  if(img){ const k = Math.max(w/img.width, h/img.height), iw = img.width*k, ih = img.height*k; g.drawImage(img, x + (w - iw)/2, y + (h - ih)/2, iw, ih); }
+  else pText(g, '（这台设备不支持 3D 显示，没有装柜图）', x + w/2, y + h/2, 18, '#66717D', 400, 'center');
+  g.restore();
+  if(label){ pFont(g, 15, 600); const tw = g.measureText(label).width + 22; g.fillStyle = 'rgba(22,29,38,.84)'; pRect(g, x + 12, y + 12, tw, 30, 8); g.fill(); pText(g, label, x + 23, y + 33, 15, '#fff', 600); }
+}
+
+/* 截一张 3D 图：临时把画布改成导出尺寸，按指定视角画一帧，马上复制下来 */
+function snap3d(view, w, h){
+  if(!has3d || !cur || !R) return null;
+  R.setPixelRatio(1); R.setSize(w, h, false);
+  Cam.aspect = w/h; Cam.clearViewOffset(); Cam.updateProjectionMatrix();
+  G.children.forEach(o => { if(o.userData && o.userData.isLabel) sizeLabel(o); });
+  setView(view, true);
+  if(cut){ const cp = Cam.position; cut.pos.visible = cp.z < cut.W/2 + 30; cut.neg.visible = cp.z > -cut.W/2 - 30; cut.end.visible = cp.x > -cut.L/2 - 30; }
+  R.render(S, Cam);
+  const c2 = document.createElement('canvas'); c2.width = w; c2.height = h;
+  c2.getContext('2d').drawImage(R.domElement, 0, 0, w, h);
+  return c2;
+}
+function readChecks(){
+  return [...document.querySelectorAll('#checks .check')].filter(el => !el.querySelector('#addmore')).map(el => {
+    const sp = el.querySelector(':scope > span'), pill = el.querySelector('.pill'), sub = el.querySelector('.sub');
+    return {label: sp ? sp.textContent.trim() : '', status: pill ? pill.textContent.trim() : '',
+      lv: pill ? (pill.classList.contains('bad') ? 'bad' : pill.classList.contains('warn') ? 'warn' : 'ok') : 'ok',
+      detail: sub ? sub.textContent.replace(/\s+/g, ' ').trim() : ''};
+  });
+}
+function boxStats(c){
+  const spec = CT[c.type], cnt = countBySrc(c), A = analyze(c), B = balanceOf(A, spec);
+  const cartons = Object.values(cnt).reduce((a, m) => a + m.cartons, 0), pallets = Object.values(cnt).reduce((a, m) => a + m.pallets, 0);
+  return {spec, cnt, A, B, cartons, pallets, vgm: c.usedKg + (spec.tare || 0), vu: c.usedVol/(spec.L*spec.W*spec.H), wu: c.usedKg/spec.kg, lv: worse(B.lon, B.lat)};
+}
+
+function expSummary(d, p){
+  d.page('方案总览');
+  const g = d.cur.g, y = d.cur.y;
+  pText(g, `装柜方案：${p.label}`, PM, y + 12, 34, '#18202A', 800);
+  pText(g, `日期 ${today()} · 共 ${p.containers.length} 个柜 · ${p.teu} TEU`, PW - PM, y + 12, 18, '#66717D', 400, 'right');
+  d.cur.y = y + 44;
+  const total = srcs.reduce((a, s) => a + s.qty, 0), kg = p.containers.reduce((a, c) => a + c.usedKg, 0), vol = p.containers.reduce((a, c) => a + c.usedVol, 0);
+  pKpis(d, [
+    {l:'已装 / 总箱数', v:`${(total - p.leftCartons).toLocaleString('zh-CN')} / ${total.toLocaleString('zh-CN')}`, s: p.leftCartons ? `还有 ${p.leftCartons} 箱装不下` : '全部装下', c: p.leftCartons ? '#D03A2B' : null},
+    {l:'总货重', v:`${fmt(kg/1000, 2)} t`},
+    {l:'总体积', v:`${fmt(vol/1e6, 2)} m³`},
+    {l:'平均体积利用率', v: utilTxt(p.util)},
+  ]);
+  pSection(d, '每个柜');
+  pTable(d, [{t:'柜号', w:110}, {t:'柜型', w:150}, {t:'装载', w:200, align:'right'}, {t:'货重 kg', w:150, align:'right'}, {t:'VGM 约 kg', w:160, align:'right'}, {t:'体积 m³', w:140, align:'right'}, {t:'利用率', w:100, align:'right'}, {t:'偏载', w:102}],
+    p.containers.map((c, i) => { const st = boxStats(c); return {cells:[`柜${i+1}`, c.type, `${st.cartons} 箱${st.pallets ? `（${st.pallets} 托）` : ''}`, fmt(c.usedKg, 0), fmt(st.vgm, 0), fmt(c.usedVol/1e6, 2), utilTxt(st.vu), LV_TXT[st.lv]], colors:[null, null, null, null, null, null, null, LV_COL[st.lv]], bold:[true], shade: i % 2 === 1}; }));
+  pSection(d, '每种货分到哪个柜');
+  const per = p.containers.map(c => countBySrc(c));
+  pTable(d, [{t:'编号', w:110}, {t:'品名', w:280}, {t:'总箱数', w:130, align:'right'}, {t:'分到', w:592}],
+    srcs.map((s, k) => {
+      const where = per.map((m, i) => m[s.id] ? `柜${i+1} ${m[s.id].cartons} 箱${m[s.id].pallets ? `（${m[s.id].pallets} 托）` : ''}` : '').filter(Boolean);
+      const loaded = per.reduce((a, m) => a + (m[s.id] ? m[s.id].cartons : 0), 0);
+      if(loaded < s.qty) where.push(`装不下 ${s.qty - loaded} 箱`);
+      return {cells:[s.code, s.name, String(s.qty), where.join('；')], dot: s.color, dotCol: 0, shade: k % 2 === 1, colors: loaded < s.qty ? [null, null, null, '#D03A2B'] : null};
+    }));
+}
+
+function expContainer(d, p, i, shots, checks){
+  const c = p.containers[i], st = boxStats(c), spec = st.spec, cls = clsOf(c.type);
+  d.page(`柜${i+1} / ${p.containers.length} · ${c.type}`);
+  const g = d.cur.g; let y = d.cur.y;
+  pText(g, `柜${i+1} · ${TYPE_INFO[c.type].name}`, PM, y + 12, 32, '#18202A', 800);
+  pText(g, `方案 ${p.label} · ${today()}`, PW - PM, y + 12, 18, '#66717D', 400, 'right');
+  const dims = cls === 'fr' ? `底板 ${spec.L}×${spec.W} cm · 端板高 ${spec.H} cm` : `内尺寸 ${spec.L}×${spec.W}×${spec.H} cm · 门 ${spec.DW}×${spec.DH} cm`;
+  pText(g, `${dims} · 限重 ${fmt(spec.kg/1000, 1)} t · 箱皮约 ${fmt((spec.tare || 0)/1000, 2)} t · 尺寸：${(CARRIERS[RULES.carrier] || CARRIERS.generic).name}`, PM, y + 48, 17, '#55606B');
+  y += 72;
+  const iw = PW - 2*PM, sw = (iw - 14)/2;
+  pImg(g, shots && shots.main, PM, y, iw, 440, cls === 'rf' || cls === 'nor' ? '3D 视图 · 左边冷机端，右边柜门' : '3D 视图 · 左边柜底，右边柜门');
+  y += 454;
+  pImg(g, shots && shots.side, PM, y, sw, 200, '侧视'); pImg(g, shots && shots.top, PM + sw + 14, y, sw, 200, '俯视');
+  d.cur.y = y + 218;
+  pKpis(d, [
+    {l:'本柜装载', v:`${st.cartons.toLocaleString('zh-CN')} 箱`, s: st.pallets ? `其中 ${st.pallets} 托` : `${Object.keys(st.cnt).length} 种货`},
+    {l:'货重', v:`${fmt(c.usedKg/1000, 2)} t`, s:`占限重 ${(st.wu*100).toFixed(0)}%`, c: st.wu > 1 ? '#D03A2B' : null},
+    {l:'VGM（约）', v:`${fmt(st.vgm, 0)} kg`, s:'货重 + 箱皮，以过磅为准'},
+    {l:'体积利用率', v: utilTxt(st.vu), s:`${fmt(c.usedVol/1e6, 2)} m³`},
+    {l:'前后 / 左右', v: LV_TXT[st.lv], c: LV_COL[st.lv], s:`柜底 ${(st.A.backShare*100).toFixed(0)}% · 左 ${(st.A.leftShare*100).toFixed(0)}%`},
+  ]);
+  const steps = computeSteps(c), crane = cls === 'fr' || (cls === 'ot' && RULES.otTop), anyP = steps.some(x => x.pallets);
+  pSection(d, '装柜步骤', `${cls === 'rf' || cls === 'nor' ? '从冷机端' : '从柜底'}往柜门装 · 左右按站在柜门往里看`);
+  const rows = [];
+  steps.forEach((x, k) => x.rows.forEach((r, j) => rows.push({cells:[j ? '' : String(k+1), j ? '' : `${(Math.max(0, x.x0)/100).toFixed(1)}–${(x.x1/100).toFixed(1)} m`, r.name, r.qtyFull, r.how], dot: r.color, dotCol: 2, shade: k % 2 === 1, bold: j ? null : [true, true]})));
+  pTable(d, [{t:'步骤', w:80}, {t:'距柜底', w:170}, {t:'装什么货', w:320}, {t:'数量', w:220}, {t:'怎么码', w: iw - 790}], rows);
+  if(crane || anyP){ d.need(40); pText(d.cur.g, crane ? '提示：用吊机从上方吊装，注意绑扎加固。' : '提示：托盘用叉车从柜门叉进去，散箱人工码放。', PM, d.cur.y + 4, 16, '#66717D'); d.cur.y += 30; }
+  if(checks.length){
+    pSection(d, '装载检查');
+    pTable(d, [{t:'项目', w:170}, {t:'结果', w:150}, {t:'说明', w: iw - 320}], checks.map((ch, k) => ({cells:[ch.label, ch.status, ch.detail], colors:[null, LV_COL[ch.lv]], bold:[true, true], shade: k % 2 === 1})));
+  }
+  pSection(d, '本柜货物');
+  pTable(d, [{t:'编号', w:110}, {t:'品名', w:290}, {t:'单件尺寸 cm', w:200}, {t:'单箱毛重 kg', w:150, align:'right'}, {t:'本柜箱数', w:130, align:'right'}, {t:'托数', w:90, align:'right'}, {t:'重量 kg', w: iw - 970, align:'right'}],
+    srcs.filter(s => st.cnt[s.id]).map((s, k) => { const m = st.cnt[s.id]; return {cells:[s.code, s.name, `${s.l}×${s.w}×${s.h}`, String(s.kg), String(m.cartons), m.pallets ? String(m.pallets) : '—', fmt(m.kg, 0)], dot: s.color, dotCol: 0, shade: k % 2 === 1}; }));
+  d.need(90);
+  const g3 = d.cur.g, ys = d.cur.y + 44;
+  ['装柜人', '装柜日期', '核对人'].forEach((t, k) => { const x = PM + k*(iw/3); pText(g3, t + '：', x, ys, 18, '#55606B'); g3.strokeStyle = '#9AA4AE'; g3.lineWidth = 1.2; g3.beginPath(); g3.moveTo(x + 100, ys + 6); g3.lineTo(x + iw/3 - 30, ys + 6); g3.stroke(); });
+  d.cur.y = ys + 30;
+}
+
+async function buildExport(p, onStep){
+  const d = new ExpDoc('装柜指导单');
+  const keep = {idx: selIdx, view: curView, pos: Cam ? Cam.position.clone() : null, tgt: Ctl ? Ctl.target.clone() : null, pr: R ? R.getPixelRatio() : 1};
+  stopPlay();
+  try{
+    if(p.containers.length > 1) expSummary(d, p);
+    for(let i = 0; i < p.containers.length; i++){
+      onStep(i + 1, p.containers.length);
+      await new Promise(r => setTimeout(r, 30));
+      selIdx = i; renderContainer(false);
+      if(fork) fork.visible = false;
+      const shots = has3d ? {main: snap3d('3d', 1400, 557), side: snap3d('side', 1000, 366), top: snap3d('top', 1000, 366)} : null;
+      if(fork) fork.visible = true;
+      expContainer(d, p, i, shots, readChecks());
+    }
+    d.flush();
+  } finally {
+    selIdx = keep.idx; renderContainer(false);
+    if(R){ R.setPixelRatio(keep.pr); if(resize3d) resize3d(); }
+    curView = keep.view; document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === curView));
+    if(keep.pos && Cam){ Cam.position.copy(keep.pos); if(Ctl){ Ctl.target.copy(keep.tgt); Ctl.update(); } }
+    if(has3d) G.children.forEach(o => { if(o.userData && o.userData.isLabel) sizeLabel(o); });
+    req3d();
+  }
+  return d.urls;
+}
+
+/* PDF：每页一张 JPEG 图，自己拼 PDF 文件结构，不用外部组件 */
+function b64Bytes(b64){ const s = atob(b64), u = new Uint8Array(s.length); for(let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }
+function makePDF(urls){
+  const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
+  const push = x => { const b = typeof x === 'string' ? enc.encode(x) : x; parts.push(b); len += b.length; };
+  const obj = (n, body) => { offs[n] = len; push(`${n} 0 obj\n`); body(); push('\nendobj\n'); };
+  const W = 595.28, H = 841.89, n = urls.length;
+  push('%PDF-1.4\n%âãÏÓ\n');
+  obj(1, () => push('<</Type/Catalog/Pages 2 0 R>>'));
+  obj(2, () => push(`<</Type/Pages/Count ${n}/Kids[${urls.map((_, k) => `${3 + 3*k} 0 R`).join(' ')}]>>`));
+  urls.forEach((u, k) => {
+    const img = b64Bytes(u.split(',')[1]), pn = 3 + 3*k, cs = `q ${W} 0 0 ${H} 0 0 cm /I${k} Do Q`;
+    obj(pn, () => push(`<</Type/Page/Parent 2 0 R/MediaBox[0 0 ${W} ${H}]/Resources<</XObject<</I${k} ${pn + 1} 0 R>>>>/Contents ${pn + 2} 0 R>>`));
+    obj(pn + 1, () => { push(`<</Type/XObject/Subtype/Image/Width ${PW}/Height ${PH}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${img.length}>>\nstream\n`); push(img); push('\nendstream'); });
+    obj(pn + 2, () => push(`<</Length ${cs.length}>>\nstream\n${cs}\nendstream`));
+  });
+  const total = 3 + 3*n, xref = len;
+  push(`xref\n0 ${total}\n0000000000 65535 f \n`);
+  for(let k = 1; k < total; k++) push(String(offs[k]).padStart(10, '0') + ' 00000 n \n');
+  push(`trailer\n<</Size ${total}/Root 1 0 R>>\nstartxref\n${xref}\n%%EOF\n`);
+  return new Blob(parts, {type: 'application/pdf'});
+}
+
+/* Excel：自己写最简单的 xlsx（不压缩的 zip + 几个 xml） */
+const CRC_T = (() => { const t = new Uint32Array(256); for(let n = 0; n < 256; n++){ let c = n; for(let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(b){ let c = 0xFFFFFFFF; for(let i = 0; i < b.length; i++) c = CRC_T[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zipStore(files, type){
+  const enc = new TextEncoder(), out = [], cen = []; let off = 0;
+  const u16 = v => [v & 255, (v >>> 8) & 255], u32 = v => [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255];
+  for(const f of files){
+    const nm = enc.encode(f.name), data = typeof f.data === 'string' ? enc.encode(f.data) : f.data, crc = crc32(data), sz = data.length;
+    const lh = new Uint8Array([0x50,0x4b,3,4, ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(crc), ...u32(sz), ...u32(sz), ...u16(nm.length), ...u16(0)]);
+    out.push(lh, nm, data);
+    cen.push(new Uint8Array([0x50,0x4b,1,2, ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(crc), ...u32(sz), ...u32(sz), ...u16(nm.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(off)]), nm);
+    off += lh.length + nm.length + sz;
+  }
+  const cs = cen.reduce((a, b) => a + b.length, 0);
+  const end = new Uint8Array([0x50,0x4b,5,6, ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(cs), ...u32(off), ...u16(0)]);
+  return new Blob([...out, ...cen, end], {type});
+}
+function makeXLSX(sheets){
+  const x = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const col = i => { let s = ''; i++; while(i){ const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1)/26); } return s; };
+  const NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main', HD = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  const sheetXml = sh => `${HD}<worksheet xmlns="${NS}"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>${sh.cols.map((w, i) => `<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${sh.rows.map((r, ri) => `<row r="${ri+1}">${r.map((v, ci) => {
+      if(v === '' || v == null) return '';
+      const ref = col(ci) + (ri + 1), st = (ri === 0 || r.bold) ? ' s="1"' : '';
+      return typeof v === 'number' && isFinite(v) ? `<c r="${ref}"${st}><v>${v}</v></c>` : `<c r="${ref}" t="inlineStr"${st}><is><t xml:space="preserve">${x(v)}</t></is></c>`;
+    }).join('')}</row>`).join('')}</sheetData></worksheet>`;
+  const files = [
+    {name:'[Content_Types].xml', data:`${HD}<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`},
+    {name:'_rels/.rels', data:`${HD}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
+    {name:'xl/workbook.xml', data:`${HD}<workbook xmlns="${NS}" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((sh, i) => `<sheet name="${x(sh.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`},
+    {name:'xl/_rels/workbook.xml.rels', data:`${HD}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_, i) => `<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
+    {name:'xl/styles.xml', data:`${HD}<styleSheet xmlns="${NS}"><fonts count="2"><font><sz val="11"/><name val="Microsoft YaHei"/></font><font><b/><sz val="11"/><name val="Microsoft YaHei"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFDF4D4"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`},
+    ...sheets.map((sh, i) => ({name:`xl/worksheets/sheet${i+1}.xml`, data: sheetXml(sh)})),
+  ];
+  return zipStore(files, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+const r2 = v => Math.round(v*100)/100;
+function excelSheets(p){
+  const per = p.containers.map(c => countBySrc(c));
+  const s1 = [['编号', '品名', '长 cm', '宽 cm', '高 cm', '单箱毛重 kg', '箱数', '包装', '体积 m³', '总重 kg', ...p.containers.map((c, i) => `柜${i+1} ${c.type}`), '装不下']];
+  let tq = 0, tv = 0, tk = 0; const tc = p.containers.map(() => 0); let tl = 0;
+  for(const s of srcs){
+    const vol = s.l*s.w*s.h*s.qty/1e6, kg = s.kg*s.qty, cnts = per.map(m => m[s.id] ? m[s.id].cartons : 0), loaded = cnts.reduce((a, b) => a + b, 0);
+    s1.push([s.code, s.name, s.l, s.w, s.h, s.kg, s.qty, s.pal === 'pallet' ? '打托' : '散箱', r2(vol), r2(kg), ...cnts.map(v => v || ''), s.qty - loaded || '']);
+    tq += s.qty; tv += vol; tk += kg; cnts.forEach((v, i) => tc[i] += v); tl += s.qty - loaded;
+  }
+  const tot = ['', '合计', '', '', '', '', tq, '', r2(tv), r2(tk), ...tc, tl || '']; tot.bold = true; s1.push(tot);
+  s1.push([], [`方案：${p.label}（${p.containers.length} 个柜，${p.teu} TEU）· 日期 ${today()} · Bryce Logistics 装柜计算器 www.sinolyg.com/load · 结果仅供参考`]);
+  const s2 = [['柜号', '柜型', '箱数', '托数', '货重 kg', '箱皮 kg', 'VGM 约 kg', '体积 m³', '体积利用率 %', '重量利用率 %', '柜底一半货重占比 %', '左侧货重占比 %', '偏载']];
+  p.containers.forEach((c, i) => { const st = boxStats(c); s2.push([`柜${i+1}`, c.type, st.cartons, st.pallets || '', r2(c.usedKg), st.spec.tare || 0, r2(st.vgm), r2(c.usedVol/1e6), st.vu > 1.005 ? '超限货' : Math.round(st.vu*100), Math.round(st.wu*100), Math.round(st.A.backShare*100), Math.round(st.A.leftShare*100), LV_TXT[st.lv]]); });
+  const s3 = [['柜号', '柜型', '步骤', '距柜底从 m', '距柜底到 m', '货物', '数量', '怎么码']];
+  p.containers.forEach((c, i) => computeSteps(c).forEach((x, k) => x.rows.forEach(r => s3.push([`柜${i+1}`, c.type, k + 1, r2(Math.max(0, x.x0)/100), r2(x.x1/100), r.name, r.qtyFull, r.how]))));
+  return [
+    {name:'分柜表', cols:[8, 22, 8, 8, 8, 12, 9, 8, 10, 11, ...p.containers.map(() => 12), 9], rows: s1},
+    {name:'柜子汇总', cols:[8, 8, 9, 8, 11, 9, 12, 10, 13, 13, 18, 15, 9], rows: s2},
+    {name:'装柜步骤', cols:[8, 8, 7, 12, 12, 22, 16, 30], rows: s3},
+  ];
+}
+
+function saveBlob(blob, name){
+  if(isWx()){ $('exp-wx').hidden = false; $('exp-wx').scrollIntoView({block:'nearest'}); return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 8000);
+}
+const fileTag = p => `${p.label.replace(/\s+/g, '').replace(/×/g, 'x')}_${today()}`;   // 文件名只用英文和数字，部分浏览器不认中文文件名
+async function openExport(){
+  const p = plans.find(x => x.key === selKey);
+  $('expm').hidden = false; $('exp-x').focus();
+  $('exp-wx').hidden = !isWx(); $('exp-print').hidden = isWx(); $('exp-prev').innerHTML = ''; EXP.urls = []; EXP.plan = p || null;
+  $('exp-pdf').disabled = $('exp-print').disabled = true; $('exp-xlsx').disabled = !p;
+  if(!p){ $('exp-sub').textContent = '还没有装柜方案：先录入货物，算出方案后再导出。'; $('exp-prog').textContent = ''; return; }
+  $('exp-sub').textContent = `方案 ${p.label} · ${p.containers.length} 个柜${p.leftCartons ? ` · 还有 ${p.leftCartons} 箱装不下` : ''}`;
+  if(EXP.busy) return;
+  EXP.busy = true;
+  try{
+    const urls = await buildExport(p, (k, n) => { $('exp-prog').textContent = `正在生成装柜单：第 ${k} / ${n} 个柜…`; });
+    if(EXP.plan !== p) return;
+    EXP.urls = urls;
+    const frag = document.createDocumentFragment();
+    urls.forEach((u, k) => { const im = new Image(); im.src = u; im.alt = `装柜单第 ${k+1} 页`; im.loading = 'lazy'; frag.appendChild(im); });
+    $('exp-prev').appendChild(frag);
+    $('exp-prog').textContent = `已生成 ${urls.length} 页，下面是预览`;
+    $('exp-pdf').disabled = false; $('exp-print').disabled = false;
+  }catch(err){ console.error(err); $('exp-prog').textContent = '生成失败了，请刷新页面后再试一次'; }
+  finally{ EXP.busy = false; }
+}
+function closeExport(){ $('expm').hidden = true; }
+$('exp-btn').onclick = openExport;
+$('exp-x').onclick = closeExport;
+$('expm').addEventListener('click', e => { if(e.target.id === 'expm') closeExport(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('expm').hidden) closeExport(); });
+$('exp-pdf').onclick = () => { if(EXP.urls.length && EXP.plan) saveBlob(makePDF(EXP.urls), `BryceLogistics_LoadPlan_${fileTag(EXP.plan)}.pdf`); };
+$('exp-xlsx').onclick = () => { const p = EXP.plan || plans.find(x => x.key === selKey); if(p) saveBlob(makeXLSX(excelSheets(p)), `BryceLogistics_Allocation_${fileTag(p)}.xlsx`); };
+$('exp-print').onclick = () => {
+  if(!EXP.urls.length) return;
+  const fr = document.createElement('iframe'); fr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0'; document.body.appendChild(fr);
+  const dd = fr.contentDocument;
+  dd.open(); dd.write(`<!doctype html><html><head><meta charset="utf-8"><title>装柜单</title><style>@page{size:A4;margin:0}html,body{margin:0}img{width:210mm;height:297mm;display:block;break-after:page;page-break-after:always}img:last-child{break-after:auto;page-break-after:auto}</style></head><body>${EXP.urls.map(u => `<img src="${u}">`).join('')}</body></html>`); dd.close();
+  Promise.all([...dd.images].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; }))).then(() => setTimeout(() => { try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){} setTimeout(() => fr.remove(), 60000); }, 120));
+};
 </script>
 
 </body>
