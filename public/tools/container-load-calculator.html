@@ -2872,7 +2872,7 @@ document.addEventListener('input', () => { userTouched = true; }, {capture:true,
   }, {threshold: 0.35});
   io.observe($('stage'));
 })();
-if(!isSample && items.length) $('hero').classList.add('slim');
+// 首屏不分新老用户，始终显示完整内容（以前老用户会收成简洁版，换浏览器看起来像内容丢了）
 if('IntersectionObserver' in window){
   new IntersectionObserver(es => { for(const e of es){ stageOn = e.isIntersecting || !!document.fullscreenElement || $('viewer').classList.contains('fs'); if(stageOn) req3d(); else if(play && PB.auto){ PB.auto = false; pausePlay(); renderCaption(); } } }, {rootMargin:'120px 0px'}).observe($('stage'));
   document.addEventListener('fullscreenchange', () => { stageOn = true; req3d(); });
