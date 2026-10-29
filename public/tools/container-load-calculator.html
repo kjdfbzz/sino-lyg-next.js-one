@@ -182,6 +182,7 @@ svg.i{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .fgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .fgrid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .fld{display:grid;gap:3px;font-size:11px;color:var(--muted);min-width:0}
+.settings input.bad{border-color:var(--bad)!important;background:var(--bad-soft)!important}
 .fld input,.fld select{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:7px;padding:5px 7px;background:var(--card);color:var(--fg);width:100%;min-width:0}
 .fld select{font-family:var(--f-body)}
 .span3{grid-column:1/-1}
@@ -410,6 +411,10 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 .bf-links a,.bf-links button{color:var(--steel);text-decoration:none;background:none;border:none;padding:0;font-size:12.5px}
 .bf-links a:hover,.bf-links button:hover{text-decoration:underline}
 .bfoot .disclaimer{margin:12px 0 0;text-align:left;padding:0}
+@media (max-width:600px){
+  .settings .fgrid[style]{grid-template-columns:minmax(0,1fr)!important}
+  .settings .fgrid > label.sw{grid-column:1/-1}
+}
 @media (pointer: coarse){
   input,select,textarea{font-size:16px!important}
   .pbtns button{width:40px;height:40px}
@@ -518,7 +523,7 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
       <div class="typepick" id="typepick"></div>
       <div class="setsum" id="setsum"></div>
       <div class="importer" id="importer" hidden>
-        <div class="imp-head"><b>从 Excel 粘贴装箱单</b><span>在 Excel 里选中这几列复制（Ctrl+C），粘贴到下面：<b>品名 · 长 · 宽 · 高 · 毛重 · 箱数</b>。长宽高写在一格也可以，比如 60*40*35。表头行会自动跳过。</span></div>
+        <div class="imp-head"><b>从 Excel 粘贴装箱单</b><span>在 Excel 里选中装箱单（<b>连表头一起</b>）复制（Ctrl+C），粘贴到下面，会按表头自动认出品名、长宽高、毛重、箱数，序号、净重、体积等列自动跳过。没有表头时按 <b>品名 · 长 · 宽 · 高 · 毛重 · 箱数</b> 的顺序读。长宽高写在一格也可以，比如 60*40*35。</span></div>
         <textarea id="imp-text" rows="6" placeholder="电动工具套装	60	40	35	18	300&#10;陶瓷花盆	45*45*50	12	120"></textarea>
         <div class="imp-opts">
           <label class="fld">尺寸单位<select id="imp-unit"><option value="cm">cm</option><option value="mm">mm</option></select></label>
@@ -539,7 +544,7 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
           <tfoot><tr><td></td><td></td><td id="t-lab" style="white-space:nowrap">合计</td><td colspan="4"></td><td class="r" id="t-qty">0</td><td colspan="3"></td><td class="r" id="t-vol">0</td><td class="r" id="t-kg">0</td><td colspan="2"></td></tr></tfoot>
         </table>
       </div>
-      <div class="foot-hint">最左边的勾选框：取消勾选就是这次不装，数据留在表里，下次勾上就行。按回车跳到下一行，最后一行按回车自动加一行。尺寸填纸箱外尺寸。大部分纸箱有向上标志，默认“只能正放”（可以水平转向）；确认能侧放、倒放的才选“任意翻转”。“最多堆几层”不填为不限，填 1 表示上面不能压货。选“打托”的货按“装柜设置”里的托盘规格先码托再装柜。</div>
+      <div class="foot-hint">最左边的勾选框：取消勾选就是这次不装，数据留在表里，下次勾上就行。按回车跳到下一行，最后一行按回车自动加一行。尺寸填纸箱外尺寸。大部分纸箱有向上标志，默认“只能正放”（可以水平转向）；确认能侧放、倒放的才选“任意翻转”。“最多堆几层”不填为不限；填了数字，这种货自己最多叠这么多层，上面也不会再压别的货（填 1 就是上面不能压货）。选“打托”的货按“装柜设置”里的托盘规格先码托再装柜。</div>
     </div>
 
     <div class="card settings" id="settings" hidden>
@@ -921,6 +926,7 @@ function packOne(c, units, remainIn, strat){
       const r = remain[u.id];
       if(!(r > 0)) continue;
       if(s.onlyLoose && u.kind !== 'carton') continue;
+      if(u.kind === 'pallet' && s.z > 1e-6) continue;   // 整托只能放地板上（叠托是同一垛两托一起放），不能压在散箱上
       const capW = u.kg > 0 ? Math.floor((c.kg - usedKg)/u.kg + 1e-9) : r;
       const q = Math.min(r, capW);
       if(q <= 0) continue;
@@ -1002,8 +1008,10 @@ function runSeq(units, typeFn, maxN, set=STRATS){
     const e = eff(t, units);
     let r = bestPack(e, units, remain, set);
     if(!r.boxes.length) break;
-    // 柜子没装满：试着降低码放高度把货铺开，货铺满柜长，重心自然靠中间、也更低
-    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88){
+    // 柜子没装满、紧靠柜底码放又会偏载：试着降低码放高度把货铺开，货铺满柜长，重心自然靠中间、也更低
+    // 先看紧靠柜底码放时重心是否在允许范围内（货轻时允许范围大）；在范围内就不铺开，柜底不留空当
+    const compactOk = () => balanceOf(analyzeBoxes(r.boxes, CT[t], units), CT[t]).lon === 'ok';
+    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88 && !compactOk()){
       const loaded = {};
       for(const u of units) loaded[u.id] = (remain[u.id]||0) - (r.remain[u.id]||0);
       for(const k of [0.35, 0.5, 0.65, 0.8]){
@@ -1067,7 +1075,7 @@ function balanceLoad(boxes, e, units, Lfull){
   }
   // 前后：调段的先后顺序、整段前后掉头，最后整批往柜门方向挪
   const T = sl.reduce((a,g) => a + g.len, 0), F = Wt > 0 ? Math.max(0, e.L - T) : 0;
-  const target = Lfull/2, tol = 0.05*Lfull/2, aim = target - tol*0.4;
+  const BT = balTol(Wt, e.kg, Lfull/2, e.W/2), target = Lfull/2, tol = BT.t5, aim = BT.light ? target - tol*0.9 : target - tol*0.4;   // 货轻时只要重心在允许范围内就不挪，柜底不留空当
   const evalOrd = ord => {
     let pos = 0, M = 0; for(const g of ord){ M += g.w*(pos + (g.xf ? g.len - g.cl : g.cl)); pos += g.len; }
     const cg = Wt ? M/Wt : T/2;
@@ -1155,12 +1163,19 @@ function loadOrder(boxes){
 }
 
 /* 判定偏载：前后 ≤5% 合格，≤10% 或满足 60/40 需告知承运人，超过为偏载；左右同样按半柜宽的 5% / 10% */
+/* 允许的重心偏差：货重达到限重一半以上按 ±5%（特殊情况 ±10%）；货更轻时按偏心力矩折算放宽，
+   但前后最多到半柜长的 65%（特殊 85%），左右最多半柜宽的 35%（特殊 50%） */
+function balTol(W, Wmax, half, hw){
+  const wr = Wmax > 0 ? W/Wmax : 1, f = Math.max(1, 0.5/Math.max(wr, 0.02));
+  const t5 = Math.min(0.65*half, 0.05*half*f), t10 = Math.min(0.85*half, Math.max(0.10*half, t5*1.5));
+  const y5 = Math.min(0.35*hw, 0.05*hw*f), y10 = Math.min(0.5*hw, Math.max(0.10*hw, y5*1.5));
+  return {t5, t10, y5, y10, wr, light: f > 1.01};
+}
 function balanceOf(A, spec){
-  const half = spec.L/2, dev = A.cgx - half, t5 = 0.05*half, t10 = 0.10*half;
-  const lon = Math.abs(dev) <= t5 ? 'ok' : (Math.abs(dev) <= t10 || A.maxHalf <= 0.6) ? 'warn' : 'bad';
-  const hw = spec.W/2, dy = A.cgy - hw, y5 = 0.05*hw, y10 = 0.10*hw;
+  const half = spec.L/2, hw = spec.W/2, T = balTol(A.kg, spec.kg, half, hw), {t5, t10, y5, y10} = T, dev = A.cgx - half, dy = A.cgy - hw;
+  const lon = Math.abs(dev) <= t5 ? 'ok' : (Math.abs(dev) <= t10 || (!T.light && A.maxHalf <= 0.6)) ? 'warn' : 'bad';
   const lat = Math.abs(dy) <= y5 ? 'ok' : Math.abs(dy) <= y10 ? 'warn' : 'bad';
-  return {dev, t5, t10, lon, dy, y5, y10, lat};
+  return {dev, t5, t10, lon, dy, y5, y10, lat, wr: T.wr, light: T.light};
 }
 
 /* 整票比较：每个柜都挑最满的装法，不一定整票最省柜。有托盘又有散箱时，
@@ -1275,7 +1290,7 @@ function analyzeBoxes(boxesIn, spec, unitsList){
     const u = UB[b.u]; if(!u) continue;
     const w = u.kg;
     kg += w; mx += w*(b.x+b.l/2); my += w*(b.y+b.w/2); mz += w*(b.z+b.h/2);
-    left += w * Math.max(0, Math.min(1, (spec.W/2 - b.y)/b.w));
+    left += w * Math.max(0, Math.min(1, (b.y + b.w - spec.W/2)/b.w));   // 左 = 站在柜门往里看的左手边（y 大的一侧），和 3D 图、装柜步骤一致
     back += w * Math.max(0, Math.min(1, (spec.L/2 - b.x)/b.l));
     for(let s = Math.floor(b.x/step); s <= Math.min(n-1, Math.floor((b.x+b.l-1e-6)/step)); s++){
       const ov = Math.min(b.x+b.l, (s+1)*step) - Math.max(b.x, s*step);
@@ -1418,13 +1433,67 @@ $('clear').onclick = () => { if(!items.length) return; keepUndo(`已清空 ${ite
 $('calc').onclick = calcNow;
 $('toast-undo').onclick = doUndo;
 /* 从 Excel 粘贴 */
+/* 从 Excel 粘贴：有表头就按表头认列（序号、净重、体积、型号这些列自动跳过，箱数和毛重谁在前都行）；
+   没有表头就按“品名 · 长 · 宽 · 高 · 毛重 · 箱数”的顺序认 */
+const IMP_COLS = [
+  ['skip', /净重|n\.?\s*w\.?\b|net\s*w|体积|cbm|volume|立方|序号|^no\.?$|^#$|^编号$|hs\s*code|海关编码|型号|款号|货号|model|sku|唛头|mark|单价|金额|price|amount|备注|remark|颜色|color|材质|材料/i],
+  ['dims', /尺寸|规格|箱规|外箱|dimension|meas|size/i],
+  ['l', /^\s*(外箱)?(长|长度|箱长)|length|^\s*l\s*($|[\(（])/i],
+  ['w', /^\s*(外箱)?(宽|宽度|箱宽)|width|^\s*w\s*($|[\(（])/i],
+  ['h', /^\s*(外箱)?(高|高度|箱高)|height|^\s*h\s*($|[\(（])/i],
+  ['ctn', /箱数|件数|总箱|ctns?\b|cartons?|pkgs?\b|packages?|包装件数/i],
+  ['qty', /数量|qty|quantity/i],
+  ['kgt', /总毛重|毛重合计|合计毛重|总重|total\s*g\.?\s*w|total\s*gross|t\.?\s*g\.?\s*w/i],
+  ['kg', /毛重|g\.?\s*w\.?\b|gross|重量|weight|^\s*kg/i],
+  ['name', /品名|名称|货名|货物|产品|中文名|英文名|description|desc\b|item|goods|commodity|product|name/i],
+];
+function impHeaderMap(cells){
+  const map = {}; let hits = 0;
+  cells.forEach((c, i) => {
+    const t = c.trim(); if(!t || /^-?[\d.,，]+$/.test(t)) return;
+    for(const [k, re] of IMP_COLS){ if(re.test(t)){ if(k !== 'skip'){ if(map[k] === undefined) map[k] = i; } hits++; return; } }
+  });
+  if(map.ctn === undefined && map.qty !== undefined) map.ctn = map.qty;
+  if(map.kg === undefined && map.kgt !== undefined){ map.kg = map.kgt; map.kgTotal = true; }
+  if(map.kg !== undefined && /单箱|每箱|per\s*(ctn|carton)|\/\s*ctn/i.test(cells[map.kg] || '')) map.kgPer = true;
+  const hasDims = map.dims !== undefined || (map.l !== undefined && map.w !== undefined && map.h !== undefined);
+  return hits >= 2 && hasDims && map.ctn !== undefined ? map : null;
+}
 function parseImport(text, unit, wmode){
   const out = [], skipped = [];
-  const numRe = /^-?[\d.,，]+\s*[a-zA-Z\u4e00-\u9fa5]*$/;
+  const numRe = /^-?[\d.,，]+\s*[a-zA-Z一-龥]*$/;
   const dimRe = /(\d+(?:\.\d+)?)\s*[x×X*＊]\s*(\d+(?:\.\d+)?)\s*[x×X*＊]\s*(\d+(?:\.\d+)?)/;
+  const numOf = c => { const t = String(c || '').replace(/[,，\s"'“”]/g, ''); const m = t.match(/^-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : NaN; };
+  const totalRow = n => /^(合计|总计|小计|共计|total|sub\s*-?total|grand\s*total)/i.test(n.trim());
+  let map = null, hdrMM = false, mode = 'order', autoTotal = 0;
   for(const raw of text.split(/\r?\n/)){
     const line = raw.trim(); if(!line) continue;
-    const cells = (raw.includes('\t') ? raw.split('\t') : line.split(/\s{2,}|\s*[,，;；]\s*|\s+/)).map(c => c.trim()).filter(Boolean);
+    const tabbed = raw.includes('\t');
+    const cellsAll = tabbed ? raw.split('\t').map(c => c.trim()) : line.split(/\s{2,}|\s*[,，;；]\s*|\s+/).map(c => c.trim());
+    // 表头：认出列，后面的行按列取
+    if(!map){ const m = tabbed ? impHeaderMap(cellsAll) : null; if(m){ map = m; mode = 'header'; hdrMM = /mm|毫米/i.test(line) && !/cm|厘米/i.test(line); continue; } }
+    // 表头是长宽高三列、但这一行把尺寸写在一格里（如 450*450*500）：这一行改按顺序读，免得列错位
+    if(map && tabbed && !(map.dims === undefined && cellsAll.some(c => dimRe.test(c)))){
+      const get = k => map[k] !== undefined ? cellsAll[map[k]] || '' : '';
+      let name = get('name');
+      if(!name){ const firstText = cellsAll.find((c, i) => c && !/^-?[\d.,，\s]+$/.test(c) && !dimRe.test(c) && !Object.values(map).includes(i)); name = firstText || ''; }
+      if(totalRow(name) || cellsAll.some(c => totalRow(c))){ skipped.push(line); continue; }
+      let dims;
+      if(map.dims !== undefined){ const m = get('dims').match(dimRe); dims = m ? [+m[1], +m[2], +m[3]] : null; }
+      if(!dims && map.l !== undefined) dims = [numOf(get('l')), numOf(get('w')), numOf(get('h'))];
+      let kg = map.kg !== undefined ? numOf(get('kg')) : 0, qty = numOf(get('ctn'));
+      if(!dims || !dims.every(v => v > 0) || !(qty > 0)){ skipped.push(line); continue; }
+      if(!isFinite(kg)) kg = 0;
+      if(unit === 'mm' || hdrMM) dims = dims.map(v => v/10);
+      qty = Math.round(qty);
+      if((map.kgTotal || wmode === 'total') && qty > 0) kg = kg/qty;
+      // 装箱单的 G.W. 常常是这一行的合计：按每箱算比钢还重、按合计算又合理，就自动换成每箱毛重
+      else if(qty > 1 && !map.kgPer){ const v = (unit === 'mm' || hdrMM ? dims : dims).reduce((x, y) => x*y, 1)/1e6; if(v > 0 && kg/v > 8000 && (kg/qty)/v < 8000){ kg = kg/qty; autoTotal++; } }   // 按每箱算比钢还重（>8 t/m³）
+      out.push({name, l:+dims[0].toFixed(1), w:+dims[1].toFixed(1), h:+dims[2].toFixed(1), kg:+kg.toFixed(2), qty});
+      continue;
+    }
+    // 没有表头：按顺序认
+    const cells = cellsAll.filter(Boolean);
     let name = '', dims = null; const nums = [];
     for(const c of cells){
       const m = c.match(dimRe);
@@ -1432,6 +1501,7 @@ function parseImport(text, unit, wmode){
       if(numRe.test(c)){ const n = parseFloat(c.replace(/[,，]/g,'')); if(isFinite(n)){ nums.push(n); continue; } }
       if(!name) name = c; else name += ' ' + c;
     }
+    if(totalRow(name)){ skipped.push(line); continue; }
     if(!dims){ if(nums.length < 5){ skipped.push(line); continue; } dims = nums.splice(0,3); }
     if(nums.length < 2){ skipped.push(line); continue; }
     let [kg, qty] = nums;
@@ -1441,7 +1511,7 @@ function parseImport(text, unit, wmode){
     if(!(dims[0] > 0 && dims[1] > 0 && dims[2] > 0 && qty > 0)){ skipped.push(line); continue; }
     out.push({name, l:+dims[0].toFixed(1), w:+dims[1].toFixed(1), h:+dims[2].toFixed(1), kg:+kg.toFixed(2), qty});
   }
-  return {rows: out, skipped};
+  return {rows: out, skipped, mode, map, hdrMM, autoTotal};
 }
 let impRows = [];
 function impPreview(){
@@ -1451,7 +1521,8 @@ function impPreview(){
   $('imp-ok').textContent = impRows.length ? `导入 ${impRows.length} 行` : '导入';
   $('imp-preview').innerHTML = !$('imp-text').value.trim() ? '粘贴后这里会显示识别结果，确认没问题再导入。'
     : (impRows.length ? `<table><thead><tr><th>品名</th><th>长 cm</th><th>宽 cm</th><th>高 cm</th><th>单箱毛重 kg</th><th>箱数</th><th>体积 m³</th></tr></thead><tbody>${impRows.map(x => `<tr><td>${esc(x.name||'（无品名）')}</td><td>${x.l}</td><td>${x.w}</td><td>${x.h}</td><td>${x.kg}</td><td>${x.qty}</td><td>${fmt(x.l*x.w*x.h*x.qty/1e6,2)}</td></tr>`).join('')}</tbody></table>` : '<span style="color:var(--bad)">没有识别出货物行，请检查列的顺序：品名、长、宽、高、毛重、箱数。</span>')
-      + (r.skipped.length ? `<div style="margin-top:6px">跳过 ${r.skipped.length} 行（表头或缺数字）：${r.skipped.slice(0,3).map(esc).join(' ｜ ')}${r.skipped.length > 3 ? ' …' : ''}</div>` : '');
+      + (r.mode === 'header' ? `<div style="margin-top:6px;color:var(--ok)">已按表头认列${r.map.kgTotal ? '（毛重是总毛重，已除以箱数换成每箱毛重）' : r.autoTotal ? `（有 ${r.autoTotal} 行的毛重是这一行的合计，已除以箱数换成每箱毛重）` : ''}${r.hdrMM ? '（表头写的是 mm，已换成 cm）' : ''}，请核对下面的数字。</div>` : (impRows.length ? `<div style="margin-top:6px">没有认出表头，按“品名 · 长 · 宽 · 高 · 毛重 · 箱数”的顺序读取。装箱单列的顺序不一样时，把表头一起复制进来就能自动认列。</div>` : ''))
+      + (r.skipped.length ? `<div style="margin-top:6px">跳过 ${r.skipped.length} 行（表头、合计或缺数字）：${r.skipped.slice(0,3).map(esc).join(' ｜ ')}${r.skipped.length > 3 ? ' …' : ''}</div>` : '');
 }
 function openImporter(text){
   $('importer').hidden = false;
@@ -1537,6 +1608,25 @@ function renderSettings(){
   $('r-ottop').checked = !!RULES.otTop; $('r-genset').checked = !!RULES.genset; $('r-rfGap').value = RULES.rfGap;
   renderTypePick();
 }
+/* 设置里每一项的合理范围：超出范围不采用，输入框标红并提示；离开输入框时恢复成正在用的值 */
+const SET_RANGE = {
+  p: {L:[40,250], W:[40,250], h:[5,30], kg:[0,100], maxH:[20,300], maxKg:[50,3000], gap:[0,20]},
+  r: {gapL:[0,100], gapH:[0,50], rfGap:[0,60]},
+  t: {L:[100,1400], W:[100,300], H:[100,320], DW:[100,320], DH:[100,320], kg:[1000,60000], tare:[1000,10000], Hnb:[100,320], loadH:[100,320], extW:[200,300]},
+};
+function rangeCheck(t, grp, key, v){
+  const r = SET_RANGE[grp] && SET_RANGE[grp][key];
+  let ok = r ? (v >= r[0] && v <= r[1]) : v > 0;
+  if(ok && grp === 'p' && key === 'maxH') ok = v > PAL.h + 5;
+  t.classList.toggle('bad', !ok);
+  t.title = ok ? '' : (r ? `请填 ${r[0]}–${r[1]} 之间的数字` : '请填大于 0 的数字') + (grp === 'p' && key === 'maxH' ? '（要比托盘高至少多 5 cm）' : '');
+  return ok;
+}
+document.querySelector('.settings').addEventListener('change', e => {
+  const t = e.target; if(!t.classList || !t.classList.contains('bad')) return;
+  t.classList.remove('bad'); t.title = '';
+  if(t.dataset.p) t.value = PAL[t.dataset.p]; else if(t.dataset.r) t.value = RULES[t.dataset.r]; else if(t.dataset.t) t.value = CT[t.dataset.t][t.dataset.k];
+});
 document.querySelector('.settings').addEventListener('input', e => {
   const t = e.target;
   if(t.id === 'pal-preset'){
@@ -1547,16 +1637,16 @@ document.querySelector('.settings').addEventListener('input', e => {
   if(t.id === 'pal-fork'){ PAL.fork = t.value; schedule(0); return; }
   if(t.dataset.p){
     if(t.type === 'checkbox') PAL.stack = t.checked;
-    else { const v = num(t.value); if(!(v > 0) && !(t.dataset.p === 'gap' && v === 0)) return; PAL[t.dataset.p] = v; if(t.dataset.p === 'L' || t.dataset.p === 'W'){ PAL.preset = 'custom'; $('pal-preset').value = 'custom'; } }
+    else { const v = num(t.value); if(t.value.trim() === '' || !rangeCheck(t, 'p', t.dataset.p, v)) return; PAL[t.dataset.p] = v; if(t.dataset.p === 'L' || t.dataset.p === 'W'){ PAL.preset = 'custom'; $('pal-preset').value = 'custom'; } }
     schedule(t.type === 'checkbox' ? 0 : 400); return;
   }
   if(t.dataset.r){
     if(t.type === 'checkbox') RULES[t.dataset.r] = t.checked;
-    else { const v = num(t.value); if(!(v >= 0 && v < 100)) return; RULES[t.dataset.r] = v; }
+    else { const v = num(t.value); if(t.value.trim() === '' || !rangeCheck(t, 'r', t.dataset.r, v)) return; RULES[t.dataset.r] = v; }
     schedule(t.type === 'checkbox' ? 0 : 400); return;
   }
   if(t.id === 'ct-carrier'){ RULES.carrier = t.value; CT = presetCT(t.value); renderSettings(); schedule(0); return; }
-  if(t.dataset.t){ const v = num(t.value); if(v > 0){ CT[t.dataset.t][t.dataset.k] = v; schedule(400); } }
+  if(t.dataset.t){ const v = num(t.value); if(t.value.trim() !== '' && rangeCheck(t, 't', t.dataset.k, v)){ CT[t.dataset.t][t.dataset.k] = v; schedule(400); } }
 });
 $('set-open').onclick = () => toggleSettings();
 document.querySelector('.settings').addEventListener('input', () => renderSetSum());
@@ -1627,8 +1717,15 @@ function renderPlans(){
   const rec = plans.find(p => p.rec);
   const lastC = rec.containers[rec.containers.length-1], lastFill = lastC ? lastC.usedVol/(CT[lastC.type].L*CT[lastC.type].W*CT[lastC.type].H) : 1;
   const tail = rec.containers.length > 1 && lastFill < 0.25 ? `<br><b style="color:var(--warn)">最后一个柜只用了 ${(lastFill*100).toFixed(0)}%</b>，少发一点或尾货走拼箱可以省一个柜` : '';
-  $('sidenote').innerHTML = `推荐 <b>${rec.label}</b>${rec.leftCartons ? `，仍有 ${rec.leftCartons} 箱装不下` : '，全部装下'}${tail}。规则：先保证装下，再选 TEU 最少，再选柜数少的。实际以运费报价为准。`;
+  const try20 = !TYPES.includes('20GP') && lastC && lastC.type !== '20GP' && lastFill < 0.45 && lastC.boxes.every(b => Math.min(b.l, b.w) <= CT['20GP'].W && Math.max(b.l, b.w) <= CT['20GP'].L - 5 && b.z + b.h <= CT['20GP'].H - 3)
+    ? `<br><b style="color:var(--warn)">最后一个柜只用了 ${(lastFill*100).toFixed(0)}%</b>，现在没勾 20GP。<button type="button" class="linkbtn" data-add20="1">勾上 20GP 再算</button>，看看用小柜装尾货是不是更省` : '';
+  $('sidenote').innerHTML = `推荐 <b>${rec.label}</b>${rec.leftCartons ? `，仍有 ${rec.leftCartons} 箱装不下` : '，全部装下'}${try20 || tail}。规则：先保证装下，再选 TEU 最少，再选柜数少的。实际以运费报价为准。`;
 }
+document.addEventListener('click', e => {
+  if(!e.target.closest('[data-add20]')) return;
+  const cb = document.querySelector('#typepick input[data-type="20GP"]');
+  if(cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event('change', {bubbles: true})); }
+});
 $('tb-sel').addEventListener('change', e => { selKey = e.target.value; selIdx = 0; selManual = true; renderPlans(); renderStatusCol(); renderContainer(true); });
 $('planlist').addEventListener('click', e => {
   const b = e.target.closest('[data-plan]'); if(!b) return;
@@ -1763,10 +1860,10 @@ function renderChecks(p, c, A, spec){
   if(spec.exp) rows.push(`<div class="check"><span>体积</span>${st(cbm <= spec.exp, '超过常规装载量')}
     <div class="meter"><i style="width:${Math.min(100,cbm/spec.exp*100)}%;background:${cbm>spec.exp?'var(--warn)':'var(--ok)'}"></i></div>
     <span class="sub"><span class="mono">${fmt(cbm,2)} m³</span>，${c.type} 一般按 <span class="mono">${spec.exp} m³</span> 左右报${cbm>spec.exp?'。算法按理想摆法计算，实际装柜可能装不下，建议给客户留余量':''}</span></div>`);
-  const dirL = B.dev < 0 ? '偏柜底' : '偏柜门', dirY = B.dy < 0 ? '偏左' : '偏右';
+  const dirL = B.dev < 0 ? '偏柜底' : '偏柜门', dirY = B.dy < 0 ? '偏右' : '偏左';
   rows.push(`<div class="check"><span>前后偏载</span>${pillB(B.lon, dirL + '，需告知承运人', '偏载')}
     <div class="lr"><span class="mono">柜底 ${(A.backShare*100).toFixed(0)}%</span><div class="meter"><i style="width:${A.backShare*100}%;background:var(--steel)"></i><i style="width:${(1-A.backShare)*100}%;background:var(--faint)"></i></div><span class="mono">柜门 ${((1-A.backShare)*100).toFixed(0)}%</span></div>
-    <span class="sub">重心${Math.abs(B.dev) < 0.5 ? '在柜长中点' : `${dirL} <b class="mono" style="color:var(--fg)">${Math.abs(B.dev).toFixed(0)} cm</b>`}。要求 ±${B.t5.toFixed(0)} cm 以内，特殊情况最多 ±${B.t10.toFixed(0)} cm（CTU Code）${B.lon==='bad'?'。超出范围，码头吊装、拖车都可能拒收，需要重新调整装法':''}</span></div>`);
+    <span class="sub">重心${Math.abs(B.dev) < 0.5 ? '在柜长中点' : `${dirL} <b class="mono" style="color:var(--fg)">${Math.abs(B.dev).toFixed(0)} cm</b>`}。${B.light ? `货重只占限重 ${(B.wr*100).toFixed(0)}%，重心偏一点影响不大，允许 ±${B.t5.toFixed(0)} cm` : `要求 ±${B.t5.toFixed(0)} cm 以内，特殊情况最多 ±${B.t10.toFixed(0)} cm（CTU Code）`}${B.lon==='bad'?'。超出范围，码头吊装、拖车都可能拒收，需要重新调整装法':''}</span></div>`);
   rows.push(`<div class="check"><span>左右偏载</span>${pillB(B.lat, dirY, '偏载')}
     <div class="lr"><span class="mono">左 ${(lr*100).toFixed(0)}%</span><div class="meter"><i style="width:${lr*100}%;background:var(--accent)"></i><i style="width:${(1-lr)*100}%;background:var(--faint)"></i></div><span class="mono">右 ${((1-lr)*100).toFixed(0)}%</span></div>
     <span class="sub">重心${Math.abs(B.dy) < 0.5 ? '在中线上' : `${dirY} <b class="mono" style="color:var(--fg)">${Math.abs(B.dy).toFixed(1)} cm</b>`}，要求 ±${B.y5.toFixed(0)} cm 以内</span></div>`);
@@ -2335,6 +2432,7 @@ function draw3d(c, resetCam){
   setN(+$('seq').value);
   PB.t = curN ? PB.tl.start[curN-1] + PB.tl.dur[curN-1] : 0;
   if(fork) fork.userData.load.visible = true;
+  forkVis();
   renderCaption(); playUI();
   if(resetCam) setView(curView, true);
 }
@@ -2367,9 +2465,10 @@ function viewPose(v){
     }
   }
 }
+function forkVis(){ if(fork) fork.visible = curView !== 'door' || !!play; }
 function setView(v, instant){
   if(!has3d || !cur) return;
-  curView = v;
+  curView = v; forkVis();
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v));
   const pose = viewPose(v);
   if(instant || matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -2631,13 +2730,13 @@ function playUI(){
   $('pb-play').title = on ? '暂停' : '播放'; $('pb-play').setAttribute('aria-label', on ? '暂停' : '播放');
   $('play').querySelector('span').textContent = on ? '暂停' : (done || curN === 0 ? '播放装柜' : '继续播放');
 }
-function pausePlay(){ play = null; settleAll(); restoreQuality(); playUI(); req3d(); }
+function pausePlay(){ play = null; settleAll(); forkVis(); restoreQuality(); playUI(); req3d(); }
 function stopPlay(){ play = null; if(has3d && PB.anim.size) settleAll(); PB.anim.clear(); restoreQuality(); playUI(); req3d(); }
 function startPlay(){
   if(!cur || !PB.tl) return;
   if(curN >= cur.boxes.length){ PB.t = 0; setN(0); $('seq').value = 0; updateSeqLabel(); }
   else PB.t = curN ? PB.tl.start[curN-1] + 1e-6 : 0;
-  play = {}; PB.last = 0; PB.auto = false; PB.capI = stepIndexAt(curN); playUI(); renderCaption();
+  play = {}; forkVis(); PB.last = 0; PB.auto = false; PB.capI = stepIndexAt(curN); playUI(); renderCaption();
 }
 function togglePlay(){ PB.auto = false; if(play) pausePlay(); else startPlay(); }
 $('play').onclick = togglePlay;
@@ -2963,7 +3062,7 @@ async function buildExport(p, onStep){
       selIdx = i; renderContainer(false);
       if(fork) fork.visible = false;
       const shots = has3d ? {main: snap3d('3d', 1400, 557), side: snap3d('side', 1000, 366), top: snap3d('top', 1000, 366)} : null;
-      if(fork) fork.visible = true;
+      forkVis();
       expContainer(d, p, i, shots, readChecks());
     }
     d.flush();
