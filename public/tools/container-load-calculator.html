@@ -945,7 +945,10 @@ function packOne(c, units, remainIn, strat){
         const fx = Math.floor(SL/ol), fy = Math.floor(SW/ow);
         let fz = Math.floor(SH/oh);
         if(u.layers > 0) fz = Math.min(fz, u.layers);
-        const nz = Math.min(fz, q), ny = Math.min(fy, Math.floor(q/nz)), nx = Math.min(fx, Math.floor(q/(nz*ny)));
+        // 一整面墙（宽 × 高）都装不满的零头：先铺满宽度、再往上码，不码成又高又窄的柱子（运输中容易倒）
+        let nz, ny, nx;
+        if(strat.wide && q < fy*fz){ ny = Math.min(fy, q); nz = Math.min(fz, Math.floor(q/ny)); nx = 1; }
+        else { nz = Math.min(fz, q); ny = Math.min(fy, Math.floor(q/nz)); nx = Math.min(fx, Math.floor(q/(nz*ny))); }
         const n = nx*ny*nz;
         if(n <= 0) continue;
         const vol = n*ol*ow*oh;
@@ -957,6 +960,8 @@ function packOne(c, units, remainIn, strat){
           const extra = strat.split === 'A' ? fit(bl, s.w-bw, s.h) + fit(s.l-bl, s.w, s.h) : fit(s.l, s.w-bw, s.h) + fit(s.l-bl, bw, s.h);
           score = (n + Math.min(q - n, extra)) * ol*ow*oh + vol*1e-3;
         }
+        // 限层的散箱码满层数后上面不能再压货：头顶剩下的空间就废了，按浪费比例打折（能码到顶的货优先占高空间，限层货放到矮处或最后）
+        if(strat.dead && u.kind === 'carton' && u.layers > 0){ const dead = nx*ol*ny*ow*Math.max(0, SH - nz*oh); if(dead > 0) score *= vol/(vol + dead); }
         if(strat.heavy) score *= s.z === 0 ? (1 + dens*2e4) : 1/(1 + dens*2e4);
         // 托盘先铺地：叉车先把整托放下去，散箱再补到托盘上面
         if(strat.palFirst && u.kind === 'pallet') score *= 1e3;
@@ -990,11 +995,20 @@ for(const split of ['A','B']) for(const wall of [false,true]) for(const heavy of
 for(const split of ['A','B']) STRATS.push({split, look:true});
 for(const split of ['A','B']) for(const look of [false,true]) STRATS.push({split, look, palFirst:true});
 const STRATS_PF = STRATS.filter(st => st.palFirst);
+// 有限层的散箱：每种装法再按“限层货不占高空间”算一遍（dead），装得差不多多时优先不留空当的
+const DEADV = set => set.concat(set.map(st => Object.assign({}, st, {dead:true})));
+const hasLayered = units => units.some(u => u.kind === 'carton' && u.layers > 0);
 function bestPack(c, units, remain, set=STRATS){
-  const rs = set.map(st => packOne(c, units, remain, st));
-  const maxV = Math.max(...rs.map(r => r.usedVol));
-  const good = rs.filter(r => r.usedVol >= maxV*0.997);
-  good.sort((a,b) => a.cgz - b.cgz);
+  // 每种基本装法再算一遍“零头先铺满宽度”（wide），装得一样多时优先用它：不码细高柱子
+  const S = set.concat(set.filter(st => !st.wall && !st.heavy).map(st => Object.assign({}, st, {wide:true})));
+  const rs = S.map(st => Object.assign(packOne(c, units, remain, st), {dead: !!st.dead, wide: !!st.wide}));
+  // 有装法能把剩下的货全装进这个柜时，只在这些装法里挑（不能为了码得好看少装几箱、多用一个柜）；
+  // 装不下时按装进去的体积挑。体积差不多的装法里再挑：限层货不占高空间 → 零头铺宽 → 重心低
+  const allIn = rs.filter(r => sumRemain(r.remain) === 0);
+  const top = allIn.length ? allIn : rs;
+  const maxV = Math.max(...top.map(r => r.usedVol));
+  const good = top.filter(r => r.usedVol >= maxV*0.997);
+  good.sort((a,b) => (b.dead - a.dead) || (b.wide - a.wide) || (a.cgz - b.cgz));
   return good[0];
 }
 const sumRemain = r => Object.values(r).reduce((a,b) => a + (b>0?b:0), 0);
@@ -1010,22 +1024,29 @@ function runSeq(units, typeFn, maxN, set=STRATS){
     if(!r.boxes.length) break;
     // 柜子没装满、紧靠柜底码放又会偏载：试着降低码放高度把货铺开，货铺满柜长，重心自然靠中间、也更低
     // 先看紧靠柜底码放时重心是否在允许范围内（货轻时允许范围大）；在范围内就不铺开，柜底不留空当
-    const compactOk = () => balanceOf(analyzeBoxes(r.boxes, CT[t], units), CT[t]).lon === 'ok';
-    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88 && !compactOk()){
+    // 评分：重心按严格范围（不算轻货放宽）0 合格 / 1 需告知 / 2 偏载，再比柜底空当，再比码得高
+    const rankOf = bx => { const bl = balanceLoad(bx, e, units, CT[t].L), B = balanceOf(analyzeBoxes(bl.boxes, CT[t], units), CT[t]), d = Math.abs(B.dev);
+      return {bl, B, rk: d <= B.t5 + 0.5 ? 0 : d <= B.t10 + 0.5 ? 1 : 2, back: Math.round(bl.back/10)}; };
+    let cur = rankOf(r.boxes);
+    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88 && (cur.rk > 0 || cur.back > 0) && !cur.B.veryLight){
       const loaded = {};
       for(const u of units) loaded[u.id] = (remain[u.id]||0) - (r.remain[u.id]||0);
-      for(const k of [0.35, 0.5, 0.65, 0.8]){
+      for(const k of [0.8, 0.65, 0.5, 0.35]){
         const r2 = bestPack(Object.assign({}, e, {H: Math.floor(e.H*k)}), units, loaded, set);
-        if(r2.boxes.length && sumRemain(r2.remain) === 0){ r = Object.assign({}, r2, {remain: r.remain}); break; }
+        if(!(r2.boxes.length && sumRemain(r2.remain) === 0)) continue;
+        const c2 = rankOf(r2.boxes);
+        // 更好：重心档次更好；或同档但柜底空当更少；或同档（仍偏）但重心明显更靠中、柜底空当不增加（重货平铺）
+        const better = c2.rk < cur.rk || (c2.rk === cur.rk && (c2.back < cur.back || (cur.rk > 0 && c2.back <= cur.back && Math.abs(c2.B.dev) < Math.abs(cur.B.dev)*0.7)));
+        if(better){ r = Object.assign({}, r2, {remain: r.remain}); cur = c2; }
       }
     }
-    let bal = balanceLoad(r.boxes, e, units, CT[t].L);
+    let bal = cur.bl;
     // 调整后仍然偏载：换其他装法重新装这个柜，在装载量不少于 90% 的装法里挑不偏载的
     const isBad = bx => { const B = balanceOf(analyzeBoxes(bx, CT[t], units), CT[t]); return B.lon === 'bad' || B.lat === 'bad'; };
     if(isBad(bal.boxes)){
       const loaded = {};
       for(const u of units) loaded[u.id] = (remain[u.id]||0) - (r.remain[u.id]||0);
-      const alts = STRATS.map(st => packOne(e, units, remain, st)).filter(a => a.usedVol >= r.usedVol*0.9).sort((a,b) => b.usedVol - a.usedVol);
+      const alts = (set.some(st => st.dead) ? DEADV(STRATS) : STRATS).map(st => packOne(e, units, remain, st)).filter(a => a.usedVol >= r.usedVol*0.9).sort((a,b) => b.usedVol - a.usedVol);
       for(const a of alts){
         const b2 = balanceLoad(a.boxes, e, units, CT[t].L);
         if(!isBad(b2.boxes)){ r = a; bal = b2; break; }
@@ -1060,13 +1081,22 @@ function balanceLoad(boxes, e, units, Lfull){
   }
   // 左右：先整段镜像，再在剩余宽度里整段平移，把左右力矩抵消掉
   const Wt = sl.reduce((a,g) => a + g.w, 0);
+  const BTy = balTol(Wt, e.kg, Lfull/2, e.W/2), yZone = BTy.y5*0.6;
+  let tot0 = 0; for(const g of sl) tot0 += g.w*(g.cy - e.W/2);
+  let latDone = e.gauge || !Wt || Math.abs(tot0/Wt) <= yZone;   // 左右重心已在范围内：不动（货靠一边码，空当在另一边用气袋挡住）
+  if(!latDone){
+    // 整批一起往另一边挪，各段对齐，不会一排靠左一排靠右
+    let lo = -Infinity, hi = Infinity; for(const g of sl){ if(!g.items.length) continue; lo = Math.max(lo, -g.minY); hi = Math.min(hi, e.W - g.maxY); }
+    const dev0 = tot0/Wt, need = dev0 - Math.sign(dev0)*yZone*0.5, sh = Math.max(lo, Math.min(hi, -need));
+    if(isFinite(sh) && Math.abs(dev0 + sh) <= yZone){ for(const g of sl) g.dy = sh; latDone = true; }
+  }
   let tot = 0;
-  [...sl].sort((a,b) => b.w*Math.abs(b.cy - e.W/2) - a.w*Math.abs(a.cy - e.W/2)).forEach(g => {
+  if(!latDone) [...sl].sort((a,b) => b.w*Math.abs(b.cy - e.W/2) - a.w*Math.abs(a.cy - e.W/2)).forEach(g => {
     const m = g.w*(g.cy - e.W/2);
     g.flip = (tot > 1e-9 && m > 0) || (tot < -1e-9 && m < 0);
     tot += g.flip ? -m : m;
   });
-  for(const g of [...sl].sort((a,b) => b.w - a.w)){
+  if(!latDone) for(const g of [...sl].sort((a,b) => b.w - a.w)){
     if(e.gauge) break;
     if(Math.abs(tot) < 1e-6 || !g.w) continue;
     const lo = -(g.flip ? e.W - g.maxY : g.minY), hi = g.flip ? g.minY : e.W - g.maxY;
@@ -1075,14 +1105,15 @@ function balanceLoad(boxes, e, units, Lfull){
   }
   // 前后：调段的先后顺序、整段前后掉头，最后整批往柜门方向挪
   const T = sl.reduce((a,g) => a + g.len, 0), F = Wt > 0 ? Math.max(0, e.L - T) : 0;
-  const BT = balTol(Wt, e.kg, Lfull/2, e.W/2), target = Lfull/2, tol = BT.t5, aim = BT.light ? target - tol*0.9 : target - tol*0.4;   // 货轻时只要重心在允许范围内就不挪，柜底不留空当
+  const BT = balTol(Wt, e.kg, Lfull/2, e.W/2), target = Lfull/2, tol = BT.t5, aim = BT.tiny ? -Infinity : BT.light ? target - tol*0.9 : target - tol*0.4;   // 货轻时只要重心在允许范围内就不挪，柜底不留空当
   const okZone = BT.light ? tol*0.9 : tol*0.6;
   const evalOrd = ord => {
     let pos = 0, M = 0; for(const g of ord){ M += g.w*(pos + (g.xf ? g.len - g.cl : g.cl)); pos += g.len; }
     const cg = Wt ? M/Wt : T/2;
     const d = cg < aim ? Math.min(F, aim - cg) : 0;
     // 重心已在合格范围内就算一样好：不为了再靠中一点去调换顺序（否则零头会被换到柜底，柜底留空）
-    return {dev: Math.max(0, Math.abs(cg + d - target) - okZone), d};
+    const dv = cg + d - target;
+    return {dev: BT.tiny && dv <= 0 ? 0 : Math.max(0, Math.abs(dv) - okZone), d};
   };
   const better = (a, b) => a.dev < b.dev - 0.5 || (Math.abs(a.dev - b.dev) <= 0.5 && a.d < b.d - 0.5);
   const snap = ord => ({ord: [...ord], xf: ord.map(g => g.xf)});
@@ -1169,27 +1200,31 @@ function loadOrder(boxes){
    但前后最多到半柜长的 65%（特殊 85%），左右最多半柜宽的 35%（特殊 50%） */
 function balTol(W, Wmax, half, hw){
   const wr = Wmax > 0 ? W/Wmax : 1, f = Math.max(1, 0.5/Math.max(wr, 0.02));
+  // 货重不到限重 30%：实际都是从柜底开始码、门口加固，重心偏柜底不要紧，不为了重心把货往门口推（柜底不留空）；
+  // 不到 15%（尾货、少量货）连铺开都不用，直接靠柜底码满高度。重心偏柜门（重货堆在门口）仍按下面的范围判断
+  const tiny = wr < 0.3, veryLight = wr < 0.15;
   const t5 = Math.min(0.65*half, 0.05*half*f), t10 = Math.min(0.85*half, Math.max(0.10*half, t5*1.5));
   const y5 = Math.min(0.35*hw, 0.05*hw*f), y10 = Math.min(0.5*hw, Math.max(0.10*hw, y5*1.5));
-  return {t5, t10, y5, y10, wr, light: f > 1.01};
+  return {t5, t10, y5, y10, wr, light: f > 1.01, tiny, veryLight};
 }
 function balanceOf(A, spec){
   const half = spec.L/2, hw = spec.W/2, T = balTol(A.kg, spec.kg, half, hw), {t5, t10, y5, y10} = T, dev = A.cgx - half, dy = A.cgy - hw;
-  const lon = Math.abs(dev) <= t5 ? 'ok' : (Math.abs(dev) <= t10 || (!T.light && A.maxHalf <= 0.6)) ? 'warn' : 'bad';
+  const lon = (T.tiny && dev <= 0) || Math.abs(dev) <= t5 ? 'ok' : (Math.abs(dev) <= t10 || (!T.light && A.maxHalf <= 0.6)) ? 'warn' : 'bad';
   const lat = Math.abs(dy) <= y5 ? 'ok' : Math.abs(dy) <= y10 ? 'warn' : 'bad';
-  return {dev, t5, t10, lon, dy, y5, y10, lat, wr: T.wr, light: T.light};
+  return {dev, t5, t10, lon, dy, y5, y10, lat, wr: T.wr, light: T.light, tiny: T.tiny};
 }
 
 /* 整票比较：每个柜都挑最满的装法，不一定整票最省柜。有托盘又有散箱时，
    再按“每个柜都先铺托盘、散箱补在上面”算一遍，两种整票结果里取用柜少的。 */
 function seqBest(units, typeFn, maxN){
-  const a = runSeq(units, typeFn, maxN);
   const mixed = RULES.looseOnPallet && units.some(u => u.kind === 'pallet') && units.some(u => u.kind === 'carton');
-  if(!mixed) return a;
-  const b = runSeq(units, typeFn, maxN, STRATS_PF);
-  const key = r => [r.leftCount, r.containers.length];
-  const ka = key(a), kb = key(b);
-  return (kb[0] < ka[0] || (kb[0] === ka[0] && kb[1] < ka[1])) ? b : a;
+  const lay = hasLayered(units);
+  const sets = [STRATS]; if(mixed) sets.push(STRATS_PF);
+  // 有限层货时整票再按“限层货不占高空间”算一遍；柜数一样时优先用它（柜底、侧面不留空当）
+  const runs = [];
+  for(const st of sets){ if(lay) runs.push(runSeq(units, typeFn, maxN, DEADV(st))); runs.push(runSeq(units, typeFn, maxN, st)); }
+  const key = r => r.leftCount*1e4 + r.containers.length;
+  return runs.reduce((a, b) => key(b) < key(a) ? b : a);
 }
 function describe(cs){
   const m = {};
@@ -1865,7 +1900,7 @@ function renderChecks(p, c, A, spec){
   const dirL = B.dev < 0 ? '偏柜底' : '偏柜门', dirY = B.dy < 0 ? '偏右' : '偏左';
   rows.push(`<div class="check"><span>前后偏载</span>${pillB(B.lon, dirL + '，需告知承运人', '偏载')}
     <div class="lr"><span class="mono">柜底 ${(A.backShare*100).toFixed(0)}%</span><div class="meter"><i style="width:${A.backShare*100}%;background:var(--steel)"></i><i style="width:${(1-A.backShare)*100}%;background:var(--faint)"></i></div><span class="mono">柜门 ${((1-A.backShare)*100).toFixed(0)}%</span></div>
-    <span class="sub">重心${Math.abs(B.dev) < 0.5 ? '在柜长中点' : `${dirL} <b class="mono" style="color:var(--fg)">${Math.abs(B.dev).toFixed(0)} cm</b>`}。${B.light ? `货重只占限重 ${(B.wr*100).toFixed(0)}%，重心偏一点影响不大，允许 ±${B.t5.toFixed(0)} cm` : `要求 ±${B.t5.toFixed(0)} cm 以内，特殊情况最多 ±${B.t10.toFixed(0)} cm（CTU Code）`}${B.lon==='bad'?'。超出范围，码头吊装、拖车都可能拒收，需要重新调整装法':''}</span></div>`);
+    <span class="sub">重心${Math.abs(B.dev) < 0.5 ? '在柜长中点' : `${dirL} <b class="mono" style="color:var(--fg)">${Math.abs(B.dev).toFixed(0)} cm</b>`}。${B.tiny && B.dev <= 0 && Math.abs(B.dev) > B.t5 ? `货重只占限重 ${(B.wr*100).toFixed(0)}%，从柜底开始码、门口加固即可，不用为了重心把货往门口推` : B.light ? `货重只占限重 ${(B.wr*100).toFixed(0)}%，重心偏一点影响不大，允许 ±${B.t5.toFixed(0)} cm` : `要求 ±${B.t5.toFixed(0)} cm 以内，特殊情况最多 ±${B.t10.toFixed(0)} cm（CTU Code）`}${B.lon==='bad'?'。超出范围，码头吊装、拖车都可能拒收，需要重新调整装法':''}</span></div>`);
   rows.push(`<div class="check"><span>左右偏载</span>${pillB(B.lat, dirY, '偏载')}
     <div class="lr"><span class="mono">左 ${(lr*100).toFixed(0)}%</span><div class="meter"><i style="width:${lr*100}%;background:var(--accent)"></i><i style="width:${(1-lr)*100}%;background:var(--faint)"></i></div><span class="mono">右 ${((1-lr)*100).toFixed(0)}%</span></div>
     <span class="sub">重心${Math.abs(B.dy) < 0.5 ? '在中线上' : `${dirY} <b class="mono" style="color:var(--fg)">${Math.abs(B.dy).toFixed(1)} cm</b>`}，要求 ±${B.y5.toFixed(0)} cm 以内</span></div>`);
@@ -1908,11 +1943,13 @@ function renderChecks(p, c, A, spec){
     if(cls === 'rf') rows.push(`<div class="check"><span>挂机（发电机组）</span>${RULES.genset ? '<span class="pill warn">陆运挂机</span>' : '<span class="pill steel">未挂机</span>'}
       <span class="sub">${RULES.genset ? `陆运挂机约 820 kg，拖车上的柜子加挂机约 <b class="mono" style="color:var(--fg)">${fmt(c.usedKg + sp2.tare + 820, 0)} kg</b>，注意道路限重。挂机重量不算进 VGM。` : '拖车、铁路途中需要冷机持续供电的，在“装柜设置”里打开“冷柜陆运挂机”，会把挂机重量算进拖车总重。'}</span></div>`);
   }
-  if(cls !== 'fr') rows.push(`<div class="check"><span>重心高度</span>${st(hz<=0.5,'偏高')}
-    <span class="sub">离地 <span class="mono">${(A.cgz/100).toFixed(2)} m</span>（柜高 ${(spec.H/100).toFixed(2)} m）</span></div>`);
+  // 重心高度：货重到限重一半以上才要紧（拖车转弯、吊装容易侧翻）；货轻时重心高一点影响不大
+  const hzWarn = hz > 0.5 && wu >= 0.5;
+  if(cls !== 'fr') rows.push(`<div class="check"><span>重心高度</span>${st(!hzWarn,'偏高')}
+    <span class="sub">离地 <span class="mono">${(A.cgz/100).toFixed(2)} m</span>（柜高 ${(spec.H/100).toFixed(2)} m）${hzWarn ? '；货重，重货尽量放下层、轻货放上层' : (hz > 0.5 ? `；货重只占限重 ${Math.round(wu*100)}%，重心高一点影响不大` : '')}</span></div>`);
   $('checks').innerHTML = rows.join('');
   const bad = wu > 1 || p.leftCartons || B.lon === 'bad' || B.lat === 'bad' || rows.some(r => r.includes('pill bad'));
-  const warn = rows.some(r => r.includes('托盘上方空间') || r.includes('空当加固') || r.includes('pill warn')) || B.lon !== 'ok' || B.lat !== 'ok' || (cls !== 'fr' && hz > 0.5) || wu > 0.95 || cbm > spec.exp;
+  const warn = rows.some(r => r.includes('托盘上方空间') || r.includes('空当加固') || r.includes('pill warn')) || B.lon !== 'ok' || B.lat !== 'ok' || (cls !== 'fr' && hzWarn) || wu > 0.95 || cbm > spec.exp;
   $('chk-pill').innerHTML = bad ? '<span class="pill bad">有问题</span>' : warn ? '<span class="pill warn">注意</span>' : '<span class="pill ok">全部通过</span>';
 }
 
@@ -2427,6 +2464,7 @@ function draw3d(c, resetCam){
   const hud = (geo, color, op) => { const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color: lin(color), transparent:true, opacity:op, depthTest:false, depthWrite:false})); m.renderOrder = 20; G.add(m); return m; };
   const zone = hud(new THREE.BoxGeometry(2*B3.t5, 3, spec.W), '#3FA66A', .55); zone.position.set(0, Hh + 32, 0);
   const zone2 = hud(new THREE.BoxGeometry(2*B3.t10, 2, spec.W), '#E9B12E', .35); zone2.position.set(0, Hh + 31, 0);
+  hudZones = [[zone, .55], [zone2, .35]];
   const bcol = (B3.lon === 'bad' || B3.lat === 'bad') ? '#D03A2B' : (B3.lon === 'warn' || B3.lat === 'warn') ? '#E9B12E' : '#D03A2B';
   const cone = hud(new THREE.ConeGeometry(9, 22, 20), bcol, .95); cone.rotation.x = Math.PI; cone.position.set(ox + A3.cgx, Hh + 46, oz + A3.cgy);
   const pin = hud(new THREE.CylinderGeometry(1.2, 1.2, Hh + 34, 8), bcol, .45); pin.position.set(ox + A3.cgx, (Hh + 34)/2, oz + A3.cgy);
@@ -2458,7 +2496,7 @@ function viewPose(v){
   const fit = Math.max(L, W*asp) / Math.min(asp, 2.4);
   switch(v){
     case 'side': return {p:[0, H*0.45, fit*2.3 + 260], t:[0, H*0.45, 0]};
-    case 'top':  return {p:[0, fit*2.2 + 300, 1], t:[0, 0, 0]};
+    case 'top':  return {p:[-L*0.03, fit*2.55 + 320, 1], t:[-L*0.03, 0, 0]};   // 拉远一点、往左偏一点，柜门标签不被右边的缩放按钮挡住
     case 'door': return {p:[L*0.5 + Math.max(620, W*3.4), H*0.8, W*0.3], t:[0, H*0.45, 0]};
     default: {
       const dist = (Math.max(L, 900)*1.75 + 350) / Math.min(1.2, Math.max(asp < 1 ? 0.42 : 0.85, asp/1.6));
@@ -2467,7 +2505,9 @@ function viewPose(v){
     }
   }
 }
-function forkVis(){ if(fork) fork.visible = curView !== 'door' || !!play; }
+let hudZones = [];
+// 俯视时重心范围色块画得很淡，免得盖住货物颜色
+function forkVis(){ if(fork) fork.visible = curView !== 'door' || !!play; for(const [m, op] of hudZones) m.material.opacity = curView === 'top' ? op*0.2 : op; }
 function setView(v, instant){
   if(!has3d || !cur) return;
   curView = v; forkVis();
