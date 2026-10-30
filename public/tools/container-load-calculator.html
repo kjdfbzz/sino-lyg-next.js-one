@@ -962,6 +962,8 @@ function packOne(c, units, remainIn, strat){
         }
         // 限层的散箱码满层数后上面不能再压货：头顶剩下的空间就废了，按浪费比例打折（能码到顶的货优先占高空间，限层货放到矮处或最后）
         if(strat.dead && u.kind === 'carton' && u.layers > 0){ const dead = nx*ol*ny*ow*Math.max(0, SH - nz*oh); if(dead > 0) score *= vol/(vol + dead); }
+        // 铺宽装法：这一块把这种货装完了（最后一批），越矮越好，不码独立高柱
+        if(strat.low && n >= q) score /= 1 + 0.6*(nz*oh)/Math.max(1, SH);
         if(strat.heavy) score *= s.z === 0 ? (1 + dens*2e4) : 1/(1 + dens*2e4);
         // 托盘先铺地：叉车先把整托放下去，散箱再补到托盘上面
         if(strat.palFirst && u.kind === 'pallet') score *= 1e3;
@@ -1005,10 +1007,19 @@ function bestPack(c, units, remain, set=STRATS){
   // 有装法能把剩下的货全装进这个柜时，只在这些装法里挑（不能为了码得好看少装几箱、多用一个柜）；
   // 装不下时按装进去的体积挑。体积差不多的装法里再挑：限层货不占高空间 → 零头铺宽 → 重心低
   const allIn = rs.filter(r => sumRemain(r.remain) === 0);
+  // 尾柜（剩下的货都装得下）：再加算“最后一批货码低码宽”的装法，不码独立高柱（整柜不受影响）
+  if(allIn.length) for(const st of set.filter(st => !st.wall && !st.heavy)){
+    const r = Object.assign(packOne(c, units, remain, Object.assign({}, st, {wide:true, low:true})), {dead: !!st.dead, wide: true});
+    if(sumRemain(r.remain) === 0){ rs.push(r); allIn.push(r); }
+  }
   const top = allIn.length ? allIn : rs;
   const maxV = Math.max(...top.map(r => r.usedVol));
-  const good = top.filter(r => r.usedVol >= maxV*0.997);
-  good.sort((a,b) => (b.dead - a.dead) || (b.wide - a.wide) || (a.cgz - b.cgz));
+  const good = top.filter(r => r.usedVol >= maxV*(r.wide && !allIn.length ? 0.99999 : 0.997));   // 整柜里铺宽装法必须装得一样多
+  // 货都装得下（尾柜）时，优先选货堆最短、最贴柜底的装法：一排排横着装满宽度，空的地方留在柜门那头，不留整条侧缝
+  const front = r => { let m = 0; for(const b of r.boxes) if(b.x + b.l > m) m = b.x + b.l; return Math.round(m/10); };
+  if(allIn.length) for(const r of good) r._front = front(r);
+  // 整柜（装不完）时只比限层和重心，不为了码得矮少装；尾柜（全装得下）才比货堆长短、铺宽
+  good.sort((a,b) => (b.dead - a.dead) || (allIn.length ? (a._front - b._front) || (b.wide - a.wide) : 0) || (a.cgz - b.cgz));
   return good[0];
 }
 const sumRemain = r => Object.values(r).reduce((a,b) => a + (b>0?b:0), 0);
@@ -1028,7 +1039,11 @@ function runSeq(units, typeFn, maxN, set=STRATS){
     const rankOf = bx => { const bl = balanceLoad(bx, e, units, CT[t].L), B = balanceOf(analyzeBoxes(bl.boxes, CT[t], units), CT[t]), d = Math.abs(B.dev);
       return {bl, B, rk: d <= B.t5 + 0.5 ? 0 : d <= B.t10 + 0.5 ? 1 : 2, back: Math.round(bl.back/10)}; };
     let cur = rankOf(r.boxes);
-    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88 && (cur.rk > 0 || cur.back > 0) && !cur.B.veryLight){
+    const U0 = {}; for(const u of units) U0[u.id] = u;
+    // 货重不到限重 30% 时，只有集中码放压地板太狠（每米货重超过满载均匀分布的 60%）才压低铺开；轻的散箱就从柜底码高码紧
+    let runOk = true;
+    if(cur.B.tiny){ let fx = 0, kgT = 0; for(const b of r.boxes){ if(b.x + b.l > fx) fx = b.x + b.l; kgT += U0[b.u].kg; } runOk = fx > 0 && kgT/(fx/100) > 0.6*CT[t].kg/(CT[t].L/100); }
+    if(!e.gauge && r.usedVol < e.L*e.W*e.H*0.88 && (cur.rk > 0 || cur.back > 0) && !cur.B.veryLight && runOk){
       const loaded = {};
       for(const u of units) loaded[u.id] = (remain[u.id]||0) - (r.remain[u.id]||0);
       for(const k of [0.8, 0.65, 0.5, 0.35]){
@@ -1081,7 +1096,7 @@ function balanceLoad(boxes, e, units, Lfull){
   }
   // 左右：先整段镜像，再在剩余宽度里整段平移，把左右力矩抵消掉
   const Wt = sl.reduce((a,g) => a + g.w, 0);
-  const BTy = balTol(Wt, e.kg, Lfull/2, e.W/2), yZone = BTy.y5*0.6;
+  const BTy = balTol(Wt, e.kg, Lfull/2, e.W/2), yZone = BTy.y5*(BTy.veryLight ? 0.95 : 0.6);   // 货很轻：左右重心在允许范围内就靠一边码，不往中间挪
   let tot0 = 0; for(const g of sl) tot0 += g.w*(g.cy - e.W/2);
   let latDone = e.gauge || !Wt || Math.abs(tot0/Wt) <= yZone;   // 左右重心已在范围内：不动（货靠一边码，空当在另一边用气袋挡住）
   if(!latDone){
@@ -1336,6 +1351,83 @@ function analyzeBoxes(boxesIn, spec, unitsList){
   }
   const bs = kg ? back/kg : 0.5;
   return {slices: slices.map(v => v/(step/100)), step, cgx: kg?mx/kg:spec.L/2, cgy: kg?my/kg:spec.W/2, cgz: kg?mz/kg:0, kg, leftShare: kg?left/kg:0.5, backShare: bs, maxHalf: Math.max(bs, 1-bs)};
+}
+/* 柜内空当：货与货之间（前后方向两头都是货）或货与侧壁之间（一直空到地板）的空隙，
+   宽 ≥ 15 cm 的算一处。返回几处最大的（给 3D 标框、检查里说明原因） */
+function innerGaps(c, spec){
+  if(c._gaps) return c._gaps;
+  if(!c.boxes.length) return (c._gaps = []);
+  const G = 5, nx = Math.ceil(spec.L/G), ny = Math.ceil(spec.W/G), nz = Math.ceil(spec.H/G), N = nx*ny*nz;
+  const idx = (i,j,k) => (i*ny + j)*nz + k;
+  const occ = new Uint8Array(N), gap = new Uint8Array(N);
+  let x0 = Infinity, x1 = 0;
+  for(const b of c.boxes){
+    x0 = Math.min(x0, b.x); x1 = Math.max(x1, b.x + b.l);
+    const i0 = Math.max(0, Math.round(b.x/G)), i1 = Math.min(nx, Math.round((b.x+b.l)/G)), j0 = Math.max(0, Math.round(b.y/G)), j1 = Math.min(ny, Math.round((b.y+b.w)/G)), k0 = Math.max(0, Math.round(b.z/G)), k1 = Math.min(nz, Math.round((b.z+b.h)/G));
+    for(let i=i0;i<i1;i++) for(let j=j0;j<j1;j++){ const base = (i*ny + j)*nz; for(let k=k0;k<k1;k++) occ[base+k] = 1; }
+  }
+  const MIN = 3;   // 3 格 = 15 cm
+  // 前后方向：同一条线上前后都是货，中间空着（货会前后滑）
+  for(let j=0;j<ny;j++) for(let k=0;k<nz;k++){
+    let last = -1;
+    for(let i=0;i<nx;i++){ if(occ[idx(i,j,k)]){ if(last >= 0 && i - last - 1 >= MIN) for(let t=last+1;t<i;t++) gap[idx(t,j,k)] = 1; last = i; } }
+  }
+  // 侧面：货物前后范围内，货和侧壁（或货和货）之间、一直空到地板、旁边的货比它高的竖条（货会左右歪）
+  // 最靠柜门的那一排（尾货没排满）旁边是柜门口的空地，不算侧缝（柜门处的空当另外说明）
+  let lastRow = 0; for(const b of c.boxes) if(b.x > lastRow) lastRow = b.x;
+  const ix0 = Math.max(0, Math.round(x0/G)), ix1 = Math.min(nx, Math.round(lastRow/G));
+  for(let i=ix0;i<ix1;i++) for(let k=0;k<nz;k++){
+    let j = 0;
+    while(j < ny){
+      if(occ[idx(i,j,k)]){ j++; continue; }
+      let e = j; while(e < ny && !occ[idx(i,e,k)]) e++;
+      const lc = j > 0, rc = e < ny;
+      if((lc || rc) && e - j >= 6){   // 侧缝 30 cm 以上才算（更窄的是货宽除不尽留下的，塞气袋就行）
+        let down = true; for(let kk=0; kk<k && down; kk++) for(let t=j;t<e;t++) if(occ[idx(i,t,kk)]){ down = false; break; }
+        if(down) for(let t=j;t<e;t++) gap[idx(i,t,k)] = 1;
+      }
+      j = e;
+    }
+  }
+  // 连通的空当合成一块，取包围盒
+  const seen = new Uint8Array(N), out = [], stack = [];
+  for(let q=0;q<N;q++){
+    if(!gap[q] || seen[q]) continue;
+    let cnt = 0, a0 = nx, a1 = 0, b0 = ny, b1 = 0, c0 = nz, c1 = 0; stack.push(q); seen[q] = 1;
+    while(stack.length){
+      const v = stack.pop(); cnt++;
+      const k = v % nz, j = ((v - k)/nz) % ny, i = Math.floor(v/(ny*nz));
+      if(i<a0)a0=i; if(i>a1)a1=i; if(j<b0)b0=j; if(j>b1)b1=j; if(k<c0)c0=k; if(k>c1)c1=k;
+      if(i>0){const w=v-ny*nz; if(gap[w]&&!seen[w]){seen[w]=1;stack.push(w);}}
+      if(i<nx-1){const w=v+ny*nz; if(gap[w]&&!seen[w]){seen[w]=1;stack.push(w);}}
+      if(j>0){const w=v-nz; if(gap[w]&&!seen[w]){seen[w]=1;stack.push(w);}}
+      if(j<ny-1){const w=v+nz; if(gap[w]&&!seen[w]){seen[w]=1;stack.push(w);}}
+      if(k>0){const w=v-1; if(gap[w]&&!seen[w]){seen[w]=1;stack.push(w);}}
+      if(k<nz-1){const w=v+1; if(gap[w]&&!seen[w]){seen[w]=1;stack.push(w);}}
+    }
+    const vol = cnt*G*G*G, bv = (a1-a0+1)*(b1-b0+1)*(c1-c0+1)*G*G*G;
+    // 只要成块的空当（零碎的高低缝合起来的包围盒会很大，画出来误导）
+    if(vol >= 20000 && vol >= bv*0.4) out.push({x:a0*G, y:b0*G, z:c0*G, l:(a1-a0+1)*G, w:(b1-b0+1)*G, h:(c1-c0+1)*G, vol});
+  }
+  out.sort((a,b) => b.vol - a.vol);
+  // 网格是 5 cm，边界按旁边箱子 / 柜壁的实际位置校准，尺寸才准（判断“放不放得进”要用真实尺寸）
+  const L = spec.L, W = spec.W, H = spec.H;
+  for(const g of out.slice(0, 6)){
+    const ov = (a0, a1, b0, b1) => Math.min(a1, b1) - Math.max(a0, b0) > 1;
+    let xa = 0, xb = L, ya = 0, yb = W, za = 0, zb = H;
+    for(const b of c.boxes){
+      const inYZ = ov(b.y, b.y+b.w, g.y, g.y+g.w) && ov(b.z, b.z+b.h, g.z, g.z+g.h);
+      const inXZ = ov(b.x, b.x+b.l, g.x, g.x+g.l) && ov(b.z, b.z+b.h, g.z, g.z+g.h);
+      const inXY = ov(b.x, b.x+b.l, g.x, g.x+g.l) && ov(b.y, b.y+b.w, g.y, g.y+g.w);
+      if(inYZ){ if(b.x + b.l <= g.x + G && b.x + b.l > xa) xa = b.x + b.l; if(b.x >= g.x + g.l - G && b.x < xb) xb = b.x; }
+      if(inXZ){ if(b.y + b.w <= g.y + G && b.y + b.w > ya) ya = b.y + b.w; if(b.y >= g.y + g.w - G && b.y < yb) yb = b.y; }
+      if(inXY){ if(b.z + b.h <= g.z + G && b.z + b.h > za) za = b.z + b.h; if(b.z >= g.z + g.h - G && b.z < zb) zb = b.z; }
+    }
+    if(xb - xa > 0 && Math.abs((xb - xa) - g.l) <= 2*G){ g.x = xa; g.l = xb - xa; }
+    if(yb - ya > 0 && Math.abs((yb - ya) - g.w) <= 2*G){ g.y = ya; g.w = yb - ya; }
+    if(zb - za > 0 && Math.abs((zb - za) - g.h) <= 2*G){ g.z = za; g.h = zb - za; }
+  }
+  return (c._gaps = out.slice(0, 6).filter(g => Math.min(g.l, g.w, g.h) >= 14));
 }
 function countBySrc(c){
   const m = {};
@@ -1907,6 +1999,19 @@ function renderChecks(p, c, A, spec){
   const vb = c.voidBack || 0, vf = c.voidFront || 0;
   if(vb > 15 || vf > 30) rows.push(`<div class="check"><span>空当加固</span><span class="pill warn">需要加固</span>
     <span class="sub">${vb > 15 ? `为防偏载，货已往中间挪，<b style="color:var(--fg)">柜底空 ${Math.round(vb)} cm</b>；` : ''}${vf > 30 ? `<b style="color:var(--fg)">柜门处空 ${Math.round(vf)} cm</b>；` : ''}空当要用气袋、木方或挡板顶住，防止运输中货物滑动。</span></div>`);
+  const gaps = innerGaps(c, spec);
+  if(gaps.length){
+    const g0 = gaps[0], tot = gaps.reduce((a,g) => a + g.vol, 0)/1e6, dimTxt = g => `长 ${Math.round(g.l)} × 宽 ${Math.round(g.w)} × 高 ${Math.round(g.h)} cm`;
+    // 有没有货转个方向就能塞进去
+    const fitBy = rotAll => units.filter(u => u.kind === 'carton').filter(u => {
+      const os = rotAll ? [[u.l,u.w,u.h],[u.w,u.l,u.h],[u.l,u.h,u.w],[u.h,u.l,u.w],[u.w,u.h,u.l],[u.h,u.w,u.l]] : orients(u);
+      return gaps.some(g => os.some(([a,b2,h2]) => a <= g.l + 0.5 && b2 <= g.w + 0.5 && h2 <= g.h + 0.5));
+    });
+    const now = fitBy(false), rot = fitBy(true).filter(u => !now.includes(u));
+    const hint = rot.length ? `如果 <b style="color:var(--fg)">${rot.slice(0,2).map(u => esc(u.src.name || codeOf(u.src.id))).join('、')}</b> 可以侧放，把“摆放”改成“任意翻转”，有机会塞进去。` : now.length ? `<b style="color:var(--fg)">${now.slice(0,2).map(u => esc(u.src.name || codeOf(u.src.id))).join('、')}</b> 尺寸放得进，但这种货已经分到别的柜了。` : '剩下的货尺寸都放不进这么窄的空当。';
+    rows.push(`<div class="check"><span>柜内空当</span><span class="pill warn">要填实</span>
+      <span class="sub">图上红色虚线框是货与货、货与柜壁之间放不下整箱的空当，共 ${gaps.length} 处、约 ${tot.toFixed(2)} m³，最大一处 ${dimTxt(g0)}（离柜底 ${(g0.x/100).toFixed(1)} m，离地 ${(g0.z/100).toFixed(1)}–${((g0.z+g0.h)/100).toFixed(1)} m）。${hint}装柜时用气袋、木方或纸板塞紧，防止运输中货物滑动、倒塌。</span></div>`);
+  }
   const palB = c.boxes.filter(b => unitById[b.u].kind === 'pallet');
   if(palB.length){
     const topFree = palB.reduce((a,b) => a + (spec.H - (b.z + b.h)), 0) / palB.length;
@@ -1949,7 +2054,7 @@ function renderChecks(p, c, A, spec){
     <span class="sub">离地 <span class="mono">${(A.cgz/100).toFixed(2)} m</span>（柜高 ${(spec.H/100).toFixed(2)} m）${hzWarn ? '；货重，重货尽量放下层、轻货放上层' : (hz > 0.5 ? `；货重只占限重 ${Math.round(wu*100)}%，重心高一点影响不大` : '')}</span></div>`);
   $('checks').innerHTML = rows.join('');
   const bad = wu > 1 || p.leftCartons || B.lon === 'bad' || B.lat === 'bad' || rows.some(r => r.includes('pill bad'));
-  const warn = rows.some(r => r.includes('托盘上方空间') || r.includes('空当加固') || r.includes('pill warn')) || B.lon !== 'ok' || B.lat !== 'ok' || (cls !== 'fr' && hzWarn) || wu > 0.95 || cbm > spec.exp;
+  const warn = rows.some(r => r.includes('托盘上方空间') || r.includes('空当加固') || r.includes('柜内空当') || r.includes('pill warn')) || B.lon !== 'ok' || B.lat !== 'ok' || (cls !== 'fr' && hzWarn) || wu > 0.95 || cbm > spec.exp;
   $('chk-pill').innerHTML = bad ? '<span class="pill bad">有问题</span>' : warn ? '<span class="pill warn">注意</span>' : '<span class="pill ok">全部通过</span>';
 }
 
@@ -2465,6 +2570,15 @@ function draw3d(c, resetCam){
   const zone = hud(new THREE.BoxGeometry(2*B3.t5, 3, spec.W), '#3FA66A', .55); zone.position.set(0, Hh + 32, 0);
   const zone2 = hud(new THREE.BoxGeometry(2*B3.t10, 2, spec.W), '#E9B12E', .35); zone2.position.set(0, Hh + 31, 0);
   hudZones = [[zone, .55], [zone2, .35]];
+  gapGroup = new THREE.Group(); G.add(gapGroup);
+  for(const g of innerGaps(c, spec)){
+    const geo = new THREE.BoxGeometry(Math.max(1, g.l - 2), Math.max(1, g.h - 2), Math.max(1, g.w - 2));
+    const ln = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineDashedMaterial({color: lin('#E0392B'), dashSize:8, gapSize:6, transparent:true, opacity:.95, depthTest:false}));
+    ln.computeLineDistances(); ln.renderOrder = 21; ln.position.set(ox + g.x + g.l/2, g.z + g.h/2, oz + g.y + g.w/2); gapGroup.add(ln);
+    const f = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color: lin('#E0392B'), transparent:true, opacity:.2, depthWrite:false}));
+    f.position.copy(ln.position); gapGroup.add(f);
+  }
+
   const bcol = (B3.lon === 'bad' || B3.lat === 'bad') ? '#D03A2B' : (B3.lon === 'warn' || B3.lat === 'warn') ? '#E9B12E' : '#D03A2B';
   const cone = hud(new THREE.ConeGeometry(9, 22, 20), bcol, .95); cone.rotation.x = Math.PI; cone.position.set(ox + A3.cgx, Hh + 46, oz + A3.cgy);
   const pin = hud(new THREE.CylinderGeometry(1.2, 1.2, Hh + 34, 8), bcol, .45); pin.position.set(ox + A3.cgx, (Hh + 34)/2, oz + A3.cgy);
@@ -2483,6 +2597,7 @@ function setN(N){
     while(lo < hi){ const mid = (lo+hi)>>1; if(g[mid] < N) lo = mid+1; else hi = mid; }
     m.count = lo;
   }
+  if(gapGroup) gapGroup.visible = !cur || N >= cur.boxes.length;   // 装完才显示空当框
   if(edgeLines) edgeLines.geometry.setDrawRange(0, (edgeCum[Math.min(N, edgeCum.length-1)]||0)*24);
   if(palLines){ const pc = palLines.userData.cum; palLines.geometry.setDrawRange(0, (pc[Math.min(N, pc.length-1)]||0)*24); }
   req3d();
@@ -2505,7 +2620,7 @@ function viewPose(v){
     }
   }
 }
-let hudZones = [];
+let hudZones = [], gapGroup = null;
 // 俯视时重心范围色块画得很淡，免得盖住货物颜色
 function forkVis(){ if(fork) fork.visible = curView !== 'door' || !!play; for(const [m, op] of hudZones) m.material.opacity = curView === 'top' ? op*0.2 : op; }
 function setView(v, instant){
@@ -2712,6 +2827,7 @@ function animateFrame(){
   PB.anim.forEach(gi => { if(!seen.has(gi) && (t - tl.start[gi]) >= tl.dur[gi]){ placeGi(gi, 0, 0, 0, touched); PB.anim.delete(gi); } });
   if(fork && !forkBusy){ const ud = fork.userData; fork.position.copy(ud.park); fork.rotation.y = ud.parkRot; ud.carriage.position.y = 0; ud.load.visible = false; }
   touched.forEach(m => { m.instanceMatrix.needsUpdate = true; });
+  if(gapGroup) gapGroup.visible = !cur || minGi >= cur.boxes.length;
   if(edgeLines) edgeLines.geometry.setDrawRange(0, (edgeCum[Math.min(minGi, edgeCum.length-1)]||0)*24);
   if(palLines){ const pc = palLines.userData.cum; palLines.geometry.setDrawRange(0, (pc[Math.min(minGi, pc.length-1)]||0)*24); }
   req3d();
