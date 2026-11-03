@@ -13,6 +13,8 @@ import {
 } from '../../../../content-data';
 import { localizePath } from '../../../../localized-path';
 import PageLanguage from '../../../../PageLanguage';
+import InquiryForm from '../../../../InquiryForm';
+import WhatsAppButton from '../../../../WhatsAppButton';
 
 type ArticlePageClientProps = {
   article: ContentArticle;
@@ -43,7 +45,22 @@ export default function ArticlePageClient({
   const isZh = lang === 'zh';
   const isEs = lang === 'es';
   const navigationLang = isEs ? 'en' : lang;
-  const homeHref = localizePath('/', navigationLang);
+  const destinationPlaceholders: Record<string, string> = {
+    'china-to-india-shipping': 'Nhava Sheva / Mundra / Kolkata',
+    'lianyungang-to-india-fcl-shipping': 'Nhava Sheva / Mundra',
+    'china-to-karachi-shipping': 'Karachi / Port Qasim',
+    'china-to-jebel-ali-shipping': 'Jebel Ali / Dammam / Jeddah',
+    'china-to-vietnam-shipping': 'Ho Chi Minh / Hai Phong',
+    'china-to-thailand-shipping': 'Laem Chabang / Bangkok',
+    'china-to-philippines-shipping': 'Manila / Cebu / Davao',
+    'china-to-indonesia-shipping': 'Jakarta / Surabaya / Semarang',
+    'china-to-malaysia-shipping': 'Port Klang / Pasir Gudang / Kuantan',
+    'china-to-mexico-chile-peru-shipping': 'Manzanillo / San Antonio / Callao',
+    'china-to-brazil-argentina-shipping': 'Santos / Buenos Aires',
+    'china-to-south-america-shipping': 'Santos / San Antonio / Callao',
+    'china-to-central-america-caribbean-shipping': 'Colon / Kingston / Caucedo',
+  };
+  const homeHref = localizePath('/', lang);
   const sectionHref = localizePath(`/${section.slug}`, navigationLang);
   const alternateLang = isZh ? 'en' : 'zh';
   const supportingSlugs = article.section === 'requirements'
@@ -82,7 +99,7 @@ export default function ArticlePageClient({
   ];
 
   return (
-    <main lang={isZh ? 'zh-CN' : lang} className="min-h-screen bg-[#030508] font-inter text-white">
+    <main lang={isZh ? 'zh-CN' : lang} className="whatsapp-page min-h-screen bg-[#030508] font-inter text-white">
       {lang !== 'es' && <PageLanguage lang={lang} />}
       <section className="relative isolate overflow-hidden px-6 py-10 sm:px-10 lg:px-16">
         <Image
@@ -256,6 +273,12 @@ export default function ArticlePageClient({
               </section>
             )}
 
+            <section id="request-quote" className="mt-12 scroll-mt-8">
+              <InquiryForm lang={lang} articleTitle={articleCopy.title}
+                sourcePath={localizePath(getArticlePath(article), lang)}
+                destinationPlaceholder={article.section === 'routes' ? destinationPlaceholders[article.slug] : undefined} />
+            </section>
+
             <p className="mt-12 border-l border-amber-300/40 pl-5 text-sm leading-7 text-white/58">
               {isEs
                 ? 'Use esta guía para preparar su envío. Los fletes, itinerarios, fechas de cierre y requisitos documentales dependen de la carga y la ruta concretas, y de la confirmación más reciente de la naviera, el puerto o el proveedor del servicio.'
@@ -299,7 +322,7 @@ export default function ArticlePageClient({
               </section>
             )}
 
-            <section className="mt-6 bg-amber-300 p-6 text-black">
+            <section id="article-contact" className="mt-6 bg-amber-300 p-6 text-black">
               <p className="text-xs font-black uppercase tracking-[0.28em] text-black/54">
                 {isEs ? 'Contactar con Bryce' : isZh ? '联系 Bryce' : 'Contact Bryce'}
               </p>
@@ -328,6 +351,7 @@ export default function ArticlePageClient({
                   : 'Include POL, POD, commodity, equipment, package count, weight, volume and ready date.'}
               </p>
               <div className="mt-6 grid gap-3">
+                <WhatsAppButton lang={lang} title={articleCopy.title} />
                 <a
                   href={`mailto:${contactEmail}`}
                   className="bg-black px-4 py-4 text-center text-xs font-black uppercase tracking-[0.18em] text-white"
@@ -375,6 +399,7 @@ export default function ArticlePageClient({
           </div>
         </section>
       )}
+      <WhatsAppButton lang={lang} title={articleCopy.title} floating />
     </main>
   );
 }

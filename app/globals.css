@@ -120,3 +120,32 @@ textarea {
     transition-duration: 0.01ms !important;
   }
 }
+
+.whatsapp-dock {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  /* A separate viewport lane keeps the fixed button off all scrollable content. */
+  .whatsapp-page {
+    --whatsapp-dock-height: calc(5rem + env(safe-area-inset-bottom, 0px));
+    height: calc(100dvh - var(--whatsapp-dock-height));
+    min-height: 0;
+    margin-bottom: var(--whatsapp-dock-height);
+    overflow-y: auto;
+    scroll-padding-block: 1rem;
+  }
+
+  .whatsapp-dock {
+    position: fixed;
+    z-index: 40;
+    inset: auto 0 0;
+    display: flex;
+    height: var(--whatsapp-dock-height);
+    align-items: center;
+    justify-content: flex-end;
+    border-top: 1px solid rgb(255 255 255 / 12%);
+    background: #030508;
+    padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}

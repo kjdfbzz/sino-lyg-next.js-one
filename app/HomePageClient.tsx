@@ -3,10 +3,8 @@
 import Image from 'next/image';
 import {
   useState,
-  type ChangeEvent,
   type ComponentType,
   type CSSProperties,
-  type FormEvent,
 } from 'react';
 import {
   ArrowRight,
@@ -26,8 +24,9 @@ import {
   X,
 } from 'lucide-react';
 import { localizePath } from './localized-path';
+import InquiryForm from './InquiryForm';
 import { usePreferredLanguage } from './use-language';
-import { contactEmail, contactPhone, siteUrl } from './content-data';
+import { contactEmail, contactPhone } from './content-data';
 import { companyProfile } from './company-profile';
 import { cargoCategories } from './experience-data';
 import { factoryGalleries } from './factory-shipments';
@@ -40,24 +39,6 @@ const whatsapp = `86${contactPhone}`;
 type Lang = 'zh' | 'en';
 type Copy = Record<Lang, string>;
 type IconType = ComponentType<{ className?: string }>;
-type InquiryFormData = {
-  pol: string;
-  pod: string;
-  cargo: string;
-  contact: string;
-  readyDate: string;
-  notes: string;
-};
-
-const initialInquiryForm: InquiryFormData = {
-  pol: '',
-  pod: '',
-  cargo: '',
-  contact: '',
-  readyDate: '',
-  notes: '',
-};
-
 const navItems = [
   { label: 'SERVICES', href: '#services' },
   { label: 'ROUTES', href: '/routes' },
@@ -262,100 +243,8 @@ const knowledgeCards = [
   },
 ];
 
-const inquiryFields: Array<{
-  name: keyof InquiryFormData;
-  label: Copy;
-  placeholder: Copy;
-}> = [
-  {
-    name: 'pol',
-    label: { zh: '起运港 / POL', en: 'Departure port / POL' },
-    placeholder: { zh: '青岛 / 连云港 / 上海', en: 'Qingdao / Lianyungang / Shanghai' },
-  },
-  {
-    name: 'pod',
-    label: { zh: '目的港 / POD', en: 'Destination port / POD' },
-    placeholder: { zh: 'Kolkata / Jebel Ali / Santos', en: 'Kolkata / Jebel Ali / Santos' },
-  },
-  {
-    name: 'cargo',
-    label: { zh: '货物信息', en: 'Cargo details' },
-    placeholder: { zh: '品名、件数、重量、体积', en: 'Commodity, packages, weight and volume' },
-  },
-  {
-    name: 'contact',
-    label: { zh: '联系方式', en: 'Contact details' },
-    placeholder: { zh: '微信 / 手机 / 邮箱', en: 'Email / phone / WhatsApp / WeChat' },
-  },
-  {
-    name: 'readyDate',
-    label: { zh: '出货时间', en: 'Cargo ready date' },
-    placeholder: { zh: '本周 / 下周 / 具体日期', en: 'This week / next week / specific date' },
-  },
-];
-
 function pick(copy: Copy, lang: Lang) {
   return copy[lang];
-}
-
-function buildInquiryBody(form: InquiryFormData, lang: Lang) {
-  const isZh = lang === 'zh';
-
-  if (isZh) {
-    return [
-      'Bryce 你好，',
-      '',
-      '我在 sinolyg.com 看到了你的货运服务，想咨询一票出口运输：',
-      '',
-      `起运港 / POL：${form.pol || '待补充'}`,
-      `目的港 / POD：${form.pod || '待补充'}`,
-      `货物信息：${form.cargo || '待补充'}`,
-      `出货时间：${form.readyDate || '待补充'}`,
-      `联系方式：${form.contact || '待补充'}`,
-      '',
-      `补充说明：${form.notes || '暂无'}`,
-      '',
-      '请帮我判断海运 / 空运 / 拖车 / 报关方案，并说明大概时效、费用结构和需要注意的目的港风险。',
-      '',
-      `来源：${siteUrl}`,
-    ].join('\n');
-  }
-
-  return [
-    'Hi Bryce,',
-    '',
-    'I found your freight service on sinolyg.com and would like to discuss an export shipment:',
-    '',
-    `POL: ${form.pol || 'TBD'}`,
-    `POD: ${form.pod || 'TBD'}`,
-    `Cargo: ${form.cargo || 'TBD'}`,
-    `Ready date: ${form.readyDate || 'TBD'}`,
-    `Contact: ${form.contact || 'TBD'}`,
-    '',
-    `Notes: ${form.notes || 'None'}`,
-    '',
-    'Please help me compare ocean / air / trucking / customs options, including estimated timing, cost structure and destination risks.',
-    '',
-    `Source: ${siteUrl}`,
-  ].join('\n');
-}
-
-function buildInquirySubject(form: InquiryFormData) {
-  const route = [form.pol, form.pod]
-    .map((value) => value.trim())
-    .filter(Boolean)
-    .join(' -> ');
-
-  return route
-    ? `Freight inquiry: ${route}`
-    : 'Freight inquiry from sinolyg.com';
-}
-
-function buildMailtoHref(form: InquiryFormData, lang: Lang) {
-  const subject = encodeURIComponent(buildInquirySubject(form));
-  const body = encodeURIComponent(buildInquiryBody(form, lang));
-
-  return `mailto:${email}?subject=${subject}&body=${body}`;
 }
 
 function BackgroundImage({
@@ -1302,51 +1191,6 @@ function InquiryModal({
   setQuoteOpen: (open: boolean) => void;
 }) {
   const isZh = lang === 'zh';
-  const [form, setForm] = useState<InquiryFormData>(initialInquiryForm);
-  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent' | 'fallback'>('idle');
-  const [copied, setCopied] = useState(false);
-
-  const mailtoHref = buildMailtoHref(form, lang);
-
-  const updateField =
-    (name: keyof InquiryFormData) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setForm((current) => ({ ...current, [name]: event.target.value }));
-      setSubmitState('idle');
-      setCopied(false);
-    };
-
-  const copyBrief = async () => {
-    try {
-      await navigator.clipboard.writeText(buildInquiryBody(form, lang));
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
-  };
-
-  const submitInquiry = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubmitState('sending');
-
-    try {
-      const response = await fetch('/api/inquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, lang }),
-      });
-
-      if (response.ok) {
-        setSubmitState('sent');
-        return;
-      }
-    } catch {
-      // Mailto fallback below keeps the form usable without server email setup.
-    }
-
-    setSubmitState('fallback');
-    window.location.href = mailtoHref;
-  };
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="inquiry-dialog-heading" className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/82 px-4 py-6 backdrop-blur-md sm:py-8">
@@ -1370,94 +1214,7 @@ function InquiryModal({
           </button>
         </div>
 
-        <form
-          className="space-y-4 px-5 py-6 sm:px-7"
-          onSubmit={submitInquiry}
-        >
-          <div className="grid gap-4 sm:grid-cols-2">
-            {inquiryFields.map((field) => (
-              <label key={field.name} className="block">
-                <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/48">
-                  {field.label[lang]}
-                </span>
-                <input
-                  name={field.name}
-                  className="mt-2 w-full border border-white/14 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/32 focus:border-amber-300 focus:bg-white/[0.07]"
-                  placeholder={field.placeholder[lang]}
-                  value={form[field.name]}
-                  onChange={updateField(field.name)}
-                />
-              </label>
-            ))}
-          </div>
-
-          <label className="block">
-            <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/48">
-              {isZh ? '补充说明' : 'Additional notes'}
-            </span>
-            <textarea
-              name="notes"
-              className="mt-2 min-h-28 w-full border border-white/14 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/32 focus:border-amber-300 focus:bg-white/[0.07]"
-              placeholder={isZh ? '是否需要拖车、报关、仓储、目的港清关建议，或其他特殊要求' : 'Pickup address, Incoterm, container type, destination services or special handling'}
-              value={form.notes}
-              onChange={updateField('notes')}
-            />
-          </label>
-
-          <p className="text-xs leading-relaxed text-white/46">
-            {isZh
-              ? '填写货物信息和联系方式后发送。也可以复制询价信息，通过邮件或 WhatsApp 联系 Bryce。'
-              : 'Send the cargo details with your contact information. You can also copy the brief and contact Bryce by email or WhatsApp.'}
-          </p>
-
-          {submitState === 'sent' && (
-            <div className="border border-emerald-400/40 bg-emerald-400/10 p-3 text-sm font-bold text-emerald-200">
-              {isZh ? '已发送到 Bryce 邮箱，我会尽快回复。' : 'Sent to Bryce. I will reply as soon as possible.'}
-            </div>
-          )}
-
-          {submitState === 'fallback' && (
-            <div className="border border-amber-300/40 bg-amber-300/10 p-3 text-sm font-bold text-amber-100">
-              {isZh
-                ? '已为你打开邮件草稿，请在邮箱客户端里确认发送。'
-                : 'Your email draft has opened. Please confirm sending in your mail client.'}
-            </div>
-          )}
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            <button
-              type="submit"
-              disabled={submitState === 'sending'}
-              className="flex items-center justify-center bg-amber-300 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-white disabled:cursor-wait disabled:opacity-70 sm:col-span-2"
-            >
-              {submitState === 'sending'
-                ? isZh ? '正在发送' : 'Sending'
-                : isZh ? '发送到邮箱' : 'Send brief'}
-            </button>
-            <button
-              type="button"
-              onClick={copyBrief}
-              className="flex items-center justify-center border border-white/28 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white transition hover:border-amber-300 hover:text-amber-300"
-            >
-              {copied ? (isZh ? '已复制' : 'Copied') : (isZh ? '复制' : 'Copy')}
-            </button>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <a
-              href={companyProfile.mobileHref}
-              className="flex items-center justify-center border border-white/16 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
-            >
-              {isZh ? '电话联系' : 'Call'} {companyProfile.mobileDisplay}
-            </a>
-            <a
-              href={mailtoHref}
-              className="flex items-center justify-center border border-white/16 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
-            >
-              {email}
-            </a>
-          </div>
-        </form>
+        <InquiryForm lang={lang} sourcePath={localizePath('/', lang)} showHeading={false} homeModal />
       </div>
     </div>
   );

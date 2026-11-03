@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 type InquiryPayload = {
+  name?: string;
+  company?: string;
+  weightVolume?: string;
   pol?: string;
   pod?: string;
   cargo?: string;
   contact?: string;
   readyDate?: string;
   notes?: string;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'en' | 'es';
+  sourceUrl?: string;
 };
 
 const defaultRecipient = 'Bryce.Lee@gwl-lianyungang.com';
@@ -30,39 +34,63 @@ function extractEmail(value: string) {
   return value.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0];
 }
 
+function sourcePage(payload: InquiryPayload) {
+  try {
+    const url = new URL(clean(payload.sourceUrl));
+    if (!['https:', 'http:'].includes(url.protocol)) return { url: siteUrl, slug: '' };
+    url.username = ''; url.password = ''; url.hash = ''; url.search = '';
+    const slug = url.pathname.split('/').filter(Boolean).pop()?.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 120) || '';
+    return { url: url.toString(), slug };
+  } catch {
+    return { url: siteUrl, slug: '' };
+  }
+}
+
+function languageName(payload: InquiryPayload) {
+  return payload.lang === 'es' ? 'Spanish (es)' : payload.lang === 'en' ? 'English (en)' : 'Chinese (zh)';
+}
+
 function buildSubject(payload: InquiryPayload) {
   const route = [payload.pol, payload.pod]
-    .map((value) => clean(value))
+    .map((value) => clean(value).replace(/[\r\n]/g, ' '))
     .filter(Boolean)
     .join(' -> ');
 
-  return route
+  const subject = route
     ? `Freight inquiry: ${route}`
     : 'Freight inquiry from sinolyg.com';
+  const { slug } = sourcePage(payload);
+  return slug ? `${subject} [${slug}]` : subject;
 }
 
 function buildText(payload: InquiryPayload) {
   return [
     'New freight inquiry from sinolyg.com',
     '',
+    `Name: ${clean(payload.name) || 'TBD'}`,
+    `Company: ${clean(payload.company) || 'TBD'}`,
     `POL: ${clean(payload.pol) || 'TBD'}`,
     `POD: ${clean(payload.pod) || 'TBD'}`,
     `Cargo: ${clean(payload.cargo) || 'TBD'}`,
+    `Weight / volume: ${clean(payload.weightVolume) || 'TBD'}`,
     `Ready date: ${clean(payload.readyDate) || 'TBD'}`,
     `Contact: ${clean(payload.contact) || 'TBD'}`,
     '',
     `Notes: ${clean(payload.notes) || 'None'}`,
     '',
-    `Language: ${payload.lang === 'en' ? 'English' : 'Chinese'}`,
-    `Source: ${siteUrl}`,
+    `Language: ${languageName(payload)}`,
+    `Source: ${sourcePage(payload).url}`,
   ].join('\n');
 }
 
 function buildHtml(payload: InquiryPayload) {
   const rows = [
+    ['Name / 姓名', clean(payload.name) || 'TBD'],
+    ['Company / 公司', clean(payload.company) || 'TBD'],
     ['POL / 起运港', clean(payload.pol) || 'TBD'],
     ['POD / 目的港', clean(payload.pod) || 'TBD'],
     ['Cargo / 货物', clean(payload.cargo) || 'TBD'],
+    ['Weight / volume / 件重尺', clean(payload.weightVolume) || 'TBD'],
     ['Ready date / 出货时间', clean(payload.readyDate) || 'TBD'],
     ['Contact / 联系方式', clean(payload.contact) || 'TBD'],
     ['Notes / 补充说明', clean(payload.notes) || 'None'],
@@ -83,7 +111,7 @@ function buildHtml(payload: InquiryPayload) {
           )
           .join('')}
       </table>
-      <p style="color:#6b7280">Language: ${payload.lang === 'en' ? 'English' : 'Chinese'}<br />Source: ${siteUrl}</p>
+      <p style="color:#6b7280">Language: ${languageName(payload)}<br />Source: ${escapeHtml(sourcePage(payload).url)}</p>
     </div>
   `;
 }
@@ -125,26 +153,31 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: [toEmail],
-      reply_to: extractEmail(clean(payload.contact)),
-      subject: buildSubject(payload),
-      text: buildText(payload),
-      html: buildHtml(payload),
-    }),
-  });
+  let response: Response;
+  try {
+    response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: [toEmail],
+        reply_to: extractEmail(clean(payload.contact)),
+        subject: buildSubject(payload),
+        text: buildText(payload),
+        html: buildHtml(payload),
+      }),
+      signal: AbortSignal.timeout(20_000),
+    });
+  } catch {
+    return NextResponse.json({ error: 'Email provider is unavailable.' }, { status: 502 });
+  }
 
   if (!response.ok) {
-    const message = await response.text();
     return NextResponse.json(
-      { error: 'Email provider rejected the request.', detail: message },
+      { error: 'Email provider rejected the request.' },
       { status: 502 },
     );
   }

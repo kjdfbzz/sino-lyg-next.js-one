@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...contentArticles.map((article) => ({ path: getArticlePath(article), lastModified: article.updatedAt, article })),
   ];
 
-  return pages.flatMap(({ path, lastModified, article }) => {
+  const localizedPages = pages.flatMap(({ path, lastModified, article }) => {
     const pageLanguages: ArticleLang[] = article?.es ? [...languages, 'es'] : languages;
     const alternateLanguages = article ? articleLanguageUrls(article) : languageUrls(path);
 
@@ -28,4 +28,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternateLanguages },
     }));
   });
+  return [...localizedPages, { url: absoluteUrl('/es') }];
 }
