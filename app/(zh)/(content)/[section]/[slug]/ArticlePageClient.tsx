@@ -258,7 +258,7 @@ export default function ArticlePageClient({
                 </section>
                   {isZh && index === 0 && ['fcl-export-checklist', 'lcl-export-checklist'].includes(article.slug) && (
                     <aside id="calculator-tip" className="mt-6 border border-amber-300/40 bg-amber-300/[0.08] p-5 text-base leading-8 text-amber-200">
-                      <Link href="/load" className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">不确定货物要几个柜？先用免费装箱计算器算一下 → /load</Link>
+                      <Link href="/load" className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">不确定货物要几个柜？先用免费装箱计算器算一下 →</Link>
                     </aside>
                   )}
                 </Fragment>
