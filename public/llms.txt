@@ -29,6 +29,7 @@
 
 ## Tools
 
+- [Container Load Calculator](https://www.sinolyg.com/en/load): Free tool to plan how cartons or pallets fit into 20GP and 40HQ containers, with a 3D loading view, weight checks and an exportable loading plan.
 - [Container Load Calculator (Chinese UI)](https://www.sinolyg.com/load): Free tool to plan how cartons or pallets fit into 20GP and 40HQ containers, with 3D loading view and exportable loading plan.
 
 ## Company

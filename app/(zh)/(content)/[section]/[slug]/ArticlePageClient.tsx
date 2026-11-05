@@ -123,6 +123,7 @@ export default function ArticlePageClient({
             </Link>
             <div className="flex flex-wrap items-center gap-3">
               {isZh && <Link href="/load" className="border border-white/20 px-4 py-3 text-xs font-black tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300">装箱计算器</Link>}
+              {lang === 'en' && <Link href="/en/load" className="border border-white/20 px-4 py-3 text-xs font-black tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300">Load Calculator</Link>}
               <Link
                 href={localizePath('/about', navigationLang)}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
@@ -276,6 +277,9 @@ export default function ArticlePageClient({
                       {contentArticles.filter(item => item.section === 'routes').map(item => <li key={item.slug}><Link href={localizePath(getArticlePath(item), guideLang(item))} className="text-amber-300 underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">{getArticleCopy(item, guideLang(item)).title}</Link></li>)}
                     </ul>
                   )}
+                  {lang === 'en' && article.slug === 'china-export-transit-time-table' && index === 2 && (
+                    <p className="mt-6 text-base leading-9 text-white/70">To estimate how many containers your cargo needs, use the <Link href="/en/load" className="text-amber-300 underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">free load calculator</Link>.</p>
+                  )}
                   {block.bullets && (
                     <ul className="mt-5 list-disc space-y-3 border-l border-amber-300/40 pl-8 text-sm leading-7 text-white/66">
                       {block.bullets.map((bullet) => (
@@ -284,6 +288,11 @@ export default function ArticlePageClient({
                     </ul>
                   )}
                 </section>
+                  {lang === 'en' && index === 0 && ['fcl-export-checklist', 'lcl-export-checklist'].includes(article.slug) && (
+                    <aside id="calculator-tip" className="mt-6 border border-amber-300/40 bg-amber-300/[0.08] p-5 text-base leading-8 text-amber-200">
+                      <Link href="/en/load" className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">Not sure how many containers you need? Try the free load calculator →</Link>
+                    </aside>
+                  )}
                   {isZh && index === 0 && ['fcl-export-checklist', 'lcl-export-checklist'].includes(article.slug) && (
                     <aside id="calculator-tip" className="mt-6 border border-amber-300/40 bg-amber-300/[0.08] p-5 text-base leading-8 text-amber-200">
                       <Link href="/load" className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">不确定货物要几个柜？先用免费装箱计算器算一下 →</Link>

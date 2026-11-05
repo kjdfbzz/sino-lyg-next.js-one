@@ -56,6 +56,7 @@ export default function SectionPageClient({
             </Link>
             <div className="flex flex-wrap items-center gap-3">
               {isZh && <Link href="/load" className="border border-white/20 px-4 py-3 text-xs font-black tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300">装箱计算器</Link>}
+              {!isZh && <Link href="/en/load" className="border border-white/20 px-4 py-3 text-xs font-black tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300">Load Calculator</Link>}
               <Link
                 href={localizePath('/about', lang)}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"

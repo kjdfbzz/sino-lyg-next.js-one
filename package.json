@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
+        "build:calculator": "node scripts/build-calculator.mjs",
         "start": "next start",
       "lint": "eslint . --max-warnings=0",
       "indexnow": "node scripts/indexnow.mjs"

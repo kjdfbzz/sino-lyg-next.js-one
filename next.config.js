@@ -4,6 +4,7 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: '/load', destination: '/tools/container-load-calculator.html' },
+      { source: '/en/load', destination: '/tools/container-load-calculator-en.html' },
       { source: '/vendor/three.min.js', destination: '/tools/vendor/three.min.js' },
       { source: '/vendor/OrbitControls.js', destination: '/tools/vendor/OrbitControls.js' },
     ];
