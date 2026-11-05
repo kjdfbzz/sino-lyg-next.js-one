@@ -210,10 +210,10 @@ export default function ArticlePageClient({
                 <p className="mt-4 text-base leading-8 text-white/85">{quickAnswer}</p>
               </section>
             )}
-            {article.section === 'routes' && !isEs && (
+            {article.section === 'routes' && (!isEs || article.es) && (
               <p className="mb-8 text-sm leading-7 text-amber-300">
                 <Link href={localizePath('/guides/china-export-transit-time-table', lang)} className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">
-                  {isZh ? '查看全部航线航程总表 →' : 'See all transit times in one table →'}
+                  {isEs ? 'Ver todos los tiempos de tránsito en una tabla →' : isZh ? '查看全部航线航程总表 →' : 'See all transit times in one table →'}
                 </Link>
               </p>
             )}
@@ -257,7 +257,7 @@ export default function ArticlePageClient({
                   </p>
                   {block.table && (
                     <div className="mt-6 min-w-0">
-                    <p className="mb-3 text-xs leading-6 text-white/60 sm:hidden">{isZh ? '左右滑动查看完整表格 →' : 'Swipe sideways to see the full table →'}</p>
+                    <p className="mb-3 text-xs leading-6 text-white/60 sm:hidden">{isEs ? 'Deslice hacia los lados para ver la tabla completa →' : isZh ? '左右滑动查看完整表格 →' : 'Swipe sideways to see the full table →'}</p>
                     <div data-article-table role="region" aria-label={block.heading} tabIndex={0} className="max-w-full overflow-x-auto overscroll-x-contain border border-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300">
                       <table className="w-full min-w-[720px] border-collapse text-left text-sm leading-7">
                         <caption className="sr-only">{block.heading}</caption>
@@ -273,7 +273,7 @@ export default function ArticlePageClient({
                   )}
                   {article.slug === 'china-export-transit-time-table' && index === 2 && (
                     <ul className="mt-6 grid gap-3 text-sm leading-7 sm:grid-cols-2">
-                      {contentArticles.filter(item => item.section === 'routes').map(item => <li key={item.slug}><Link href={localizePath(getArticlePath(item), lang)} className="text-amber-300 underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">{getArticleCopy(item, lang).title}</Link></li>)}
+                      {contentArticles.filter(item => item.section === 'routes').map(item => <li key={item.slug}><Link href={localizePath(getArticlePath(item), guideLang(item))} className="text-amber-300 underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">{getArticleCopy(item, guideLang(item)).title}</Link></li>)}
                     </ul>
                   )}
                   {block.bullets && (

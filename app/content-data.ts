@@ -1589,7 +1589,9 @@ export const contentArticles: ContentArticle[] = [
     section: 'routes',
     title: '中国到中美洲和加勒比海运：巴拿马、危地马拉、哥斯达黎加、牙买加、多米尼加',
     description: '青岛、连云港出口到中美洲太平洋岸和加勒比的走法、中转港、航程参考、船司和订舱注意事项，覆盖巴拿马、危地马拉、洪都拉斯、哥斯达黎加、牙买加、多米尼加等。',
-    updatedAt: '2026-10-26',
+    quickAnswer: '中美洲太平洋岸（危地马拉 Puerto Quetzal、萨尔瓦多 Acajutla、尼加拉瓜 Corinto、哥斯达黎加 Caldera、巴拿马 Balboa）一般需要中转，经墨西哥 Lázaro Cárdenas、哥伦比亚 Buenaventura 或巴拿马 Balboa，约 30–40 天。加勒比和中美洲大西洋岸可安排 MSC、CMA、COSCO、ONE、EMC、YML、OOCL 等船司，经巴拿马运河或 Colón、Cartagena、Kingston、Caucedo 等枢纽港中转，航程按航次确认。重的 20 尺柜可能有超重费，波多黎各 San Juan 需提前申报 AMS。以上为参考，以船公司当期船期为准。',
+    quickAnswer_en: 'The Pacific coast of Central America (Puerto Quetzal, Acajutla, Corinto, Caldera, Balboa) usually involves transshipment via Lázaro Cárdenas, Buenaventura or Balboa, about 30–40 days. The Caribbean and the Atlantic side can be served by MSC, CMA, COSCO, ONE, EMC, YML and OOCL via the Panama Canal or hubs such as Colón, Cartagena, Kingston and Caucedo, with transit confirmed per sailing. Heavy 20-foot containers may carry an overweight surcharge, and San Juan, Puerto Rico requires an AMS filing. These are references; each sailing is confirmed with the carrier.',
+    updatedAt: '2026-11-05',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
     keywords: ['中国到中美洲海运', '中国到加勒比海运', '青岛到巴拿马', '中国到牙买加海运', '中国到多米尼加海运', 'Central America shipping'],
@@ -1636,6 +1638,7 @@ export const contentArticles: ContentArticle[] = [
       title: 'Flete marítimo de China a Centroamérica y el Caribe: Panamá, Guatemala, Costa Rica, Jamaica y República Dominicana',
       metaTitle: 'Flete marítimo de China a Centroamérica y el Caribe',
       description: 'Rutas, puertos de transbordo, tiempos de tránsito de referencia, navieras y recomendaciones de reserva para envíos desde Qingdao y Lianyungang a Centroamérica y el Caribe.',
+      quickAnswer: 'La costa del Pacífico de Centroamérica (Puerto Quetzal, Acajutla, Corinto, Caldera, Balboa) suele llevar transbordo vía Lázaro Cárdenas, Buenaventura o Balboa, en unos 30–40 días. El Caribe y la costa atlántica se atienden con MSC, CMA, COSCO, ONE, EMC, YML y OOCL, vía el Canal de Panamá o puertos como Colón, Cartagena, Kingston y Caucedo, con tránsito confirmado por salida. Los contenedores de 20 pies pesados pueden tener recargo por sobrepeso, y San Juan (Puerto Rico) requiere declaración AMS. Son referencias; cada salida se confirma con la naviera.',
       keywords: ['flete marítimo China Centroamérica', 'flete marítimo China Caribe', 'importar de China a Guatemala', 'flete China Panamá', 'contenedor China República Dominicana', 'flete marítimo China Costa Rica'],
       highlights: [
         'Centroamérica tiene costa del Pacífico y costa del Caribe, y la ruta cambia según el lado; confirme a qué puerto necesita llegar el consignatario antes de reservar.',
@@ -2582,6 +2585,292 @@ export const contentArticles: ContentArticle[] = [
         answer: 'They are reference values from recent schedules and change with carrier adjustments, rollovers and congestion. The actual sailing is confirmed with the carrier when you book, and we confirm it with your quote.',
       },
     ],
+    es: {
+      "title": "Tiempos de tránsito marítimo desde China: Qingdao y Lianyungang a Latinoamérica, Asia y Medio Oriente",
+      "metaTitle": "Tiempos de tránsito desde China: Qingdao y Lianyungang por puerto",
+      "description": "Tiempos de tránsito de referencia, ruta directa o con transbordo y navieras principales desde Qingdao y Lianyungang a México, Centroamérica, Sudamérica, el Sudeste Asiático, India, Pakistán y Medio Oriente. Sin tarifas.",
+      "keywords": [
+        "tiempo de tránsito China México",
+        "cuánto tarda un contenedor de China a México",
+        "flete marítimo China Perú",
+        "tiempo de tránsito China Chile",
+        "Qingdao Manzanillo días",
+        "transporte marítimo desde China"
+      ],
+      "quickAnswer": "Desde Qingdao hay servicios directos a México en unos 22–26 días (Manzanillo con KMTC o MSK; Lázaro Cárdenas con ONE), a Perú (Callao) en unos 35 días, a Chile (San Antonio) y Brasil (Santos) en unos 40 días y a Argentina (Buenos Aires) en unos 45 días. La costa del Pacífico de Centroamérica suele llevar transbordo, unos 30–40 días. Desde Lianyungang, la mayoría de los puertos del Sudeste Asiático son directos en unos 8–10 días. Son tiempos de referencia; cada salida se confirma con la naviera.",
+      "highlights": [
+        "Una sola tabla con tiempos de tránsito, rutas y navieras desde Qingdao y Lianyungang.",
+        "Para Latinoamérica reservamos con espacio propio contratado en Qingdao.",
+        "No se publican tarifas; solicite una cotización para su puerto y mercancía."
+      ],
+      "sections": [
+        {
+          "heading": "1. Desde Qingdao",
+          "body": "Las exportaciones desde Qingdao a Latinoamérica, India y Pakistán son mayormente directas, con espacio propio contratado para Latinoamérica; Medio Oriente conecta actualmente vía Khor Fakkan.",
+          "table": {
+            "columns": [
+              "Destino",
+              "País",
+              "Tránsito",
+              "Ruta",
+              "Navieras principales"
+            ],
+            "rows": [
+              [
+                "Manzanillo",
+                "México",
+                "Unos 22–26 días",
+                "Directo",
+                "KMTC unos 22 días; MSK unos 26 días"
+              ],
+              [
+                "Lázaro Cárdenas",
+                "México",
+                "Unos 25 días",
+                "Directo",
+                "ONE"
+              ],
+              [
+                "Callao",
+                "Perú",
+                "Unos 35 días",
+                "Directo",
+                "HMM, ONE, Yang Ming"
+              ],
+              [
+                "San Antonio",
+                "Chile",
+                "Unos 40 días",
+                "Directo",
+                "CMA, COSCO, EMC, OOCL, Wan Hai"
+              ],
+              [
+                "Santos",
+                "Brasil",
+                "Unos 40 días",
+                "Directo",
+                "CMA"
+              ],
+              [
+                "Buenos Aires",
+                "Argentina",
+                "Unos 45 días",
+                "Directo",
+                "CMA"
+              ],
+              [
+                "Costa del Pacífico de Centroamérica (Puerto Quetzal, Acajutla, Corinto, Caldera, Balboa)",
+                "Centroamérica",
+                "Unos 30–40 días",
+                "Transbordo",
+                "Se confirma por salida"
+              ],
+              [
+                "Nhava Sheva",
+                "India",
+                "Unos 20–21 días",
+                "Directo",
+                "EMC unos 20 días; KMTC unos 21 días"
+              ],
+              [
+                "Mundra",
+                "India",
+                "Unos 22–28 días",
+                "Directo",
+                "EMC unos 22 días; KMTC unos 28 días"
+              ],
+              [
+                "Chennai",
+                "India",
+                "Unos 18–23 días",
+                "Directo",
+                "EMC unos 18 días; KMTC unos 23 días"
+              ],
+              [
+                "Kolkata",
+                "India",
+                "Unos 20–30 días",
+                "Transbordo",
+                "SITC vía Haldia unos 20 días; MSC vía Colombo unos 30 días"
+              ],
+              [
+                "Karachi",
+                "Pakistán",
+                "Unos 25 días",
+                "Directo",
+                "EMC, KMTC"
+              ],
+              [
+                "Jebel Ali (Dubái)",
+                "Emiratos Árabes Unidos",
+                "Unos 30–40 días",
+                "Vía Khor Fakkan",
+                "MSC, CMA, ASCL"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "2. Desde Lianyungang",
+          "body": "Las exportaciones desde Lianyungang al Sudeste Asiático son mayormente directas; India, Pakistán y Medio Oriente suelen conectar vía Shanghái, Qingdao o Khor Fakkan.",
+          "table": {
+            "columns": [
+              "Destino",
+              "País",
+              "Tránsito",
+              "Ruta",
+              "Navieras principales"
+            ],
+            "rows": [
+              [
+                "Yakarta (Jakarta)",
+                "Indonesia",
+                "Unos 10 días",
+                "Directo",
+                "CNC, SITC, Jinjiang"
+              ],
+              [
+                "Surabaya",
+                "Indonesia",
+                "Unos 10 días",
+                "Directo",
+                "CNC, SITC, Jinjiang"
+              ],
+              [
+                "Semarang",
+                "Indonesia",
+                "Unos 10 días",
+                "Directo",
+                "CNC, SITC, Jinjiang"
+              ],
+              [
+                "Ho Chi Minh",
+                "Vietnam",
+                "Unos 8 días",
+                "Directo",
+                "CNC"
+              ],
+              [
+                "Hai Phong",
+                "Vietnam",
+                "Unos 5–13 días",
+                "Directo",
+                "Hai An (cada dos semanas) unos 5 días; COSCO unos 13 días"
+              ],
+              [
+                "Laem Chabang",
+                "Tailandia",
+                "Unos 8 días",
+                "Directo",
+                "Jinjiang/SITC (servicio compartido), MSK"
+              ],
+              [
+                "Bangkok",
+                "Tailandia",
+                "Unos 9 días",
+                "Directo",
+                "Jinjiang/SITC (servicio compartido)"
+              ],
+              [
+                "Port Klang",
+                "Malasia",
+                "Unos 9 días",
+                "Directo",
+                "Jinjiang/SITC (servicio compartido)"
+              ],
+              [
+                "Pasir Gudang",
+                "Malasia",
+                "Unos 16 días",
+                "Vía Kaohsiung",
+                "EMC"
+              ],
+              [
+                "Manila South",
+                "Filipinas",
+                "Unos 12 días",
+                "Vía Busan",
+                "KMTC"
+              ],
+              [
+                "Cebú",
+                "Filipinas",
+                "Unos 12 días",
+                "Vía Kaohsiung",
+                "Wan Hai"
+              ],
+              [
+                "Davao",
+                "Filipinas",
+                "Unos 14 días",
+                "Vía Kaohsiung",
+                "Wan Hai"
+              ],
+              [
+                "Chennai",
+                "India",
+                "Unos 15 días",
+                "Vía Shanghái",
+                "EMC"
+              ],
+              [
+                "Nhava Sheva",
+                "India",
+                "Unos 20 días",
+                "Vía Shanghái",
+                "EMC"
+              ],
+              [
+                "Mundra",
+                "India",
+                "Unos 25 días",
+                "Vía Shanghái",
+                "EMC"
+              ],
+              [
+                "Kolkata",
+                "India",
+                "Unos 35 días",
+                "Vía Qingdao y Colombo (dos transbordos)",
+                "MSC"
+              ],
+              [
+                "Karachi",
+                "Pakistán",
+                "Unos 30 días",
+                "Vía Qingdao",
+                "EMC, KMTC"
+              ],
+              [
+                "Jebel Ali (Dubái)",
+                "Emiratos Árabes Unidos",
+                "Unos 30 días",
+                "Directo a Khor Fakkan y luego a Dubái",
+                "KAWA Shipping"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "3. Cómo usar esta tabla",
+          "body": "Son tiempos de tránsito marítimo de referencia y no incluyen la preparación en fábrica, el transporte terrestre, la espera hasta el cierre, el despacho aduanal ni la recolección en destino. Los días varían según la naviera y la salida, y en temporada alta los rolados o la congestión en destino pueden alargar la llegada. Para confirmar un itinerario, envíenos el puerto de origen y destino, la fecha de carga lista y el tipo de contenedor, y revisamos las salidas vigentes. Para terminales, documentos y detalles de cada ruta, consulte las guías de ruta."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "¿Cuánto tarda un contenedor de Qingdao a México?",
+          "answer": "Hay servicio directo: Manzanillo en unos 22 días con KMTC o 26 días con MSK, y Lázaro Cárdenas en unos 25 días con ONE. Cada salida se confirma con la naviera."
+        },
+        {
+          "question": "¿Cuánto tarda de Qingdao a Sudamérica?",
+          "answer": "Con servicio directo, Callao (Perú) tarda unos 35 días, San Antonio (Chile) y Santos (Brasil) unos 40 días y Buenos Aires (Argentina) unos 45 días. La costa del Pacífico de Centroamérica suele llevar transbordo, unos 30–40 días."
+        },
+        {
+          "question": "¿Qué tan precisos son estos tiempos?",
+          "answer": "Son valores de referencia de itinerarios recientes y cambian con los ajustes de las navieras, los rolados y la congestión. La salida real se confirma con la naviera al reservar, y la confirmamos junto con su cotización."
+        }
+      ]
+    },
   },
 ];
 
