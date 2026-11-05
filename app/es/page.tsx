@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { contentArticles, getArticlePath, siteUrl } from '../content-data';
 import InquiryForm from '../InquiryForm';
 import WhatsAppButton from '../WhatsAppButton';
+import ContactActions from '../ContactActions';
 
 const title = 'Bryce Logistics – Flete marítimo desde China';
 const description = 'Flete marítimo FCL/LCL desde Qingdao y Lianyungang, despacho de exportación y atención en español. Consulte rutas, documentos y opciones de transporte con Bryce Lee.';
@@ -40,11 +41,11 @@ export default function SpanishHome() {
           </div>
         </section>
         <section id="spanish-contact" className="pb-12">
-          <div className="mb-8"><WhatsAppButton lang="es" title={title} /></div>
-          <InquiryForm lang="es" sourcePath="/es" articleTitle={title} />
+          <div className="mb-8"><ContactActions lang="es" /></div>
+          <InquiryForm lang="es" sourcePath="/es" />
         </section>
       </div>
-      <WhatsAppButton lang="es" title={title} floating />
+      <WhatsAppButton lang="es" floating />
     </main>
   );
 }

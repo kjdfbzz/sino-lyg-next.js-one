@@ -4,6 +4,7 @@ import { useId, useState, type ChangeEvent, type FormEvent } from 'react';
 import { contactEmail, contactPhone, siteUrl, type ArticleLang } from './content-data';
 import { companyProfile } from './company-profile';
 import { whatsappHref } from './WhatsAppButton';
+import ContactActions from './ContactActions';
 
 type FormData = {
   name: string; company: string; contact: string; pol: string; pod: string;
@@ -109,7 +110,7 @@ export default function InquiryForm({ lang, destinationPlaceholder, articleTitle
           {submitState === 'sent' && <div className="border border-emerald-400/40 bg-emerald-400/10 p-3 text-sm font-bold text-emerald-200">{text.success}</div>}
           {submitState === 'fallback' && <div className="border border-amber-300/40 bg-amber-300/10 p-3 text-sm font-bold text-amber-100">
             <p>{homeModal ? text.draft : text.failure}</p>
-            <div className="mt-3 flex flex-wrap gap-4"><a className="underline" href={whatsappHref(lang, articleTitle || text.title)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <div className="mt-3 flex flex-wrap gap-4"><a className="underline" href={whatsappHref(lang, articleTitle || (lang === 'zh' ? text.title : undefined))} target="_blank" rel="noopener noreferrer">WhatsApp</a>
               <a className="break-all underline" href={mailtoHref}>{contactEmail}</a></div>
           </div>}
         </div>
@@ -117,10 +118,10 @@ export default function InquiryForm({ lang, destinationPlaceholder, articleTitle
           <button type="submit" disabled={submitState === 'sending'} className="flex items-center justify-center bg-amber-300 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-white disabled:cursor-wait disabled:opacity-70 sm:col-span-2">{submitState === 'sending' ? text.sending : text.send}</button>
           <button type="button" onClick={copyBrief} className="flex items-center justify-center border border-white/28 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white transition hover:border-amber-300 hover:text-amber-300">{copied ? text.copied : text.copy}</button>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
+        {lang === 'zh' ? <div className="grid gap-3 sm:grid-cols-2">
           <a href={companyProfile.mobileHref} className="flex items-center justify-center border border-white/16 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white">{text.call} {companyProfile.mobileDisplay}</a>
           <a href={mailtoHref} className="flex min-w-0 items-center justify-center break-all border border-white/16 px-5 py-4 text-xs font-black uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white">{contactEmail}</a>
-        </div>
+        </div> : <ContactActions lang={lang} articleTitle={articleTitle || undefined} emailHref={mailtoHref} />}
       </form>
     </div>
   );

@@ -6,6 +6,7 @@ import { cargoCategories, experienceCustomers, experienceServices } from './expe
 import { factoryGalleries } from './factory-shipments';
 import { localizePath } from './localized-path';
 import PageLanguage from './PageLanguage';
+import ContactActions from './ContactActions';
 
 const copy = {
   zh: {
@@ -185,11 +186,11 @@ export default function ExperiencePage({ lang }: { lang: Lang }) {
             <p className="text-xl font-bold">{companyProfile.personName[lang]}</p>
             <p className="mt-2 text-sm font-semibold text-amber-300">{companyProfile.role[lang]} · {isZh ? '港威连云港' : 'Global View Logistics, Lianyungang'}</p>
             <a href={`mailto:${contactEmail}`} className={`mt-5 block break-all text-sm leading-7 ${linkStyle}`}>{contactEmail}</a>
-            <a href={companyProfile.mobileHref} className={`mt-2 inline-block text-sm leading-7 ${linkStyle}`}>{companyProfile.mobileDisplay}</a>
-            <div className="mt-6 flex flex-col gap-3">
+            {isZh && <a href={companyProfile.mobileHref} className={`mt-2 inline-block text-sm leading-7 ${linkStyle}`}>{companyProfile.mobileDisplay}</a>}
+            {isZh ? <div className="mt-6 flex flex-col gap-3">
               <a href={`mailto:${contactEmail}`} className="bg-amber-300 px-5 py-3 text-center text-sm font-bold text-black transition hover:bg-amber-200">{text.emailAction}</a>
               <a href={`https://wa.me/86${contactPhone}`} target="_blank" rel="noopener noreferrer" className="border border-white/25 px-5 py-3 text-center text-sm font-semibold transition hover:border-amber-300 hover:text-amber-300">{text.whatsappAction}</a>
-            </div>
+            </div> : <div className="mt-6"><ContactActions lang="en" /></div>}
           </div>
         </section>
 

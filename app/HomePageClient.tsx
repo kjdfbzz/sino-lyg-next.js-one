@@ -17,6 +17,7 @@ import {
   Menu,
   Package,
   Phone,
+  MessageCircle,
   Plane,
   Ship,
   ShieldCheck,
@@ -25,6 +26,8 @@ import {
 } from 'lucide-react';
 import { localizePath } from './localized-path';
 import InquiryForm from './InquiryForm';
+import ContactActions from './ContactActions';
+import WhatsAppButton from './WhatsAppButton';
 import { usePreferredLanguage } from './use-language';
 import { contactEmail, contactPhone } from './content-data';
 import { companyProfile } from './company-profile';
@@ -308,7 +311,7 @@ export default function Home({
 
   return (
     <>
-      <main lang={isZh ? 'zh-CN' : 'en'} className="min-h-screen overflow-x-hidden bg-[#030508] font-inter text-white selection:bg-amber-300 selection:text-black">
+      <main lang={isZh ? 'zh-CN' : 'en'} className={isZh ? "min-h-screen overflow-x-hidden bg-[#030508] font-inter text-white selection:bg-amber-300 selection:text-black" : "min-h-screen overflow-x-hidden bg-[#030508] font-inter text-white selection:bg-amber-300 selection:text-black whatsapp-page"}>
         <Hero
           lang={lang}
           menuOpen={menuOpen}
@@ -646,7 +649,7 @@ export default function Home({
               </p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:w-[440px]">
+            {isZh ? <div className="grid gap-3 sm:grid-cols-2 lg:w-[440px]">
               <button
                 type="button"
                 onClick={openInquiry}
@@ -662,7 +665,7 @@ export default function Home({
                 <Phone className="h-4 w-4" />
                 {isZh ? '电话联系' : 'Call'}
               </a>
-            </div>
+            </div> : <div className="grid gap-3 lg:w-[440px]"><ContactActions lang="en" tone="light" /><button type="button" onClick={openInquiry} className="border border-black/40 px-6 py-4 text-sm font-bold transition hover:bg-black/5">Send inquiry</button></div>}
           </div>
 
           <div className="mt-10 grid gap-x-8 gap-y-3 border-t border-black/18 pt-6 text-sm font-bold leading-6 text-black/64 md:grid-cols-[1.15fr_0.85fr_1.2fr]">
@@ -670,7 +673,7 @@ export default function Home({
               {isZh ? '收件邮箱：' : 'Email: '}
               <span className="break-all sm:whitespace-nowrap sm:break-normal">{email}</span>
             </p>
-            <p>{isZh ? '微信 / 手机：' : 'WeChat / Mobile: '}{phone}</p>
+            {isZh && <p>{isZh ? '微信 / 手机：' : 'WeChat / Mobile: '}{phone}</p>}
             <p>{isZh ? '建议附上：箱型、件重尺、品名、出货时间。' : 'Helpful details: container type, weight, volume, cargo name and ready date.'}</p>
           </div>
         </div>
@@ -693,7 +696,7 @@ export default function Home({
             <a href={localizePath('/experience', lang)} className="mt-3 block text-sm font-bold text-amber-300 hover:text-white">{isZh ? '合作客户与工厂展示' : 'Customers & factory gallery'}</a>
           </div>
 
-          <div className="flex flex-col gap-3 text-sm font-bold text-white/66 md:items-end">
+          {isZh ? <div className="flex flex-col gap-3 text-sm font-bold text-white/66 md:items-end">
             <a className="hover:text-white" href={companyProfile.mobileHref}>
               {companyProfile.mobileDisplay}
             </a>
@@ -708,7 +711,7 @@ export default function Home({
             >
               WhatsApp +86 {phone}
             </a>
-          </div>
+          </div> : <ContactActions lang="en" />}
         </div>
       </footer>
 
@@ -718,6 +721,7 @@ export default function Home({
         setContactOpen={setContactOpen}
       />
 
+      {!isZh && <WhatsAppButton lang="en" floating />}
       {quoteOpen && <InquiryModal lang={lang} setQuoteOpen={setQuoteOpen} />}
       </main>
     </>
@@ -957,7 +961,7 @@ function Hero({
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-7xl flex-col gap-3 text-xs font-black tracking-[0.18em] text-white/72 sm:left-10 sm:right-10 sm:flex-row sm:items-center sm:justify-between lg:left-16 lg:right-16 xl:left-0 xl:right-0">
+      {isZh ? <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-7xl flex-col gap-3 text-xs font-black tracking-[0.18em] text-white/72 sm:left-10 sm:right-10 sm:flex-row sm:items-center sm:justify-between lg:left-16 lg:right-16 xl:left-0 xl:right-0">
         <a className="transition hover:text-white" href={companyProfile.mobileHref}>
           TEL&nbsp;&nbsp;{companyProfile.mobileDisplay}
         </a>
@@ -972,7 +976,7 @@ function Hero({
         >
           WHATSAPP&nbsp;&nbsp;+86 {phone}
         </a>
-      </div>
+      </div> : <div className="relative z-10 mx-auto max-w-7xl px-6 pb-10 sm:px-10 lg:px-16 xl:px-0"><div className="max-w-xl"><ContactActions lang="en" /></div></div>}
     </section>
   );
 }
@@ -1101,14 +1105,14 @@ function FloatingContact({
   const isZh = lang === 'zh';
 
   return (
-    <div className="fixed bottom-5 right-5 z-40">
+    <div className={isZh ? "fixed bottom-5 right-5 z-40" : "fixed bottom-5 right-5 z-40 hidden sm:block"}>
       <button
         type="button"
         onClick={() => setContactOpen(!contactOpen)}
-        className="flex h-14 w-14 items-center justify-center bg-amber-300 text-black shadow-2xl shadow-black/30 transition hover:bg-white"
+        className={isZh ? "flex h-14 w-14 items-center justify-center bg-amber-300 text-black shadow-2xl shadow-black/30 transition hover:bg-white" : "flex h-14 w-14 items-center justify-center bg-[#128c46] text-white shadow-2xl transition hover:bg-[#0b7036]"}
         aria-label={isZh ? '打开联系菜单' : 'Open contact menu'}
       >
-        {contactOpen ? <X className="h-6 w-6" /> : <Phone className="h-6 w-6" />}
+        {contactOpen ? <X className="h-6 w-6" /> : isZh ? <Phone className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </button>
 
       {contactOpen && (
@@ -1119,10 +1123,10 @@ function FloatingContact({
           <p className="mt-1 text-xs leading-5 text-white/52">
             {isZh
               ? '选择你方便的方式联系我：微信、电话、WhatsApp 或邮件。'
-              : 'Choose the channel that works best: WeChat, phone, WhatsApp or email.'}
+              : 'WhatsApp is preferred. You can also email Bryce or add WeChat.'}
           </p>
 
-          <div className="mt-5 space-y-3">
+          {isZh ? <div className="mt-5 space-y-3">
             <ContactRow icon={Phone} label={isZh ? '手机' : 'Mobile'} value={companyProfile.mobileDisplay} href={companyProfile.mobileHref} />
             <ContactRow icon={Mail} label="Email" value={email} href={`mailto:${email}`} />
             <ContactRow
@@ -1131,7 +1135,7 @@ function FloatingContact({
               value={`+86 ${phone}`}
               href={`https://wa.me/${whatsapp}`}
             />
-          </div>
+          </div> : <div className="mt-5"><ContactActions lang="en" /></div>}
 
           <div className="mt-5 border-t border-white/12 pt-5 text-center">
             <p className="mb-3 text-sm font-bold text-white/62">

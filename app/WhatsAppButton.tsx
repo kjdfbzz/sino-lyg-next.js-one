@@ -1,8 +1,10 @@
 import { MessageCircle } from 'lucide-react';
 import { contactPhone, type ArticleLang } from './content-data';
 
-export function whatsappHref(lang: ArticleLang, title: string) {
-  const text = lang === 'zh'
+export function whatsappHref(lang: ArticleLang, title?: string) {
+  const text = !title && lang !== 'zh'
+    ? lang === 'es' ? 'Hola Bryce, quisiera una cotización de flete desde China.' : "Hi Bryce, I'd like a freight quote from China."
+    : lang === 'zh'
     ? `您好 Bryce，我想咨询：${title}`
     : lang === 'es'
       ? `Hola Bryce, quisiera una cotización para: ${title}`
@@ -12,7 +14,7 @@ export function whatsappHref(lang: ArticleLang, title: string) {
 
 export default function WhatsAppButton({ lang, title, floating = false }: {
   lang: ArticleLang;
-  title: string;
+  title?: string;
   floating?: boolean;
 }) {
   const label = lang === 'zh' ? 'WhatsApp 咨询' : lang === 'es' ? 'Escribir por WhatsApp' : 'Chat on WhatsApp';

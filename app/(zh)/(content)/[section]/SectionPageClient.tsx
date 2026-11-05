@@ -8,6 +8,7 @@ import {
 } from '../../../content-data';
 import { localizePath } from '../../../localized-path';
 import PageLanguage from '../../../PageLanguage';
+import ContactActions from '../../../ContactActions';
 
 type SectionPageClientProps = {
   section: ContentSection;
@@ -127,6 +128,7 @@ export default function SectionPageClient({
           </div>
         </div>
       </section>
+      {!isZh && <section className="px-6 pb-16 sm:px-10 lg:px-16" aria-label="Contact Bryce"><div className="mx-auto max-w-7xl border-t border-white/12 pt-8"><h2 className="mb-6 text-2xl font-black">Contact Bryce</h2><div className="max-w-xl"><ContactActions lang="en" /></div></div></section>}
     </main>
   );
 }

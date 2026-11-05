@@ -3,6 +3,7 @@ import { companyProfile } from './company-profile';
 import { contactEmail, contactPhone, type Lang } from './content-data';
 import { localizePath } from './localized-path';
 import PageLanguage from './PageLanguage';
+import ContactActions from './ContactActions';
 
 const copy = {
   zh: {
@@ -262,19 +263,19 @@ export default function AboutPage({ lang }: { lang: Lang }) {
                 <dt className="text-white/55">{text.email}</dt>
                 <dd className="mt-1 break-all"><a href={`mailto:${contactEmail}`} className={linkStyle}>{contactEmail}</a></dd>
               </div>
-              <div>
+              {isZh && <div>
                 <dt className="text-white/55">{text.mobile}</dt>
                 <dd className="mt-1"><a href={companyProfile.mobileHref} className={linkStyle}>{companyProfile.mobileDisplay}</a></dd>
-              </div>
+              </div>}
               <div>
                 <dt className="text-white/55">{text.landline}</dt>
-                <dd className="mt-1"><a href={companyProfile.landlineHref} className={linkStyle}>{companyProfile.landline}</a></dd>
+                <dd className="mt-1">{isZh ? <a href={companyProfile.landlineHref} className={linkStyle}>{companyProfile.landline}</a> : companyProfile.landline}</dd>
               </div>
             </dl>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            {isZh ? <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a href={`mailto:${contactEmail}`} className="bg-amber-300 px-5 py-3 text-center text-sm font-bold text-black transition hover:bg-amber-200">{text.emailAction}</a>
               <a href={`https://wa.me/86${contactPhone}`} target="_blank" rel="noopener noreferrer" className="border border-white/25 px-5 py-3 text-center text-sm font-semibold transition hover:border-amber-300 hover:text-amber-300">{text.whatsappAction}</a>
-            </div>
+            </div> : <div className="mt-8"><ContactActions lang="en" /></div>}
           </div>
         </section>
 

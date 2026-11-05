@@ -15,6 +15,7 @@ import { localizePath } from '../../../../localized-path';
 import PageLanguage from '../../../../PageLanguage';
 import InquiryForm from '../../../../InquiryForm';
 import WhatsAppButton from '../../../../WhatsAppButton';
+import ContactActions from '../../../../ContactActions';
 
 type ArticlePageClientProps = {
   article: ContentArticle;
@@ -350,7 +351,7 @@ export default function ArticlePageClient({
                   ? '建议附上起运港、目的港、品名、箱型、件重尺和出货时间。'
                   : 'Include POL, POD, commodity, equipment, package count, weight, volume and ready date.'}
               </p>
-              <div className="mt-6 grid gap-3">
+              {isZh ? <div className="mt-6 grid gap-3">
                 <WhatsAppButton lang={lang} title={articleCopy.title} />
                 <a
                   href={`mailto:${contactEmail}`}
@@ -364,7 +365,7 @@ export default function ArticlePageClient({
                 >
                   {isEs ? 'Teléfono' : isZh ? '电话' : 'Call'} +86 {contactPhone}
                 </a>
-              </div>
+              </div> : <div className="mt-6"><ContactActions lang={lang} articleTitle={articleCopy.title} tone="light" /></div>}
             </section>
           </aside>
         </div>
