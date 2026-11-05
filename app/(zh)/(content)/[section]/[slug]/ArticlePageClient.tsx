@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Fragment } from 'react';
 import {
   contactEmail,
   contactPhone,
@@ -121,6 +122,7 @@ export default function ArticlePageClient({
               Bryce Logistics
             </Link>
             <div className="flex flex-wrap items-center gap-3">
+              {isZh && <Link href="/load" className="border border-white/20 px-4 py-3 text-xs font-black tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300">装箱计算器</Link>}
               <Link
                 href={localizePath('/about', navigationLang)}
                 className="border border-white/20 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white/82 transition hover:border-amber-300 hover:text-amber-300"
@@ -238,7 +240,8 @@ export default function ArticlePageClient({
 
             <div className="mt-12 space-y-12">
               {articleCopy.sections.map((block, index) => (
-                <section id={`section-${index + 1}`} key={block.heading} className="scroll-mt-8 border-b border-white/10 pb-10 last:border-b-0">
+                <Fragment key={block.heading}>
+                <section id={`section-${index + 1}`} className="scroll-mt-8 border-b border-white/10 pb-10 last:border-b-0">
                   <h2 className="text-3xl font-black leading-tight tracking-tight">
                     {block.heading}
                   </h2>
@@ -253,6 +256,12 @@ export default function ArticlePageClient({
                     </ul>
                   )}
                 </section>
+                  {isZh && index === 0 && ['fcl-export-checklist', 'lcl-export-checklist'].includes(article.slug) && (
+                    <aside id="calculator-tip" className="mt-6 border border-amber-300/40 bg-amber-300/[0.08] p-5 text-base leading-8 text-amber-200">
+                      <Link href="/load" className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">不确定货物要几个柜？先用免费装箱计算器算一下 → /load</Link>
+                    </aside>
+                  )}
+                </Fragment>
               ))}
             </div>
 

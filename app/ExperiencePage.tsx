@@ -77,6 +77,7 @@ export default function ExperiencePage({ lang }: { lang: Lang }) {
           <Link href={homeHref} className="font-podium text-xl font-black uppercase tracking-[0.12em] sm:text-2xl">Bryce Logistics</Link>
           <div className="flex flex-wrap items-center gap-5 text-sm font-semibold">
             <Link href={homeHref} className="transition hover:text-amber-300">{text.home}</Link>
+            {isZh && <Link href="/load" className="transition hover:text-amber-300">装箱计算器</Link>}
             <Link href={localizePath('/about', lang)} className="transition hover:text-amber-300">{text.about}</Link>
             <Link href={localizePath('/routes', lang)} className="transition hover:text-amber-300">{text.routes}</Link>
             <Link href={localizePath('/experience', isZh ? 'en' : 'zh')} hrefLang={isZh ? 'en' : 'zh-CN'} className="border border-white/25 px-3 py-2 transition hover:border-amber-300 hover:text-amber-300">{isZh ? 'EN' : '中文'}</Link>

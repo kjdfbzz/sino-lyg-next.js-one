@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   useState,
   type ComponentType,
@@ -49,6 +50,8 @@ const navItems = [
   { label: 'GUIDES', href: '/requirements' },
   { label: 'INQUIRE', href: '#inquire' },
 ];
+
+const chineseNavItems = [...navItems.slice(0, 4), { label: '装箱计算器', href: '/load' }, ...navItems.slice(4)];
 
 const stats = [
   { value: 'FCL', zh: '海运整柜 / 拼箱', en: 'FCL / LCL Ocean Freight' },
@@ -327,6 +330,19 @@ export default function Home({
           setMenuOpen={setMenuOpen}
           openInquiry={openInquiry}
         />
+
+        {isZh && (
+          <section id="container-calculator" className="bg-[#030508] px-6 py-12 sm:px-10 lg:px-16">
+            <div className="mx-auto grid max-w-7xl items-center gap-6 border border-amber-300/40 bg-white/[0.03] p-6 sm:p-8 md:grid-cols-[minmax(0,1fr)_auto]">
+              <div>
+                <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-amber-300"><Package className="h-5 w-5" aria-hidden="true" />出货实用工具</p>
+                <h2 className="mt-4 text-3xl font-black tracking-tight">免费装箱计算器</h2>
+                <p className="mt-4 max-w-3xl text-base leading-8 text-white/70">录入纸箱或托盘货，30 秒算出 20GP / 40HQ 装几个柜、怎么装，3D 演示，可导出装柜单</p>
+              </div>
+              <Link href="/load" prefetch={false} className="inline-flex items-center justify-center gap-3 bg-amber-300 px-7 py-4 text-sm font-black text-black transition hover:bg-white">开始计算<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            </div>
+          </section>
+        )}
 
         {!isZh && <EnglishOriginPlanning />}
 
@@ -839,8 +855,8 @@ function Hero({
           Bryce Logistics
         </a>
 
-        <div className="hidden items-center gap-5 lg:gap-7 md:flex">
-          {navItems.map((item) =>
+        <div className={isZh ? 'hidden items-center gap-3 lg:flex xl:gap-5' : 'hidden items-center gap-5 lg:gap-7 md:flex'}>
+          {(isZh ? chineseNavItems : navItems).map((item) =>
             item.label === 'INQUIRE' ? (
               <button
                 key={item.label}
@@ -862,7 +878,7 @@ function Hero({
           )}
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className={isZh ? 'hidden items-center gap-2 lg:flex' : 'hidden items-center gap-3 md:flex'}>
           <a
             href={localizePath('/', isZh ? 'en' : 'zh')}
             hrefLang={isZh ? 'en' : 'zh-CN'}
@@ -881,7 +897,7 @@ function Hero({
           </button>
         </div>
 
-        <div className="fixed right-6 top-5 z-40 flex shrink-0 items-center gap-2 sm:right-10 md:hidden">
+        <div className={isZh ? 'fixed right-6 top-5 z-40 flex shrink-0 items-center gap-2 sm:right-10 lg:hidden' : 'fixed right-6 top-5 z-40 flex shrink-0 items-center gap-2 sm:right-10 md:hidden'}>
           <a
             href={localizePath('/', isZh ? 'en' : 'zh')}
             hrefLang={isZh ? 'en' : 'zh-CN'}
@@ -1025,7 +1041,7 @@ function MobileMenu({
   return (
     <div
       data-testid="mobile-menu"
-      className={`fixed inset-0 z-50 bg-black/96 px-6 py-5 backdrop-blur-sm transition-all duration-500 md:hidden ${
+      className={`fixed inset-0 z-50 bg-black/96 px-6 py-5 backdrop-blur-sm transition-all duration-500 ${isZh ? 'lg:hidden' : 'md:hidden'} ${
         menuOpen ? 'visible opacity-100' : 'invisible opacity-0'
       }`}
     >
@@ -1048,7 +1064,7 @@ function MobileMenu({
       </div>
 
       <div className="flex h-[calc(100vh-96px)] flex-col items-center justify-center gap-7">
-        {navItems.map((item, index) => {
+        {(isZh ? chineseNavItems : navItems).map((item, index) => {
           const style = {
             transitionDelay: `${index * 80 + 100}ms`,
           } as CSSProperties;

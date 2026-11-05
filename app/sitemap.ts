@@ -1,4 +1,6 @@
 import type { MetadataRoute } from 'next';
+import { statSync } from 'node:fs';
+import { join } from 'node:path';
 import { contentArticles, contentSections, getArticlePath, getArticlesBySection, type ArticleLang, type ContentArticle, type Lang } from './content-data';
 import { absoluteUrl, articleLanguageUrls, homeUpdatedAt, languageUrls } from './seo';
 import { localizePath } from './localized-path';
@@ -28,5 +30,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternateLanguages },
     }));
   });
-  return [...localizedPages, { url: absoluteUrl('/es') }];
+  const calculatorUpdatedAt = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(statSync(join(process.cwd(), 'public/tools/container-load-calculator.html')).mtime);
+  return [...localizedPages, { url: absoluteUrl('/es') }, { url: absoluteUrl('/load'), lastModified: calculatorUpdatedAt }];
 }
