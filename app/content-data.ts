@@ -245,7 +245,7 @@ export const contentArticles: ContentArticle[] = [
     title: '拼箱 LCL 出口注意事项：体积、入仓和目的港费用',
     description:
       '拼箱出口适合小批量货物，但要提前确认计费体积、入仓要求、目的港费用和单证信息。',
-    updatedAt: '2026-07-05',
+    updatedAt: '2026-11-05',
     readTime: '4 min read',
     image: '/bryce-process-desk.webp',
     keywords: ['拼箱出口', 'LCL shipping', '入仓', '目的港费用'],
@@ -282,6 +282,11 @@ export const contentArticles: ContentArticle[] = [
       '是否带电、液体、粉末、磁性、木质包装',
       '入仓时间和仓库要求',
       '是否需要报关、产地证或商检',
+    ],
+    faqs: [
+      { question: '拼箱怎么计费？', answer: '拼箱一般按体积和重量取较大的一项计费，1 吨按 1 立方米计算（W/M）。轻泡货按体积算，重货按重量算。' },
+      { question: '多少货适合走拼箱？', answer: '通常十几立方米以下走拼箱更划算；接近 15 立方米以上时，建议同时比较 20 尺整柜的总费用，有时整柜反而更便宜、也更快。' },
+      { question: '为什么拼箱的目的港费用比较多？', answer: '拼箱到港后要拆箱、入仓、分票，目的港代理会收取拆箱费、仓储费、换单费等。询价时请确认目的港费用的项目和收费方式，避免到港后出现意外费用。' },
     ],
     en: {
       title: 'LCL Export Checklist: Volume, Warehouse Entry and Destination Charges',
@@ -321,6 +326,11 @@ export const contentArticles: ContentArticle[] = [
         'Warehouse entry time and warehouse requirements',
         'Customs, certificate of origin or inspection requirements',
       ],
+      faqs: [
+        { question: 'How is LCL freight charged?', answer: 'LCL is usually charged on weight or volume, whichever is greater, with 1 ton counted as 1 CBM (W/M). Light, bulky cargo is charged by volume and heavy cargo by weight.' },
+        { question: 'How much cargo is suitable for LCL?', answer: 'LCL is usually more economical below about a dozen cubic meters. Once you approach 15 CBM or more, compare the total cost of a 20-foot container; FCL is sometimes cheaper and faster.' },
+        { question: 'Why are LCL destination charges higher?', answer: 'After arrival, LCL cargo has to be unloaded, warehoused and split by shipment, and the destination agent charges for devanning, storage and document release. Confirm the destination charge items and how they are calculated when you request a quote.' },
+      ],
     },
   },
   {
@@ -329,7 +339,7 @@ export const contentArticles: ContentArticle[] = [
     title: '中国出口报关和单证资料：订舱前需要确认什么',
     description:
       '梳理中国出口常见报关资料、提单资料、产地证、商检和特殊货物单证，减少临时卡点。',
-    updatedAt: '2026-07-05',
+    updatedAt: '2026-11-05',
     readTime: '5 min read',
     image: '/bryce-process-desk.webp',
     keywords: ['出口报关资料', '提单资料', '产地证', '商检'],
@@ -361,6 +371,11 @@ export const contentArticles: ContentArticle[] = [
       '申报要素和监管条件',
       '收发货人、通知人、目的港',
       '是否需要产地证、商检、危包证或 MSDS',
+    ],
+    faqs: [
+      { question: '出口报关需要哪些资料？', answer: '一般需要商业发票、装箱单、报关委托书（委托报关时）和合同。机电、化工、食品等特殊货物，可能还需要商检、许可证或其他监管证件。' },
+      { question: '产地证什么时候办？', answer: '如果进口国需要原产地证，或者可以享受贸易协定优惠（例如出口东盟国家的 FORM E），请在出货前和收货人确认，并按要求办理，以免影响目的港清关和关税。' },
+      { question: '危险品出口要准备什么？', answer: '需要 MSDS（SDS）、UN 编号、危险品类别，以及出口危险货物包装使用鉴定结果单等资料，并提前确认船公司是否接受。' },
     ],
     en: {
       title: 'China Export Customs and Document Checklist',
@@ -395,6 +410,11 @@ export const contentArticles: ContentArticle[] = [
         'Shipper, consignee, notify party and destination',
         'Certificate of origin, inspection, DG package certificate or MSDS needs',
       ],
+      faqs: [
+        { question: 'What documents are needed for China export customs?', answer: 'Usually a commercial invoice, packing list, customs declaration power of attorney (when using an agent) and the sales contract. Special goods such as machinery, chemicals or food may also need inspection certificates, licenses or other regulatory documents.' },
+        { question: 'When should the certificate of origin be prepared?', answer: 'If the importing country requires one, or the buyer can use a trade agreement preference (for example FORM E for ASEAN countries), confirm with the consignee before shipment and prepare it as required, so clearance and duties at destination are not affected.' },
+        { question: 'What is needed to export dangerous goods?', answer: 'An MSDS (SDS), UN number, hazard class and the dangerous goods packaging inspection result, with carrier acceptance confirmed in advance.' },
+      ],
     },
   },
   {
@@ -405,7 +425,7 @@ export const contentArticles: ContentArticle[] = [
       '中国出口到印度常见港口的船期、目的港费用、清关习惯和旺季舱位注意事项。',
     quickAnswer: '青岛到印度主要港口都有直航：Nhava Sheva 约 20–21 天（EMC、KMTC），Mundra 约 22–28 天（EMC、KMTC），Chennai 约 18–23 天（EMC、KMTC）。Kolkata 需中转：SITC 经霍尔迪亚（Haldia）约 20 天，是青岛最快的方案，可申请 21 天免柜期；MSC 经科伦坡约 30 天，成本较低，可接铅酸电池。连云港出运经上海或青岛中转。以上航程为参考，具体以船公司当期船期为准。',
     quickAnswer_en: 'From Qingdao, the main Indian ports have direct services: Nhava Sheva about 20–21 days (EMC, KMTC), Mundra about 22–28 days (EMC, KMTC) and Chennai about 18–23 days (EMC, KMTC). Kolkata requires transshipment: SITC via Haldia takes about 20 days and is the fastest option from Qingdao, with 21 days free time available; MSC via Colombo takes about 30 days at a lower cost and can accept lead-acid batteries. Cargo from Lianyungang connects via Shanghai or Qingdao. Transit times are references; each sailing is confirmed with the carrier.',
-    updatedAt: '2026-10-27',
+    updatedAt: '2026-11-05',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
     keywords: ['中国到印度海运', 'Kolkata shipping', 'Nhava Sheva', 'Mundra'],
@@ -470,6 +490,16 @@ export const contentArticles: ContentArticle[] = [
       'Whether transshipment service is acceptable',
       'Nominated carrier or destination agent',
       'Certificate, special document or L/C requirements',
+    ],
+    faqs: [
+      { question: '青岛到 Nhava Sheva 要多久？', answer: '青岛到 Nhava Sheva 有直航，长荣（EMC）约 20 天、KMTC 约 21 天；到 Mundra 约 22–28 天，到 Chennai 约 18–23 天，具体以船公司当期船期为准。' },
+      { question: '到 Kolkata 怎么走？', answer: 'Kolkata 需要中转。SITC 经霍尔迪亚（Haldia）约 20 天，是青岛出发最快的方案，可申请 21 天免柜期；MSC 经科伦坡约 30 天，成本较低，可接铅酸电池。' },
+      { question: '出口印度要特别注意什么？', answer: '提单品名、HS 编码和发票要保持一致，提前确认收货人的 IEC 编码，以及目的港免柜期和费用。印度清关对单证一致性要求较严，资料不一致容易产生查验和滞港费用。' },
+    ],
+    faqs_en: [
+      { question: 'How long does Qingdao to Nhava Sheva take?', answer: 'Qingdao has direct services to Nhava Sheva: about 20 days with EMC and about 21 days with KMTC. Mundra takes about 22–28 days and Chennai about 18–23 days, subject to the current carrier schedule.' },
+      { question: 'How do you ship to Kolkata?', answer: 'Kolkata requires transshipment. SITC via Haldia takes about 20 days and is the fastest option from Qingdao, with 21 days free time available; MSC via Colombo takes about 30 days at a lower cost and can accept lead-acid batteries.' },
+      { question: 'What should I watch for when shipping to India?', answer: 'Keep the cargo description, HS code and invoice consistent across documents, confirm the consignee\'s IEC code, and check destination free time and charges. Indian customs is strict on document consistency, and mismatches can lead to inspections and demurrage.' },
     ],
     en: {
       title: 'China to India Ocean Freight: Kolkata, Nhava Sheva and Mundra',

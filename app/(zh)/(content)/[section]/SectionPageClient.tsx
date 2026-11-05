@@ -39,7 +39,7 @@ export default function SectionPageClient({
       <section className="relative isolate overflow-hidden px-6 py-10 sm:px-10 lg:px-16">
         <Image
           src="/bryce-routes-command.webp"
-          alt=""
+          alt={isZh ? '夜间集装箱码头' : 'Container terminal at night'}
           fill
           sizes="100vw"
           className="absolute inset-0 -z-20 h-full w-full object-cover opacity-52"
