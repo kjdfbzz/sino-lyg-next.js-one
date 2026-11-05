@@ -201,7 +201,7 @@ export default function ArticlePageClient({
 
       <article className="px-6 py-16 sm:px-10 lg:px-16">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,760px)_minmax(280px,1fr)]">
-          <div>
+          <div className="min-w-0">
             {hasQuickAnswer && (
               <section id="quick-answer" className="mb-8 scroll-mt-8 border border-amber-300/60 bg-amber-300/[0.08] p-6 sm:p-8">
                 <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
@@ -209,6 +209,13 @@ export default function ArticlePageClient({
                 </h2>
                 <p className="mt-4 text-base leading-8 text-white/85">{quickAnswer}</p>
               </section>
+            )}
+            {article.section === 'routes' && !isEs && (
+              <p className="mb-8 text-sm leading-7 text-amber-300">
+                <Link href={localizePath('/guides/china-export-transit-time-table', lang)} className="underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">
+                  {isZh ? '查看全部航线航程总表 →' : 'See all transit times in one table →'}
+                </Link>
+              </p>
             )}
             <nav aria-label={isEs ? 'Índice del artículo' : isZh ? '文章目录' : 'Table of contents'} className="mb-8 border-b border-white/12 pb-8">
               <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
@@ -248,6 +255,27 @@ export default function ArticlePageClient({
                   <p className="mt-5 text-base leading-9 text-white/70">
                     {block.body}
                   </p>
+                  {block.table && (
+                    <div className="mt-6 min-w-0">
+                    <p className="mb-3 text-xs leading-6 text-white/60 sm:hidden">{isZh ? '左右滑动查看完整表格 →' : 'Swipe sideways to see the full table →'}</p>
+                    <div data-article-table role="region" aria-label={block.heading} tabIndex={0} className="max-w-full overflow-x-auto overscroll-x-contain border border-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300">
+                      <table className="w-full min-w-[720px] border-collapse text-left text-sm leading-7">
+                        <caption className="sr-only">{block.heading}</caption>
+                        <thead className="bg-amber-300/10 text-amber-200">
+                          <tr>{block.table.columns.map((column, columnIndex) => <th key={columnIndex} scope="col" className="whitespace-nowrap border-b border-white/15 px-4 py-3 font-bold">{column}</th>)}</tr>
+                        </thead>
+                        <tbody>
+                          {block.table.rows.map((row, rowIndex) => <tr key={rowIndex} className="border-b border-white/10 even:bg-white/[0.03] last:border-b-0">{row.map((cell, cellIndex) => <td key={cellIndex} className="px-4 py-3 align-top text-white/75">{cell}</td>)}</tr>)}
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                  )}
+                  {article.slug === 'china-export-transit-time-table' && index === 2 && (
+                    <ul className="mt-6 grid gap-3 text-sm leading-7 sm:grid-cols-2">
+                      {contentArticles.filter(item => item.section === 'routes').map(item => <li key={item.slug}><Link href={localizePath(getArticlePath(item), lang)} className="text-amber-300 underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">{getArticleCopy(item, lang).title}</Link></li>)}
+                    </ul>
+                  )}
                   {block.bullets && (
                     <ul className="mt-5 list-disc space-y-3 border-l border-amber-300/40 pl-8 text-sm leading-7 text-white/66">
                       {block.bullets.map((bullet) => (

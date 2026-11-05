@@ -10,6 +10,10 @@ export type ArticleBlock = {
   heading: string;
   body: string;
   bullets?: string[];
+  table?: {
+    columns: string[];
+    rows: string[][];
+  };
 };
 
 export type ArticleFaq = {
@@ -57,11 +61,7 @@ export type ContentArticle = ArticleCopy & {
   description_en?: string;
   quickAnswer_en?: string;
   highlights_en?: string[];
-  sections_en?: Array<{
-    heading: string;
-    body: string;
-    bullets?: string[];
-  }>;
+  sections_en?: ArticleBlock[];
   checklist_en?: string[];
   faqs_en?: Array<{
     question: string;
@@ -922,9 +922,9 @@ export const contentArticles: ContentArticle[] = [
     title: '青岛、连云港到中东海运：迪拜 Jebel Ali、Dammam 与 Jeddah',
     metaTitle_en: 'China to Middle East Shipping: Jebel Ali, Dammam & Jeddah',
     description: '青岛与连云港出口中东海运指南：比较 Jebel Ali、Dammam、Jeddah 目的港，核对订舱、直航与中转、单证、免费期、目的港费用和到门范围。',
-    quickAnswer: '青岛到迪拜（Jebel Ali）目前主要走 MSC、CMA 和 ASCL，经豪尔费坎（Khor Fakkan）中转，航程约 30–40 天；连云港出运有嘉华航运直达豪尔费坎再转迪拜，约 30 天。达曼（Dammam）、吉达（Jeddah）按航次确认。中东航线订舱前，请与收货人确认地区局势相关的附加费和条款。以上航程为参考，具体以船公司当期船期为准。',
-    quickAnswer_en: 'From Qingdao to Dubai (Jebel Ali), sailings currently run mainly with MSC, CMA and ASCL, transshipping at Khor Fakkan, with about 30–40 days transit. From Lianyungang, a direct service to Khor Fakkan with on-carriage to Dubai takes about 30 days. Dammam and Jeddah are confirmed per sailing. Before booking, agree with the consignee on any surcharges or terms related to the regional situation. Transit times are references; each sailing is confirmed with the carrier.',
-    updatedAt: '2026-10-26',
+    quickAnswer: '青岛到迪拜（Jebel Ali）目前主要走 MSC、CMA 和 ASCL，经豪尔费坎（Khor Fakkan）中转，航程约 30–40 天；连云港出运有嘉华航运（KAWA Shipping）直达豪尔费坎再转迪拜，约 30 天。达曼（Dammam）、吉达（Jeddah）按航次确认。中东航线订舱前，请与收货人确认地区局势相关的附加费和条款。以上航程为参考，具体以船公司当期船期为准。',
+    quickAnswer_en: 'From Qingdao to Dubai (Jebel Ali), sailings currently run mainly with MSC, CMA and ASCL, transshipping at Khor Fakkan, with about 30–40 days transit. From Lianyungang, KAWA Shipping runs a direct service to Khor Fakkan with on-carriage to Dubai, about 30 days. Dammam and Jeddah are confirmed per sailing. Before booking, agree with the consignee on any surcharges or terms related to the regional situation. Transit times are references; each sailing is confirmed with the carrier.',
+    updatedAt: '2026-11-05',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
     keywords: [
@@ -2029,8 +2029,8 @@ export const contentArticles: ContentArticle[] = [
     title: '连云港到印尼海运：雅加达、泗水、三宝垄，含直航与中转方案',
     description:
       '连云港出口到印尼海运：雅加达有直航，正常约 10 天，泗水、三宝垄约 10 天，主要船司为 CNC、SITC 和锦江航运。本文整理雅加达、泗水、三宝垄、棉兰等港口的走法、船期选择、目的港费用和免箱期要点，按票询价。',
-    quickAnswer: '连云港到雅加达（Jakarta）有直航船，正常约 10 天；泗水（Surabaya）、三宝垄（Semarang）也约 10 天。目前主要订舱船司为 CNC、SITC 和锦江航运。棉兰（Belawan）、望加锡等其他港口按航次确认。以上航程为参考，具体以船公司当期船期为准。',
-    updatedAt: '2026-10-26',
+    quickAnswer: '连云港到雅加达（Jakarta）有直航船，正常约 10 天；泗水（Surabaya）、三宝垄（Semarang）也有直航，约 10 天。目前主要订舱船司为 CNC、SITC 和锦江航运。棉兰（Belawan）、望加锡等其他港口按航次确认。以上航程为参考，具体以船公司当期船期为准。',
+    updatedAt: '2026-11-05',
     readTime: '5 min read',
     image: '/bryce-routes-command.webp',
     keywords: [
@@ -2043,16 +2043,16 @@ export const contentArticles: ContentArticle[] = [
     ],
     highlights: [
       '连云港到雅加达（Jakarta）有直航船，正常约 10 天。',
-      '泗水（Surabaya）、三宝垄（Semarang）约 10 天；棉兰、望加锡等港口按航次确认。',
+      '泗水（Surabaya）、三宝垄（Semarang）也有直航，约 10 天；棉兰、望加锡等港口按航次确认。',
       '主要订舱船司为 CNC、SITC 和锦江航运，可按船期和舱位选择。',
     ],
     sections: [
       {
         heading: '1. 印尼主要港口和航程',
-        body: '印尼出口主要涉及雅加达（Jakarta）、泗水（Surabaya）、三宝垄（Semarang）和棉兰（Belawan）等港口。连云港到雅加达有直航船，泗水、三宝垄航程也在 10 天左右，具体走法要结合收货人所在区域、时效要求和成本。',
+        body: '印尼出口主要涉及雅加达（Jakarta）、泗水（Surabaya）、三宝垄（Semarang）和棉兰（Belawan）等港口。连云港到雅加达有直航船，泗水、三宝垄也有直航，约 10 天，具体走法要结合收货人所在区域、时效要求和成本。',
         bullets: [
           '雅加达 Jakarta：直航，正常约 10 天。',
-          '泗水 Surabaya、三宝垄 Semarang：约 10 天，直航或中转按航次确认。',
+          '泗水 Surabaya、三宝垄 Semarang：也有直航，约 10 天。',
           '主要船司：CNC、SITC、锦江航运。',
         ],
       },
@@ -2066,7 +2066,7 @@ export const contentArticles: ContentArticle[] = [
       },
       {
         heading: '3. 怎么选船期和船司',
-        body: '雅加达有直航船，时效稳定，适合对时间敏感的货物；其他港口按航次确认直航或中转。CNC、SITC、锦江航运都可以安排，建议根据出货时间、目的港和舱位情况确认最合适的方案。',
+        body: '雅加达、泗水和三宝垄有直航船，时效稳定，适合对时间敏感的货物；其他港口按航次确认直航或中转。CNC、SITC、锦江航运都可以安排，建议根据出货时间、目的港和舱位情况确认最合适的方案。',
       },
       {
         heading: '4. 目的港费用和滞箱期',
@@ -2088,26 +2088,26 @@ export const contentArticles: ContentArticle[] = [
       },
       {
         question: '泗水、三宝垄要多久？',
-        answer: '泗水、三宝垄正常也在 10 天左右，直航或中转按航次确认，CNC、SITC、锦江航运都可以安排。',
+        answer: '泗水、三宝垄也有直航，约 10 天，CNC、SITC、锦江航运都可以安排。',
       },
     ],
     title_en: 'Lianyungang to Indonesia Ocean Freight: Jakarta, Surabaya & Semarang, Direct and Transshipment',
     metaTitle_en: 'Lianyungang to Indonesia Shipping: Direct to Jakarta, ~10 Days',
     description_en:
       'Direct and transshipment options, transit times, carriers and destination notes for Lianyungang exports to Jakarta, Surabaya, Semarang and more in Indonesia.',
-    quickAnswer_en: 'Lianyungang has direct sailings to Jakarta, normally about 10 days; Surabaya and Semarang also take about 10 days. We mainly book with CNC, SITC and Jinjiang Shipping. Belawan, Makassar and other ports are confirmed per sailing. Transit times are references; each sailing is confirmed with the carrier.',
+    quickAnswer_en: 'Lianyungang has direct sailings to Jakarta, normally about 10 days; Surabaya and Semarang also have direct sailings, about 10 days. We mainly book with CNC, SITC and Jinjiang Shipping. Belawan, Makassar and other ports are confirmed per sailing. Transit times are references; each sailing is confirmed with the carrier.',
     highlights_en: [
       'Lianyungang has direct sailings to Jakarta, normally about 10 days.',
-      'Surabaya and Semarang take about 10 days; Belawan, Makassar and other ports are confirmed per sailing.',
+      'Surabaya and Semarang also have direct sailings, about 10 days; Belawan, Makassar and other ports are confirmed per sailing.',
       'We mainly book with CNC, SITC and Jinjiang Shipping, chosen by schedule and space.',
     ],
     sections_en: [
       {
         heading: '1. Main Indonesia ports and transit times',
-        body: 'Indonesia exports mainly involve Jakarta, Surabaya, Semarang and Belawan. Lianyungang has direct sailings to Jakarta, and Surabaya and Semarang also take about 10 days. The routing depends on the consignee area, timing and cost.',
+        body: 'Indonesia exports mainly involve Jakarta, Surabaya, Semarang and Belawan. Lianyungang has direct sailings to Jakarta, and Surabaya and Semarang also have direct sailings, about 10 days. The routing depends on the consignee area, timing and cost.',
         bullets: [
           'Jakarta: direct, normally about 10 days.',
-          'Surabaya and Semarang: about 10 days; direct or transshipment confirmed per sailing.',
+          'Surabaya and Semarang: direct sailings, about 10 days.',
           'Main carriers: CNC, SITC and Jinjiang Shipping.',
         ],
       },
@@ -2121,7 +2121,7 @@ export const contentArticles: ContentArticle[] = [
       },
       {
         heading: '3. Choosing the sailing and carrier',
-        body: 'Jakarta has direct sailings with stable transit, suitable for time-sensitive cargo; other ports are confirmed per sailing as direct or transshipment. CNC, SITC and Jinjiang Shipping can all be arranged; confirm the best option by ready date, destination and space.',
+        body: 'Jakarta, Surabaya and Semarang have direct sailings with stable transit, suitable for time-sensitive cargo; other ports are confirmed per sailing as direct or transshipment. CNC, SITC and Jinjiang Shipping can all be arranged; confirm the best option by ready date, destination and space.',
       },
       {
         heading: '4. Destination charges and free time',
@@ -2143,7 +2143,7 @@ export const contentArticles: ContentArticle[] = [
       },
       {
         question: 'How long do Surabaya and Semarang take?',
-        answer: 'Surabaya and Semarang normally also take about 10 days, with direct or transshipment confirmed per sailing; CNC, SITC and Jinjiang Shipping can all arrange it.',
+        answer: 'Surabaya and Semarang also have direct sailings, about 10 days; CNC, SITC and Jinjiang Shipping can all arrange it.',
       },
     ],
   },
@@ -2426,6 +2426,161 @@ export const contentArticles: ContentArticle[] = [
     faqs_en: [
       { question: 'Why book earlier right now?', answer: 'Southeast Asia is still overbooked, with frequent rollovers and destination congestion, so booking close to cut-off risks being rolled; confirm space one to two weeks ahead. South America, India-Pakistan and the Caribbean have more space at the moment, but still confirm each sailing.' },
       { question: 'Does this page show freight rates?', answer: 'No. Rates change quickly and vary by port, container type and cargo. Send your shipment details for a separate quotation.' },
+    ],
+  },
+  {
+    slug: 'china-export-transit-time-table',
+    section: 'guides',
+    title: '中国出口海运航程总表：连云港、青岛到东南亚、印巴、中东、拉美',
+    description: '连云港、青岛出口到东南亚、印度、巴基斯坦、中东和拉美主要港口的参考航程、直航或中转方式和主要船司，一张表查清，定期更新，不含运价。',
+    quickAnswer: '连云港出口东南亚多为直航，约 8–10 天（印尼、越南南部、泰国、巴生港）；菲律宾经釜山或高雄中转约 12–14 天。印度经上海中转约 15–25 天，卡拉奇经青岛中转约 30 天，迪拜走嘉华航运（KAWA Shipping）经豪尔费坎约 30 天。青岛出口印度直航约 18–28 天，卡拉奇约 25 天；墨西哥直航约 22–26 天，秘鲁约 35 天，智利、巴西约 40 天，阿根廷约 45 天。以上为参考航程，以船公司当期船期为准。',
+    updatedAt: '2026-11-05',
+    readTime: '8 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: ['中国出口海运航程', '连云港海运航程', '青岛海运航程', '东南亚航程', '印巴航程', '中东航程', '拉美航程', 'China export transit times'],
+    highlights: ['一张表汇总连云港、青岛到主要港口的参考航程、走法和船司。', '东南亚近期仍有甩柜和压港，实际到港时间可能比表中更长。', '表中不含运价，价格请按具体港口和货物询价。'],
+    sections: [
+      {
+        heading: '1. 连云港出发',
+        body: '连云港出口东南亚以直航为主；印度、巴基斯坦和中东多经上海、青岛或豪尔费坎中转。',
+        table: {
+          columns: ['目的港', '国家', '参考航程', '走法', '主要船司'],
+          rows: [
+            ['雅加达 Jakarta', '印尼', '约 10 天', '直航', 'CNC、SITC、锦江航运'],
+            ['泗水 Surabaya', '印尼', '约 10 天', '直航', 'CNC、SITC、锦江航运'],
+            ['三宝垄 Semarang', '印尼', '约 10 天', '直航', 'CNC、SITC、锦江航运'],
+            ['胡志明 Ho Chi Minh', '越南', '约 8 天', '直航', 'CNC'],
+            ['海防 Hai Phong', '越南', '约 5–13 天', '直航', '海安集运（两周一班）约 5 天、COSCO 约 13 天'],
+            ['林查班 Laem Chabang', '泰国', '约 8 天', '直航', '锦江/SITC 共舱、MSK'],
+            ['曼谷 Bangkok', '泰国', '约 9 天', '直航', '锦江/SITC 共舱'],
+            ['巴生港 Port Klang', '马来西亚', '约 9 天', '直航', '锦江/SITC 共舱'],
+            ['帕西谷当 Pasir Gudang', '马来西亚', '约 16 天', '高雄中转', 'EMC'],
+            ['马尼拉南港 Manila South', '菲律宾', '约 12 天', '釜山中转', 'KMTC'],
+            ['宿务 Cebu', '菲律宾', '约 12 天', '高雄中转', '万海'],
+            ['达沃 Davao', '菲律宾', '约 14 天', '高雄中转', '万海'],
+            ['Chennai', '印度', '约 15 天', '上海中转', 'EMC'],
+            ['Nhava Sheva', '印度', '约 20 天', '上海中转', 'EMC'],
+            ['Mundra', '印度', '约 25 天', '上海中转', 'EMC'],
+            ['Kolkata', '印度', '约 35 天', '青岛、科伦坡两次中转', 'MSC'],
+            ['卡拉奇 Karachi', '巴基斯坦', '约 30 天', '青岛中转', 'EMC、KMTC'],
+            ['迪拜 Jebel Ali', '阿联酋', '约 30 天', '直达豪尔费坎再转迪拜', '嘉华航运（KAWA Shipping）'],
+          ],
+        },
+      },
+      {
+        heading: '2. 青岛出发',
+        body: '青岛出口印巴和拉美以直航为主，拉美有自有合约舱位；中东目前经豪尔费坎中转。',
+        table: {
+          columns: ['目的港', '国家', '参考航程', '走法', '主要船司'],
+          rows: [
+            ['Nhava Sheva', '印度', '约 20–21 天', '直航', 'EMC 约 20 天、KMTC 约 21 天'],
+            ['Mundra', '印度', '约 22–28 天', '直航', 'EMC 约 22 天、KMTC 约 28 天'],
+            ['Chennai', '印度', '约 18–23 天', '直航', 'EMC 约 18 天、KMTC 约 23 天'],
+            ['Kolkata', '印度', '约 20–30 天', '中转', 'SITC 经霍尔迪亚约 20 天；MSC 经科伦坡约 30 天'],
+            ['卡拉奇 Karachi', '巴基斯坦', '约 25 天', '直航', 'EMC、KMTC'],
+            ['迪拜 Jebel Ali', '阿联酋', '约 30–40 天', '豪尔费坎中转', 'MSC、CMA、ASCL'],
+            ['Manzanillo', '墨西哥', '约 22–26 天', '直航', 'KMTC 约 22 天、MSK 约 26 天'],
+            ['Lázaro Cárdenas', '墨西哥', '约 25 天', '直航', 'ONE'],
+            ['Callao', '秘鲁', '约 35 天', '直航', 'HMM、ONE、阳明（Yang Ming）'],
+            ['San Antonio', '智利', '约 40 天', '直航', 'CMA、COSCO、EMC、OOCL、万海'],
+            ['Santos', '巴西', '约 40 天', '直航', 'CMA'],
+            ['Buenos Aires', '阿根廷', '约 45 天', '直航', 'CMA'],
+            ['中美洲太平洋岸（Puerto Quetzal、Acajutla、Corinto、Caldera、Balboa）', '中美洲', '约 30–40 天', '中转', '按航次确认'],
+          ],
+        },
+      },
+      {
+        heading: '3. 怎么用这张表',
+        body: '表中是海上参考航程，不含工厂备货、拖车、截关等待、清关和目的港提货的时间。同一条航线不同船司、不同航次的天数会有差别，旺季甩柜和目的港压港也会拉长到港时间。需要确定船期时，请提供起运港、目的港、货好日期和箱型，我们按当期船期确认。具体航线的码头、单证和注意事项，请看各航线页面。',
+      },
+    ],
+    faqs: [
+      {
+        question: '连云港到东南亚要多久？',
+        answer: '多数东南亚主要港口从连云港直航约 8–10 天，菲律宾经釜山或高雄中转约 12–14 天，马来西亚帕西谷当经高雄约 16 天。',
+      },
+      {
+        question: '青岛到拉美要多久？',
+        answer: '墨西哥直航约 22–26 天，秘鲁约 35 天，智利和巴西约 40 天，阿根廷约 45 天；中美洲太平洋岸一般中转，约 30–40 天。',
+      },
+      {
+        question: '表里的航程准吗？',
+        answer: '表中是近期船期的参考值，会随船司调整、甩柜和压港变化。实际订舱时以船公司当期船期为准，我们会在报价时一并确认。',
+      },
+    ],
+    title_en: 'China Export Transit Time Table: Lianyungang & Qingdao to Southeast Asia, India-Pakistan, Middle East & Latin America',
+    metaTitle_en: 'China Export Transit Times: Lianyungang & Qingdao by Port',
+    description_en: 'Reference ocean transit times, direct or transshipment routing and main carriers from Lianyungang and Qingdao to major ports in Southeast Asia, India, Pakistan, the Middle East and Latin America. Updated regularly, no rates.',
+    quickAnswer_en: 'From Lianyungang, most Southeast Asia ports are direct in about 8–10 days (Indonesia, southern Vietnam, Thailand, Port Klang); the Philippines take about 12–14 days via Busan or Kaohsiung. India takes about 15–25 days via Shanghai, Karachi about 30 days via Qingdao and Dubai about 30 days via Khor Fakkan with KAWA Shipping. From Qingdao, India is direct in about 18–28 days and Karachi about 25 days; Mexico is direct in about 22–26 days, Peru about 35 days, Chile and Brazil about 40 days and Argentina about 45 days. These are reference times; each sailing is confirmed with the carrier.',
+    highlights_en: ['One table for reference transit times, routing and carriers from Lianyungang and Qingdao.', 'Southeast Asia still has rollovers and port congestion, so actual arrival may take longer than shown.', 'No freight rates are listed; request a quote for your port and cargo.'],
+    sections_en: [
+      {
+        heading: '1. From Lianyungang',
+        body: 'Lianyungang exports to Southeast Asia are mostly direct; India, Pakistan and the Middle East usually connect via Shanghai, Qingdao or Khor Fakkan.',
+        table: {
+          columns: ['Destination', 'Country', 'Transit', 'Routing', 'Main carriers'],
+          rows: [
+            ['Jakarta', 'Indonesia', 'About 10 days', 'Direct', 'CNC, SITC, Jinjiang'],
+            ['Surabaya', 'Indonesia', 'About 10 days', 'Direct', 'CNC, SITC, Jinjiang'],
+            ['Semarang', 'Indonesia', 'About 10 days', 'Direct', 'CNC, SITC, Jinjiang'],
+            ['Ho Chi Minh', 'Vietnam', 'About 8 days', 'Direct', 'CNC'],
+            ['Hai Phong', 'Vietnam', 'About 5–13 days', 'Direct', 'Hai An (every two weeks) about 5 days; COSCO about 13 days'],
+            ['Laem Chabang', 'Thailand', 'About 8 days', 'Direct', 'Jinjiang/SITC slot-sharing service, MSK'],
+            ['Bangkok', 'Thailand', 'About 9 days', 'Direct', 'Jinjiang/SITC slot-sharing service'],
+            ['Port Klang', 'Malaysia', 'About 9 days', 'Direct', 'Jinjiang/SITC slot-sharing service'],
+            ['Pasir Gudang', 'Malaysia', 'About 16 days', 'Via Kaohsiung', 'EMC'],
+            ['Manila South', 'Philippines', 'About 12 days', 'Via Busan', 'KMTC'],
+            ['Cebu', 'Philippines', 'About 12 days', 'Via Kaohsiung', 'Wan Hai'],
+            ['Davao', 'Philippines', 'About 14 days', 'Via Kaohsiung', 'Wan Hai'],
+            ['Chennai', 'India', 'About 15 days', 'Via Shanghai', 'EMC'],
+            ['Nhava Sheva', 'India', 'About 20 days', 'Via Shanghai', 'EMC'],
+            ['Mundra', 'India', 'About 25 days', 'Via Shanghai', 'EMC'],
+            ['Kolkata', 'India', 'About 35 days', 'Via Qingdao and Colombo (two transshipments)', 'MSC'],
+            ['Karachi', 'Pakistan', 'About 30 days', 'Via Qingdao', 'EMC, KMTC'],
+            ['Jebel Ali', 'United Arab Emirates', 'About 30 days', 'Direct to Khor Fakkan, then on-carriage to Dubai', 'KAWA Shipping'],
+          ],
+        },
+      },
+      {
+        heading: '2. From Qingdao',
+        body: 'Qingdao exports to India-Pakistan and Latin America are mostly direct, with own contracted space for Latin America; the Middle East currently connects via Khor Fakkan.',
+        table: {
+          columns: ['Destination', 'Country', 'Transit', 'Routing', 'Main carriers'],
+          rows: [
+            ['Nhava Sheva', 'India', 'About 20–21 days', 'Direct', 'EMC about 20 days, KMTC about 21 days'],
+            ['Mundra', 'India', 'About 22–28 days', 'Direct', 'EMC about 22 days, KMTC about 28 days'],
+            ['Chennai', 'India', 'About 18–23 days', 'Direct', 'EMC about 18 days, KMTC about 23 days'],
+            ['Kolkata', 'India', 'About 20–30 days', 'Transshipment', 'SITC via Haldia about 20 days; MSC via Colombo about 30 days'],
+            ['Karachi', 'Pakistan', 'About 25 days', 'Direct', 'EMC, KMTC'],
+            ['Jebel Ali', 'United Arab Emirates', 'About 30–40 days', 'Via Khor Fakkan', 'MSC, CMA, ASCL'],
+            ['Manzanillo', 'Mexico', 'About 22–26 days', 'Direct', 'KMTC about 22 days, MSK about 26 days'],
+            ['Lázaro Cárdenas', 'Mexico', 'About 25 days', 'Direct', 'ONE'],
+            ['Callao', 'Peru', 'About 35 days', 'Direct', 'HMM, ONE, Yang Ming'],
+            ['San Antonio', 'Chile', 'About 40 days', 'Direct', 'CMA, COSCO, EMC, OOCL, Wan Hai'],
+            ['Santos', 'Brazil', 'About 40 days', 'Direct', 'CMA'],
+            ['Buenos Aires', 'Argentina', 'About 45 days', 'Direct', 'CMA'],
+            ['Central America Pacific coast (Puerto Quetzal, Acajutla, Corinto, Caldera, Balboa)', 'Central America', 'About 30–40 days', 'Transshipment', 'Confirmed per sailing'],
+          ],
+        },
+      },
+      {
+        heading: '3. How to use this table',
+        body: 'These are reference ocean transit times and do not include factory preparation, trucking, cut-off waiting, customs clearance or destination pickup. Times vary by carrier and sailing, and peak-season rollovers or destination congestion can extend arrival. To confirm a schedule, send the origin, destination, ready date and container type, and we will check the current sailings. For terminals, documents and route-specific notes, see each route guide.',
+      },
+    ],
+    faqs_en: [
+      {
+        question: 'How long from Lianyungang to Southeast Asia?',
+        answer: 'Most main Southeast Asia ports are direct from Lianyungang in about 8–10 days; the Philippines take about 12–14 days via Busan or Kaohsiung, and Pasir Gudang about 16 days via Kaohsiung.',
+      },
+      {
+        question: 'How long from Qingdao to Latin America?',
+        answer: 'Mexico is direct in about 22–26 days, Peru about 35 days, Chile and Brazil about 40 days and Argentina about 45 days; the Pacific coast of Central America usually involves transshipment, about 30–40 days.',
+      },
+      {
+        question: 'How accurate are these times?',
+        answer: 'They are reference values from recent schedules and change with carrier adjustments, rollovers and congestion. The actual sailing is confirmed with the carrier when you book, and we confirm it with your quote.',
+      },
     ],
   },
 ];
