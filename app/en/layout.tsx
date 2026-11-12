@@ -1,4 +1,5 @@
 import SiteLayout from '../SiteLayout';
+import { Analytics } from '@vercel/analytics/next';
 import { siteMetadata, siteViewport } from '../site-metadata';
 
 export const metadata = siteMetadata('en');
@@ -9,6 +10,7 @@ export default function EnglishRootLayout({ children }: { children: React.ReactN
     <html lang="en">
       <body>
         <SiteLayout lang="en">{children}</SiteLayout>
+        <Analytics />
       </body>
     </html>
   );

@@ -15,6 +15,10 @@ const nextConfig = {
       has: [{ type: 'host', value: 'sinolyg.com' }],
       destination: 'https://www.sinolyg.com/:path*',
       permanent: true,
+    }, {
+      source: '/mx',
+      destination: '/es/routes/china-to-manzanillo-shipping',
+      permanent: true,
     }];
   },
   async headers() {

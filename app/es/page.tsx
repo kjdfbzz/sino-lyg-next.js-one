@@ -17,7 +17,9 @@ export const metadata: Metadata = {
 };
 
 export default function SpanishHome() {
-  const articles = contentArticles.filter(article => article.es);
+  const articles = contentArticles.filter(article => article.es).sort((a, b) =>
+    Number(b.slug === 'china-to-manzanillo-shipping') - Number(a.slug === 'china-to-manzanillo-shipping'),
+  );
   return (
     <main lang="es" className="whatsapp-page min-h-screen bg-[#030508] px-6 py-10 font-inter text-white sm:px-10 lg:px-16">
       <div className="mx-auto max-w-5xl">

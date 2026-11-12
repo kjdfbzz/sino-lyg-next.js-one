@@ -58,6 +58,7 @@ export default function ArticlePageClient({
     'china-to-indonesia-shipping': 'Jakarta / Surabaya / Semarang',
     'china-to-malaysia-shipping': 'Port Klang / Pasir Gudang / Kuantan',
     'china-to-mexico-chile-peru-shipping': 'Manzanillo / San Antonio / Callao',
+    'china-to-manzanillo-shipping': 'Manzanillo',
     'china-to-brazil-argentina-shipping': 'Santos / Buenos Aires',
     'china-to-south-america-shipping': 'Santos / San Antonio / Callao',
     'china-to-central-america-caribbean-shipping': 'Colon / Kingston / Caucedo',
@@ -287,6 +288,14 @@ export default function ArticlePageClient({
                       ))}
                     </ul>
                   )}
+                  {block.afterBullets && (
+                    <p className="mt-5 text-base leading-9 text-white/70">{block.afterBullets}</p>
+                  )}
+                  {block.links?.map((link) => (
+                    <p key={link.href} className="mt-5 text-base leading-9">
+                      <Link href={link.href} className="text-amber-300 underline decoration-amber-300/40 underline-offset-4 transition hover:text-white">{link.label}</Link>
+                    </p>
+                  ))}
                 </section>
                   {lang === 'en' && index === 0 && ['fcl-export-checklist', 'lcl-export-checklist'].includes(article.slug) && (
                     <aside id="calculator-tip" className="mt-6 border border-amber-300/40 bg-amber-300/[0.08] p-5 text-base leading-8 text-amber-200">

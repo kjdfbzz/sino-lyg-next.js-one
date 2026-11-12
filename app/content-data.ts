@@ -10,6 +10,8 @@ export type ArticleBlock = {
   heading: string;
   body: string;
   bullets?: string[];
+  afterBullets?: string;
+  links?: Array<{ label: string; href: string }>;
   table?: {
     columns: string[];
     rows: string[][];
@@ -1537,6 +1539,7 @@ export const contentArticles: ContentArticle[] = [
             'Lázaro Cárdenas y Ensenada: según la naviera y la salida disponible.',
             'Confirme con su agente aduanal el puerto de entrada y el destino final antes de reservar.',
           ],
+          links: [{ label: 'Ver la guía completa de Manzanillo con inspección en fábrica →', href: '/es/routes/china-to-manzanillo-shipping' }],
         },
         {
           heading: '3. Chile, Perú y el resto de la costa oeste',
@@ -1574,6 +1577,127 @@ export const contentArticles: ContentArticle[] = [
         {
           question: '¿Puedo escribirles en español?',
           answer: 'Sí. Envíenos el puerto de destino, la mercancía, el peso, el volumen y la fecha de carga, en español o en inglés, y le responderemos con las opciones disponibles.',
+        },
+      ],
+    },
+  },
+  {
+    slug: 'china-to-manzanillo-shipping',
+    section: 'routes',
+    title: '中国到曼萨尼约海运：青岛、宁波出运，含验厂和装柜视频',
+    description: '青岛、宁波到墨西哥曼萨尼约（Manzanillo）整柜海运，KMTC、MSK，约 20–26 天；可代买家到工厂看货、核对数量、拍照并录制装柜视频。',
+    quickAnswer: '青岛到曼萨尼约有直航，KMTC 约 22 天、MSK 约 26 天；宁波到曼萨尼约走 MSK，约 20 天。除了海运，我们可以到供应商工厂看货、核对数量、拍照并录制装柜视频。首次合作订舱，第一次验厂和监装免费，之后按工厂距离单独报价。以上航程为参考，以船公司当期船期为准。',
+    updatedAt: '2026-11-12',
+    readTime: '5 min read',
+    image: '/bryce-routes-command.webp',
+    keywords: ['中国到曼萨尼约海运', '青岛到曼萨尼约', '宁波到曼萨尼约', '工厂看货', '装柜视频', 'China to Manzanillo ocean freight', 'Qingdao to Manzanillo', 'Ningbo to Manzanillo'],
+    highlights: ['青岛到曼萨尼约有直航：KMTC 约 22 天、MSK 约 26 天；宁波出运走 MSK，约 20 天。', '可到中国任何城市的供应商工厂看货、核对数量并录制装柜视频；向我们订舱，首次验厂免费。', '青岛到曼萨尼约使用 KMTC 合约舱位。'],
+    sections: [
+      {
+        heading: '1. 到曼萨尼约的走法和航程',
+        body: '曼萨尼约是我们到墨西哥的主要航线。青岛出运使用 KMTC 合约舱位，也可安排 MSK 从青岛或宁波出运，按供应商所在地和货好日期选择。',
+        bullets: ['青岛 → 曼萨尼约：KMTC 直航，约 22 天。', '青岛 → 曼萨尼约：MSK 直航，约 26 天。', '宁波 → 曼萨尼约：MSK，约 20 天。', '也可以安排工厂提货和出口报关。'],
+      },
+      {
+        heading: '2. 您在中国的眼睛：工厂看货和装柜视频',
+        body: '远程采购的一个风险，是付尾款前没能亲眼看到货物。集装箱离开前，我们可以到中国任何城市的供应商工厂看货。',
+        bullets: ['查看货物外观和包装。', '按采购订单核对数量。', '拍摄货物、标签和集装箱照片。', '录制装柜过程和封条视频。'],
+        afterBullets: '向我们订舱，第一次验厂免费。追加上门检查按工厂距离单独报价。',
+      },
+      {
+        heading: '3. 经常承运的货物',
+        body: '我们主要服务整柜大宗普货进口商，常见货物包括化工品、食品添加剂、胶合板和板材、建筑材料。危险品须在订舱前确认船公司是否接受，并提供 SDS/MSDS、UN 编号和危险品类别。',
+      },
+    ],
+    checklist: ['品名及 HS 编码（如有）', '中国供应商所在城市', '箱型、箱量和毛重', '预计货好日期', '是否需要工厂看货和装柜视频'],
+    faqs: [
+      {
+        question: '中国到曼萨尼约海运要多久？',
+        answer: '青岛出运，KMTC 约 22 天、MSK 约 26 天；宁波出运，MSK 约 20 天。每个航次均以船公司当期船期为准。',
+      },
+      {
+        question: '工厂看货怎么收费？',
+        answer: '向我们订舱，第一次验厂免费。追加上门检查按工厂距离单独报价。',
+      },
+      {
+        question: '看货后会收到哪些资料？',
+        answer: '通过 WhatsApp 或邮件发送货物和包装照片、数量核对结果，以及装柜过程和封条视频。',
+      },
+    ],
+    title_en: 'China to Manzanillo Ocean Freight: Qingdao & Ningbo, with Factory Inspection and Loading Video',
+    metaTitle_en: 'China to Manzanillo Ocean Freight: Qingdao & Ningbo',
+    description_en: 'FCL from Qingdao and Ningbo to Manzanillo in about 20–26 days with KMTC and MSK. We visit your supplier\'s factory, verify quantities and film the container loading.',
+    quickAnswer_en: 'Qingdao to Manzanillo is direct with KMTC in about 22 days or MSK in about 26 days; Ningbo to Manzanillo takes about 20 days with MSK. Beyond freight, we visit your supplier\'s factory in China, check the goods, verify quantities and send photos and a video of the container loading. The first inspection is free when you book your shipment with us. Transit times are references; each sailing is confirmed with the carrier.',
+    highlights_en: ['Qingdao → Manzanillo direct: about 22 days with KMTC or 26 days with MSK; Ningbo → Manzanillo: about 20 days with MSK.', 'Factory inspection and loading video in any city in China; the first inspection is free when you book with us.', 'Contracted space with KMTC in Qingdao for the Manzanillo route.'],
+    sections_en: [
+      {
+        heading: '1. Routes and transit times to Manzanillo',
+        body: 'Manzanillo is our main route to Mexico. We book contracted space with KMTC from Qingdao and also work with MSK from Qingdao and Ningbo, depending on your supplier location and cargo-ready date.',
+        bullets: ['Qingdao → Manzanillo: direct, about 22 days with KMTC.', 'Qingdao → Manzanillo: direct, about 26 days with MSK.', 'Ningbo → Manzanillo: about 20 days with MSK.', 'We can also arrange factory pickup and export customs clearance in China.'],
+      },
+      {
+        heading: '2. Your eyes in China: factory inspection and loading video',
+        body: 'Buying remotely carries a risk: not seeing the goods before paying the balance. We can visit your supplier\'s factory, in any city in China, before the container leaves.',
+        bullets: ['Visual checks of the goods and packaging.', 'Quantity checks against your purchase order.', 'Photos of the goods, labels and container.', 'Video of the container loading and seal.'],
+        afterBullets: 'The first inspection is free when you book your shipment with us. Additional visits are quoted according to the distance to the factory.',
+      },
+      {
+        heading: '3. Cargo we handle regularly',
+        body: 'We mainly work with importers of general cargo shipped in full containers: chemicals, food additives, plywood and boards, and building materials. For dangerous goods, carrier acceptance is confirmed before booking and we need the safety data sheet (SDS/MSDS), UN number and hazard class.',
+      },
+    ],
+    checklist_en: ['Product and HS code, if available', 'Supplier city in China', 'Container type and quantity, gross weight', 'Estimated cargo-ready date', 'Whether you would like factory inspection and a loading video'],
+    faqs_en: [
+      {
+        question: 'How long does a container from China to Manzanillo take?',
+        answer: 'From Qingdao, about 22 days with KMTC or 26 days with MSK; from Ningbo, about 20 days with MSK. Each sailing is confirmed with the carrier.',
+      },
+      {
+        question: 'How much does the factory inspection cost?',
+        answer: 'The first inspection is free when you book your shipment with us. Additional visits are quoted according to the distance to the factory.',
+      },
+      {
+        question: 'What will I receive after the inspection?',
+        answer: 'Photos of the goods and packaging, quantity checks, and a video of the container loading and seal, sent by WhatsApp or email.',
+      },
+    ],
+    es: {
+      title: 'Flete marítimo de China a Manzanillo: Qingdao y Ningbo, con inspección en fábrica y video de carga',
+      metaTitle: 'Flete marítimo China a Manzanillo: Qingdao y Ningbo',
+      description: 'Envíos FCL de Qingdao y Ningbo a Manzanillo en unos 20–26 días con KMTC y MSK. Visitamos la fábrica de su proveedor, verificamos cantidades y grabamos la carga del contenedor.',
+      quickAnswer: 'De Qingdao a Manzanillo hay servicio directo con KMTC en unos 22 días y con MSK en unos 26 días; de Ningbo, con MSK en unos 20 días. Además del flete, visitamos la fábrica de su proveedor en China, revisamos la mercancía, verificamos cantidades y le enviamos fotos y video de la carga del contenedor. La primera inspección es sin costo al reservar su embarque con nosotros. Los tiempos son referencias; cada salida se confirma con la naviera.',
+      keywords: ['flete marítimo China Manzanillo', 'Qingdao a Manzanillo', 'Ningbo a Manzanillo', 'inspección en fábrica China', 'importar de China a México', 'agente de carga China México'],
+      highlights: ['Qingdao → Manzanillo directo: unos 22 días con KMTC o 26 días con MSK; Ningbo → Manzanillo: unos 20 días con MSK.', 'Inspección en fábrica y video de carga en cualquier ciudad de China; la primera es sin costo al reservar con nosotros.', 'Espacio contratado con KMTC en Qingdao para la ruta a Manzanillo.'],
+      sections: [
+        {
+          heading: '1. Rutas y tiempos a Manzanillo',
+          body: 'Manzanillo es nuestra ruta principal a México. Reservamos con espacio contratado con KMTC desde Qingdao y también trabajamos con MSK desde Qingdao y Ningbo, según dónde esté su proveedor y la fecha de carga.',
+          bullets: ['Qingdao → Manzanillo: directo, unos 22 días con KMTC.', 'Qingdao → Manzanillo: directo, unos 26 días con MSK.', 'Ningbo → Manzanillo: unos 20 días con MSK.', 'También coordinamos la recolección en fábrica y el despacho de exportación en China.'],
+        },
+        {
+          heading: '2. Sus ojos en China: inspección en fábrica y video de carga',
+          body: 'Comprar a distancia tiene un riesgo: no ver la mercancía antes de pagar el saldo. Podemos ir a la fábrica de su proveedor, en cualquier ciudad de China, antes de que el contenedor salga.',
+          bullets: ['Revisión visual de la mercancía y del empaque.', 'Verificación de cantidades contra su orden de compra.', 'Fotos de la mercancía, las etiquetas y el contenedor.', 'Video de la carga del contenedor y del sello.'],
+          afterBullets: 'La primera inspección es sin costo cuando reserva su embarque con nosotros. Para visitas adicionales, cotizamos según la distancia a la fábrica.',
+        },
+        {
+          heading: '3. Carga que movemos con frecuencia',
+          body: 'Trabajamos sobre todo con importadores de carga general a granel en contenedor: productos químicos, aditivos alimentarios, triplay y tableros, y materiales de construcción. Para mercancía peligrosa confirmamos la aceptación de la naviera antes de reservar y necesitamos la hoja de seguridad (SDS/MSDS), el número UN y la clase.',
+        },
+      ],
+      checklist: ['Producto y código arancelario si lo tiene', 'Ciudad del proveedor en China', 'Tipo y cantidad de contenedores, peso bruto', 'Fecha estimada de carga lista', 'Si desea inspección en fábrica y video de carga'],
+      faqs: [
+        {
+          question: '¿Cuánto tarda un contenedor de China a Manzanillo?',
+          answer: 'Desde Qingdao, unos 22 días con KMTC o 26 días con MSK; desde Ningbo, unos 20 días con MSK. Cada salida se confirma con la naviera.',
+        },
+        {
+          question: '¿Cuánto cuesta la inspección en fábrica?',
+          answer: 'La primera inspección es sin costo cuando reserva su embarque con nosotros. Las visitas adicionales se cotizan según la distancia a la fábrica.',
+        },
+        {
+          question: '¿Qué recibo después de la inspección?',
+          answer: 'Fotos de la mercancía y del empaque, la verificación de cantidades y un video de la carga del contenedor y del sello, enviados por WhatsApp o correo.',
         },
       ],
     },
