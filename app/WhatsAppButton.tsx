@@ -2,8 +2,8 @@ import { MessageCircle } from 'lucide-react';
 import { contactPhone, type ArticleLang } from './content-data';
 
 export function whatsappHref(lang: ArticleLang, title?: string) {
-  const text = !title && lang !== 'zh'
-    ? lang === 'es' ? 'Hola Bryce, quisiera una cotización de flete desde China.' : "Hi Bryce, I'd like a freight quote from China."
+  const text = !title
+    ? lang === 'zh' ? '您好 Bryce，我想咨询中国出口海运报价。' : lang === 'es' ? 'Hola Bryce, quisiera una cotización de flete desde China.' : "Hi Bryce, I'd like a freight quote from China."
     : lang === 'zh'
     ? `您好 Bryce，我想咨询：${title}`
     : lang === 'es'

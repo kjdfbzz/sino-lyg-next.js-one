@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { contentArticles, getArticlePath, siteUrl } from '../content-data';
 import InquiryForm from '../InquiryForm';
-import WhatsAppButton from '../WhatsAppButton';
 import ContactActions from '../ContactActions';
 
 const title = 'Bryce Logistics – Flete marítimo desde China';
@@ -47,7 +46,6 @@ export default function SpanishHome() {
           <InquiryForm lang="es" sourcePath="/es" />
         </section>
       </div>
-      <WhatsAppButton lang="es" floating />
     </main>
   );
 }

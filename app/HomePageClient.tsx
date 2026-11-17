@@ -18,7 +18,6 @@ import {
   Menu,
   Package,
   Phone,
-  MessageCircle,
   Plane,
   Ship,
   ShieldCheck,
@@ -26,7 +25,7 @@ import {
   X,
 } from 'lucide-react';
 import { localizePath } from './localized-path';
-import InquiryForm from './InquiryForm';
+import QuickQuote from './QuickQuote';
 import ContactActions from './ContactActions';
 import WhatsAppButton from './WhatsAppButton';
 import { usePreferredLanguage } from './use-language';
@@ -197,8 +196,8 @@ const processSteps = [
   {
     zh: '货物信息',
     en: 'Brief',
-    descZh: '起运港、目的港、品名、件重尺、出货时间。',
-    descEn: 'POL, POD, cargo name, weight, volume and ready date.',
+    descZh: '先发目的港和柜型，无需备齐准确重量或 HS 编码。',
+    descEn: 'Start with your target port and container type; exact weight and HS code can follow.',
   },
   {
     zh: '方案比较',
@@ -674,8 +673,8 @@ export default function Home({
               </h2>
               <p className="mt-6 max-w-2xl text-base font-semibold leading-8 text-black/68">
                 {isZh
-                  ? '如果你现在就有一票货，把起运港、目的港、货物信息和出货时间发给我。我会先帮你判断可走方案、费用构成、截关节点和目的港风险。'
-                  : 'Send POL, POD, cargo details and ready date. I will compare workable options, cost structure, cut-off timing and destination risk.'}
+                  ? '还没有准确重量或 HS 编码？先告诉我目的港和柜型，就能快速了解参考运价。'
+                  : 'No exact weight or HS code yet? Just share your target port and container type for a fast ballpark rate.'}
               </p>
             </div>
 
@@ -704,7 +703,7 @@ export default function Home({
               <span className="break-all sm:whitespace-nowrap sm:break-normal">{email}</span>
             </p>
             {isZh && <p>{isZh ? '微信 / 手机：' : 'WeChat / Mobile: '}{phone}</p>}
-            <p>{isZh ? '建议附上：箱型、件重尺、品名、出货时间。' : 'Helpful details: container type, weight, volume, cargo name and ready date.'}</p>
+            <p>{isZh ? '还没有准确重量或 HS 编码？先告诉我目的港和柜型，就能快速了解参考运价。' : 'No exact weight or HS code yet? Just share your target port and container type for a fast ballpark rate.'}</p>
           </div>
         </div>
       </section>
@@ -751,7 +750,6 @@ export default function Home({
         setContactOpen={setContactOpen}
       />
 
-      {!isZh && <WhatsAppButton lang="en" floating />}
       {quoteOpen && <InquiryModal lang={lang} setQuoteOpen={setQuoteOpen} />}
       </main>
     </>
@@ -961,14 +959,17 @@ function Hero({
                 : homeSearchContentEn.hero.description}
             </p>
 
+            <div className="flex flex-col items-start gap-3">
+            <WhatsAppButton lang={lang} title={isZh ? '连云港、青岛出口海运' : 'China export freight from Qingdao & Lianyungang'} />
             <button
               type="button"
               onClick={openInquiry}
               className="group flex w-fit items-center gap-3 border border-white/35 bg-black/35 px-7 py-4 text-xs font-black uppercase tracking-[0.28em] text-white shadow-2xl shadow-black/20 backdrop-blur-md transition hover:border-amber-300 hover:bg-amber-300 hover:text-black"
             >
-              {isZh ? '留下运输需求' : 'Send inquiry'}
+              {isZh ? '快速询价 · 只填三项' : 'Quick quote · 3 fields'}
               <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </button>
+            </div>
           </div>
 
           <div className="animate-fade-up-delay-3 mt-10 grid max-w-4xl grid-cols-1 border border-white/14 bg-black/20 backdrop-blur-[2px] sm:grid-cols-3">
@@ -1135,18 +1136,18 @@ function FloatingContact({
   const isZh = lang === 'zh';
 
   return (
-    <div className={isZh ? "fixed bottom-5 right-5 z-40" : "fixed bottom-5 right-5 z-40 hidden sm:block"}>
+    <div className={isZh ? "fixed bottom-5 left-5 z-40" : "fixed bottom-5 left-5 z-40 hidden sm:block"}>
       <button
         type="button"
         onClick={() => setContactOpen(!contactOpen)}
-        className={isZh ? "flex h-14 w-14 items-center justify-center bg-amber-300 text-black shadow-2xl shadow-black/30 transition hover:bg-white" : "flex h-14 w-14 items-center justify-center bg-[#128c46] text-white shadow-2xl transition hover:bg-[#0b7036]"}
+        className={isZh ? "flex h-14 w-14 items-center justify-center bg-amber-300 text-black shadow-2xl shadow-black/30 transition hover:bg-white" : "flex h-14 w-14 items-center justify-center border border-white/25 bg-[#05070a] text-white shadow-2xl transition hover:bg-[#141414]"}
         aria-label={isZh ? '打开联系菜单' : 'Open contact menu'}
       >
-        {contactOpen ? <X className="h-6 w-6" /> : isZh ? <Phone className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        {contactOpen ? <X className="h-6 w-6" /> : isZh ? <Phone className="h-6 w-6" /> : <Mail className="h-6 w-6" />}
       </button>
 
       {contactOpen && (
-        <div className="absolute bottom-16 right-0 mb-3 w-[min(20rem,calc(100vw-2.5rem))] border border-white/18 bg-[#05070a] p-5 text-white shadow-2xl">
+        <div className="absolute bottom-16 left-0 mb-3 w-[min(20rem,calc(100vw-2.5rem))] border border-white/18 bg-[#05070a] p-5 text-white shadow-2xl">
           <h3 className="text-lg font-black">
             {isZh ? '联系 Bryce（李经理）' : 'Contact Bryce'}
           </h3>
@@ -1235,7 +1236,7 @@ function InquiryModal({
               {isZh ? '运输询价信息' : 'Inquiry brief'}
             </p>
             <h2 id="inquiry-dialog-heading" className="mt-1 text-xl font-black tracking-tight">
-              {isZh ? '留下运输需求，我来帮你梳理方案' : 'Send the shipment brief'}
+              {isZh ? '快速海运询价 · 只填三项' : 'Quick freight quote · 3 fields'}
             </h2>
           </div>
           <button
@@ -1248,7 +1249,7 @@ function InquiryModal({
           </button>
         </div>
 
-        <InquiryForm lang={lang} sourcePath={localizePath('/', lang)} showHeading={false} homeModal />
+        <QuickQuote lang={lang} title={isZh ? '连云港、青岛出口海运' : 'China export freight from Qingdao & Lianyungang'} sourcePath={localizePath('/', lang)} showHeading={false} />
       </div>
     </div>
   );

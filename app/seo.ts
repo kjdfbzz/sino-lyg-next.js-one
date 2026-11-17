@@ -51,24 +51,19 @@ export function articleLanguageAlternates(article: ContentArticle, lang: Article
 
 const homepageCopy = {
   zh: {
-    title: '连云港货代 · 青岛出口海运 | 港威国际物流 Bryce Lee',
+    title: '青岛、连云港出口货代：整柜、冷柜、滚装与散杂货海运',
     description:
-      '李经理 Bryce Lee，港威国际物流连云港销售经理，为连云港与青岛出口客户提供整柜、拼箱、空运、拖车和报关方案，整理印度、中东和拉美航线的单证、费用与操作要求。',
+      '连云港、青岛港出口海运订舱代理，提供20GP/40HQ整柜、冷柜、滚装及机械散杂货运输方案，覆盖卡拉奇、杰贝阿里、印度和南美。联系李经理 Bryce，先提供目的港和柜型即可快速咨询参考运价。',
   },
   en: {
-    title: 'Lianyungang & Qingdao Freight Forwarder | Global View Logistics',
+    title: 'Qingdao & Lianyungang Freight Forwarder: FCL, RoRo & Breakbulk Container Transport from China',
     description:
-      'China export freight from Lianyungang and Qingdao to India, the Middle East and Latin America. Plan FCL, LCL, trucking and documents with Bryce Lee.',
+      'Direct ocean freight booking agent in Lianyungang & Qingdao Port. Get fast 20GP/40HQ, Reefer, RoRo & machinery shipping rates to Karachi, Jebel Ali, India & South America.',
   },
 };
 
 export function homeMetadata(lang: Lang): Metadata {
-  const copy = {
-    ...homepageCopy[lang],
-    description: lang === 'zh'
-      ? '港威国际物流连云港分公司销售经理李经理（Bryce Lee），为连云港、青岛出口客户提供整柜、拼箱、空运、拖车和报关服务，重点航线覆盖印度、巴基斯坦、中东、东南亚和拉美，拉美有青岛自有合约舱位。整理各航线单证、费用和操作要求，按票询价，可用中文、英文和西班牙语沟通。'
-      : 'China export freight from Lianyungang and Qingdao to India, Southeast Asia, the Middle East and Latin America. Plan FCL, LCL, trucking and documents with Bryce Lee.',
-  };
+  const copy = homepageCopy[lang];
 
   return {
     title: { absolute: formatPageTitle(copy.title) },

@@ -437,6 +437,19 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
   #pb-speed{padding:8px}
 }
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.freight-quote{padding:20px;border:1px solid var(--accent);min-width:0}
+.freight-quote h3,.calc-seo h2{margin:0 0 10px;font-size:20px}
+.freight-quote p{line-height:1.7}.quote-summary{font-family:var(--f-mono);overflow-wrap:anywhere}
+.quote-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;margin-top:14px}
+.quote-wa{background:#128c45!important;color:#fff!important;border-color:#128c45!important;white-space:normal;text-align:center;justify-content:center}
+.quote-actions>.quote-wa,.quote-actions>details{flex:1 1 250px;min-width:0}
+.quote-actions summary{cursor:pointer;justify-content:center;white-space:normal}
+.quote-actions form{margin-top:12px;padding:16px;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r)}
+.quote-actions .fld{margin-bottom:12px}.quote-actions input{width:100%;min-width:0}.quote-actions .btn{max-width:100%}
+.quote-status{font-size:13px;line-height:1.7}.quote-fallback{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px}
+.quote-fallback a{color:var(--steel);text-decoration:underline}.quote-stale{color:var(--warn)}
+.calc-seo{max-width:1200px;margin:24px auto;padding:0 var(--padl);color:var(--muted);line-height:1.8}
+.calc-seo h2{font-size:18px;color:var(--fg)}
 </style>
 
 {{CALC:englishStyles:raw}}</head>
@@ -686,9 +699,35 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 
     </div>
     <div class="kpis" id="kpis"></div>
+    <section class="card freight-quote" id="freight-quote" aria-labelledby="quote-title" hidden>
+      <h3 id="quote-title">{{CALC:quoteTitle:raw}}</h3>
+      <p class="quote-summary" id="quote-summary"></p>
+      <p class="hint">{{CALC:quoteTotalsHelp:raw}}</p>
+      <p id="quote-warning" class="quote-stale" hidden></p>
+      <div class="quote-actions">
+        <a class="btn quote-wa" id="quote-wa" target="_blank" rel="noopener noreferrer">{{CALC:quoteWhatsApp:raw}}</a>
+        <details>
+          <summary class="btn">{{CALC:quoteFormTitle:raw}}</summary>
+          <form id="quote-form" aria-label="{{CALC:quoteFormTitle:raw}}">
+            <label class="fld" for="quote-route">{{CALC:quoteRouteLabel:raw}}<input id="quote-route" name="route" required maxlength="1200" placeholder="{{CALC:quoteRoutePlaceholder:raw}}"></label>
+            <label class="fld" for="quote-equipment">{{CALC:quoteEquipmentLabel:raw}}<input id="quote-equipment" name="containerType" required maxlength="1200" placeholder="20GP / 40HQ"></label>
+            <label class="fld" for="quote-contact">WhatsApp / Email<input id="quote-contact" name="contact" required maxlength="1200" placeholder="{{CALC:quoteContactPlaceholder:raw}}"></label>
+            <p class="hint">{{CALC:quoteFormHelp:raw}}</p>
+            <button class="btn primary" id="quote-submit" type="submit">{{CALC:quoteSend:raw}}</button>
+            <div class="quote-status" id="quote-status" role="status" aria-live="polite"></div>
+            <div class="quote-fallback" id="quote-fallback" hidden><a id="quote-fallback-wa" target="_blank" rel="noopener noreferrer">WhatsApp</a><a id="quote-email">{{CALC:quoteEmail:raw}}</a></div>
+          </form>
+        </details>
+      </div>
+    </section>
 
   </div>
 </div>
+
+<section class="calc-seo" aria-labelledby="calc-seo-title">
+  <h2 id="calc-seo-title">{{CALC:quoteSeoTitle:raw}}</h2>
+  <p>{{CALC:quoteSeoCopy:raw}}</p>
+</section>
 
 <div class="toast" id="toast" hidden role="status"><span id="toast-msg"></span><button type="button" id="toast-undo">{{CALC:h0161:raw}}</button></div>
 {{CALC:contactPanel:raw}}<div class="cmodal" id="expm" hidden role="dialog" aria-modal="true" aria-labelledby="exp-h">
@@ -1781,7 +1820,95 @@ $('ctreset').onclick = () => { CT = presetCT(RULES.carrier); renderSettings(); s
 
 /* ================= 5. 计算与界面 ================= */
 let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null, selManual = false;   // selManual：用户自己点选过方案
-function setCalcState(dirty){ const el = $('calcstate'); if(!el) return; el.className = 'calcstate' + (dirty ? ' dirty' : ''); el.innerHTML = dirty ? '{{CALC:t0132:single}}' : '{{CALC:t0133:single}}'; }
+let quoteSnapshot = null, quoteSending = false;
+function calculatorQuoteData(p){
+  if(!p || !p.containers.length) return null;
+  const counts = {};
+  p.containers.forEach(c => { counts[c.type] = (counts[c.type] || 0) + 1; });
+  const equipment = Object.entries(counts).map(([type, count]) => `${count} × ${type}`).join(' + ');
+  const volume = srcs.reduce((sum,s) => sum + s.l*s.w*s.h*s.qty/1e6, 0).toFixed(2);
+  const weight = srcs.reduce((sum,s) => sum + Math.max(0,s.kg)*s.qty, 0).toFixed(2);
+  const missingWeight = srcs.some(s => !(s.kg > 0));
+  const loadedVolume = (p.containers.reduce((sum,c) => sum+c.usedVol, 0)/1e6).toFixed(2);
+  const loadedWeight = p.containers.reduce((sum,c) => sum+c.usedKg, 0).toFixed(2);
+  const summary = `${equipment} · ${volume} CBM · ${weight} kg${missingWeight ? ' ({{CALC:quoteMissingWeight:single}})' : ''}`;
+  return {equipment, volume, weight, missingWeight, loadedVolume, loadedWeight, remaining:p.leftCartons, summary};
+}
+function invalidateCalculatorQuote(){
+  quoteSnapshot = null;
+  $('quote-wa').removeAttribute('href');
+  $('quote-wa').setAttribute('aria-disabled','true');
+  $('quote-submit').disabled = true;
+  $('quote-status').textContent = '';
+  $('quote-fallback').hidden = true;
+  $('freight-quote').hidden = true;
+}
+function calculatorQuoteBrief(data){
+  return ['{{CALC:quoteGreeting:single}}', data.summary,
+    '{{CALC:quoteTotalsHelp:single}}',
+    `{{CALC:quoteLoadedTotals:template}} ${data.loadedVolume} CBM / ${data.loadedWeight} kg`,
+    `{{CALC:quoteRemaining:template}} ${data.remaining}`,
+    `Source: https://www.sinolyg.com${document.documentElement.lang === 'en' ? '/en/load' : '/load'}`].join('\n');
+}
+function renderCalculatorQuote(p){
+  const data = calculatorQuoteData(p);
+  if(!data){ invalidateCalculatorQuote(); return; }
+  const changed = JSON.stringify(data) !== JSON.stringify(quoteSnapshot);
+  quoteSnapshot = data;
+  $('freight-quote').hidden = false;
+  $('quote-summary').textContent = data.summary;
+  $('quote-warning').hidden = !data.remaining;
+  $('quote-warning').textContent = `{{CALC:quoteRemainingWarning:template}} ${data.remaining}`;
+  $('quote-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(calculatorQuoteBrief(data));
+  $('quote-wa').removeAttribute('aria-disabled');
+  $('quote-submit').disabled = quoteSending;
+  if(changed){
+    $('quote-equipment').value = data.equipment;
+    $('quote-status').textContent = '';
+    $('quote-fallback').hidden = true;
+  }
+}
+$('quote-form').addEventListener('input', e => {
+  e.target.setCustomValidity('');
+  $('quote-status').textContent = '';
+  $('quote-fallback').hidden = true;
+});
+$('quote-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  if(quoteSending || !quoteSnapshot) return;
+  const fields = ['quote-route','quote-equipment','quote-contact'].map($);
+  for(const input of fields){ input.setCustomValidity(input.value.trim() ? '' : '{{CALC:quoteRequired:single}}'); }
+  if(!e.target.reportValidity()) return;
+  const data = {...quoteSnapshot}, signature = JSON.stringify(data);
+  const [route,equipment,contact] = fields.map(input => input.value.trim());
+  const sourceUrl = 'https://www.sinolyg.com' + (document.documentElement.lang === 'en' ? '/en/load' : '/load');
+  const brief = [calculatorQuoteBrief(data), `POL / Terminal: ${route}`, `Container Type: ${equipment}`, `WhatsApp / Email: ${contact}`].join('\n');
+  const subject = `Container load quote [${document.documentElement.lang === 'en' ? 'en/load' : 'load'}]`;
+  const payload = {pol:route, contact, weightVolume:`${data.volume} CBM / ${data.weight} kg${data.missingWeight ? ' (some weights missing)' : ''}`, notes:brief, lang:document.documentElement.lang === 'en' ? 'en' : 'zh', sourceUrl};
+  quoteSending = true;
+  $('quote-submit').disabled = true;
+  $('quote-submit').textContent = '{{CALC:quoteSending:single}}';
+  $('quote-status').textContent = '';
+  $('quote-fallback').hidden = true;
+  try{
+    const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const result = await response.json();
+    if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+    if(JSON.stringify(quoteSnapshot) === signature) $('quote-status').textContent = '{{CALC:quoteSuccess:single}}';
+  }catch(err){
+    if(JSON.stringify(quoteSnapshot) === signature){
+      $('quote-status').textContent = '{{CALC:quoteFailure:single}}';
+      $('quote-fallback-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(brief);
+      $('quote-email').href = 'mailto:Bryce.Lee@gwl-lianyungang.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(brief);
+      $('quote-fallback').hidden = false;
+    }
+  }finally{
+    quoteSending = false;
+    $('quote-submit').disabled = !quoteSnapshot;
+    $('quote-submit').textContent = '{{CALC:quoteSend:single}}';
+  }
+});
+function setCalcState(dirty){ if(dirty) invalidateCalculatorQuote(); const el = $('calcstate'); if(!el) return; el.className = 'calcstate' + (dirty ? ' dirty' : ''); el.innerHTML = dirty ? '{{CALC:t0132:single}}' : '{{CALC:t0133:single}}'; }
 const bigJob = () => items.reduce((a,it) => a + Math.floor(num(it.qty)), 0) > 8000;
 function computeSoon(){
   if(!bigJob()){ compute(); return; }
@@ -1799,6 +1926,7 @@ function compute(){
   try{ compute0(); }
   catch(err){
     console.error(err);
+    invalidateCalculatorQuote();
     const el = $('calcstate'); el.className = 'calcstate dirty'; el.innerHTML = '{{CALC:t0135:single}}';
     showStageMsg('{{CALC:t0136:single}}');
   }
@@ -1896,6 +2024,7 @@ function renderStatusCol(){
 function renderContainer(resetCam){
   stopPlay();
   const p = plans.find(x => x.key === selKey);
+  renderCalculatorQuote(p);
   if(!p){
     ['ctabs','bays','legend','chart','chartcap','kpis','stagespec','chk-pill'].forEach(id => $(id).innerHTML = '');
     $('checks').innerHTML = '{{CALC:t0177:single}}';

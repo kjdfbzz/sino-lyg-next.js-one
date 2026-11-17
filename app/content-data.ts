@@ -132,11 +132,14 @@ export const contentSections: ContentSection[] = [
 
 export const contentArticles: ContentArticle[] = [
   {
+    description_en: "Use this free China FCL export checklist for booking, trucking, customs and B/L checks. Get free document review assistance and a fast freight quote; start with your port and container type.",
+    metaTitle_en: "FCL Export Booking and Shipment Data Checklist — Free Checklist & Fast Freight Quote",
+    metaTitle: "整柜 FCL 出口订舱和出货资料清单 — Free Checklist & Fast Freight Quote",
     slug: 'fcl-export-checklist',
     section: 'requirements',
     title: '整柜 FCL 出口订舱和出货资料清单',
     description:
-      '中国出口整柜订舱前需要准备哪些资料？按货物信息、箱型、截关、拖车、报关和提单确认梳理。',
+      "免费整柜出口订舱清单，整理箱型、船期、拖车、报关与提单确认要点。可协助审核单证并快速报海运参考价；初步询价先提供目的港和柜型，无需备齐准确重量或 HS 编码。",
     updatedAt: '2026-07-05',
     readTime: '5 min read',
     image: '/bryce-services-port.webp',
@@ -242,11 +245,14 @@ export const contentArticles: ContentArticle[] = [
     },
   },
   {
+    description_en: "Use this free China LCL export checklist for warehouse delivery, packaging, W/M charging and destination fees. Get document review assistance and a fast freight quote without a complete packing list.",
+    metaTitle_en: "LCL Export Checklist: Volume, Warehouse Entry and Destination Charges — Free Checklist & Fast Freight Quote",
+    metaTitle: "拼箱 LCL 出口注意事项：体积、入仓和目的港费用 — Free Checklist & Fast Freight Quote",
     slug: 'lcl-export-checklist',
     section: 'requirements',
     title: '拼箱 LCL 出口注意事项：体积、入仓和目的港费用',
     description:
-      '拼箱出口适合小批量货物，但要提前确认计费体积、入仓要求、目的港费用和单证信息。',
+      "免费拼箱出口清单，梳理进仓、包装、计费与目的港费用。可协助审核单证并快速咨询海运参考价；还没有准确重量或 HS 编码，也可以先告诉我目的港和运输需求。",
     updatedAt: '2026-11-05',
     readTime: '4 min read',
     image: '/bryce-process-desk.webp',
@@ -336,11 +342,14 @@ export const contentArticles: ContentArticle[] = [
     },
   },
   {
+    description_en: "Use this free China export customs checklist for invoices, packing lists, certificates of origin and special cargo documents. Ask for free document review assistance and a fast ocean freight quote.",
+    metaTitle_en: "China Export Customs and Document Checklist — Free Checklist & Fast Freight Quote",
+    metaTitle: "中国出口报关和单证资料：订舱前需要确认什么 — Free Checklist & Fast Freight Quote",
     slug: 'customs-documents',
     section: 'requirements',
     title: '中国出口报关和单证资料：订舱前需要确认什么',
     description:
-      '梳理中国出口常见报关资料、提单资料、产地证、商检和特殊货物单证，减少临时卡点。',
+      "免费中国出口报关与单证清单，梳理发票、装箱单、产地证及特殊货物资料。可协助审核单证并快速报海运参考价；初步询价不必先备齐准确重量或 HS 编码。",
     updatedAt: '2026-11-05',
     readTime: '5 min read',
     image: '/bryce-process-desk.webp',
@@ -739,7 +748,7 @@ export const contentArticles: ContentArticle[] = [
     slug: 'china-to-karachi-shipping',
     section: 'routes',
     title: '连云港、青岛到卡拉奇海运：Karachi Port、Port Qasim 与订舱要点',
-    metaTitle_en: 'Lianyungang & Qingdao to Karachi Shipping: Terminals & Transit',
+    metaTitle_en: 'China to Karachi Shipping (KICT / SAPT / QICT): 25-Day Direct Freight from Qingdao & Lianyungang',
     description: '区分 Karachi Port 的 KICT、KGTL、SAPT，Port Qasim 的 QICT 与 AICT 港外堆场，整理连云港、青岛出口巴基斯坦的码头、船期、费用和询价资料。',
     quickAnswer: '青岛到卡拉奇海运约 25 天；连云港出运经青岛中转，约 30 天。目前主要订舱船司为长荣（EMC）和 KMTC。卡拉奇的集装箱在卡拉奇港（KICT、KGTL、SAPT）和卡西姆港（QICT）作业，AICT 为场外堆场，订舱前请先确认收货人指定的码头。以上航程为参考，具体以船公司当期船期为准。',
     quickAnswer_en: 'Ocean transit from Qingdao to Karachi is about 25 days; from Lianyungang, cargo connects via Qingdao and takes about 30 days. We mainly book with EMC (Evergreen) and KMTC. Containers in Karachi are handled at Karachi Port terminals (KICT, KGTL, SAPT) and at Port Qasim (QICT), with AICT as an off-dock facility, so confirm the consignee\'s required terminal before booking. Transit times are references; each sailing is confirmed with the carrier.',
@@ -838,7 +847,7 @@ export const contentArticles: ContentArticle[] = [
     ],
     en: {
       title: 'Lianyungang & Qingdao to Karachi Shipping: Ports, Terminals & Booking Guide',
-      description: 'Compare Karachi Port and Port Qasim, KICT, KGTL, SAPT, QICT and the AICT off-dock facility. Prepare China export booking, charges and cargo details.',
+      description: 'Get 20GP/40HQ & Breakbulk freight rates from Lianyungang & Qingdao Port to Karachi (KICT, SAPT, KGTL) & Port Qasim (QICT). ~25 days transit, 14–21 days free time available.',
       highlights: [
         'Distinguish Karachi Port from Port Qasim before confirming the vessel terminal and consignee pickup plan.',
         'KICT, KGTL and SAPT / SAPTL are at Karachi Port; QICT is at Port Qasim, while AICT is an off-dock facility.',
@@ -919,13 +928,15 @@ export const contentArticles: ContentArticle[] = [
     },
   },
   {
+    description_en: "Get a fast FCL, reefer or breakbulk freight quote from Qingdao and Lianyungang to Jebel Ali (Dubai). Compare current sailings, routing, destination charges and free-time terms; start with your port and container type.",
+    metaTitle: "China to Jebel Ali (Dubai) Shipping: ~20–25 Days Direct FCL & Breakbulk from Qingdao & Lianyungang",
     slug: 'china-to-jebel-ali-shipping',
     section: 'routes',
     title: '青岛、连云港到中东海运：迪拜 Jebel Ali、Dammam 与 Jeddah',
-    metaTitle_en: 'China to Middle East Shipping: Jebel Ali, Dammam & Jeddah',
-    description: '青岛与连云港出口中东海运指南：比较 Jebel Ali、Dammam、Jeddah 目的港，核对订舱、直航与中转、单证、免费期、目的港费用和到门范围。',
-    quickAnswer: '青岛到迪拜（Jebel Ali）目前主要走 MSC、CMA 和 ASCL，经豪尔费坎（Khor Fakkan）中转，航程约 30–40 天；连云港出运有嘉华航运（KAWA Shipping）直达豪尔费坎再转迪拜，约 30 天。达曼（Dammam）、吉达（Jeddah）按航次确认。中东航线订舱前，请与收货人确认地区局势相关的附加费和条款。以上航程为参考，具体以船公司当期船期为准。',
-    quickAnswer_en: 'From Qingdao to Dubai (Jebel Ali), sailings currently run mainly with MSC, CMA and ASCL, transshipping at Khor Fakkan, with about 30–40 days transit. From Lianyungang, KAWA Shipping runs a direct service to Khor Fakkan with on-carriage to Dubai, about 30 days. Dammam and Jeddah are confirmed per sailing. Before booking, agree with the consignee on any surcharges or terms related to the regional situation. Transit times are references; each sailing is confirmed with the carrier.',
+    metaTitle_en: "China to Jebel Ali (Dubai) Shipping: ~20–25 Days Direct FCL & Breakbulk from Qingdao & Lianyungang",
+    description: "青岛、连云港到迪拜 Jebel Ali 海运询价：整柜、冷柜与散杂货方案，核对当期船期、中转、目的港费用与免箱期。先提供目的港和柜型，即可快速咨询参考运价。",
+    quickAnswer: "青岛港中东直航船期约 20–25 天；连云港起运或经新加坡/巴生港中转方案船期约 28–35 天（视具体船司与中转衔接而定）。达曼（Dammam）、吉达（Jeddah）按航次确认。中东航线订舱前，请与收货人确认地区局势相关的附加费和条款。以上航程为参考，具体以船公司当期船期为准。",
+    quickAnswer_en: "Direct vessels from Qingdao take ~20–25 days to Jebel Ali; departures from Lianyungang or transshipment services typically take ~28–35 days depending on carrier routing and hub connection. Dammam and Jeddah are confirmed per sailing. Before booking, agree with the consignee on any surcharges or terms related to the regional situation. Transit times are references; each sailing is confirmed with the carrier.",
     updatedAt: '2026-11-05',
     readTime: '6 min read',
     image: '/bryce-routes-command.webp',
@@ -967,7 +978,7 @@ export const contentArticles: ContentArticle[] = [
       },
       {
         heading: '3. 直航、中转和交货时间如何确认',
-        body: '询价提供最晚可接受到港或到门日期，比只问“最快几天”更便于安排。比较方案时分别列出起运港、船名航次、预计离港与到港、中转港、截关、截单和 VGM 截止时间。船期变化、支线接驳和港口操作会影响交付，正式订舱以具体航次确认。',
+        body: "青岛港中东直航船期约 20–25 天；连云港起运或经新加坡/巴生港中转方案船期约 28–35 天（视具体船司与中转衔接而定）。询价提供最晚可接受到港或到门日期，比只问“最快几天”更便于安排。比较方案时分别列出起运港、船名航次、预计离港与到港、中转港、截关、截单和 VGM 截止时间。船期变化、支线接驳和港口操作会影响交付，正式订舱以具体航次确认。",
       },
       {
         heading: '4. 中东报价要分清包含与不包含',
@@ -1052,7 +1063,7 @@ export const contentArticles: ContentArticle[] = [
         },
         {
           heading: '3. Compare routing against the delivery deadline',
-          body: 'State the latest acceptable port or door arrival date instead of only asking for the fastest sailing time. Compare origin, vessel/voyage, estimated departure and arrival, connection ports, cargo cut-off, SI and VGM deadlines. Schedule changes, feeder connections and port operations affect delivery; confirm the actual voyage when booking.',
+          body: "Direct vessels from Qingdao take ~20–25 days to Jebel Ali; departures from Lianyungang or transshipment services typically take ~28–35 days depending on carrier routing and hub connection. State the latest acceptable port or door arrival date instead of only asking for the fastest sailing time. Compare origin, vessel/voyage, estimated departure and arrival, connection ports, cargo cut-off, SI and VGM deadlines. Schedule changes, feeder connections and port operations affect delivery; confirm the actual voyage when booking.",
         },
         {
           heading: '4. Separate included and excluded charges',
@@ -2534,8 +2545,8 @@ export const contentArticles: ContentArticle[] = [
       { question: '这页会写具体运价吗？', answer: '不会。运价变化快，且因港口、箱型和货物而异，请提供具体信息单独询价。' },
     ],
     title_en: 'China Export Freight Market Notes: Space Trends for Southeast Asia, India-Pakistan, Middle East & South America',
-    metaTitle_en: 'China Export Freight Market Notes: Space & Schedule Trends',
-    description_en: 'Regularly updated notes on space and timing for exports from Lianyungang and Qingdao to Southeast Asia, India-Pakistan, the Middle East and South America. No freight rates.',
+    metaTitle_en: "China Export Container Freight Market Rates & Space Notes (2026): Qingdao & Lianyungang Weekly Update",
+    description_en: "Compare 2026 China export container freight rate trends, space and sailing notes from Qingdao and Lianyungang. Ask Bryce for a current ocean freight quote for your port and container type.",
     highlights_en: [
       'This page is a regularly updated market note covering space and timing only, with no freight rates; prices depend on the current quotation.',
       'Southeast Asia is still overbooked with frequent rollovers, and some destination ports have 7–14 days of waiting time, so book early and allow buffer.',
@@ -2560,7 +2571,7 @@ export const contentArticles: ContentArticle[] = [
     section: 'guides',
     title: '中国出口海运航程总表：连云港、青岛到东南亚、印巴、中东、拉美',
     description: '连云港、青岛出口到东南亚、印度、巴基斯坦、中东和拉美主要港口的参考航程、直航或中转方式和主要船司，一张表查清，定期更新，不含运价。',
-    quickAnswer: '连云港出口东南亚多为直航，约 8–10 天（印尼、越南南部、泰国、巴生港）；菲律宾经釜山或高雄中转约 12–14 天。印度经上海中转约 15–25 天，卡拉奇经青岛中转约 30 天，迪拜走嘉华航运（KAWA Shipping）经豪尔费坎约 30 天。青岛出口印度直航约 18–28 天，卡拉奇约 25 天；墨西哥直航约 22–26 天，秘鲁约 35 天，智利、巴西约 40 天，阿根廷约 45 天。以上为参考航程，以船公司当期船期为准。',
+    quickAnswer: "连云港出口东南亚多为直航，约 8–10 天（印尼、越南南部、泰国、巴生港）；菲律宾经釜山或高雄中转约 12–14 天。印度经上海中转约 15–25 天，卡拉奇经青岛中转约 30 天。青岛港中东直航船期约 20–25 天；连云港起运或经新加坡/巴生港中转方案船期约 28–35 天（视具体船司与中转衔接而定）。青岛出口印度直航约 18–28 天，卡拉奇约 25 天；墨西哥直航约 22–26 天，秘鲁约 35 天，智利、巴西约 40 天，阿根廷约 45 天。以上为参考航程，以船公司当期船期为准。",
     updatedAt: '2026-11-05',
     readTime: '8 min read',
     image: '/bryce-routes-command.webp',
@@ -2569,7 +2580,7 @@ export const contentArticles: ContentArticle[] = [
     sections: [
       {
         heading: '1. 连云港出发',
-        body: '连云港出口东南亚以直航为主；印度、巴基斯坦和中东多经上海、青岛或豪尔费坎中转。',
+        body: "连云港出口东南亚以直航为主；印度、巴基斯坦多经上海或青岛中转。连云港起运到 Jebel Ali 约 28–35 天，具体船司、中转港与衔接按航次确认。",
         table: {
           columns: ['目的港', '国家', '参考航程', '走法', '主要船司'],
           rows: [
@@ -2590,13 +2601,13 @@ export const contentArticles: ContentArticle[] = [
             ['Mundra', '印度', '约 25 天', '上海中转', 'EMC'],
             ['Kolkata', '印度', '约 35 天', '青岛、科伦坡两次中转', 'MSC'],
             ['卡拉奇 Karachi', '巴基斯坦', '约 30 天', '青岛中转', 'EMC、KMTC'],
-            ['迪拜 Jebel Ali', '阿联酋', '约 30 天', '直达豪尔费坎再转迪拜', '嘉华航运（KAWA Shipping）'],
+            ['迪拜 Jebel Ali', '阿联酋', "约 28–35 天", "中转港与衔接按航次确认", '嘉华航运（KAWA Shipping）'],
           ],
         },
       },
       {
         heading: '2. 青岛出发',
-        body: '青岛出口印巴和拉美以直航为主，拉美有自有合约舱位；中东目前经豪尔费坎中转。',
+        body: "青岛出口印巴和拉美以直航为主，拉美有自有合约舱位；Jebel Ali 直航约 20–25 天，经新加坡/巴生港等枢纽中转约 28–35 天，具体船司与衔接按航次确认。",
         table: {
           columns: ['目的港', '国家', '参考航程', '走法', '主要船司'],
           rows: [
@@ -2605,7 +2616,7 @@ export const contentArticles: ContentArticle[] = [
             ['Chennai', '印度', '约 18–23 天', '直航', 'EMC 约 18 天、KMTC 约 23 天'],
             ['Kolkata', '印度', '约 20–30 天', '中转', 'SITC 经霍尔迪亚约 20 天；MSC 经科伦坡约 30 天'],
             ['卡拉奇 Karachi', '巴基斯坦', '约 25 天', '直航', 'EMC、KMTC'],
-            ['迪拜 Jebel Ali', '阿联酋', '约 30–40 天', '豪尔费坎中转', 'MSC、CMA、ASCL'],
+            ['迪拜 Jebel Ali', '阿联酋', "直航约 20–25 天；中转约 28–35 天", "直航或经新加坡/巴生港中转（按航次确认）", 'MSC、CMA、ASCL'],
             ['Manzanillo', '墨西哥', '约 22–26 天', '直航', 'KMTC 约 22 天、MSK 约 26 天'],
             ['Lázaro Cárdenas', '墨西哥', '约 25 天', '直航', 'ONE'],
             ['Callao', '秘鲁', '约 35 天', '直航', 'HMM、ONE、阳明（Yang Ming）'],
@@ -2636,14 +2647,14 @@ export const contentArticles: ContentArticle[] = [
       },
     ],
     title_en: 'China Export Transit Time Table: Lianyungang & Qingdao to Southeast Asia, India-Pakistan, Middle East & Latin America',
-    metaTitle_en: 'China Export Transit Times: Lianyungang & Qingdao by Port',
-    description_en: 'Reference ocean transit times, direct or transshipment routing and main carriers from Lianyungang and Qingdao to major ports in Southeast Asia, India, Pakistan, the Middle East and Latin America. Updated regularly, no rates.',
-    quickAnswer_en: 'From Lianyungang, most Southeast Asia ports are direct in about 8–10 days (Indonesia, southern Vietnam, Thailand, Port Klang); the Philippines take about 12–14 days via Busan or Kaohsiung. India takes about 15–25 days via Shanghai, Karachi about 30 days via Qingdao and Dubai about 30 days via Khor Fakkan with KAWA Shipping. From Qingdao, India is direct in about 18–28 days and Karachi about 25 days; Mexico is direct in about 22–26 days, Peru about 35 days, Chile and Brazil about 40 days and Argentina about 45 days. These are reference times; each sailing is confirmed with the carrier.',
+    metaTitle_en: "China Ocean Freight Transit Time Table (2026): Qingdao & Lianyungang to Karachi, Jebel Ali & South America",
+    description_en: "Compare reference ocean freight transit times from Qingdao and Lianyungang to Karachi, Jebel Ali and South America. Check routing and carriers, then request a current 20GP/40HQ freight quote.",
+    quickAnswer_en: "From Lianyungang, most Southeast Asia ports are direct in about 8–10 days (Indonesia, southern Vietnam, Thailand, Port Klang); the Philippines take about 12–14 days via Busan or Kaohsiung. India takes about 15–25 days via Shanghai, Karachi about 30 days via Qingdao. Direct vessels from Qingdao take ~20–25 days to Jebel Ali; departures from Lianyungang or transshipment services typically take ~28–35 days depending on carrier routing and hub connection. From Qingdao, India is direct in about 18–28 days and Karachi about 25 days; Mexico is direct in about 22–26 days, Peru about 35 days, Chile and Brazil about 40 days and Argentina about 45 days. These are reference times; each sailing is confirmed with the carrier.",
     highlights_en: ['One table for reference transit times, routing and carriers from Lianyungang and Qingdao.', 'Southeast Asia still has rollovers and port congestion, so actual arrival may take longer than shown.', 'No freight rates are listed; request a quote for your port and cargo.'],
     sections_en: [
       {
         heading: '1. From Lianyungang',
-        body: 'Lianyungang exports to Southeast Asia are mostly direct; India, Pakistan and the Middle East usually connect via Shanghai, Qingdao or Khor Fakkan.',
+        body: "Lianyungang exports to Southeast Asia are mostly direct; India and Pakistan usually connect via Shanghai or Qingdao. Departures from Lianyungang to Jebel Ali take about 28–35 days, with the carrier, hub and connection confirmed per sailing.",
         table: {
           columns: ['Destination', 'Country', 'Transit', 'Routing', 'Main carriers'],
           rows: [
@@ -2664,13 +2675,13 @@ export const contentArticles: ContentArticle[] = [
             ['Mundra', 'India', 'About 25 days', 'Via Shanghai', 'EMC'],
             ['Kolkata', 'India', 'About 35 days', 'Via Qingdao and Colombo (two transshipments)', 'MSC'],
             ['Karachi', 'Pakistan', 'About 30 days', 'Via Qingdao', 'EMC, KMTC'],
-            ['Jebel Ali', 'United Arab Emirates', 'About 30 days', 'Direct to Khor Fakkan, then on-carriage to Dubai', 'KAWA Shipping'],
+            ['Jebel Ali', 'United Arab Emirates', "About 28–35 days", "Hub and connection confirmed per sailing", 'KAWA Shipping'],
           ],
         },
       },
       {
         heading: '2. From Qingdao',
-        body: 'Qingdao exports to India-Pakistan and Latin America are mostly direct, with own contracted space for Latin America; the Middle East currently connects via Khor Fakkan.',
+        body: "Qingdao exports to India-Pakistan and Latin America are mostly direct, with own contracted space for Latin America. Direct sailings to Jebel Ali take about 20–25 days; transshipment via hubs such as Singapore or Port Klang takes about 28–35 days, with carrier routing and connections confirmed per sailing.",
         table: {
           columns: ['Destination', 'Country', 'Transit', 'Routing', 'Main carriers'],
           rows: [
@@ -2679,7 +2690,7 @@ export const contentArticles: ContentArticle[] = [
             ['Chennai', 'India', 'About 18–23 days', 'Direct', 'EMC about 18 days, KMTC about 23 days'],
             ['Kolkata', 'India', 'About 20–30 days', 'Transshipment', 'SITC via Haldia about 20 days; MSC via Colombo about 30 days'],
             ['Karachi', 'Pakistan', 'About 25 days', 'Direct', 'EMC, KMTC'],
-            ['Jebel Ali', 'United Arab Emirates', 'About 30–40 days', 'Via Khor Fakkan', 'MSC, CMA, ASCL'],
+            ['Jebel Ali', 'United Arab Emirates', "Direct about 20–25 days; transshipment about 28–35 days", "Direct or via Singapore / Port Klang (confirmed per sailing)", 'MSC, CMA, ASCL'],
             ['Manzanillo', 'Mexico', 'About 22–26 days', 'Direct', 'KMTC about 22 days, MSK about 26 days'],
             ['Lázaro Cárdenas', 'Mexico', 'About 25 days', 'Direct', 'ONE'],
             ['Callao', 'Peru', 'About 35 days', 'Direct', 'HMM, ONE, Yang Ming'],
@@ -2711,8 +2722,8 @@ export const contentArticles: ContentArticle[] = [
     ],
     es: {
       "title": "Tiempos de tránsito marítimo desde China: Qingdao y Lianyungang a Latinoamérica, Asia y Medio Oriente",
-      "metaTitle": "Tiempos de tránsito desde China: Qingdao y Lianyungang por puerto",
-      "description": "Tiempos de tránsito de referencia, ruta directa o con transbordo y navieras principales desde Qingdao y Lianyungang a México, Centroamérica, Sudamérica, el Sudeste Asiático, India, Pakistán y Medio Oriente. Sin tarifas.",
+      "metaTitle": "Tabla de Tiempos de Tránsito Marítimo desde China (Qingdao y Lianyungang) a Sudamérica | Tarifas 20GP/40HQ",
+      "description": "Compare tiempos de tránsito marítimo desde Qingdao y Lianyungang a Sudamérica, Karachi y Jebel Ali. Revise rutas y navieras y solicite una cotización actual para contenedores 20GP/40HQ.",
       "keywords": [
         "tiempo de tránsito China México",
         "cuánto tarda un contenedor de China a México",
@@ -2721,7 +2732,7 @@ export const contentArticles: ContentArticle[] = [
         "Qingdao Manzanillo días",
         "transporte marítimo desde China"
       ],
-      "quickAnswer": "Desde Qingdao hay servicios directos a México en unos 22–26 días (Manzanillo con KMTC o MSK; Lázaro Cárdenas con ONE), a Perú (Callao) en unos 35 días, a Chile (San Antonio) y Brasil (Santos) en unos 40 días y a Argentina (Buenos Aires) en unos 45 días. La costa del Pacífico de Centroamérica suele llevar transbordo, unos 30–40 días. Desde Lianyungang, la mayoría de los puertos del Sudeste Asiático son directos en unos 8–10 días. Son tiempos de referencia; cada salida se confirma con la naviera.",
+      "quickAnswer": "Desde Qingdao hay servicios directos a México en unos 22–26 días (Manzanillo con KMTC o MSK; Lázaro Cárdenas con ONE), a Perú (Callao) en unos 35 días, a Chile (San Antonio) y Brasil (Santos) en unos 40 días y a Argentina (Buenos Aires) en unos 45 días. La costa del Pacífico de Centroamérica suele llevar transbordo, unos 30–40 días. Desde Lianyungang, la mayoría de los puertos del Sudeste Asiático son directos en unos 8–10 días. Los servicios directos desde Qingdao a Jebel Ali tardan unos 20–25 días; las salidas desde Lianyungang o los servicios con transbordo vía Singapur/Port Klang suelen tardar unos 28–35 días, según la naviera y la conexión. Son tiempos de referencia; cada salida se confirma con la naviera.",
       "highlights": [
         "Una sola tabla con tiempos de tránsito, rutas y navieras desde Qingdao y Lianyungang.",
         "Para Latinoamérica reservamos con espacio propio contratado en Qingdao.",
@@ -2730,7 +2741,7 @@ export const contentArticles: ContentArticle[] = [
       "sections": [
         {
           "heading": "1. Desde Qingdao",
-          "body": "Las exportaciones desde Qingdao a Latinoamérica, India y Pakistán son mayormente directas, con espacio propio contratado para Latinoamérica; Medio Oriente conecta actualmente vía Khor Fakkan.",
+          "body": "Las exportaciones desde Qingdao a Latinoamérica, India y Pakistán son mayormente directas, con espacio propio contratado para Latinoamérica. Jebel Ali tiene servicios directos de unos 20–25 días; las opciones con transbordo vía Singapur/Port Klang tardan unos 28–35 días, con naviera y conexión confirmadas por salida.",
           "table": {
             "columns": [
               "Destino",
@@ -2827,8 +2838,8 @@ export const contentArticles: ContentArticle[] = [
               [
                 "Jebel Ali (Dubái)",
                 "Emiratos Árabes Unidos",
-                "Unos 30–40 días",
-                "Vía Khor Fakkan",
+                "Directo unos 20–25 días; con transbordo unos 28–35 días",
+                "Directo o vía Singapur / Port Klang (se confirma por salida)",
                 "MSC, CMA, ASCL"
               ]
             ]
@@ -2836,7 +2847,7 @@ export const contentArticles: ContentArticle[] = [
         },
         {
           "heading": "2. Desde Lianyungang",
-          "body": "Las exportaciones desde Lianyungang al Sudeste Asiático son mayormente directas; India, Pakistán y Medio Oriente suelen conectar vía Shanghái, Qingdao o Khor Fakkan.",
+          "body": "Las exportaciones desde Lianyungang al Sudeste Asiático son mayormente directas; India y Pakistán suelen conectar vía Shanghái o Qingdao. Las salidas desde Lianyungang a Jebel Ali tardan unos 28–35 días, con naviera, puerto de transbordo y conexión confirmados por salida.",
           "table": {
             "columns": [
               "Destino",
@@ -2968,8 +2979,8 @@ export const contentArticles: ContentArticle[] = [
               [
                 "Jebel Ali (Dubái)",
                 "Emiratos Árabes Unidos",
-                "Unos 30 días",
-                "Directo a Khor Fakkan y luego a Dubái",
+                "Unos 28–35 días",
+                "Puerto de transbordo y conexión confirmados por salida",
                 "KAWA Shipping"
               ]
             ]

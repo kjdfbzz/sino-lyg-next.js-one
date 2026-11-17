@@ -126,6 +126,12 @@ textarea {
 }
 
 @media (max-width: 639px) {
+  body:has([data-global-whatsapp]):not(:has(.whatsapp-page)) {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 639px) {
   /* A separate viewport lane keeps the fixed button off all scrollable content. */
   .whatsapp-page {
     --whatsapp-dock-height: calc(5rem + env(safe-area-inset-bottom, 0px));

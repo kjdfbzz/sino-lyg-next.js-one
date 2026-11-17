@@ -119,16 +119,13 @@ export const homeSearchContentEn: HomeSearchContent = {
     },
   ],
   quoteChecklist: {
-    title: 'Prepare a China freight quote request',
+    title: 'Start a fast freight quote with just 3 details',
     intro:
-      'A useful comparison needs the same cargo, route and service scope. Send these details so ocean freight, origin charges and any quoted destination services can be identified clearly.',
+      'No exact weight or HS code yet? Just share your target port and container type for a fast ballpark rate.',
     items: [
-      'Supplier pickup address in China and preferred departure port, if known.',
-      'Destination port, final delivery city and consignee’s receiving requirements.',
-      'Cargo name, package count, gross weight and dimensions or total cubic metres.',
-      'FCL container type and quantity, or LCL package measurements; note oversized or dangerous cargo.',
-      'Cargo ready date, purchase Incoterm and the services you need at origin and destination.',
-      'Your email or phone, plus packing list, cargo photos or technical documents when relevant.',
+      'Departure port and target destination port or terminal.',
+      'Container type: 20GP, 40HQ, reefer or project cargo.',
+      'Your WhatsApp number or email so Bryce can reply.',
     ],
     href: '/en/requirements/fcl-export-checklist',
     linkLabel: 'Full container shipping checklist',
@@ -137,7 +134,7 @@ export const homeSearchContentEn: HomeSearchContent = {
     {
       question: 'What information do you need to quote shipping from China?',
       answer:
-        'Please send the factory pickup address, departure and destination ports, final delivery city, cargo name, package count, gross weight, dimensions or volume, and cargo ready date. For FCL, include container type and quantity; for LCL, include the size and weight of each package. State the purchase Incoterm and whether you need pickup, export customs, ocean freight or destination services.',
+        'No exact weight or HS code yet? Just share your target port and container type for a fast ballpark rate, plus your WhatsApp number or email. Detailed cargo, packing and service requirements can be confirmed together before a final quote and booking.',
     },
     {
       question: 'Should I choose Lianyungang or Qingdao as the departure port?',

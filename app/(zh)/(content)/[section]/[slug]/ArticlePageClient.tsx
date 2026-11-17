@@ -14,9 +14,10 @@ import {
 } from '../../../../content-data';
 import { localizePath } from '../../../../localized-path';
 import PageLanguage from '../../../../PageLanguage';
-import InquiryForm from '../../../../InquiryForm';
+import QuickQuote from '../../../../QuickQuote';
 import WhatsAppButton from '../../../../WhatsAppButton';
 import ContactActions from '../../../../ContactActions';
+import KarachiRouteSpecs from '../../../../KarachiRouteSpecs';
 
 type ArticlePageClientProps = {
   article: ContentArticle;
@@ -47,6 +48,11 @@ export default function ArticlePageClient({
   const isZh = lang === 'zh';
   const isEs = lang === 'es';
   const navigationLang = isEs ? 'en' : lang;
+  const quoteHelp = isEs
+    ? '¿Aún no tiene el peso exacto o el código arancelario? Indique el puerto de destino y el tipo de contenedor para recibir una tarifa orientativa rápida.'
+    : isZh ? '还没有准确重量或 HS 编码？先告诉我目的港和柜型，就能快速了解参考运价。'
+    : 'No exact weight or HS code yet? Just share your target port and container type for a fast ballpark rate.';
+  const offersDocumentReview = ['fcl-export-checklist', 'lcl-export-checklist', 'customs-documents'].includes(article.slug);
   const destinationPlaceholders: Record<string, string> = {
     'china-to-india-shipping': 'Nhava Sheva / Mundra / Kolkata',
     'lianyungang-to-india-fcl-shipping': 'Nhava Sheva / Mundra',
@@ -96,9 +102,7 @@ export default function ArticlePageClient({
     ...(articleCopy.faqs?.length
       ? [{ id: 'faq', label: isEs ? 'Preguntas frecuentes' : isZh ? '常见问题' : 'FAQ' }]
       : []),
-    ...(articleCopy.checklist?.length
-      ? [{ id: 'inquiry-checklist', label: isEs ? 'Lista para cotizar' : isZh ? '询盘清单' : 'Inquiry Checklist' }]
-      : []),
+    { id: 'request-quote', label: isEs ? 'Cotización rápida' : isZh ? '快速询价' : 'Quick quote' },
   ];
 
   return (
@@ -194,9 +198,14 @@ export default function ArticlePageClient({
             <h1 className="mt-7 max-w-5xl text-[clamp(2.25rem,4.6vw,4.35rem)] font-black leading-[1.1] tracking-tight">
               {articleCopy.title}
             </h1>
+            {lang === 'en' && article.slug === 'china-to-karachi-shipping' && <KarachiRouteSpecs title={articleCopy.title} />}
             <p className="mt-7 max-w-3xl text-lg leading-9 text-white/72">
               {articleCopy.description}
             </p>
+            {offersDocumentReview && <div data-document-review className="mt-6 border border-amber-300/50 bg-amber-300/10 p-5 text-sm leading-7 text-amber-100">
+              {isEs ? 'Le ayudamos a revisar sus documentos sin costo y a obtener una cotización marítima rápida.' : isZh ? '可免费协助审核单证，并快速提供海运参考报价。' : 'Get free assistance reviewing your shipment documents and a fast ocean freight quote.'}
+              <Link href="#request-quote" className="ml-2 font-bold underline underline-offset-4">{isEs ? 'Solicitar cotización →' : isZh ? '快速询价 →' : 'Get a quick quote →'}</Link>
+            </div>}
           </div>
         </div>
       </section>
@@ -330,9 +339,9 @@ export default function ArticlePageClient({
             )}
 
             <section id="request-quote" className="mt-12 scroll-mt-8">
-              <InquiryForm lang={lang} articleTitle={articleCopy.title}
+              <QuickQuote lang={lang} title={articleCopy.title}
                 sourcePath={localizePath(getArticlePath(article), lang)}
-                destinationPlaceholder={article.section === 'routes' ? destinationPlaceholders[article.slug] : undefined} />
+                destinationHint={article.section === 'routes' ? destinationPlaceholders[article.slug] : undefined} />
             </section>
 
             <p className="mt-12 border-l border-amber-300/40 pl-5 text-sm leading-7 text-white/58">
@@ -365,18 +374,11 @@ export default function ArticlePageClient({
           </div>
 
           <aside className="lg:sticky lg:top-8 lg:self-start">
-            {articleCopy.checklist && articleCopy.checklist.length > 0 && (
-              <section id="inquiry-checklist" className="scroll-mt-8 border border-white/14 bg-black/32 p-6">
-                <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">
-                  {isEs ? 'Lista para cotizar' : isZh ? '询盘清单' : 'Inquiry Checklist'}
-                </h2>
-                <ul className="mt-6 list-disc space-y-3 pl-5 text-sm leading-7 text-white/70">
-                  {articleCopy.checklist.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
+            <section id="inquiry-checklist" className="scroll-mt-8 border border-white/14 bg-black/32 p-6">
+              <h2 className="text-xs font-black uppercase tracking-[0.28em] text-amber-300">{isEs ? 'Cotización rápida' : isZh ? '快速询价' : 'Quick quote'}</h2>
+              <p className="mt-5 text-sm leading-7 text-white/75">{quoteHelp}</p>
+              <Link href="#request-quote" className="mt-5 inline-block font-bold text-amber-300 underline underline-offset-4">{isEs ? 'Solo 3 campos →' : isZh ? '只填三项即可询价 →' : 'Just 3 fields →'}</Link>
+            </section>
 
             <section id="article-contact" className="mt-6 bg-amber-300 p-6 text-black">
               <p className="text-xs font-black uppercase tracking-[0.28em] text-black/54">
@@ -400,11 +402,7 @@ export default function ArticlePageClient({
                   : 'Send the shipment details and I will review the route'}
               </h2>
               <p className="mt-4 text-sm font-semibold leading-7 text-black/66">
-                {isEs
-                  ? 'Incluya puerto de origen y destino, mercancía, tipo de contenedor, bultos, peso, volumen y fecha de carga.'
-                  : isZh
-                  ? '建议附上起运港、目的港、品名、箱型、件重尺和出货时间。'
-                  : 'Include POL, POD, commodity, equipment, package count, weight, volume and ready date.'}
+                {quoteHelp}
               </p>
               {isZh ? <div className="mt-6 grid gap-3">
                 <WhatsAppButton lang={lang} title={articleCopy.title} />
@@ -455,7 +453,6 @@ export default function ArticlePageClient({
           </div>
         </section>
       )}
-      <WhatsAppButton lang={lang} title={articleCopy.title} floating />
     </main>
   );
 }
