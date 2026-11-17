@@ -3007,6 +3007,195 @@ export const contentArticles: ContentArticle[] = [
       ]
     },
   },
+  {
+    slug: 'vehicle-machinery-container-stacking-shipping-guide',
+    section: 'guides',
+    title: '车辆与工程机械集装箱叠装、滚装及散杂货海运指南：青岛与连云港',
+    metaTitle: '车辆叠装计算与海运指南：20GP/40HQ、滚装与散杂货',
+    description: '从青岛、连云港出口乘用车、电动车、电动三轮车及工程机械，如何比较20GP/40HQ钢架叠装、滑撬、滚装与散杂船？整理包装尺寸、绑扎止动、单证和装柜流程，可使用免费3D装柜计算器并快速询价。',
+    quickAnswer: '先用免费装柜计算器估算车辆及钢架、滑撬的完整外包络，再由装柜作业方与船司确认结构、底板承载、加固与货物接受条件。20GP/40HQ适合能安全通过柜门并按审核方案固定的单元；不适合普通柜的车辆或设备，应比较滚装、开顶/框架或散杂船。车辆不能直接压在另一辆车上，电动车还需单独审核电池要求。初步海运询价先提供目的港、箱型或运输方式及联系方式即可。',
+    updatedAt: '2026-11-17',
+    readTime: '8 min read',
+    image: '/bryce-services-port.webp',
+    keywords: ['vehicle stacking calculator', 'vehicle container stuffing', 'container loading plan', '车辆集装箱叠装', '电动三轮车海运', '工程机械海运', 'steel racking', 'FOTON shipping', 'XCMG machinery shipping', 'LiuGong shipping', 'Qingdao vehicle export', 'Lianyungang project cargo'],
+    highlights: [
+      '按“车辆或机械 + 钢架/滑撬 + 包装”的完整单元计算，不按裸车尺寸估算数量。',
+      '20GP与40HQ要同时核对柜门、箱内高度、载荷、底板接触载荷和作业空间。',
+      '支架负责承载，绑扎与止动控制移动，几何模拟不能代替受力审核。',
+      '按实际工厂、港口作业与船司接受情况比较集装箱、滚装和散杂货。',
+    ],
+    sections: [
+      {
+        heading: '1. 用车辆叠装计算器估算完整包装单元',
+        body: '先定义可整体装卸的处理单元，再录入最大长、宽、高、合计毛重和数量。后视镜、车轮、突出附件、钢架、滑撬与保护包装都计入外包络。多层钢架按完整设计单元录入；独立单件的叠放层数须符合实际允许条件，不要自由翻转车辆来追求装载率。',
+        bullets: ['先比较柜门开口，再比较箱内空间和总体积。', '支架和包装重量计入货物毛重，局部接触载荷另行核对。', '工具不计算钢架强度、车辆受力或绑扎力，数量按实际箱体、作业审核及船司接受确认。'],
+        links: [{ label: '使用免费3D车辆叠装与装柜计算器 →', href: '/load' }],
+      },
+      {
+        heading: '2. 乘用车、EV、三轮车与机械配件的钢架和滑撬',
+        body: '钢制叠装支架（Steel Racking）应让每辆车有独立承载路径，保留固定、检查和目的港卸货空间。滑撬底座（Skids）可承载机械与配件，但底座面积大并不代表底板载荷一定合格，应先确认支撑位置、载荷、搬运方式和拆架条件。',
+        table: {
+          columns: ['货物场景', '方案重点', '技术审核阶段核对'],
+          rows: [
+            ['乘用车 / EV', '独立支撑、轮位保护及车辆间防接触', '车辆外包络、支撑位置、状态、架体载荷与卸货方式'],
+            ['电动三轮车', '专用固定架或确认的包装单元，不默认直接叠车', '电池类型及状态、车轮止动、突出部件和层数'],
+            ['工程机械配件', '钢架、滑撬或箱装，核对起吊与叉取', '重心、局部接触载荷、吊点和防护'],
+            ['整机 / 商用车', '先看柜门和搬运，再比较滚装、框架或散杂船', '尺寸、重量、运行状态及目的港装卸条件'],
+          ],
+        },
+        afterBullets: 'FOTON（福田）商用车、XCMG（徐工）设备或LiuGong（柳工）机械配件可按具体型号咨询；品牌名称不能替代本票尺寸、状态与接受审核。',
+      },
+      {
+        heading: '3. 青岛与连云港：从参考报价到装箱现场',
+        body: '初步询价只需起运港/目的港或码头、箱型或运输方式以及WhatsApp/邮箱。方案推进后，再补充工厂城市、包装尺寸、重量、车辆状态与支架资料，比较工厂装箱、场站装箱或其他作业安排。具体场站、进港条件和作业窗口均按票核对，不套用一个固定港口方案。',
+        bullets: [
+          '报价阶段：比较包含范围一致的运输方式、起运与目的港服务及费用责任。',
+          '技术审核：核对支架/滑撬图、包装图、重心、搬运与卸货条件。',
+          '装箱前：检查箱体、柜门、地板和加固点，确认设备、人员及作业顺序。',
+          '装箱中：按件核对，记录支撑、止动、绑扎与操作间隙并保留照片。',
+          '封箱前：核对装载清单、重量资料、单证与封条记录，衔接进港。',
+        ],
+      },
+      {
+        heading: '4. Lashing & Chocking：绑扎、止动与接触载荷',
+        body: '由具备相应能力的作业方按CTU Code、实际货物和船司要求制定方案。绑扎带或链条、连接件、车辆系固点及箱内固定点组成一个受力系统，不能只看绑扎带本身的标称强度。滚动、滑动与倾覆风险要结合支架支撑、止动和适当的系固方式处理。',
+        bullets: [
+          '车轮止动和制动状态不能替代完整运输固定。',
+          '使用适用且额定能力明确的固定点与材料，不将力传到未批准的车身、电池外壳或薄弱部位。',
+          '重型单元通过适当结构分散接触压力，核对底板与局部载荷能力。',
+          '保留安装、检查及卸货通道，避免货物靠门产生开门掉落风险。',
+          '支架层数、支撑及绑扎数量按具体方案审核，不给出脱离货物的统一数量。',
+        ],
+      },
+      {
+        heading: '5. 集装箱叠装、RoRo与Breakbulk怎么选',
+        body: '比较完整运输链，计入支架制作与回收、包装、装箱加固、港口操作、海运、目的港拆架和卸货。超出柜门或局部承载条件时，不应因为几何模拟放得下就继续普通柜方案。',
+        table: {
+          columns: ['方式', '可优先比较的条件', '主要核对点'],
+          rows: [
+            ['20GP / 40HQ', '审核后的单元能安全进门、装卸和固定', '数量、完整毛重、柜门、底板及目的港拆架'],
+            ['滚装 RoRo', '航线与船舶接受车辆或滚动/拖挂方式', '运行状态、尺寸、上下船和目的港接车'],
+            ['开顶 / 框架', '尺寸或装卸不适合普通柜门且获接受', '超限、重心、吊装、加固及内陆衔接'],
+            ['散杂船 Breakbulk', '需要独立吊装及项目货加固的大件', '起吊重量、吊点、设备、舱位与责任范围'],
+          ],
+        },
+      },
+      {
+        heading: '6. 电动车、电动三轮车与装运资料',
+        body: '电池动力、车辆状态及电池是否安装在车内，可能影响危险品分类与船司接受条件。按现行规则和实际船司逐票核对，不把所有电动车、三轮车或机械默认当普货。技术审核阶段确认所需电池资料、装运文件和接受限制，操作由合格人员按要求执行。',
+        bullets: ['发票、装箱单和车辆/机械清单对应实际型号、数量与包装单元。', '记录电池类型、安装状态及车辆是否受损，散装备用电池不能直接等同整车。', '船司可能限制车辆相互接触、受损电池或车辆内夹带其他货物。', '订舱前与收货人确认拆架、提货或接车条件。'],
+      },
+      {
+        heading: '7. 参数与作业参考',
+        body: '以下资料可核对箱型示例、装柜原则与船司车辆接受要求，实际箱体与本票确认仍是出运审核依据。',
+        links: [
+          { label: '赫伯罗特：20尺标准集装箱公布参数', href: 'https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container/20-standard.html' },
+          { label: 'IMO：货物加固与CTU Code资料', href: 'https://www.imo.org/en/ourwork/safety/pages/cargosecuring-default.aspx' },
+          { label: 'Maersk：集装箱车辆接受说明（2026-10-19）', href: 'https://www.maersk.com/news/articles/2026/10/19/booking-vehicles-for-container-transport' },
+        ],
+      },
+    ],
+    checklist: ['起运港与目的港/码头', '20GP、40HQ、滚装或散杂货需求', 'WhatsApp或邮箱；详细技术资料可后补'],
+    faqs: [
+      { question: '一个20GP或40HQ能装几辆车？', answer: '没有适用于所有车型的固定数量。先计算车辆加钢架/滑撬的完整尺寸与重量，再核对柜门、支撑、底板载荷、绑扎空间和目的港拆架条件。计算器结果用于比较布局，不是装运批准。' },
+      { question: '可以把车直接叠在另一辆车上吗？', answer: '不应让车辆直接压在或接触另一辆车。多层运输需独立承载的支架等方案，并由作业方与实际船司确认接受，不能只看体积利用率。' },
+      { question: '车辆叠装计算器会设计钢架或计算绑扎力吗？', answer: '不会。工具只估算录入单元的空间、重量分布及几何装载顺序，支架设计、局部承载、吊装与绑扎受力需由相应专业人员另行审核。' },
+      { question: '电动三轮车可以按普货直接订舱吗？', answer: '不能默认。按电池类型、车辆及电池状态、包装与实际船司规则确认危险品分类及接受要求，取得审核后再订舱。' },
+      { question: '青岛与连云港如何比较？', answer: '按工厂所在地、货物与支架条件、可订航线、场站作业和目的港卸货条件，比较包含范围一致的整柜、滚装或散杂货方案，不只比较单项海运费。' },
+      { question: '没有准确毛重和HS编码能先询价吗？', answer: '可以先提供起运港、目的港、箱型或运输方式及WhatsApp/邮箱，咨询初步参考价。正式报价、货物接受与订舱前，再确认尺寸、重量、支架和适用单证。' },
+    ],
+    relatedSlugs: ['fcl-export-checklist', 'customs-documents', 'ocean-freight-cost-breakdown'],
+    title_en: 'Vehicle & Machinery Shipping from China: Container Stacking, Steel Racking, RoRo & Breakbulk',
+    metaTitle_en: 'Vehicle Stacking Calculator Guide: Container Stuffing, RoRo & Breakbulk',
+    description_en: 'Plan vehicle container stuffing from Qingdao and Lianyungang: cars, EVs, electric tricycles and machinery in 20GP/40HQ, steel racking, skids, lashing and chocking. Compare RoRo or breakbulk, try the free 3D calculator and request a fast freight quote.',
+    quickAnswer_en: 'Use the free vehicle stacking calculator to estimate the complete vehicle-and-rack or machinery-and-skid envelope, then have the loading operator and carrier confirm structure, floor loading, securing and cargo acceptance. Compare 20GP/40HQ where the reviewed units can pass the door and be handled safely; consider RoRo, open-top/flat-rack or breakbulk where a standard container is unsuitable. Do not rest one vehicle on another, and review EV battery requirements separately. Start an initial quote with your port, equipment or shipping method and contact details.',
+    highlights_en: [
+      'Plan the complete cargo + steel rack/skid + protective packing envelope, not bare vehicle dimensions.',
+      'Check the door, inside height, payload, floor contact loads and handling access for 20GP and 40HQ.',
+      'A transport rack supports the cargo; lashing and chocking restrain movement. A volume simulation does not verify forces.',
+      'Compare container stuffing, RoRo and breakbulk from Qingdao and Lianyungang for the actual supplier, cargo and destination.',
+    ],
+    sections_en: [
+      {
+        heading: '1. Start with a vehicle stacking calculator and the complete handling unit',
+        body: 'Define a unit that can be handled as one package, then enter its maximum outer length, width, height, combined gross weight and quantity. Include mirrors, wheels, protrusions, rack/skid and packing. Treat a multi-level rack as its complete designed unit. For independent packages, stacking limits must match the real permission; do not freely rotate a vehicle to increase apparent utilization.',
+        bullets: ['Compare the 20GP and 40HQ door opening as well as internal volume.', 'Count steelwork and packing in cargo gross weight; check local floor loads separately.', 'The tool does not calculate rack strength, vehicle stress or lashing forces. Confirm the vehicle count against the actual box, loading review and carrier acceptance.'],
+        links: [{ label: 'Try our Free 3D Vehicle Stacking & Container Loading Calculator', href: '/en/load' }],
+      },
+      {
+        heading: '2. Steel racking and skids for cars, EVs, tricycles and machinery parts',
+        body: 'Steel racking should provide an independent load path for each vehicle and room for securing, inspection and unloading. Skids can support machinery or parts, but a large footprint alone does not establish acceptable floor loading. Review support positions, loads, handling and rack removal before defining the unit.',
+        table: {
+          columns: ['Shipment', 'Packing approach', 'Checks at technical review'],
+          rows: [
+            ['Cars / EVs', 'Independent support rack, wheel protection, no vehicle contact', 'Envelope, support positions, condition, rack loads and unloading'],
+            ['Electric tricycles', 'Dedicated frame or confirmed packing; no assumed direct stacking', 'Battery type/condition, chocking, protrusions and permitted tiers'],
+            ['Machinery parts', 'Frame, skid or crate with handling access', 'Centre of gravity, floor contact loads, lifting points and protection'],
+            ['Complete machinery / commercial vehicles', 'Check doors and handling, then RoRo, flat-rack or breakbulk', 'Dimensions, weight, operating condition and destination equipment'],
+          ],
+        },
+        afterBullets: 'For FOTON commercial vehicles, XCMG equipment or LiuGong machinery parts, discuss the actual model and packing. A brand name does not replace dimensions, condition or shipment acceptance.',
+      },
+      {
+        heading: '3. Qingdao and Lianyungang: from ballpark quote to the stuffing site',
+        body: 'An initial quote needs only your origin/target port or terminal, preferred container or RoRo/breakbulk method, and WhatsApp/email. As the option develops, provide the supplier city, packing measurements, weight, condition and rack details to compare factory stuffing, a depot or another arrangement. Confirm the actual depot, gate-in conditions and handling window for either port rather than assuming a universal port loading package.',
+        bullets: [
+          'Quote stage: compare the shipping method, included origin/destination services and charge responsibility.',
+          'Technical review: check rack/skid drawings, packed layout, centre of gravity, handling and unloading.',
+          'Before stuffing: inspect the box, doors, floor and securing points; confirm the team, equipment and sequence.',
+          'During stuffing: tally units and record supports, chocks, lashings and working clearances with photos.',
+          'Before sealing: reconcile the loading list, weight data, documents and seal record for gate-in.',
+        ],
+      },
+      {
+        heading: '4. Lashing & chocking: restraint and floor contact loads',
+        body: 'Have a competent loading operator prepare the arrangement against the CTU Code, actual cargo and carrier requirements. Lashings, connectors, cargo anchorages and container securing points form one load path; the strap rating alone does not establish capacity. Review rolling, sliding and tipping with rack supports, blocking and suitable restraint.',
+        bullets: [
+          'Wheel chocks and the parking brake do not replace a complete transport restraint arrangement.',
+          'Use suitable rated anchorages and materials, not an unapproved body panel, battery casing or weak attachment.',
+          'Spread concentrated contact loads with appropriate supports and check floor and local loading limits.',
+          'Leave installation, inspection and unloading access, and prevent cargo falling against the doors when opened.',
+          'Determine tiers, supports and lashing quantities for the actual arrangement, not a universal strap count.',
+        ],
+      },
+      {
+        heading: '5. Container stacking vs RoRo vs breakbulk',
+        body: 'Compare the complete chain: rack manufacture or return, packing, stuffing/securing, port handling, ocean freight, rack removal and destination unloading. A geometric fit does not make a standard container suitable when door access or floor loading is unacceptable.',
+        table: {
+          columns: ['Method', 'When to compare', 'Main checks'],
+          rows: [
+            ['20GP / 40HQ', 'Reviewed units can pass the door and be handled and secured safely', 'Quantity, combined weight, doors, floor and rack removal'],
+            ['RoRo', 'Service and vessel accept the vehicle or rolling/trailer arrangement', 'Operating condition, dimensions, embarkation and receiving'],
+            ['Open-top / flat-rack', 'Size or handling is unsuitable for a standard door and acceptance is available', 'Out-of-gauge limits, centre of gravity, lifting, securing and inland connections'],
+            ['Breakbulk', 'Large or special equipment needs individual lifting and securing', 'Lift weight, lifting points, equipment, space and responsibility'],
+          ],
+        },
+      },
+      {
+        heading: '6. EVs, electric tricycles and shipment documents',
+        body: 'Battery power, vehicle condition and whether a battery is installed can affect dangerous-goods classification and acceptance. Review current rules with the actual carrier rather than assuming every EV, tricycle or machine is general cargo. Confirm battery information, documents and restrictions during technical review; qualified personnel should perform the required operations.',
+        bullets: ['Match invoices, packing lists and vehicle/machinery lists to actual models, quantities and handling units.', 'Identify battery type, installation and damage; a loose spare battery differs from an installed battery.', 'Carriers may restrict vehicle contact, damaged batteries or other goods carried inside a vehicle.', 'Agree rack removal, pickup or vehicle reception with the consignee before booking.'],
+      },
+      {
+        heading: '7. Container and loading references',
+        body: 'Cross-check example dimensions, packing principles and carrier acceptance using these references. The actual box and shipment-specific confirmation govern the booking.',
+        links: [
+          { label: 'Hapag-Lloyd: published 20ft standard container example', href: 'https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container/20-standard.html' },
+          { label: 'IMO: cargo securing and CTU Code resources', href: 'https://www.imo.org/en/ourwork/safety/pages/cargosecuring-default.aspx' },
+          { label: 'Maersk: booking vehicles for container transport (19 October 2026)', href: 'https://www.maersk.com/news/articles/2026/10/19/booking-vehicles-for-container-transport' },
+        ],
+      },
+    ],
+    checklist_en: ['Origin and target port/terminal', '20GP, 40HQ, RoRo or breakbulk requirement', 'WhatsApp/email; detailed technical data can follow'],
+    faqs_en: [
+      { question: 'How many vehicles fit in a 20GP or 40HQ?', answer: 'There is no fixed count for every model. Calculate the complete vehicle-and-rack or skid dimensions and weight, then review doors, support, floor loads, securing access and rack removal. A calculator layout is not a loading approval.' },
+      { question: 'Can one vehicle rest directly on another?', answer: 'Do not rest a vehicle directly on, or in contact with, another. Multi-level transport needs independently supported racking or another reviewed system, accepted by the actual operator and carrier. Volume utilization alone is insufficient.' },
+      { question: 'Does the vehicle stacking calculator design racks or lashing forces?', answer: 'No. It estimates space, weight distribution and geometric order for entered handling units. Rack design, local loading, lifting and securing forces require separate competent review.' },
+      { question: 'Can electric tricycles automatically be booked as general cargo?', answer: 'No. Confirm classification and acceptance using battery type, cargo/battery condition, packing and current carrier rules before booking.' },
+      { question: 'How should I compare Qingdao and Lianyungang shipping?', answer: 'Compare container, RoRo or breakbulk with the same service scope using supplier location, cargo/rack conditions, available sailings, depot operations and unloading arrangements. Do not compare the ocean freight line alone.' },
+      { question: 'Can I ask for a rate before I have exact weight or an HS code?', answer: 'Yes. Start with your origin, target port, equipment or shipping method and WhatsApp/email for a ballpark rate. Confirm dimensions, weight, racking and applicable documents before final pricing, acceptance and booking.' },
+    ],
+  },
 ];
 
 export function getSection(slug: string) {

@@ -454,6 +454,20 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 .quote-fallback a{color:var(--steel);text-decoration:underline}.quote-stale{color:var(--warn)}
 .calc-seo{max-width:1200px;margin:24px auto;padding:0 var(--padl);color:var(--muted);line-height:1.8}
 .calc-seo h2{font-size:18px;color:var(--fg)}
+.calc-seo{padding-top:24px;padding-bottom:24px}.calc-seo>section{margin-top:30px;padding-top:24px;border-top:1px solid var(--line)}
+.calc-seo h2{font-size:24px;line-height:1.35}.calc-seo h3{font-size:18px;line-height:1.5;color:var(--fg)}
+.calc-seo a{color:var(--steel);text-decoration:underline;text-underline-offset:3px}.calc-seo .btn{text-decoration:none}
+.seo-spec-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+.seo-spec-table{width:100%;min-width:700px;border-collapse:collapse;background:var(--card)}
+.seo-spec-table th,.seo-spec-table td{padding:12px;text-align:left;border-bottom:1px solid var(--line);white-space:normal;line-height:1.6}
+.seo-spec-table thead th{background:var(--sunk);color:var(--fg)}.seo-spec-table tbody th{font-weight:600;color:var(--fg)}
+.seo-faq-item{padding:16px 0;border-bottom:1px solid var(--line)}.seo-faq-item summary{cursor:pointer;color:var(--fg)}
+.seo-faq-item summary h3{display:inline;margin:0}.seo-faq-item p{margin:12px 0 0}
+.seo-quick-quote{margin-top:24px;padding:20px;border:1px solid var(--accent);border-radius:var(--r);background:var(--card)}
+.seo-quote-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.seo-quote-grid input{min-width:0;width:100%}
+.seo-quote-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.seo-quote-actions .btn{min-height:42px;white-space:normal;text-align:center;justify-content:center}
+.seo-quote-trust{padding-top:14px;border-top:1px solid var(--line);font-size:12px}
+@media(max-width:700px){.seo-quote-grid{grid-template-columns:minmax(0,1fr)}.seo-quote-actions .btn{width:100%}.calc-seo h2{font-size:21px}}
 </style>
 
 <style>
@@ -743,9 +757,68 @@ html[lang="en"] .caption{overflow-wrap:anywhere}
 </div>
 
 <section class="calc-seo" aria-labelledby="calc-seo-title">
-  <h2 id="calc-seo-title">Plan container loading and request freight from China</h2>
-  <p>Use this free container load calculator to compare carton or pallet plans for 20ft and 40ft containers. For a container loading calculator 20ft plan or a vehicle stacking calculator estimate, enter the packaged dimensions and review the 3D layout; vehicle securing and engineering feasibility require separate confirmation. Share your result for container transport from Qingdao and Lianyungang and an FCL ocean freight quote.</p>
+  <h2 id="calc-seo-title">Container load calculator for export shipment planning</h2>
+  <p>Plan cartons, pallets and packaged vehicle or machinery units in 20GP and 40HQ containers, review a 3D loading view and request container transport from Qingdao and Lianyungang. Start with a geometry estimate, then confirm the equipment, cargo acceptance and loading method for your shipment.</p>
+  <section id="vehicle-stacking" aria-labelledby="vehicle-stacking-title">
+    <h2 id="vehicle-stacking-title">Vehicle stacking calculator: cars, EVs, tricycles and machinery</h2>
+    <h3>Cars, EVs, Tricycles & Machinery Stacking in 20ft/40HQ Containers</h3>
+    <p>For vehicle container stuffing, enter the full outer dimensions and gross weight of each vehicle plus its steel rack or skid as a packaged unit. Allow for mirrors, wheels, battery protection, supports, door clearance and access for securing. A vehicle stacking calculator can compare these rectangular envelopes; it does not design steel racking, verify the structure or approve stacking. Do not place one vehicle directly on another. Use a qualified rack and securing plan accepted for the actual cargo and carrier.</p>
+    <p><a href="/en/guides/vehicle-machinery-container-stacking-shipping-guide">Read the vehicle & machinery container stacking, RoRo and breakbulk shipping guide →</a></p>
+    <div class="seo-quick-quote">
+      <h3>Get a vehicle or machinery freight quote · 3 fields</h3>
+      <p>No exact weight or HS code yet? Share your port and preferred container type or RoRo/breakbulk requirement for an initial ballpark quote. Rack drawings and detailed cargo checks can follow before booking.</p>
+      <form id="vehicle-inquiry-form" aria-label="Get a vehicle or machinery freight quote · 3 fields">
+        <div class="seo-quote-grid">
+          <label class="fld" for="vehicle-inquiry-route">POL / Terminal<input id="vehicle-inquiry-route" name="route" required maxlength="300" placeholder="Qingdao / Lianyungang → destination port or terminal"></label>
+          <label class="fld" for="vehicle-inquiry-equipment">Container Type<input id="vehicle-inquiry-equipment" name="containerType" required maxlength="300" placeholder="20GP / 40HQ / RoRo / Breakbulk"></label>
+          <label class="fld" for="vehicle-inquiry-contact">WhatsApp / Email<input id="vehicle-inquiry-contact" name="contact" required maxlength="300" placeholder="Your WhatsApp number or email"></label>
+        </div>
+        <div class="seo-quote-actions">
+          <a class="btn quote-wa" id="vehicle-inquiry-wa" target="_blank" rel="noopener noreferrer">Get Ocean Freight Quote via WhatsApp</a>
+          <button class="btn primary" id="vehicle-inquiry-submit" type="submit">Send quick quote request</button>
+        </div>
+        <p id="vehicle-inquiry-status" role="status" aria-live="polite"></p>
+        <div class="quote-fallback" id="vehicle-inquiry-fallback" hidden><a id="vehicle-inquiry-fallback-wa" target="_blank" rel="noopener noreferrer">WhatsApp</a><a id="vehicle-inquiry-email">Email Bryce</a></div>
+        <p class="seo-quote-trust">Operated by Bryce | Backed by Global View Logistics (Lianyungang & Qingdao) — Direct Booking Agent for FCL, Reefer & Project Cargo</p>
+      </form>
+    </div>
+  </section>
+  <section id="container-20ft-reference" aria-labelledby="container-20ft-title">
+    <h2 id="container-20ft-title">Container loading calculator 20ft: 20GP dimensions, payload and CBM</h2>
+    <p>A 20ft loading plan must fit the door opening as well as the internal space. The table separates this calculator’s editable default settings from a published Hapag-Lloyd 20GP example. Include racks, skids and packing in the cargo payload. The actual container plate, floor loading limits, carrier acceptance and inland transport limits govern the shipment.</p>
+    <div class="seo-spec-scroll" tabindex="0" role="region" aria-label="20GP and 40HQ reference dimensions, weight and CBM">
+      <table class="seo-spec-table">
+        <thead><tr><th scope="col">Reference item</th><th scope="col">20GP: tool default</th><th scope="col">20GP: Hapag-Lloyd example</th><th scope="col">40HQ: tool default</th></tr></thead>
+        <tbody><tr><th scope="row">Internal length</th><td>5,890 mm</td><td>5,900 mm</td><td>12,030 mm</td></tr>
+<tr><th scope="row">Internal width</th><td>2,350 mm</td><td>2,352 mm</td><td>2,350 mm</td></tr>
+<tr><th scope="row">Internal height</th><td>2,390 mm</td><td>2,395 mm</td><td>2,690 mm</td></tr>
+<tr><th scope="row">Door opening: width × height</th><td>2,340 mm × 2,280 mm</td><td>2,340 mm × 2,292 mm</td><td>2,340 mm × 2,580 mm</td></tr>
+<tr><th scope="row">Cargo payload: racks and packing included</th><td>28,200 kg</td><td>28,130 kg</td><td>28,600 kg</td></tr>
+<tr><th scope="row">Container tare: not cargo payload</th><td>2,200 kg</td><td>2,350 kg</td><td>3,900 kg</td></tr>
+<tr><th scope="row">Internal geometric / published capacity</th><td>33.08 CBM</td><td>33.20 CBM</td><td>76.05 CBM</td></tr>
+<tr><th scope="row">Effective packed CBM: planning reference*</th><td>28 CBM*</td><td>Depends on cargo and securing</td><td>68 CBM*</td></tr></tbody>
+      </table>
+    </div>
+    <p>* 28 CBM for 20GP and 68 CBM for 40HQ are rough planning references used by the tool, not guaranteed usable capacity. Vehicle gaps, steel racks, door access, securing and weight can reduce the load. Carrier examples do not automatically change the settings: select or enter the dimensions for your actual container under Loading settings.</p>
+    <p><a href="https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container/20-standard.html" target="_blank" rel="noopener noreferrer">Source: Hapag-Lloyd 20ft standard container specifications (published example)</a></p>
+  </section>
+  <section aria-labelledby="container-stuffing-title">
+    <h2 id="container-stuffing-title">Container stuffing calculator: from measurements to a shipment</h2>
+    <h3>Build an exportable container loading plan</h3><p>Enter outer packing dimensions, quantities and gross weights, then select suitable container types and stacking limits. Review the recommended plan, check each container and export the PDF loading plan and Excel allocation sheet. Treat a rack containing several vehicles as one handling unit with its combined dimensions and weight; the calculator does not design a rack or calculate its structural capacity.</p>
+    <h3>Review a 3D container loading simulation</h3><p>Use the 3D, side, top and door views to review space, loading order and access. The container loading simulation shows geometric placement and weight distribution; it does not assess vehicle suspension, rack strength, forklift capacity, lifting loads, fire risk or lashing forces. Confirm physical feasibility with the loading operator and carrier before shipment.</p>
+  </section>
+  <section id="calculator-faq" aria-labelledby="calculator-faq-title">
+    <h2 id="calculator-faq-title">Vehicle stacking and container loading FAQ</h2>
+    <details class="seo-faq-item"><summary><h3>Can a vehicle stacking calculator tell me exactly how many cars fit?</h3></summary><p>It can estimate space after you enter each vehicle-and-rack unit’s outer dimensions and gross weight. The number also depends on the door, rack design, floor loading, securing access and carrier acceptance. There is no universal car count for a 20GP or 40HQ, and a 3D fit is not a structural or safety approval.</p></details>
+<details class="seo-faq-item"><summary><h3>How much CBM can a 20ft container take?</h3></summary><p>Hapag-Lloyd’s published 20GP example has 33.2 CBM internal capacity. The calculator uses about 28 CBM as a rough packed-volume reference for 20GP, not a guaranteed limit or usable capacity. Check the reference table, actual container and cargo arrangement; racks, securing space and payload can reduce what fits.</p></details>
+<details class="seo-faq-item"><summary><h3>Can I stack EVs or electric tricycles in a container?</h3></summary><p>Only consider a separately supported transport rack or skid arrangement reviewed for the vehicle and accepted by the carrier. Do not rest one vehicle directly on another. Battery type, condition and dangerous-goods documentation need shipment-specific review; a volume calculation does not provide acceptance.</p></details>
+<details class="seo-faq-item"><summary><h3>What should I enter for steel racking and machinery skids?</h3></summary><p>Enter the complete handling unit: cargo plus rack, skid, protective packing and any protrusions. Use the combined gross weight and actual permitted stacking limit. Keep lifting and securing access clear and have the loading operator verify floor contact loads and rack support.</p></details>
+<details class="seo-faq-item"><summary><h3>Can I export a container loading plan and simulation?</h3></summary><p>After calculating, use Export loading plan for a PDF plan and an Excel allocation sheet, and review the loading sequence in the 3D viewer. The exports record a planning layout; they are not certified lashing calculations, rack drawings or a carrier loading approval.</p></details>
+<details class="seo-faq-item"><summary><h3>When should I choose container stacking, RoRo or breakbulk?</h3></summary><p>Compare container loading when the approved handling units fit the door, payload and floor limits. Consider RoRo where the vehicle or trailer arrangement and service are accepted, or breakbulk for cargo needing a separate lifting and securing plan. Compare the complete origin, freight and destination scope for the actual route.</p></details>
+<details class="seo-faq-item"><summary><h3>Do I need an exact weight or HS code to ask for a freight quote?</h3></summary><p>For an initial ballpark quote, share your origin and target port, preferred container type or RoRo/breakbulk requirement, and WhatsApp or email. Cargo dimensions, weights, rack details and documents are confirmed before final pricing, acceptance and booking.</p></details>
+  </section>
 </section>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.sinolyg.com/en/load#faq","inLanguage":"en","url":"https://www.sinolyg.com/en/load#calculator-faq","mainEntity":[{"@type":"Question","name":"Can a vehicle stacking calculator tell me exactly how many cars fit?","acceptedAnswer":{"@type":"Answer","text":"It can estimate space after you enter each vehicle-and-rack unit’s outer dimensions and gross weight. The number also depends on the door, rack design, floor loading, securing access and carrier acceptance. There is no universal car count for a 20GP or 40HQ, and a 3D fit is not a structural or safety approval."}},{"@type":"Question","name":"How much CBM can a 20ft container take?","acceptedAnswer":{"@type":"Answer","text":"Hapag-Lloyd’s published 20GP example has 33.2 CBM internal capacity. The calculator uses about 28 CBM as a rough packed-volume reference for 20GP, not a guaranteed limit or usable capacity. Check the reference table, actual container and cargo arrangement; racks, securing space and payload can reduce what fits."}},{"@type":"Question","name":"Can I stack EVs or electric tricycles in a container?","acceptedAnswer":{"@type":"Answer","text":"Only consider a separately supported transport rack or skid arrangement reviewed for the vehicle and accepted by the carrier. Do not rest one vehicle directly on another. Battery type, condition and dangerous-goods documentation need shipment-specific review; a volume calculation does not provide acceptance."}},{"@type":"Question","name":"What should I enter for steel racking and machinery skids?","acceptedAnswer":{"@type":"Answer","text":"Enter the complete handling unit: cargo plus rack, skid, protective packing and any protrusions. Use the combined gross weight and actual permitted stacking limit. Keep lifting and securing access clear and have the loading operator verify floor contact loads and rack support."}},{"@type":"Question","name":"Can I export a container loading plan and simulation?","acceptedAnswer":{"@type":"Answer","text":"After calculating, use Export loading plan for a PDF plan and an Excel allocation sheet, and review the loading sequence in the 3D viewer. The exports record a planning layout; they are not certified lashing calculations, rack drawings or a carrier loading approval."}},{"@type":"Question","name":"When should I choose container stacking, RoRo or breakbulk?","acceptedAnswer":{"@type":"Answer","text":"Compare container loading when the approved handling units fit the door, payload and floor limits. Consider RoRo where the vehicle or trailer arrangement and service are accepted, or breakbulk for cargo needing a separate lifting and securing plan. Compare the complete origin, freight and destination scope for the actual route."}},{"@type":"Question","name":"Do I need an exact weight or HS code to ask for a freight quote?","acceptedAnswer":{"@type":"Answer","text":"For an initial ballpark quote, share your origin and target port, preferred container type or RoRo/breakbulk requirement, and WhatsApp or email. Cargo dimensions, weights, rack details and documents are confirmed before final pricing, acceptance and booking."}}]}</script>
 
 <div class="toast" id="toast" hidden role="status"><span id="toast-msg"></span><button type="button" id="toast-undo">Undo</button></div>
 <div class="cmodal" id="contact" hidden role="dialog" aria-modal="true" aria-labelledby="ct-h">
@@ -1851,6 +1924,45 @@ $('ctreset').onclick = () => { CT = presetCT(RULES.carrier); renderSettings(); s
 /* ================= 5. 计算与界面 ================= */
 let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null, selManual = false;   // selManual：用户自己点选过方案
 let quoteSnapshot = null, quoteSending = false;
+async function sendCalculatorInquiry(payload){
+  const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+  const result = await response.json();
+  if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+}
+function bindVehicleInquiry(){
+  const form = $('vehicle-inquiry-form'), inputs = ['vehicle-inquiry-route','vehicle-inquiry-equipment','vehicle-inquiry-contact'].map($);
+  const sourceUrl = 'https://www.sinolyg.com' + (document.documentElement.lang === 'en' ? '/en/load' : '/load');
+  let sending = false;
+  const brief = () => ['Hi Bryce, I would like a vehicle or machinery shipping quote from Qingdao or Lianyungang.', document.title,
+    `POL / Terminal: ${inputs[0].value.trim()}`, `Container Type: ${inputs[1].value.trim()}`, `WhatsApp / Email: ${inputs[2].value.trim()}`,
+    `Source: ${sourceUrl}`].join('\n');
+  const update = () => {
+    $('vehicle-inquiry-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(brief());
+    $('vehicle-inquiry-status').textContent = '';
+    $('vehicle-inquiry-fallback').hidden = true;
+  };
+  form.addEventListener('input', e => { e.target.setCustomValidity(''); update(); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if(sending) return;
+    inputs.forEach(input => input.setCustomValidity(input.value.trim() ? '' : 'Please enter this field.'));
+    if(!form.reportValidity()) return;
+    const notes = brief();
+    sending = true; $('vehicle-inquiry-submit').disabled = true; $('vehicle-inquiry-submit').textContent = 'Sending…';
+    $('vehicle-inquiry-status').textContent = ''; $('vehicle-inquiry-fallback').hidden = true;
+    try{
+      await sendCalculatorInquiry({pol:inputs[0].value.trim(), contact:inputs[2].value.trim(), notes, lang:document.documentElement.lang === 'en' ? 'en' : 'zh', sourceUrl});
+      $('vehicle-inquiry-status').textContent = 'Thanks, Bryce will reply as soon as possible.';
+    }catch(err){
+      $('vehicle-inquiry-status').textContent = 'Unable to send right now. Send these details via WhatsApp or email:';
+      $('vehicle-inquiry-fallback-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(notes);
+      $('vehicle-inquiry-email').href = 'mailto:Bryce.Lee@gwl-lianyungang.com?subject=' + encodeURIComponent('Vehicle shipping inquiry [load]') + '&body=' + encodeURIComponent(notes);
+      $('vehicle-inquiry-fallback').hidden = false;
+    }finally{ sending = false; $('vehicle-inquiry-submit').disabled = false; $('vehicle-inquiry-submit').textContent = 'Send quick quote request'; }
+  });
+  update();
+}
+bindVehicleInquiry();
 function calculatorQuoteData(p){
   if(!p || !p.containers.length) return null;
   const counts = {};
@@ -1921,9 +2033,7 @@ $('quote-form').addEventListener('submit', async e => {
   $('quote-status').textContent = '';
   $('quote-fallback').hidden = true;
   try{
-    const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-    const result = await response.json();
-    if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+    await sendCalculatorInquiry(payload);
     if(JSON.stringify(quoteSnapshot) === signature) $('quote-status').textContent = 'Thanks, Bryce will reply as soon as possible.';
   }catch(err){
     if(JSON.stringify(quoteSnapshot) === signature){

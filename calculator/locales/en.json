@@ -747,6 +747,70 @@
   "quoteSending": "Sending…",
   "quoteSuccess": "Thanks, Bryce will reply as soon as possible.",
   "quoteFailure": "Unable to send right now. Send these details via WhatsApp or email:",
-  "quoteSeoTitle": "Plan container loading and request freight from China",
-  "quoteSeoCopy": "Use this free container load calculator to compare carton or pallet plans for 20ft and 40ft containers. For a container loading calculator 20ft plan or a vehicle stacking calculator estimate, enter the packaged dimensions and review the 3D layout; vehicle securing and engineering feasibility require separate confirmation. Share your result for container transport from Qingdao and Lianyungang and an FCL ocean freight quote."
+  "quoteSeoTitle": "Container load calculator for export shipment planning",
+  "quoteSeoCopy": "Plan cartons, pallets and packaged vehicle or machinery units in 20GP and 40HQ containers, review a 3D loading view and request container transport from Qingdao and Lianyungang. Start with a geometry estimate, then confirm the equipment, cargo acceptance and loading method for your shipment.",
+  "seoVehicleTitle": "Vehicle stacking calculator: cars, EVs, tricycles and machinery",
+  "seoVehicleSubtitle": "Cars, EVs, Tricycles & Machinery Stacking in 20ft/40HQ Containers",
+  "seoVehicleCopy": "For vehicle container stuffing, enter the full outer dimensions and gross weight of each vehicle plus its steel rack or skid as a packaged unit. Allow for mirrors, wheels, battery protection, supports, door clearance and access for securing. A vehicle stacking calculator can compare these rectangular envelopes; it does not design steel racking, verify the structure or approve stacking. Do not place one vehicle directly on another. Use a qualified rack and securing plan accepted for the actual cargo and carrier.",
+  "seoVehicleGuideHref": "/en/guides/vehicle-machinery-container-stacking-shipping-guide",
+  "seoVehicleGuideLabel": "Read the vehicle & machinery container stacking, RoRo and breakbulk shipping guide →",
+  "seoQuoteTitle": "Get a vehicle or machinery freight quote · 3 fields",
+  "seoQuoteHelp": "No exact weight or HS code yet? Share your port and preferred container type or RoRo/breakbulk requirement for an initial ballpark quote. Rack drawings and detailed cargo checks can follow before booking.",
+  "seoQuoteContactLabel": "WhatsApp / Email",
+  "seoQuoteGreeting": "Hi Bryce, I would like a vehicle or machinery shipping quote from Qingdao or Lianyungang.",
+  "seoQuoteTrust": "Operated by Bryce | Backed by Global View Logistics (Lianyungang & Qingdao) — Direct Booking Agent for FCL, Reefer & Project Cargo",
+  "seo20ftTitle": "Container loading calculator 20ft: 20GP dimensions, payload and CBM",
+  "seo20ftCopy": "A 20ft loading plan must fit the door opening as well as the internal space. The table separates this calculator’s editable default settings from a published Hapag-Lloyd 20GP example. Include racks, skids and packing in the cargo payload. The actual container plate, floor loading limits, carrier acceptance and inland transport limits govern the shipment.",
+  "seoSpecTableLabel": "20GP and 40HQ reference dimensions, weight and CBM",
+  "seoSpecMetric": "Reference item",
+  "seoSpec20Default": "20GP: tool default",
+  "seoSpec20Carrier": "20GP: Hapag-Lloyd example",
+  "seoSpec40Default": "40HQ: tool default",
+  "seoSpecLength": "Internal length",
+  "seoSpecWidth": "Internal width",
+  "seoSpecHeight": "Internal height",
+  "seoSpecDoor": "Door opening: width × height",
+  "seoSpecPayload": "Cargo payload: racks and packing included",
+  "seoSpecTare": "Container tare: not cargo payload",
+  "seoSpecVolume": "Internal geometric / published capacity",
+  "seoSpecEffective": "Effective packed CBM: planning reference*",
+  "seoSpecVariable": "Depends on cargo and securing",
+  "seoSpecNote": "* 28 CBM for 20GP and 68 CBM for 40HQ are rough planning references used by the tool, not guaranteed usable capacity. Vehicle gaps, steel racks, door access, securing and weight can reduce the load. Carrier examples do not automatically change the settings: select or enter the dimensions for your actual container under Loading settings.",
+  "seoSpecSource": "Source: Hapag-Lloyd 20ft standard container specifications (published example)",
+  "seoStuffingTitle": "Container stuffing calculator: from measurements to a shipment",
+  "seoPlanTitle": "Build an exportable container loading plan",
+  "seoPlanCopy": "Enter outer packing dimensions, quantities and gross weights, then select suitable container types and stacking limits. Review the recommended plan, check each container and export the PDF loading plan and Excel allocation sheet. Treat a rack containing several vehicles as one handling unit with its combined dimensions and weight; the calculator does not design a rack or calculate its structural capacity.",
+  "seoSimulationTitle": "Review a 3D container loading simulation",
+  "seoSimulationCopy": "Use the 3D, side, top and door views to review space, loading order and access. The container loading simulation shows geometric placement and weight distribution; it does not assess vehicle suspension, rack strength, forklift capacity, lifting loads, fire risk or lashing forces. Confirm physical feasibility with the loading operator and carrier before shipment.",
+  "seoFaqTitle": "Vehicle stacking and container loading FAQ",
+  "seoFaqs": [
+    {
+      "question": "Can a vehicle stacking calculator tell me exactly how many cars fit?",
+      "answer": "It can estimate space after you enter each vehicle-and-rack unit’s outer dimensions and gross weight. The number also depends on the door, rack design, floor loading, securing access and carrier acceptance. There is no universal car count for a 20GP or 40HQ, and a 3D fit is not a structural or safety approval."
+    },
+    {
+      "question": "How much CBM can a 20ft container take?",
+      "answer": "Hapag-Lloyd’s published 20GP example has 33.2 CBM internal capacity. The calculator uses about 28 CBM as a rough packed-volume reference for 20GP, not a guaranteed limit or usable capacity. Check the reference table, actual container and cargo arrangement; racks, securing space and payload can reduce what fits."
+    },
+    {
+      "question": "Can I stack EVs or electric tricycles in a container?",
+      "answer": "Only consider a separately supported transport rack or skid arrangement reviewed for the vehicle and accepted by the carrier. Do not rest one vehicle directly on another. Battery type, condition and dangerous-goods documentation need shipment-specific review; a volume calculation does not provide acceptance."
+    },
+    {
+      "question": "What should I enter for steel racking and machinery skids?",
+      "answer": "Enter the complete handling unit: cargo plus rack, skid, protective packing and any protrusions. Use the combined gross weight and actual permitted stacking limit. Keep lifting and securing access clear and have the loading operator verify floor contact loads and rack support."
+    },
+    {
+      "question": "Can I export a container loading plan and simulation?",
+      "answer": "After calculating, use Export loading plan for a PDF plan and an Excel allocation sheet, and review the loading sequence in the 3D viewer. The exports record a planning layout; they are not certified lashing calculations, rack drawings or a carrier loading approval."
+    },
+    {
+      "question": "When should I choose container stacking, RoRo or breakbulk?",
+      "answer": "Compare container loading when the approved handling units fit the door, payload and floor limits. Consider RoRo where the vehicle or trailer arrangement and service are accepted, or breakbulk for cargo needing a separate lifting and securing plan. Compare the complete origin, freight and destination scope for the actual route."
+    },
+    {
+      "question": "Do I need an exact weight or HS code to ask for a freight quote?",
+      "answer": "For an initial ballpark quote, share your origin and target port, preferred container type or RoRo/breakbulk requirement, and WhatsApp or email. Cargo dimensions, weights, rack details and documents are confirmed before final pricing, acceptance and booking."
+    }
+  ]
 }

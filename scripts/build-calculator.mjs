@@ -22,8 +22,44 @@ function escapeEnglish(value, context) {
   return value;
 }
 
+const genericSpecSource = template.match(/const SPEC_GENERIC = (\{[\s\S]*?\n\});/);
+if (!genericSpecSource) throw new Error('Calculator default container specifications not found.');
+const genericSpecs = vm.runInNewContext(`(${genericSpecSource[1]})`);
+const htmlText = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+function seoContent(lang, copy) {
+  if (!Array.isArray(copy.seoFaqs) || copy.seoFaqs.length < 1 || copy.seoFaqs.some(faq => !faq.question?.trim() || !faq.answer?.trim())) {
+    throw new Error(`Invalid ${lang} calculator FAQ data.`);
+  }
+  const url = `https://www.sinolyg.com${lang === 'en' ? '/en/load' : '/load'}`;
+  const faq = {
+    '@context': 'https://schema.org', '@type': 'FAQPage', '@id': `${url}#faq`,
+    inLanguage: lang === 'en' ? 'en' : 'zh-CN', url: `${url}#calculator-faq`,
+    mainEntity: copy.seoFaqs.map(item => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })),
+  };
+  // The carrier column is a published example, separate from the tool's editable defaults.
+  const carrier20 = { L: 590, W: 235.2, H: 239.5, DW: 234, DH: 229.2, kg: 28130, tare: 2350, capacity: 33.2 };
+  const specs = [genericSpecs['20GP'], carrier20, genericSpecs['40HQ']];
+  const mm = (spec, key) => `${Math.round(spec[key] * 10).toLocaleString('en-US')} mm`;
+  const rows = [
+    [copy.seoSpecLength, ...specs.map(spec => mm(spec, 'L'))],
+    [copy.seoSpecWidth, ...specs.map(spec => mm(spec, 'W'))],
+    [copy.seoSpecHeight, ...specs.map(spec => mm(spec, 'H'))],
+    [copy.seoSpecDoor, ...specs.map(spec => `${mm(spec, 'DW')} × ${mm(spec, 'DH')}`)],
+    [copy.seoSpecPayload, ...specs.map(spec => `${spec.kg.toLocaleString('en-US')} kg`)],
+    [copy.seoSpecTare, ...specs.map(spec => `${spec.tare.toLocaleString('en-US')} kg`)],
+    [copy.seoSpecVolume, ...specs.map(spec => `${(spec.capacity ?? spec.L * spec.W * spec.H / 1e6).toFixed(2)} CBM`)],
+    [copy.seoSpecEffective, `${genericSpecs['20GP'].exp} CBM*`, copy.seoSpecVariable, `${genericSpecs['40HQ'].exp} CBM*`],
+  ];
+  return {
+    seoSpecRows: rows.map(row => `<tr><th scope="row">${htmlText(row[0])}</th>${row.slice(1).map(value => `<td>${htmlText(value)}</td>`).join('')}</tr>`).join('\n'),
+    seoFaqMarkup: copy.seoFaqs.map(item => `<details class="seo-faq-item"><summary><h3>${htmlText(item.question)}</h3></summary><p>${htmlText(item.answer)}</p></details>`).join('\n'),
+    seoFaqSchema: `<script type="application/ld+json">${JSON.stringify(faq).replace(/</g, '\\u003c')}</script>`,
+  };
+}
+
 for (const lang of ['zh', 'en']) {
-  const dictionary = dictionaries[lang];
+  const dictionary = { ...dictionaries[lang], ...seoContent(lang, dictionaries[lang]) };
   let html = template.replace(/\{\{CALC:([\w]+):(\w+)\}\}/g, (_, key, context) => {
     if (typeof dictionary[key] !== 'string') throw new Error(`Missing ${lang} translation: ${key}`);
     return lang === 'zh' ? dictionary[key] : escapeEnglish(dictionary[key], context);

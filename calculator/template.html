@@ -450,6 +450,20 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 .quote-fallback a{color:var(--steel);text-decoration:underline}.quote-stale{color:var(--warn)}
 .calc-seo{max-width:1200px;margin:24px auto;padding:0 var(--padl);color:var(--muted);line-height:1.8}
 .calc-seo h2{font-size:18px;color:var(--fg)}
+.calc-seo{padding-top:24px;padding-bottom:24px}.calc-seo>section{margin-top:30px;padding-top:24px;border-top:1px solid var(--line)}
+.calc-seo h2{font-size:24px;line-height:1.35}.calc-seo h3{font-size:18px;line-height:1.5;color:var(--fg)}
+.calc-seo a{color:var(--steel);text-decoration:underline;text-underline-offset:3px}.calc-seo .btn{text-decoration:none}
+.seo-spec-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+.seo-spec-table{width:100%;min-width:700px;border-collapse:collapse;background:var(--card)}
+.seo-spec-table th,.seo-spec-table td{padding:12px;text-align:left;border-bottom:1px solid var(--line);white-space:normal;line-height:1.6}
+.seo-spec-table thead th{background:var(--sunk);color:var(--fg)}.seo-spec-table tbody th{font-weight:600;color:var(--fg)}
+.seo-faq-item{padding:16px 0;border-bottom:1px solid var(--line)}.seo-faq-item summary{cursor:pointer;color:var(--fg)}
+.seo-faq-item summary h3{display:inline;margin:0}.seo-faq-item p{margin:12px 0 0}
+.seo-quick-quote{margin-top:24px;padding:20px;border:1px solid var(--accent);border-radius:var(--r);background:var(--card)}
+.seo-quote-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.seo-quote-grid input{min-width:0;width:100%}
+.seo-quote-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.seo-quote-actions .btn{min-height:42px;white-space:normal;text-align:center;justify-content:center}
+.seo-quote-trust{padding-top:14px;border-top:1px solid var(--line);font-size:12px}
+@media(max-width:700px){.seo-quote-grid{grid-template-columns:minmax(0,1fr)}.seo-quote-actions .btn{width:100%}.calc-seo h2{font-size:21px}}
 </style>
 
 {{CALC:englishStyles:raw}}</head>
@@ -727,7 +741,53 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 <section class="calc-seo" aria-labelledby="calc-seo-title">
   <h2 id="calc-seo-title">{{CALC:quoteSeoTitle:raw}}</h2>
   <p>{{CALC:quoteSeoCopy:raw}}</p>
+  <section id="vehicle-stacking" aria-labelledby="vehicle-stacking-title">
+    <h2 id="vehicle-stacking-title">{{CALC:seoVehicleTitle:raw}}</h2>
+    <h3>{{CALC:seoVehicleSubtitle:raw}}</h3>
+    <p>{{CALC:seoVehicleCopy:raw}}</p>
+    <p><a href="{{CALC:seoVehicleGuideHref:raw}}">{{CALC:seoVehicleGuideLabel:raw}}</a></p>
+    <div class="seo-quick-quote">
+      <h3>{{CALC:seoQuoteTitle:raw}}</h3>
+      <p>{{CALC:seoQuoteHelp:raw}}</p>
+      <form id="vehicle-inquiry-form" aria-label="{{CALC:seoQuoteTitle:raw}}">
+        <div class="seo-quote-grid">
+          <label class="fld" for="vehicle-inquiry-route">{{CALC:quoteRouteLabel:raw}}<input id="vehicle-inquiry-route" name="route" required maxlength="300" placeholder="{{CALC:quoteRoutePlaceholder:raw}}"></label>
+          <label class="fld" for="vehicle-inquiry-equipment">{{CALC:quoteEquipmentLabel:raw}}<input id="vehicle-inquiry-equipment" name="containerType" required maxlength="300" placeholder="20GP / 40HQ / RoRo / Breakbulk"></label>
+          <label class="fld" for="vehicle-inquiry-contact">{{CALC:seoQuoteContactLabel:raw}}<input id="vehicle-inquiry-contact" name="contact" required maxlength="300" placeholder="{{CALC:quoteContactPlaceholder:raw}}"></label>
+        </div>
+        <div class="seo-quote-actions">
+          <a class="btn quote-wa" id="vehicle-inquiry-wa" target="_blank" rel="noopener noreferrer">{{CALC:quoteWhatsApp:raw}}</a>
+          <button class="btn primary" id="vehicle-inquiry-submit" type="submit">{{CALC:quoteSend:raw}}</button>
+        </div>
+        <p id="vehicle-inquiry-status" role="status" aria-live="polite"></p>
+        <div class="quote-fallback" id="vehicle-inquiry-fallback" hidden><a id="vehicle-inquiry-fallback-wa" target="_blank" rel="noopener noreferrer">WhatsApp</a><a id="vehicle-inquiry-email">{{CALC:quoteEmail:raw}}</a></div>
+        <p class="seo-quote-trust">{{CALC:seoQuoteTrust:raw}}</p>
+      </form>
+    </div>
+  </section>
+  <section id="container-20ft-reference" aria-labelledby="container-20ft-title">
+    <h2 id="container-20ft-title">{{CALC:seo20ftTitle:raw}}</h2>
+    <p>{{CALC:seo20ftCopy:raw}}</p>
+    <div class="seo-spec-scroll" tabindex="0" role="region" aria-label="{{CALC:seoSpecTableLabel:raw}}">
+      <table class="seo-spec-table">
+        <thead><tr><th scope="col">{{CALC:seoSpecMetric:raw}}</th><th scope="col">{{CALC:seoSpec20Default:raw}}</th><th scope="col">{{CALC:seoSpec20Carrier:raw}}</th><th scope="col">{{CALC:seoSpec40Default:raw}}</th></tr></thead>
+        <tbody>{{CALC:seoSpecRows:raw}}</tbody>
+      </table>
+    </div>
+    <p>{{CALC:seoSpecNote:raw}}</p>
+    <p><a href="https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container/20-standard.html" target="_blank" rel="noopener noreferrer">{{CALC:seoSpecSource:raw}}</a></p>
+  </section>
+  <section aria-labelledby="container-stuffing-title">
+    <h2 id="container-stuffing-title">{{CALC:seoStuffingTitle:raw}}</h2>
+    <h3>{{CALC:seoPlanTitle:raw}}</h3><p>{{CALC:seoPlanCopy:raw}}</p>
+    <h3>{{CALC:seoSimulationTitle:raw}}</h3><p>{{CALC:seoSimulationCopy:raw}}</p>
+  </section>
+  <section id="calculator-faq" aria-labelledby="calculator-faq-title">
+    <h2 id="calculator-faq-title">{{CALC:seoFaqTitle:raw}}</h2>
+    {{CALC:seoFaqMarkup:raw}}
+  </section>
 </section>
+{{CALC:seoFaqSchema:raw}}
 
 <div class="toast" id="toast" hidden role="status"><span id="toast-msg"></span><button type="button" id="toast-undo">{{CALC:h0161:raw}}</button></div>
 {{CALC:contactPanel:raw}}<div class="cmodal" id="expm" hidden role="dialog" aria-modal="true" aria-labelledby="exp-h">
@@ -1821,6 +1881,45 @@ $('ctreset').onclick = () => { CT = presetCT(RULES.carrier); renderSettings(); s
 /* ================= 5. 计算与界面 ================= */
 let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null, selManual = false;   // selManual：用户自己点选过方案
 let quoteSnapshot = null, quoteSending = false;
+async function sendCalculatorInquiry(payload){
+  const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+  const result = await response.json();
+  if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+}
+function bindVehicleInquiry(){
+  const form = $('vehicle-inquiry-form'), inputs = ['vehicle-inquiry-route','vehicle-inquiry-equipment','vehicle-inquiry-contact'].map($);
+  const sourceUrl = 'https://www.sinolyg.com' + (document.documentElement.lang === 'en' ? '/en/load' : '/load');
+  let sending = false;
+  const brief = () => ['{{CALC:seoQuoteGreeting:single}}', document.title,
+    `POL / Terminal: ${inputs[0].value.trim()}`, `Container Type: ${inputs[1].value.trim()}`, `WhatsApp / Email: ${inputs[2].value.trim()}`,
+    `Source: ${sourceUrl}`].join('\n');
+  const update = () => {
+    $('vehicle-inquiry-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(brief());
+    $('vehicle-inquiry-status').textContent = '';
+    $('vehicle-inquiry-fallback').hidden = true;
+  };
+  form.addEventListener('input', e => { e.target.setCustomValidity(''); update(); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if(sending) return;
+    inputs.forEach(input => input.setCustomValidity(input.value.trim() ? '' : '{{CALC:quoteRequired:single}}'));
+    if(!form.reportValidity()) return;
+    const notes = brief();
+    sending = true; $('vehicle-inquiry-submit').disabled = true; $('vehicle-inquiry-submit').textContent = '{{CALC:quoteSending:single}}';
+    $('vehicle-inquiry-status').textContent = ''; $('vehicle-inquiry-fallback').hidden = true;
+    try{
+      await sendCalculatorInquiry({pol:inputs[0].value.trim(), contact:inputs[2].value.trim(), notes, lang:document.documentElement.lang === 'en' ? 'en' : 'zh', sourceUrl});
+      $('vehicle-inquiry-status').textContent = '{{CALC:quoteSuccess:single}}';
+    }catch(err){
+      $('vehicle-inquiry-status').textContent = '{{CALC:quoteFailure:single}}';
+      $('vehicle-inquiry-fallback-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(notes);
+      $('vehicle-inquiry-email').href = 'mailto:Bryce.Lee@gwl-lianyungang.com?subject=' + encodeURIComponent('Vehicle shipping inquiry [load]') + '&body=' + encodeURIComponent(notes);
+      $('vehicle-inquiry-fallback').hidden = false;
+    }finally{ sending = false; $('vehicle-inquiry-submit').disabled = false; $('vehicle-inquiry-submit').textContent = '{{CALC:quoteSend:single}}'; }
+  });
+  update();
+}
+bindVehicleInquiry();
 function calculatorQuoteData(p){
   if(!p || !p.containers.length) return null;
   const counts = {};
@@ -1891,9 +1990,7 @@ $('quote-form').addEventListener('submit', async e => {
   $('quote-status').textContent = '';
   $('quote-fallback').hidden = true;
   try{
-    const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-    const result = await response.json();
-    if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+    await sendCalculatorInquiry(payload);
     if(JSON.stringify(quoteSnapshot) === signature) $('quote-status').textContent = '{{CALC:quoteSuccess:single}}';
   }catch(err){
     if(JSON.stringify(quoteSnapshot) === signature){

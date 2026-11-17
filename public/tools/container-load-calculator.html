@@ -453,6 +453,20 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 .quote-fallback a{color:var(--steel);text-decoration:underline}.quote-stale{color:var(--warn)}
 .calc-seo{max-width:1200px;margin:24px auto;padding:0 var(--padl);color:var(--muted);line-height:1.8}
 .calc-seo h2{font-size:18px;color:var(--fg)}
+.calc-seo{padding-top:24px;padding-bottom:24px}.calc-seo>section{margin-top:30px;padding-top:24px;border-top:1px solid var(--line)}
+.calc-seo h2{font-size:24px;line-height:1.35}.calc-seo h3{font-size:18px;line-height:1.5;color:var(--fg)}
+.calc-seo a{color:var(--steel);text-decoration:underline;text-underline-offset:3px}.calc-seo .btn{text-decoration:none}
+.seo-spec-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+.seo-spec-table{width:100%;min-width:700px;border-collapse:collapse;background:var(--card)}
+.seo-spec-table th,.seo-spec-table td{padding:12px;text-align:left;border-bottom:1px solid var(--line);white-space:normal;line-height:1.6}
+.seo-spec-table thead th{background:var(--sunk);color:var(--fg)}.seo-spec-table tbody th{font-weight:600;color:var(--fg)}
+.seo-faq-item{padding:16px 0;border-bottom:1px solid var(--line)}.seo-faq-item summary{cursor:pointer;color:var(--fg)}
+.seo-faq-item summary h3{display:inline;margin:0}.seo-faq-item p{margin:12px 0 0}
+.seo-quick-quote{margin-top:24px;padding:20px;border:1px solid var(--accent);border-radius:var(--r);background:var(--card)}
+.seo-quote-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.seo-quote-grid input{min-width:0;width:100%}
+.seo-quote-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.seo-quote-actions .btn{min-height:42px;white-space:normal;text-align:center;justify-content:center}
+.seo-quote-trust{padding-top:14px;border-top:1px solid var(--line);font-size:12px}
+@media(max-width:700px){.seo-quote-grid{grid-template-columns:minmax(0,1fr)}.seo-quote-actions .btn{width:100%}.calc-seo h2{font-size:21px}}
 </style>
 
 </head>
@@ -729,9 +743,68 @@ body{--padl:max(12px,env(safe-area-inset-left,0px));--padr:max(12px,env(safe-are
 </div>
 
 <section class="calc-seo" aria-labelledby="calc-seo-title">
-  <h2 id="calc-seo-title">装箱规划与中国出口海运询价</h2>
-  <p>免费装箱计算器可按纸箱或托盘的包装尺寸，比较 20 尺和 40 尺集装箱装载方案，查看体积、重量与 3D 排布。车辆或机械可按包装外形估算空间，实际堆叠、绑扎及工程可行性需另行确认。计算后可直接携带方案，咨询青岛、连云港出口整柜海运报价。</p>
+  <h2 id="calc-seo-title">集装箱装柜计算与出口运输规划</h2>
+  <p>按纸箱、托盘或车辆及机械的完整包装单元，估算 20GP、40HQ 装柜方案，查看 3D 装载布局，再咨询青岛、连云港出口运输。先估算空间，再按实际货物确认箱型、接受条件和装柜方式。</p>
+  <section id="vehicle-stacking" aria-labelledby="vehicle-stacking-title">
+    <h2 id="vehicle-stacking-title">车辆叠装计算器：乘用车、电动车、三轮车与工程机械</h2>
+    <h3>20GP / 40HQ 内的车辆、EV、电动三轮车与机械支架方案</h3>
+    <p>车辆装箱时，请把车辆与钢制叠装支架或滑撬底座作为完整包装单元，录入外尺寸和合计毛重，计入后视镜、车轮、电池保护、支撑、进门与绑扎作业空间。计算器可以比较这些外包络的几何排布，不设计钢架、不验证结构承载，也不批准车辆堆叠。车辆不能直接压在另一辆车上，应使用经专业审核并按实际货物取得船司接受的独立支撑与加固方案。</p>
+    <p><a href="/guides/vehicle-machinery-container-stacking-shipping-guide">查看车辆与工程机械叠装、滚装及散杂货海运实战指南 →</a></p>
+    <div class="seo-quick-quote">
+      <h3>车辆与机械海运快速询价 · 只填三项</h3>
+      <p>还没有准确重量或 HS 编码？先提供目的港、箱型或滚装/散杂货需求即可咨询初步参考价。支架图纸与详细货物资料可在正式订舱前进一步核对。</p>
+      <form id="vehicle-inquiry-form" aria-label="车辆与机械海运快速询价 · 只填三项">
+        <div class="seo-quote-grid">
+          <label class="fld" for="vehicle-inquiry-route">起运港 / 目的港码头<input id="vehicle-inquiry-route" name="route" required maxlength="300" placeholder="青岛 / 连云港 → 目的港或码头"></label>
+          <label class="fld" for="vehicle-inquiry-equipment">柜型与数量<input id="vehicle-inquiry-equipment" name="containerType" required maxlength="300" placeholder="20GP / 40HQ / RoRo / Breakbulk"></label>
+          <label class="fld" for="vehicle-inquiry-contact">WhatsApp / 邮箱<input id="vehicle-inquiry-contact" name="contact" required maxlength="300" placeholder="您的 WhatsApp 号码或邮箱"></label>
+        </div>
+        <div class="seo-quote-actions">
+          <a class="btn quote-wa" id="vehicle-inquiry-wa" target="_blank" rel="noopener noreferrer">通过 WhatsApp 获取海运报价</a>
+          <button class="btn primary" id="vehicle-inquiry-submit" type="submit">发送快速询价</button>
+        </div>
+        <p id="vehicle-inquiry-status" role="status" aria-live="polite"></p>
+        <div class="quote-fallback" id="vehicle-inquiry-fallback" hidden><a id="vehicle-inquiry-fallback-wa" target="_blank" rel="noopener noreferrer">WhatsApp</a><a id="vehicle-inquiry-email">发送邮件</a></div>
+        <p class="seo-quote-trust">由 Bryce 负责对接 | 依托港威国际物流（连云港及青岛）——整柜、冷柜及工程货直接订舱代理</p>
+      </form>
+    </div>
+  </section>
+  <section id="container-20ft-reference" aria-labelledby="container-20ft-title">
+    <h2 id="container-20ft-title">20 尺装箱计算：20GP 内尺寸、限重与有效 CBM 参考</h2>
+    <p>20 尺柜方案既要满足箱内空间，也要通过柜门。下表将计算器可修改的默认值与赫伯罗特公布的 20GP 箱型示例分开列出。支架、滑撬及包装重量应计入货物载荷，实际运输以箱体铭牌、底板承载、船司接受条件和内陆运输限制为准。</p>
+    <div class="seo-spec-scroll" tabindex="0" role="region" aria-label="20GP 与 40HQ 内尺寸、重量及 CBM 参考表">
+      <table class="seo-spec-table">
+        <thead><tr><th scope="col">参考项目</th><th scope="col">20GP：计算器默认值</th><th scope="col">20GP：赫伯罗特公布示例</th><th scope="col">40HQ：计算器默认值</th></tr></thead>
+        <tbody><tr><th scope="row">内部长度</th><td>5,890 mm</td><td>5,900 mm</td><td>12,030 mm</td></tr>
+<tr><th scope="row">内部宽度</th><td>2,350 mm</td><td>2,352 mm</td><td>2,350 mm</td></tr>
+<tr><th scope="row">内部高度</th><td>2,390 mm</td><td>2,395 mm</td><td>2,690 mm</td></tr>
+<tr><th scope="row">柜门开口：宽 × 高</th><td>2,340 mm × 2,280 mm</td><td>2,340 mm × 2,292 mm</td><td>2,340 mm × 2,580 mm</td></tr>
+<tr><th scope="row">货物载荷：含支架及包装</th><td>28,200 kg</td><td>28,130 kg</td><td>28,600 kg</td></tr>
+<tr><th scope="row">箱体自重：不属于货物载荷</th><td>2,200 kg</td><td>2,350 kg</td><td>3,900 kg</td></tr>
+<tr><th scope="row">内部几何容积 / 公布容量</th><td>33.08 CBM</td><td>33.20 CBM</td><td>76.05 CBM</td></tr>
+<tr><th scope="row">有效装载 CBM：规划参考*</th><td>28 CBM*</td><td>取决于货物与加固空间</td><td>68 CBM*</td></tr></tbody>
+      </table>
+    </div>
+    <p>* 20GP 约 28 CBM、40HQ 约 68 CBM 是工具采用的粗略装载参考，不是保证可用容量或统一限值。车辆间隙、钢架、进门、加固及货重都会影响装载。船司示例不会自动改变工具设置，请在“装柜设置”中选择或录入实际集装箱参数。</p>
+    <p><a href="https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container/20-standard.html" target="_blank" rel="noopener noreferrer">参数来源：赫伯罗特 20 尺标准集装箱规格（公布示例）</a></p>
+  </section>
+  <section aria-labelledby="container-stuffing-title">
+    <h2 id="container-stuffing-title">装箱规划计算：从货物尺寸到出运方案</h2>
+    <h3>生成可导出的装柜计划</h3><p>录入包装外尺寸、数量和毛重，选择合适的箱型与叠放限制，核对推荐方案及每个柜后导出 PDF 装柜单和 Excel 分柜表。若一个钢架固定多辆车，应把整个钢架单元的外尺寸与合计重量作为一件处理单元；工具不负责设计支架或计算其结构承载。</p>
+    <h3>用 3D 装柜模拟检查排布</h3><p>通过 3D、侧面、俯视与门口视角，检查空间、装货顺序和操作通道。模拟展示几何排布与重量分布，不计算车辆悬挂、钢架强度、叉车能力、吊装受力、火灾风险或绑扎受力。出运前请由装柜作业方与船司确认实际可行性。</p>
+  </section>
+  <section id="calculator-faq" aria-labelledby="calculator-faq-title">
+    <h2 id="calculator-faq-title">车辆叠装与装柜计算常见问题</h2>
+    <details class="seo-faq-item"><summary><h3>车辆叠装计算器能确定一个柜装几辆车吗？</h3></summary><p>录入车辆及支架的完整外尺寸和毛重后，可以估算空间。实际数量还取决于柜门、支架设计、底板承载、绑扎空间和船司接受条件，20GP 或 40HQ 都不存在统一的装车数量，3D 放得下也不等于结构或安全批准。</p></details>
+<details class="seo-faq-item"><summary><h3>20 尺集装箱能装多少立方？</h3></summary><p>赫伯罗特公布的 20GP 示例内部容量为 33.2 CBM。计算器将约 28 CBM 作为 20GP 的粗略有效装载参考，不作为保证容量或限制。请结合参数表、实际箱体和货物排布核对，支架、加固空间及限重可能降低可装数量。</p></details>
+<details class="seo-faq-item"><summary><h3>电动车和电动三轮车能在集装箱内叠装吗？</h3></summary><p>应先采用针对具体车辆审核、并取得船司接受的独立支撑钢架或滑撬方案，不能将车辆直接压在另一辆车上。电池类型、状态和危险品资料须按票审核，体积计算不代表船司接受。</p></details>
+<details class="seo-faq-item"><summary><h3>钢制叠装支架和机械滑撬怎么录入？</h3></summary><p>按完整处理单元录入，包含货物、支架、滑撬、防护包装和突出部件。使用合计毛重与实际允许叠放层数，预留吊装、叉取和绑扎空间，并由装柜作业方核对底板接触载荷和支架支撑。</p></details>
+<details class="seo-faq-item"><summary><h3>可以导出装柜计划和查看模拟过程吗？</h3></summary><p>计算后可通过“导出装柜单”生成 PDF 装柜计划及 Excel 分柜表，并在 3D 视图查看装载顺序。这些是规划布局记录，不是认证绑扎计算、支架图纸或船司装载批准。</p></details>
+<details class="seo-faq-item"><summary><h3>什么时候选择集装箱叠装、滚装或散杂船？</h3></summary><p>经审核的处理单元满足柜门、载荷与底板条件时，可比较集装箱方案；车辆或拖挂装运条件及航线接受时可比较滚装，需独立吊装和加固方案的货物可比较散杂船。应按实际航线比较起运港、海运及目的港的完整费用与责任范围。</p></details>
+<details class="seo-faq-item"><summary><h3>初步询价一定要准确重量或 HS 编码吗？</h3></summary><p>初步参考报价可先提供起运港、目的港、箱型或滚装/散杂货需求，以及 WhatsApp 或邮箱。正式价格、船司接受和订舱前，再核对尺寸、重量、支架方案与单证。</p></details>
+  </section>
 </section>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.sinolyg.com/load#faq","inLanguage":"zh-CN","url":"https://www.sinolyg.com/load#calculator-faq","mainEntity":[{"@type":"Question","name":"车辆叠装计算器能确定一个柜装几辆车吗？","acceptedAnswer":{"@type":"Answer","text":"录入车辆及支架的完整外尺寸和毛重后，可以估算空间。实际数量还取决于柜门、支架设计、底板承载、绑扎空间和船司接受条件，20GP 或 40HQ 都不存在统一的装车数量，3D 放得下也不等于结构或安全批准。"}},{"@type":"Question","name":"20 尺集装箱能装多少立方？","acceptedAnswer":{"@type":"Answer","text":"赫伯罗特公布的 20GP 示例内部容量为 33.2 CBM。计算器将约 28 CBM 作为 20GP 的粗略有效装载参考，不作为保证容量或限制。请结合参数表、实际箱体和货物排布核对，支架、加固空间及限重可能降低可装数量。"}},{"@type":"Question","name":"电动车和电动三轮车能在集装箱内叠装吗？","acceptedAnswer":{"@type":"Answer","text":"应先采用针对具体车辆审核、并取得船司接受的独立支撑钢架或滑撬方案，不能将车辆直接压在另一辆车上。电池类型、状态和危险品资料须按票审核，体积计算不代表船司接受。"}},{"@type":"Question","name":"钢制叠装支架和机械滑撬怎么录入？","acceptedAnswer":{"@type":"Answer","text":"按完整处理单元录入，包含货物、支架、滑撬、防护包装和突出部件。使用合计毛重与实际允许叠放层数，预留吊装、叉取和绑扎空间，并由装柜作业方核对底板接触载荷和支架支撑。"}},{"@type":"Question","name":"可以导出装柜计划和查看模拟过程吗？","acceptedAnswer":{"@type":"Answer","text":"计算后可通过“导出装柜单”生成 PDF 装柜计划及 Excel 分柜表，并在 3D 视图查看装载顺序。这些是规划布局记录，不是认证绑扎计算、支架图纸或船司装载批准。"}},{"@type":"Question","name":"什么时候选择集装箱叠装、滚装或散杂船？","acceptedAnswer":{"@type":"Answer","text":"经审核的处理单元满足柜门、载荷与底板条件时，可比较集装箱方案；车辆或拖挂装运条件及航线接受时可比较滚装，需独立吊装和加固方案的货物可比较散杂船。应按实际航线比较起运港、海运及目的港的完整费用与责任范围。"}},{"@type":"Question","name":"初步询价一定要准确重量或 HS 编码吗？","acceptedAnswer":{"@type":"Answer","text":"初步参考报价可先提供起运港、目的港、箱型或滚装/散杂货需求，以及 WhatsApp 或邮箱。正式价格、船司接受和订舱前，再核对尺寸、重量、支架方案与单证。"}}]}</script>
 
 <div class="toast" id="toast" hidden role="status"><span id="toast-msg"></span><button type="button" id="toast-undo">撤销</button></div>
 <div class="cmodal" id="contact" hidden role="dialog" aria-modal="true" aria-labelledby="ct-h">
@@ -1843,6 +1916,45 @@ $('ctreset').onclick = () => { CT = presetCT(RULES.carrier); renderSettings(); s
 /* ================= 5. 计算与界面 ================= */
 let plans = [], selKey = null, selIdx = 0, srcs = [], timer = null, selManual = false;   // selManual：用户自己点选过方案
 let quoteSnapshot = null, quoteSending = false;
+async function sendCalculatorInquiry(payload){
+  const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+  const result = await response.json();
+  if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+}
+function bindVehicleInquiry(){
+  const form = $('vehicle-inquiry-form'), inputs = ['vehicle-inquiry-route','vehicle-inquiry-equipment','vehicle-inquiry-contact'].map($);
+  const sourceUrl = 'https://www.sinolyg.com' + (document.documentElement.lang === 'en' ? '/en/load' : '/load');
+  let sending = false;
+  const brief = () => ['您好 Bryce，我想咨询青岛或连云港出口车辆与工程机械的海运方案。', document.title,
+    `POL / Terminal: ${inputs[0].value.trim()}`, `Container Type: ${inputs[1].value.trim()}`, `WhatsApp / Email: ${inputs[2].value.trim()}`,
+    `Source: ${sourceUrl}`].join('\n');
+  const update = () => {
+    $('vehicle-inquiry-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(brief());
+    $('vehicle-inquiry-status').textContent = '';
+    $('vehicle-inquiry-fallback').hidden = true;
+  };
+  form.addEventListener('input', e => { e.target.setCustomValidity(''); update(); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if(sending) return;
+    inputs.forEach(input => input.setCustomValidity(input.value.trim() ? '' : '请填写此项。'));
+    if(!form.reportValidity()) return;
+    const notes = brief();
+    sending = true; $('vehicle-inquiry-submit').disabled = true; $('vehicle-inquiry-submit').textContent = '正在发送…';
+    $('vehicle-inquiry-status').textContent = ''; $('vehicle-inquiry-fallback').hidden = true;
+    try{
+      await sendCalculatorInquiry({pol:inputs[0].value.trim(), contact:inputs[2].value.trim(), notes, lang:document.documentElement.lang === 'en' ? 'en' : 'zh', sourceUrl});
+      $('vehicle-inquiry-status').textContent = '询价已发送，Bryce 会尽快回复。';
+    }catch(err){
+      $('vehicle-inquiry-status').textContent = '暂时无法发送，请通过 WhatsApp 或邮件发送这些信息：';
+      $('vehicle-inquiry-fallback-wa').href = 'https://wa.me/8618360639913?text=' + encodeURIComponent(notes);
+      $('vehicle-inquiry-email').href = 'mailto:Bryce.Lee@gwl-lianyungang.com?subject=' + encodeURIComponent('Vehicle shipping inquiry [load]') + '&body=' + encodeURIComponent(notes);
+      $('vehicle-inquiry-fallback').hidden = false;
+    }finally{ sending = false; $('vehicle-inquiry-submit').disabled = false; $('vehicle-inquiry-submit').textContent = '发送快速询价'; }
+  });
+  update();
+}
+bindVehicleInquiry();
 function calculatorQuoteData(p){
   if(!p || !p.containers.length) return null;
   const counts = {};
@@ -1913,9 +2025,7 @@ $('quote-form').addEventListener('submit', async e => {
   $('quote-status').textContent = '';
   $('quote-fallback').hidden = true;
   try{
-    const response = await fetch('/api/inquiry', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-    const result = await response.json();
-    if(!response.ok || result.ok !== true) throw new Error('Inquiry unavailable');
+    await sendCalculatorInquiry(payload);
     if(JSON.stringify(quoteSnapshot) === signature) $('quote-status').textContent = '询价已发送，Bryce 会尽快回复。';
   }catch(err){
     if(JSON.stringify(quoteSnapshot) === signature){

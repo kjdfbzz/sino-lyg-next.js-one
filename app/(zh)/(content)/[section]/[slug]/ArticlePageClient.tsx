@@ -202,6 +202,12 @@ export default function ArticlePageClient({
             <p className="mt-7 max-w-3xl text-lg leading-9 text-white/72">
               {articleCopy.description}
             </p>
+            {article.slug === 'vehicle-machinery-container-stacking-shipping-guide' && <div className="mt-7 flex flex-wrap gap-3" data-vehicle-guide-actions>
+              <Link href={localizePath('/load', navigationLang)} prefetch={false} className="inline-flex min-h-12 items-center justify-center bg-amber-300 px-6 py-4 text-sm font-black leading-6 text-black transition hover:bg-white">
+                {isZh ? '使用免费3D车辆叠装与装柜计算器' : 'Try our Free 3D Vehicle Stacking & Container Loading Calculator'}
+              </Link>
+              <a href="#request-quote" className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-4 text-sm font-bold leading-6 text-white transition hover:border-amber-300 hover:text-amber-300">{isZh ? '车辆海运快速询价 · 只填三项' : 'Get a vehicle freight quote · 3 fields'}</a>
+            </div>}
             {offersDocumentReview && <div data-document-review className="mt-6 border border-amber-300/50 bg-amber-300/10 p-5 text-sm leading-7 text-amber-100">
               {isEs ? 'Le ayudamos a revisar sus documentos sin costo y a obtener una cotización marítima rápida.' : isZh ? '可免费协助审核单证，并快速提供海运参考报价。' : 'Get free assistance reviewing your shipment documents and a fast ocean freight quote.'}
               <Link href="#request-quote" className="ml-2 font-bold underline underline-offset-4">{isEs ? 'Solicitar cotización →' : isZh ? '快速询价 →' : 'Get a quick quote →'}</Link>
